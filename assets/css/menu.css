@@ -1,0 +1,296 @@
+/* ============================================================
+   THE MENU  ·  .mzx-*
+   ============================================================
+   Full-screen overlay, fixed type scale, no fitter. The version this
+   replaces scaled the type with JS until the rows filled the sheet,
+   which is why it could never settle and always came out shouting.
+
+   This pass is about presence. The first attempt was legible but small:
+   19px rows and 10px numerals adrift in a 1440px-tall overlay, which
+   read as a template rather than as part of this site. Everything below
+   is roughly a third larger, the numerals are real numerals, and the
+   three footer objects — world switch, clocks, CTA — are designed
+   rather than defaulted.
+
+   Self-contained on purpose: its own namespace and its own custom
+   properties, no dependency on manzar-system.css. That is what lets the
+   Studio page run the same menu.
+   ============================================================ */
+
+.mzx{
+  --x-ink:      #0B0A08;
+  --x-bone:     #E9E6DD;
+  --x-1:        rgba(233,230,221,.95);
+  --x-2:        rgba(233,230,221,.58);
+  --x-3:        rgba(233,230,221,.40);
+  --x-4:        rgba(233,230,221,.28);
+  --x-line:     rgba(233,230,221,.11);
+  --x-line-2:   rgba(233,230,221,.20);
+  --x-pad:      clamp(26px, 4.4vw, 92px);
+  --x-ease:     cubic-bezier(.22,1,.36,1);
+  --x-body:     "General Sans","Inter",system-ui,-apple-system,sans-serif;
+  --x-mono:     ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+
+  position:fixed; inset:0;
+  /* above the Labs nav (900) and its grain overlay (2000), below the
+     preloader (3000) and the crossover curtain (4000) */
+  z-index:2500;
+  display:flex; flex-direction:column;
+  color:var(--x-bone);
+  font-family:var(--x-body);
+  font-feature-settings:"ss01","cv01";
+  /* clean and flat — one quiet wash off the top edge, nothing else */
+  background:
+    radial-gradient(130% 86% at 50% -22%, rgba(233,230,221,.06), transparent 60%),
+    var(--x-ink);
+  opacity:0; visibility:hidden;
+  transition:opacity .42s var(--x-ease), visibility 0s linear .42s;
+}
+.mzx.is-open{
+  opacity:1; visibility:visible;
+  transition:opacity .42s var(--x-ease), visibility 0s linear 0s;
+}
+.mzx[hidden]{ display:none; }
+html.mzx-lock, body.mzx-lock{ overflow:hidden; }
+
+/* ── head ─────────────────────────────────────────────────── */
+.mzx-head{
+  flex:none;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:clamp(22px,2.2vw,34px) var(--x-pad);
+}
+.mzx-eyebrow{
+  font-family:var(--x-mono); font-size:11.5px; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--x-3);
+}
+/* A 14px text link was not a target. This is a 52px pill you cannot
+   miss and cannot miss-click. */
+.mzx-close{
+  display:inline-flex; align-items:center; gap:14px;
+  height:52px; padding:0 8px 0 24px;
+  border:1px solid var(--x-line-2); border-radius:100px;
+  background:none; cursor:pointer;
+  font-family:var(--x-body); font-size:15.5px; font-weight:500;
+  letter-spacing:-.012em; color:var(--x-2);
+  transition:color .3s var(--x-ease), border-color .3s var(--x-ease), background-color .3s var(--x-ease);
+}
+.mzx-close:hover{ color:var(--x-ink); background:var(--x-bone); border-color:var(--x-bone); }
+.mzx-close-x{
+  display:grid; place-items:center; width:36px; height:36px;
+  border-radius:100px; background:rgba(233,230,221,.08);
+  transition:background-color .3s var(--x-ease);
+}
+.mzx-close:hover .mzx-close-x{ background:rgba(11,10,8,.10); }
+.mzx-close-x svg{ width:16px; height:16px; display:block; }
+
+/* ── body ─────────────────────────────────────────────────── */
+.mzx-body{
+  flex:1 1 auto; min-height:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) clamp(300px, 26vw, 520px);
+  gap:clamp(36px,4.4vw,96px);
+  align-items:center;
+  padding:0 var(--x-pad);
+  overflow:auto;
+}
+
+.mzx-nav{
+  display:grid; grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:clamp(28px,3.2vw,64px);
+  align-items:start;
+}
+/* Was 10.5px mono at 38% — a caption, not a heading. These name the
+   three halves of the company and should carry that weight. */
+.mzx-group-label{
+  margin:0 0 clamp(16px,1.2vw,22px);
+  padding-bottom:clamp(13px,1vw,18px);
+  border-bottom:1px solid var(--x-line-2);
+  font-family:var(--x-body); font-weight:600;
+  font-size:clamp(13px,.78vw,18px); letter-spacing:.15em;
+  text-transform:uppercase; color:var(--x-2);
+}
+
+/* ── a row ────────────────────────────────────────────────── */
+.mzx-row{
+  position:relative;
+  display:grid;
+  grid-template-columns:clamp(34px,2.8vw,58px) minmax(0,1fr);
+  grid-template-rows:auto auto;
+  align-items:baseline;
+  column-gap:clamp(8px,.6vw,14px);
+  padding:clamp(15px, min(1.2vw, 2.4vh), 32px) 0;
+  text-decoration:none; color:inherit;
+  opacity:0; transform:translateY(14px);
+  transition:opacity .5s var(--x-ease), transform .5s var(--x-ease);
+}
+.mzx.is-open .mzx-row{
+  opacity:1; transform:none;
+  transition-delay:calc(80ms + var(--i, 0) * 26ms);
+}
+/* The numeral is a design element now, not a footnote. Tabular figures
+   so 01 and 11 occupy the same width and the labels stay aligned. */
+.mzx-n{
+  grid-column:1; grid-row:1;
+  font-family:var(--x-body); font-weight:500;
+  font-size:clamp(14px,.95vw,24px); letter-spacing:.01em;
+  font-variant-numeric:tabular-nums; font-feature-settings:"tnum";
+  color:var(--x-4);
+  transition:color .3s var(--x-ease);
+}
+.mzx-t{
+  grid-column:2; grid-row:1;
+  font-size:clamp(21px,1.8vw,46px); font-weight:600;
+  letter-spacing:-.028em; line-height:1.14; color:var(--x-1);
+}
+.mzx-d{
+  grid-column:2; grid-row:2;
+  margin-top:6px;
+  font-size:clamp(13px,.74vw,16px); line-height:1.5; color:var(--x-3);
+  transition:color .3s var(--x-ease);
+}
+.mzx-row::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+  background:var(--x-line-2);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .45s var(--x-ease);
+}
+.mzx-row:hover::after,
+.mzx-row:focus-visible::after{ transform:scaleX(1); }
+.mzx-row:hover .mzx-n,
+.mzx-row:focus-visible .mzx-n{ color:var(--x-1); }
+.mzx-row:hover .mzx-d,
+.mzx-row:focus-visible .mzx-d{ color:var(--x-2); }
+.mzx-row:focus-visible{ outline:1px solid var(--x-line-2); outline-offset:8px; }
+
+.mzx-row.is-here .mzx-n{ color:var(--x-1); }
+.mzx-row.is-here .mzx-t::after{
+  content:""; display:inline-block; vertical-align:middle;
+  width:6px; height:6px; margin-left:12px; border-radius:50%;
+  background:var(--x-1);
+}
+
+/* ── media ────────────────────────────────────────────────── */
+.mzx-media{
+  align-self:center;
+  opacity:0; transform:translateY(14px);
+  transition:opacity .55s var(--x-ease) .22s, transform .55s var(--x-ease) .22s;
+}
+.mzx.is-open .mzx-media{ opacity:1; transform:none; }
+.mzx-frame{
+  position:relative; width:100%;
+  aspect-ratio:16 / 10;             /* exactly what the frames are drawn at */
+  border-radius:16px; overflow:hidden;
+  border:1px solid var(--x-line);
+  background:#0F0E0C;
+}
+.mzx-frame img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:contain; display:block;
+  opacity:0; transition:opacity .34s var(--x-ease);
+}
+.mzx-frame img.is-on{ opacity:1; }
+.mzx-frame::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  box-shadow:inset 0 1px 0 rgba(233,230,221,.06), inset 0 0 48px rgba(0,0,0,.30);
+}
+.mzx-kicker{
+  margin:20px 0 0;
+  font-family:var(--x-mono); font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--x-3);
+}
+.mzx-caption{
+  margin:9px 0 0; font-size:clamp(14px,.8vw,17px); line-height:1.5;
+  color:var(--x-2); max-width:36ch;
+}
+
+/* ── foot ─────────────────────────────────────────────────── */
+.mzx-foot{
+  flex:none;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:clamp(16px,2vw,40px); flex-wrap:wrap;
+  padding:clamp(20px,1.9vw,30px) var(--x-pad);
+  border-top:1px solid var(--x-line);
+}
+
+/* The switch read as two buttons that happened to touch. It is one
+   object with a moving state: a tray, a rail, and the on side filled. */
+.mzx-switch{
+  position:relative; display:inline-flex; padding:4px;
+  border-radius:100px; border:1px solid var(--x-line-2);
+  background:rgba(233,230,221,.03);
+}
+.mzx-switch-rail{ display:none; }
+.mzx-switch a{
+  position:relative; z-index:1;
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:86px; height:40px; padding:0 22px; border-radius:100px;
+  font-size:15px; font-weight:500; letter-spacing:-.014em;
+  color:var(--x-2); text-decoration:none;
+  transition:color .32s var(--x-ease), background-color .32s var(--x-ease);
+}
+.mzx-switch a:hover{ color:var(--x-1); }
+.mzx-switch a.is-on{
+  background:var(--x-bone); color:var(--x-ink); font-weight:600;
+}
+.mzx-switch a.is-on:hover{ color:var(--x-ink); }
+
+.mzx-mail{
+  font-size:15px; font-weight:500; letter-spacing:-.012em;
+  color:var(--x-2); text-decoration:none;
+  border-bottom:1px solid transparent; padding-bottom:2px;
+  transition:color .3s var(--x-ease), border-color .3s var(--x-ease);
+}
+.mzx-mail:hover{ color:var(--x-1); border-bottom-color:var(--x-line-2); }
+
+/* Two stacked pairs rather than one mono string with seconds ticking.
+   Seconds are noise on a menu — nobody is timing anything. */
+.mzx-clocks{ display:flex; gap:clamp(18px,1.8vw,36px); }
+.mzx-clock{ display:flex; flex-direction:column; gap:3px; }
+.mzx-clock-city{
+  font-family:var(--x-mono); font-size:10px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--x-4);
+}
+.mzx-clock-time{
+  font-size:16px; font-weight:500; letter-spacing:-.01em;
+  font-variant-numeric:tabular-nums; font-feature-settings:"tnum";
+  color:var(--x-2);
+}
+
+.mzx-cta{
+  display:inline-flex; align-items:center; gap:14px;
+  height:52px; padding:0 8px 0 24px; border-radius:10px;
+  background:var(--x-bone); color:var(--x-ink); text-decoration:none;
+  font-size:15.5px; font-weight:600; letter-spacing:-.016em;
+  transition:transform .3s var(--x-ease);
+}
+.mzx-cta:hover{ transform:translateY(-1px); }
+.mzx-cta i{
+  display:grid; place-items:center; width:36px; height:36px;
+  border-radius:8px; background:var(--x-ink); color:var(--x-bone);
+  font-style:normal; font-size:13px;
+}
+
+/* ── narrow ───────────────────────────────────────────────── */
+@media (max-width:1180px){
+  .mzx-body{ grid-template-columns:minmax(0,1fr); align-items:start; padding-top:10px; }
+  .mzx-media{ display:none; }
+  .mzx-nav{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+  /* three groups over two columns is a tall block; without this it
+     overflowed a 1000x900 window and the body had to scroll */
+  .mzx-row{ padding:clamp(9px, 1.2vh, 15px) 0; }
+  .mzx-t{ font-size:clamp(19px,2.2vw,26px); }
+  .mzx-group-label{ margin-bottom:12px; padding-bottom:11px; }
+}
+@media (max-width:680px){
+  .mzx-nav{ grid-template-columns:minmax(0,1fr); gap:24px; }
+  .mzx-foot{ justify-content:flex-start; gap:16px; }
+  .mzx-clocks{ display:none; }
+  .mzx-close{ height:46px; padding-left:20px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .mzx, .mzx-row, .mzx-media, .mzx-frame img{ transition-duration:.01s !important; }
+  .mzx-row{ opacity:1; transform:none; }
+}
+
+/* the retired component must never render alongside this one */
+.mz-menu, .mz-menu-scrim{ display:none !important; }

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.35" y2="1">
+<stop offset="0" stop-color="#131210"/><stop offset="1" stop-color="#0C0B09"/>
+</linearGradient>
+<pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+<path d="M50 0V50M0 50H50" fill="none" stroke="rgba(233,230,221,0.045)" stroke-width="1"/>
+</pattern>
+</defs>
+<rect width="800" height="500" fill="url(#bg)"/>
+<rect width="800" height="500" fill="url(#grid)"/>
+<!-- FIT is computed per frame: the motif is measured, then scaled and
+     translated so every drawing sits dead centre and carries the same
+     visual weight. The old wrapper scaled about (400,250), which is not
+     the centre of a 480x300 canvas, so everything drifted up and left. -->
+<g transform="translate(-145.54,-63.50) scale(1.9000)"
+   stroke="rgba(233,230,221,0.72)" fill="none" stroke-width="1.32" stroke-linecap="square"
+   vector-effect="non-scaling-stroke">
+<rect x="150" y="104" width="86" height="30" rx="3" stroke="rgba(233,230,221,0.42)"/><line x1="160" y1="114" x2="216" y2="114" stroke="rgba(233,230,221,0.28)"/><line x1="160" y1="124" x2="200" y2="124" stroke="rgba(233,230,221,0.28)"/><rect x="150" y="150" width="86" height="30" rx="3" stroke="rgba(233,230,221,0.42)"/><line x1="160" y1="160" x2="216" y2="160" stroke="rgba(233,230,221,0.28)"/><line x1="160" y1="170" x2="200" y2="170" stroke="rgba(233,230,221,0.28)"/><rect x="150" y="196" width="86" height="30" rx="3" stroke="rgba(233,230,221,0.42)"/><line x1="160" y1="206" x2="216" y2="206" stroke="rgba(233,230,221,0.28)"/><line x1="160" y1="216" x2="200" y2="216" stroke="rgba(233,230,221,0.28)"/><path d="M240 119 C272 119 276 196 306 196" stroke="rgba(233,230,221,0.26)"/><path d="M240 165 C272 165 276 196 306 196" stroke="rgba(233,230,221,0.26)"/><path d="M240 211 C272 211 276 196 306 196" stroke="rgba(233,230,221,0.26)"/><circle cx="330" cy="196" r="26" stroke="rgba(233,230,221,0.9)" fill="rgba(233,230,221,0.1)"/><circle cx="330" cy="196" r="7" fill="rgba(233,230,221,0.9)" stroke="none"/><line x1="356" y1="196" x2="424" y2="196" stroke="rgba(233,230,221,0.9)"/><path d="M410 184 L424 196 L410 208" stroke="rgba(233,230,221,0.9)"/>
+</g>
+<rect x=".5" y=".5" width="799" height="499" fill="none" stroke="rgba(233,230,221,0.1)"/>
+
+</svg>

@@ -1,0 +1,1119 @@
+/* ══════════════════════════════════════════════════════════════════════
+   MANZAR SYSTEM — manzar-system.css
+   The shared spine for manzar.studio + Manzar Labs. Tokens + components
+   only. Loaded FIRST on both sites; each site's own stylesheet loads after
+   and may only extend this file, never fight it. See MANZAR-SYSTEM.md.
+
+   Main links this as        assets/css/manzar-system.css
+   Labs links this as        ../assets/css/manzar-system.css
+
+   Contents
+     1. @font-face  — Instrument Serif italic (self-hosted accent face)
+     2. Tokens      — :root + [data-theme="bone"]
+     3. Components  — mz-nav, mz-switch, mz-curtain, mz-btn, mz-eyebrow,
+                       mz-notch, mz-ghost-num, mz-card, mz-serif
+     4. Reduced motion
+     5. Anchor scroll offset
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Fonts ──────────────────────────────────────────────────────────
+   General Sans + Tanker are loaded from Fontshare by each page's own
+   <head> — not duplicated here. Instrument Serif italic is the one face
+   this system self-hosts, since it is only ever used as a one-to-three
+   word accent (§1 "Serif discipline"). */
+/* This used to declare a self-hosted @font-face pointing at
+   ../fonts/instrument-serif-latin-400-italic.woff2. That file was never
+   in the project — assets/fonts/ does not exist — so every page loading
+   this stylesheet fired a 404 for it and every italic accent word fell
+   through to Georgia, which is not the face this system was drawn for.
+
+   Instrument Serif italic now comes from Google Fonts, requested in each
+   page's <head> next to the Fontshare families. Nothing else changes:
+   --serif below still names "Instrument Serif" first, so the same words
+   pick it up, only now the font actually arrives. */
+
+/* ── 2. Tokens ─────────────────────────────────────────────────────────
+   Identical custom-property names on both sites. Values copied verbatim
+   from MANZAR-SYSTEM.md §1 — do not rename, do not fork per-site. */
+:root{
+  /* surface */
+  --ink:      #0B0A08;   /* page, act I + act II base */
+  --ink-2:    #131110;   /* raised surface */
+  --panel:    #1A1714;   /* cards */
+  --bone:     #E9E6DD;   /* inverted page */
+  --bone-2:   #DCD8CB;   /* inverted raised */
+
+  /* type */
+  --fg:       var(--bone);
+  --soft:     rgba(233,230,221,.62);
+  --mut:      rgba(233,230,221,.40);
+  --ghost:    rgba(233,230,221,.07);   /* giant background numerals */
+
+  /* one accent, everywhere, both sites */
+  --acc:      #FF4B1F;
+
+  /* lines */
+  --line:     rgba(233,230,221,.12);
+  --line-2:   rgba(233,230,221,.22);
+
+  /* geometry */
+  --r-pill:   100px;
+  --r-card:   18px;
+  --r-chip:   999px;
+  --pad:      clamp(20px,4.2vw,72px);
+  --shell:    1680px;
+
+  /* motion */
+  --e-out:    cubic-bezier(.16,1,.3,1);
+  --e-inout:  cubic-bezier(.65,.05,0,1);
+  --e-spring: cubic-bezier(.34,1.4,.64,1);
+
+  /* type stacks */
+  --disp:  "General Sans","Inter",system-ui,sans-serif;
+  --body:  "General Sans","Inter",system-ui,sans-serif;
+  --shout: "Tanker","General Sans",Impact,sans-serif;
+  --serif: "Instrument Serif",Georgia,serif;   /* italic only, accent words */
+  --mono:  "General Sans",ui-monospace,monospace;
+}
+
+[data-theme="bone"]{
+  --fg:rgba(11,10,8,1); --soft:rgba(11,10,8,.66); --mut:rgba(11,10,8,.42);
+  --ghost:rgba(11,10,8,.07);
+  --line:rgba(11,10,8,.14); --line-2:rgba(11,10,8,.24);
+  --panel:var(--bone-2); --ink-2:var(--bone-2);
+}
+
+/* shared pulse keyframe — used by the eyebrow dot and the Labs status pills */
+@keyframes mz-pulse{
+  0%,100%{opacity:1}
+  50%{opacity:.28}
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.1  NAV — .mz-nav
+   Fixed, 72px, three-slot grid (left | centre logo tab | right).
+   Legibility comes from a constant ink-tinted glass backdrop + a
+   theme-aware --fg — never mix-blend-mode:difference (that is the bug
+   this system replaces: it went unreadable over light imagery).
+   ══════════════════════════════════════════════════════════════════════
+
+   Required markup:
+   <header class="mz-nav">
+     <div class="mz-nav-left">
+       <button class="mz-nav-menu" type="button">
+         <span class="mz-nav-menu-icon" aria-hidden="true">
+           <span class="mz-nav-menu-line"></span><span class="mz-nav-menu-line"></span>
+         </span>
+         <span class="mz-nav-menu-label">Menu</span>
+       </button>
+       <!-- where you are: written by MZ.here(), decorative (the same
+            information is in the menu and in the page itself) -->
+       <p class="mz-nav-here" aria-hidden="true">
+         <span class="mz-nav-here-label">Overview</span></p>
+     </div>
+     <a class="mz-nav-logo" href="/index.html">
+       <span class="mz-nav-mark">…mark.svg…</span>
+       <span class="mz-nav-word">manzar</span>
+       <span class="mz-nav-chip">Studio</span>
+     </a>
+     <div class="mz-nav-right">
+       <div class="mz-switch">…§3.2…</div>
+       <a class="mz-btn mz-btn-light">…§3.4…</a>
+     </div>
+   </header>
+   JS (MZ.nav()) toggles .mz-nav--hidden (auto-hide) and .mz-nav--scrolled
+   (hairline fade-in) — both are pure CSS states, safe without JS too. */
+.mz-nav{
+  box-sizing:border-box;
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  height:72px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding-inline:var(--pad);
+  color:var(--fg);
+  background:transparent;
+  transition:transform .4s var(--e-out);
+}
+/* The glass lives on ::before rather than on .mz-nav so the tint and blur can
+   be tuned independently of the box that holds the content, and so nothing
+   applied to it can ever affect the nav's own children.
+   z-index:-1 keeps it behind the nav content but still inside the nav's
+   stacking context (z-index:900), so it never falls behind the page.
+   It stops dead at the 72px edge — no overhang, no mask. The rule below is the
+   bar's bottom, and the blur ending anywhere other than exactly on it reads as
+   a smeared second edge under the border. Two stacked layers: a bone sheen off
+   the top edge (the gloss) over the ink tint that carries legibility. */
+.mz-nav::before{
+  content:"";position:absolute;z-index:-1;pointer-events:none;
+  inset:0;
+  background:
+    /* specular: the lit top edge of a glass panel */
+    linear-gradient(to bottom,
+      rgba(233,230,221,.17) 0px,
+      rgba(233,230,221,.17) 1px,
+      rgba(233,230,221,0)   1px),
+    /* sheen falling off the top edge */
+    linear-gradient(to bottom,
+      rgba(233,230,221,.11)  0%,
+      rgba(233,230,221,.035) 38%,
+      rgba(233,230,221,0)    72%),
+    linear-gradient(to bottom,
+      color-mix(in srgb, var(--ink) 36%, transparent) 0%,
+      color-mix(in srgb, var(--ink) 32%, transparent) 100%);
+  -webkit-backdrop-filter:blur(24px) saturate(155%);
+  backdrop-filter:blur(24px) saturate(155%);
+  transition:background .4s var(--e-out),
+             -webkit-backdrop-filter .4s var(--e-out),
+             backdrop-filter .4s var(--e-out);
+}
+/* Once you're off the hero the glass firms up — same gloss, more body, since
+   it now has to hold type over arbitrary content rather than one art-directed
+   frame. */
+.mz-nav--scrolled::before{
+  background:
+    linear-gradient(to bottom,
+      rgba(233,230,221,.15) 0px,
+      rgba(233,230,221,.15) 1px,
+      rgba(233,230,221,0)   1px),
+    linear-gradient(to bottom,
+      rgba(233,230,221,.095) 0%,
+      rgba(233,230,221,.03)  38%,
+      rgba(233,230,221,0)    72%),
+    linear-gradient(to bottom,
+      color-mix(in srgb, var(--ink) 62%, transparent) 0%,
+      color-mix(in srgb, var(--ink) 58%, transparent) 100%);
+  -webkit-backdrop-filter:blur(28px) saturate(160%);
+  backdrop-filter:blur(28px) saturate(160%);
+}
+/* No backdrop-filter (older Firefox): the tint is the only thing holding the
+   type, so it has to be opaque enough to work on its own. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .mz-nav::before{
+    background:linear-gradient(to bottom,
+      color-mix(in srgb, var(--ink) 82%, transparent) 0%,
+      color-mix(in srgb, var(--ink) 76%, transparent) 100%);
+  }
+}
+/* The rule is the bottom border of the bar — always on, edge to edge, one
+   constant weight (no scrolled state: a border that appears on scroll is the
+   thing that made the nav read as a slab dropping in). --line-2 rather than
+   --line because at 12% it disappears against the brighter passages of a hero
+   frame, and this line has to hold on any backdrop. */
+.mz-nav::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--line-2);
+}
+.mz-nav--hidden{transform:translateY(-100%)}
+
+.mz-nav-left{grid-column:1;justify-self:start;display:flex;align-items:center;gap:16px;min-width:0}
+.mz-nav-right{grid-column:3;justify-self:end;display:flex;align-items:center;gap:14px;min-width:0}
+
+/* The trigger reads icon-first, left to right: the glyph is what the eye
+   lands on, the word only confirms it. It is a filled control, not a bare
+   outline — over a bright hero frame a 12% outline alone doesn't hold, and
+   a button you can't see the edges of doesn't read as pressable. */
+.mz-nav-menu{
+  box-sizing:border-box;
+  display:inline-flex;align-items:center;gap:10px;flex:none;
+  height:38px;padding:0 17px 0 14px;border-radius:var(--r-pill);
+  border:1px solid var(--line);
+  background:color-mix(in srgb, var(--fg) 4%, transparent);
+  box-shadow:inset 0 1px 0 rgba(233,230,221,.06);
+  color:var(--fg);
+  font-family:var(--body);font-weight:500;font-size:13px;letter-spacing:.005em;
+  cursor:pointer;
+  transition:border-color .35s var(--e-out),background .35s var(--e-out);
+}
+.mz-nav-menu-label{line-height:1}
+.mz-nav-menu:hover{
+  border-color:var(--line-2);
+  background:color-mix(in srgb, var(--fg) 9%, transparent);
+}
+.mz-nav-menu:focus-visible{
+  outline:none;
+  border-color:color-mix(in srgb, var(--acc) 55%, transparent);
+  box-shadow:inset 0 1px 0 rgba(233,230,221,.06),
+             0 0 0 3px color-mix(in srgb, var(--acc) 20%, transparent);
+}
+
+/* Trigger icon — two lines that rotate into an ✕ when the sheet is open.
+   Deliberately unequal (the lower line is short) so it reads as a menu mark
+   rather than an equals sign; on hover the short line runs out to full width,
+   which is the whole micro-interaction. JS (MZ.menu) toggles .is-open on
+   .mz-nav-menu and flips aria-expanded; the morph itself is pure CSS so it
+   never stalls behind a JS tick. */
+.mz-nav-menu-icon{position:relative;flex:none;width:15px;height:15px}
+.mz-nav-menu-line{
+  position:absolute;left:0;height:1px;background:currentColor;
+  transition:transform .4s var(--e-inout),top .4s var(--e-inout),
+             width .4s var(--e-out);
+}
+.mz-nav-menu-line:first-child{top:5px;width:100%}
+.mz-nav-menu-line:last-child{top:10px;width:60%}
+.mz-nav-menu:hover .mz-nav-menu-line:last-child,
+.mz-nav-menu:focus-visible .mz-nav-menu-line:last-child{width:100%}
+/* after the hover rules: open always wins, both lines full width and centred */
+.mz-nav-menu.is-open .mz-nav-menu-line{top:7px;width:100%}
+.mz-nav-menu.is-open .mz-nav-menu-line:first-child{transform:rotate(45deg)}
+.mz-nav-menu.is-open .mz-nav-menu-line:last-child{transform:rotate(-45deg)}
+
+/* "You are here" — the section you are currently in. Written by MZ.here();
+   purely decorative (aria-hidden), so it can swap text as often as it likes
+   without narrating to a screen reader. It replaces the old city/clock
+   readout: a running seconds display told the visitor nothing they needed,
+   this tells them where they are in a very long page.
+   Deliberately unnumbered — the menu sheet numbers its rows 01–12 by its own
+   IA, and the sheet sits directly under this bar while open, so a second
+   numbering of the same nouns ("04 Work" over "01 Work") would read as a
+   mistake. One word, in --soft, so it reads as state and not as a link. */
+.mz-nav-here{
+  display:flex;align-items:center;white-space:nowrap;min-width:0;
+  font-family:var(--mono);font-weight:500;font-size:12.5px;letter-spacing:.01em;
+  color:var(--soft);
+}
+/* the divider, in place of the old orphaned slash. margin-right so it sits
+   roughly midway between the trigger and the label rather than crowding it
+   (.mz-nav-left's own 16px gap holds the other side). */
+.mz-nav-here::before{
+  content:"";flex:none;width:1px;height:15px;background:var(--line);
+  margin-right:13px;
+}
+/* The swap: out 3px up, in from 3px down. MZ.here() adds .is-out, writes the
+   new text 200ms later, then removes it. */
+.mz-nav-here-label{
+  overflow:hidden;text-overflow:ellipsis;
+  transition:opacity .2s var(--e-out),transform .2s var(--e-out);
+}
+.mz-nav-here.is-out .mz-nav-here-label{opacity:0;transform:translateY(-3px)}
+
+.mz-nav-logo{
+  grid-column:2;justify-self:center;
+  display:flex;align-items:center;gap:10px;color:var(--fg);white-space:nowrap;
+  text-decoration:none;
+}
+/* The real wordmark image, not a lockup rebuilt from type. */
+.mz-nav-logo{--nav-logo-h:clamp(28px,2.9vw,38px)}
+.mz-nav-logo-img{
+  flex:none;display:block;
+  height:var(--nav-logo-h);width:auto;
+}
+/* The dense Latin band inside the artwork is centred at 54.6% of the image
+   height, not 50% — the calligraphic swash hangs below and pulls the box centre
+   down. Centring the chip on the box therefore leaves it sitting visibly high,
+   so nudge it by the difference to line it up with the Latin letters. */
+.mz-nav-chip-align{transform:translateY(calc(var(--nav-logo-h) * 0.046))}
+.mz-nav-chip{
+  font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--soft);
+  padding-left:10px;margin-left:2px;border-left:1px solid var(--line);
+}
+
+/* Below 860px the left slot has to give way to the logo + right cluster. */
+@media (max-width:860px){
+  .mz-nav-here{display:none}
+}
+@media (max-width:640px){
+  .mz-nav{padding-inline:20px}
+  /* a little more height once it is being tapped rather than clicked */
+  .mz-nav-menu{height:42px;padding:0 18px 0 15px}
+  .mz-nav-word{display:none}
+  .mz-nav-chip{padding-left:0;margin-left:0;border-left:0}
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.2  WORLD SWITCHER — .mz-switch / .mz-switch-opt / .is-on
+   Segmented control, identical on both sites, same nav slot. Exactly two
+   options. The active lozenge is a ::before positioned with :has() —
+   transform only, no JS needed to move it.
+   ══════════════════════════════════════════════════════════════════════
+
+   <div class="mz-switch" role="group" aria-label="Manzar worlds">
+     <a class="mz-switch-opt is-on" href="/index.html"      data-world="studio">Studio</a>
+     <a class="mz-switch-opt"       href="/labs/index.html" data-world="labs">Labs</a>
+   </div> */
+.mz-switch{
+  box-sizing:border-box;
+  position:relative;display:inline-flex;align-items:center;gap:2px;
+  padding:3px;border-radius:var(--r-pill);border:1px solid var(--line);
+}
+.mz-switch::before{
+  content:"";position:absolute;top:3px;left:3px;z-index:0;
+  width:calc(50% - 3px);height:calc(100% - 6px);
+  border-radius:var(--r-pill);background:var(--bone);
+  transform:translateX(0%);
+  transition:transform .4s var(--e-spring);
+}
+.mz-switch:has(.mz-switch-opt[data-world="labs"].is-on)::before{transform:translateX(100%)}
+
+/* The lozenge marks WHERE YOU ARE, so it must not chase the pointer. It used to
+   slide on hover while .is-on kept the ink colour bound to the original option —
+   so the hovered label ended up bone-on-bone (invisible) and the other ended up
+   ink-on-ink. Indicator stays put; the inactive option gets its own hover. */
+.mz-switch-opt:not(.is-on):hover{color:var(--fg);background:color-mix(in srgb,var(--fg) 9%,transparent)}
+.mz-switch-opt:not(.is-on):focus-visible{color:var(--fg);background:color-mix(in srgb,var(--fg) 9%,transparent)}
+
+.mz-switch-opt{
+  position:relative;z-index:1;
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:78px;height:34px;padding:0 16px;
+  border-radius:var(--r-pill);
+  font-family:var(--body);font-weight:500;font-size:13px;letter-spacing:0;
+  color:var(--soft);white-space:nowrap;text-decoration:none;
+  transition:color .3s var(--e-out),background-color .3s var(--e-out);
+}
+.mz-switch-opt.is-on{color:var(--ink)}
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.3  CROSSOVER CURTAIN — .mz-curtain
+   Full-viewport ink curtain used only for a Studio↔Labs navigation.
+   Hidden by default; JS (MZ.switcher / MZ.arrive) toggles the two
+   modifier classes below. Pinned to its own --fg/--ghost so it always
+   reads correctly regardless of an ancestor's [data-theme].
+   ══════════════════════════════════════════════════════════════════════
+
+   Built by JS if absent:
+   <div class="mz-curtain" aria-hidden="true">
+     <span class="mz-curtain-ghost">منظر</span>
+     <span class="mz-curtain-word">MANZAR LABS</span>
+   </div>
+   States: .mz-curtain--cover (wipes up to fully cover, 420ms)
+           .mz-curtain--lift  (continues up to reveal, 520ms)
+           .mz-curtain--instant (no transitions — see below) */
+.mz-curtain{
+  --fg:var(--bone);
+  --ghost:rgba(233,230,221,.07);
+  position:fixed;inset:0;z-index:4000;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:var(--ink);color:var(--fg);
+  transform:translateY(100%);
+  transition:transform .42s var(--e-inout);
+  pointer-events:none;
+  /* promoted for the whole crossover: the lift runs head to head with the
+     arriving page's own intro work, and an unpromoted full-viewport panel
+     re-rasterises every frame of it */
+  will-change:transform;
+  backface-visibility:hidden;
+}
+.mz-curtain--cover{transform:translateY(0%);pointer-events:auto}
+.mz-curtain--lift{transform:translateY(-100%);transition-duration:.52s}
+
+/* Whenever the curtain is *placed* rather than animated, transitions have to be
+   off first. Two things went wrong without this:
+     · Parking it after the lift — dropping --cover/--lift returns transform to
+       the resting translateY(100%), and with the transition live that animates
+       from -100% all the way down through 0%, wiping the black panel back over
+       the page a beat after it was revealed. That is the flash at the end of
+       every crossover.
+     · Landing on arrival — MZ.arrive() puts the curtain up already covering, so
+       the logo's fade-in below would re-play from zero while the curtain was
+       already lifting away, instead of continuing the frame the previous page
+       ended on. */
+.mz-curtain--instant,
+.mz-curtain--instant .mz-curtain-logo,
+.mz-curtain--instant .mz-curtain-room{transition:none}
+
+/* First-paint cover for the arriving half of a crossover. The curtain itself is
+   built by MZ.arrive(), which is deferred JS — by the time it runs the browser
+   has already painted a frame or two of the destination, so the visitor saw the
+   new page flash before the black panel snapped over it. The gating script in
+   each world's entry page marks <html> during parse instead, so the ink is up
+   from the very first frame; MZ.arrive() drops the class the moment the real
+   curtain is covering, and that script's own timer drops it if the shared script
+   never lands. */
+html.mz-crossing::before{
+  content:"";position:fixed;inset:0;z-index:3999;
+  background:var(--ink);pointer-events:none;
+}
+
+/* The crossover screen carries the real Manzar wordmark — the bilingual lockup
+   where منظر is drawn through the Latin letters. It is the brand mark, not a
+   substitute built from type. The room name sits beneath it as a quiet label. */
+.mz-curtain-in{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;
+  gap:clamp(18px,3vh,34px);
+}
+.mz-curtain-logo{
+  display:block;width:min(62vw,620px);height:auto;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .5s var(--e-out),transform .5s var(--e-out);
+}
+.mz-curtain--cover .mz-curtain-logo{opacity:1;transform:none;transition-delay:.12s}
+.mz-curtain-room{
+  font-family:var(--mono);font-weight:500;font-size:12px;
+  letter-spacing:.34em;text-transform:uppercase;color:var(--soft);
+  padding-left:.34em;
+  opacity:0;transition:opacity .5s var(--e-out);
+}
+.mz-curtain--cover .mz-curtain-room{opacity:1;transition-delay:.26s}
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.4  BUTTONS — .mz-btn / .mz-btn-light / .mz-btn-ghost
+   One language, both sites: pill + circular arrow chip.
+   ══════════════════════════════════════════════════════════════════════
+
+   <a class="mz-btn mz-btn-light">
+     <span class="mz-btn-label">Start a project</span>
+     <span class="mz-btn-chip" aria-hidden="true"><svg>…arrow…</svg></span>
+   </a>
+   Modifiers: .mz-btn-light (--bone fill, --ink text)
+              .mz-btn-ghost (transparent, --line-2 border, --fg text) */
+.mz-btn{
+  box-sizing:border-box;
+  position:relative;display:inline-flex;align-items:center;gap:14px;
+  height:52px;padding:0 8px 0 26px;border-radius:var(--r-pill);
+  font-family:var(--body);font-weight:500;font-size:14px;letter-spacing:0;
+  white-space:nowrap;cursor:pointer;text-decoration:none;
+  transition:transform .35s var(--e-out);
+  will-change:transform;
+}
+.mz-btn-label{display:inline-block;transition:transform .35s var(--e-out)}
+.mz-btn-chip{
+  flex:none;width:38px;height:38px;border-radius:50%;
+  display:grid;place-items:center;
+  transition:transform .35s var(--e-out),background-color .3s,color .3s;
+}
+.mz-btn-chip svg{width:15px;height:15px;display:block}
+.mz-btn:hover .mz-btn-chip{transform:rotate(45deg)}
+.mz-btn:hover .mz-btn-label{transform:translateX(2px)}
+
+.mz-btn-light{background:var(--bone);color:var(--ink)}
+.mz-btn-light .mz-btn-chip{background:var(--ink);color:var(--bone)}
+.mz-btn-light:hover .mz-btn-chip{background:var(--acc);color:var(--bone)}
+
+.mz-btn-ghost{background:transparent;color:var(--fg);border:1px solid var(--line-2)}
+.mz-btn-ghost .mz-btn-chip{background:var(--fg);color:var(--ink)}
+.mz-btn-ghost:hover .mz-btn-chip{background:var(--acc);color:var(--bone)}
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.5  EYEBROW CHIP — .mz-eyebrow
+   ══════════════════════════════════════════════════════════════════════
+   <span class="mz-eyebrow"><i></i>Selected work</span> */
+.mz-eyebrow{
+  box-sizing:border-box;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 16px;border-radius:var(--r-pill);border:1px solid var(--line);
+  font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--soft);
+}
+.mz-eyebrow i{
+  width:6px;height:6px;border-radius:50%;background:var(--acc);flex:none;
+  font-style:normal;animation:mz-pulse 2.4s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.6  NOTCH DIVIDER — .mz-notch
+   Hairline that dips into a trapezoid at centre. Signature shape, standard
+   section divider on both sites. Pure CSS: a var(--line) fill masked by a
+   fixed stroke shape, so it drops in as an empty <div>, no inline SVG.
+   ══════════════════════════════════════════════════════════════════════
+   <div class="mz-notch"></div>  (put inside a full-width container) */
+.mz-notch{
+  display:block;width:100%;height:40px;
+  background:var(--line);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 40'%3E%3Cpath d='M0 20H430L465 33H535L570 20H1000' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 40'%3E%3Cpath d='M0 20H430L465 33H535L570 20H1000' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.7  GHOST NUMERAL — .mz-ghost-num
+   Section index sitting behind a title. Positioned absolute by default —
+   give the wrapping section position:relative and nudge with site CSS.
+   ══════════════════════════════════════════════════════════════════════
+   <div class="section-wrap" style="position:relative">
+     <span class="mz-ghost-num">02</span>
+     <h2>Process</h2>
+   </div> */
+.mz-ghost-num{
+  position:absolute;top:0;left:0;z-index:0;
+  font-family:var(--shout);font-weight:400;line-height:.82;
+  font-size:clamp(180px,22vw,340px);
+  color:var(--ghost);
+  pointer-events:none;user-select:none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.8  CARD — .mz-card
+   ══════════════════════════════════════════════════════════════════════
+   No shadows, no glass, no gradient borders — hairline + lift only. */
+.mz-card{
+  box-sizing:border-box;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);
+  transition:border-color .42s var(--e-out),transform .42s var(--e-out);
+}
+.mz-card:hover{border-color:var(--line-2);transform:translateY(-4px)}
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.9  MENU — "the flight deck" — .mz-menu / .mz-menu-scrim
+   A full-width glass top sheet that descends from the top edge over a
+   dimmed, slightly scaled page, replacing the old right-side drawer.
+   Three zones: head (eyebrow + close) / body (three grouped columns of
+   numbered rows + a live feature panel that swaps on row hover-or-focus)
+   / foot (world switcher, mail, clocks, CTA). See MANZAR-NAV.md §2.
+
+   Behaviour lives in MZ.menu() in manzar-system.js: open/close, focus
+   trap, Esc + scrim-click + navigation close, body scroll lock, preview
+   preload + swap. That function is a no-op if this markup is absent.
+   ══════════════════════════════════════════════════════════════════════
+
+   ┌──────────────────────────────────────────────────────────────────┐
+   │  MARKUP CONTRACT — paste verbatim, then adjust hrefs/asset paths  │
+   │  per site. Root-absolute paths (/index.html, /assets/…) work      │
+   │  unchanged from both manzar.studio and manzar.studio/labs/.       │
+   └──────────────────────────────────────────────────────────────────┘
+
+   data-preview policy: every row must point at an image that honestly
+   represents its destination. /assets/work-01.jpg (a hot-air-balloon stock
+   photo) is retired and must never be used again — it misrepresented a
+   software product and was pulled from the Work section for exactly that
+   reason. /assets/conv-*.jpg and /assets/proc-*.jpg are similarly unfit:
+   they're leftover tourist-photo placeholders (see IMAGE-BRIEF.md) that
+   the Work/Process sections themselves no longer use, having moved to
+   drawn frames — reusing them here would be the same dishonesty in a new
+   spot. Where no row-specific photo is both live and honest, fall back to
+   that group's world preview rather than ship a decorative mismatch:
+     Studio rows    → /assets/studio-preview.jpg, EXCEPT Showreel, which
+                       has a genuine live asset: /assets/reel-poster.jpg
+     Labs rows       → /assets/labs-preview.jpg (all four capabilities)
+     Company rows    → /assets/studio-preview.jpg (all three)
+
+   1) TRIGGER — replace the existing <button class="mz-nav-menu"> markup
+      with this (keeps the same class, so existing .mz-nav CSS still
+      applies; id/aria-controls must match the panel's id below):
+
+   <button class="mz-nav-menu" type="button" id="menuBtn"
+           data-menu-toggle aria-controls="mzMenu" aria-expanded="false"
+           aria-label="Open menu">
+     <span class="mz-nav-menu-label">Menu</span>
+     <span class="mz-nav-menu-icon" aria-hidden="true">
+       <span class="mz-nav-menu-line"></span>
+       <span class="mz-nav-menu-line"></span>
+     </span>
+   </button>
+
+   2) SCRIM + PANEL — append as the LAST two children of <body>, once,
+      per page. data-menu-toggle / data-menu-close are the only hooks
+      MZ.menu() needs; everything else is read from class names.
+
+   <div class="mz-menu-scrim" data-menu-close></div>
+
+   <div class="mz-menu" id="mzMenu" role="dialog" aria-modal="true"
+        aria-label="Main menu" aria-hidden="true">
+
+     <div class="mz-menu-head">
+       <span class="mz-menu-eyebrow">Menu</span>
+       <button class="mz-menu-close" type="button" data-menu-close
+               aria-label="Close menu">
+         <span>Close</span><span aria-hidden="true">✕</span>
+       </button>
+     </div>
+
+     <div class="mz-menu-body">
+       <div class="mz-menu-groups">
+
+         <div class="mz-menu-group">
+           <p class="mz-menu-group-label">Studio</p>
+           <a class="mz-menu-row" href="/index.html#work"
+              data-preview="/assets/studio-preview.jpg" data-kicker="Selected work">
+             <span class="mz-menu-row-num">01</span>
+             <span class="mz-menu-row-label">Work</span>
+             <span class="mz-menu-row-desc">Selected engagements, shipped and live.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+           <a class="mz-menu-row" href="/index.html#services"
+              data-preview="/assets/studio-preview.jpg" data-kicker="What we do">
+             <span class="mz-menu-row-num">02</span>
+             <span class="mz-menu-row-label">Services</span>
+             <span class="mz-menu-row-desc">Brand, product and the systems behind them.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+           <a class="mz-menu-row" href="/index.html#reel"
+              data-preview="/assets/reel-poster.jpg" data-kicker="In motion">
+             <span class="mz-menu-row-num">03</span>
+             <span class="mz-menu-row-label">Showreel</span>
+             <span class="mz-menu-row-desc">The work in motion, thirty seconds at a time.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+           <a class="mz-menu-row" href="/index.html#process"
+              data-preview="/assets/studio-preview.jpg" data-kicker="How we ship">
+             <span class="mz-menu-row-num">04</span>
+             <span class="mz-menu-row-label">Process</span>
+             <span class="mz-menu-row-desc">Discover, build, ship — the discipline behind it.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+           <a class="mz-menu-row" href="/index.html#faq"
+              data-preview="/assets/studio-preview.jpg" data-kicker="Before you ask">
+             <span class="mz-menu-row-num">05</span>
+             <span class="mz-menu-row-label">FAQ</span>
+             <span class="mz-menu-row-desc">Timelines, pricing, scope — answered plainly.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+         </div>
+
+         <div class="mz-menu-group">
+           <p class="mz-menu-group-label">Labs</p>
+           <a class="mz-menu-row" href="/capabilities/cloud.html"
+              data-preview="/assets/labs-preview.jpg" data-kicker="Systems that hold">
+             <span class="mz-menu-row-num">06</span>
+             <span class="mz-menu-row-label">Cloud &amp; Infrastructure</span>
+             <span class="mz-menu-row-desc">Systems that hold under real load.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+           <a class="mz-menu-row" href="/capabilities/mobile.html"
+              data-preview="/assets/labs-preview.jpg" data-kicker="Shipped, not prototyped">
+             <span class="mz-menu-row-num">07</span>
+             <span class="mz-menu-row-label">Mobile Development</span>
+             <span class="mz-menu-row-desc">iOS, Android, React Native. Shipped, not prototyped.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+           <a class="mz-menu-row" href="/capabilities/ai.html"
+              data-preview="/assets/labs-preview.jpg" data-kicker="Applied, not hyped">
+             <span class="mz-menu-row-num">08</span>
+             <span class="mz-menu-row-label">AI Development</span>
+             <span class="mz-menu-row-desc">Applied models, not demo-ware.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+           <a class="mz-menu-row" href="/capabilities/iot.html"
+              data-preview="/assets/labs-preview.jpg" data-kicker="Hardware meets software">
+             <span class="mz-menu-row-num">09</span>
+             <span class="mz-menu-row-label">IoT &amp; Connected Systems</span>
+             <span class="mz-menu-row-desc">Hardware and firmware, wired to software.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+         </div>
+
+         <div class="mz-menu-group">
+           <p class="mz-menu-group-label">Company</p>
+           <a class="mz-menu-row" href="/pricing.html"
+              data-preview="/assets/studio-preview.jpg" data-kicker="Engagement models">
+             <span class="mz-menu-row-num">10</span>
+             <span class="mz-menu-row-label">Pricing</span>
+             <span class="mz-menu-row-desc">Sprint, build or retainer — three ways in.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+           <a class="mz-menu-row" href="/index.html#mission"
+              data-preview="/assets/studio-preview.jpg" data-kicker="Who we are">
+             <span class="mz-menu-row-num">11</span>
+             <span class="mz-menu-row-label">Studio</span>
+             <span class="mz-menu-row-desc">Who we are and how we work.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+           <a class="mz-menu-row" href="/index.html#contact"
+              data-preview="/assets/studio-preview.jpg" data-kicker="Start a conversation">
+             <span class="mz-menu-row-num">12</span>
+             <span class="mz-menu-row-label">Contact</span>
+             <span class="mz-menu-row-desc">hello@manzar.studio — say what you need.</span>
+             <span class="mz-menu-row-arrow" aria-hidden="true">→</span>
+           </a>
+         </div>
+
+       </div>
+
+       <div class="mz-menu-feature" data-menu-feature
+            data-default-preview="/assets/studio-preview.jpg"
+            data-default-kicker="This world"
+            data-default-caption="manzar.studio — the eye.">
+         <div class="mz-menu-feature-frame">
+           <img class="mz-menu-feature-img" data-menu-feature-img
+                src="/assets/studio-preview.jpg" alt=""
+                width="800" height="600" loading="eager" decoding="async">
+         </div>
+         <p class="mz-menu-feature-kicker" data-menu-feature-kicker>This world</p>
+         <p class="mz-menu-feature-caption" data-menu-feature-caption>manzar.studio — the eye.</p>
+       </div>
+     </div>
+
+     <div class="mz-menu-foot">
+       <div class="mz-switch" role="group" aria-label="Manzar worlds">
+         <a class="mz-switch-opt is-on" href="/index.html" data-world="studio">Studio</a>
+         <a class="mz-switch-opt" href="/labs/index.html" data-world="labs">Labs</a>
+       </div>
+       <a class="mz-menu-foot-mail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
+       <p class="mz-menu-foot-clocks">
+         <span>Lahore <span data-clock="Asia/Karachi">--:--:--</span></span>
+         <span>Paris <span data-clock="Europe/Paris">--:--:--</span></span>
+       </p>
+       <a class="mz-btn mz-btn-light" href="/index.html#contact">
+         <span class="mz-btn-label">Start a project</span>
+         <span class="mz-btn-chip" aria-hidden="true">
+           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+             <path d="M7 17 17 7M9 7h8v8"/>
+           </svg>
+         </span>
+       </a>
+     </div>
+   </div>
+
+   On Labs pages: flip the default-* attributes on .mz-menu-feature to the
+   labs preview/caption, flip the world switcher's .is-on to "labs", and
+   the mailto to hello@manzar.solutions per the two-mailbox note in
+   MANZAR-SYSTEM.md §6.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Pinned tokens: the sheet is always dark glass regardless of the page's
+   ambient [data-theme] — same reasoning as .mz-curtain. --ink itself does
+   not change under [data-theme="bone"], so only the text/line tokens need
+   repinning here for guaranteed contrast. */
+.mz-menu{
+  --fg:var(--bone);
+  --soft:rgba(233,230,221,.62);
+  --mut:rgba(233,230,221,.40);
+  --line:rgba(233,230,221,.12);
+  --line-2:rgba(233,230,221,.22);
+
+  /* Sits BELOW the 72px .mz-nav (which keeps a higher z-index, see below) so
+     the nav bar — and the trigger's lines→✕ morph — stays visible and
+     usable the entire time the sheet is open, instead of being buried under
+     it. The sheet still visually "descends from the top edge": the top
+     edge just happens to be the underside of the persistent nav. */
+  box-sizing:border-box;
+  position:fixed;top:72px;left:0;right:0;z-index:850;
+  /* Fits the viewport exactly: never taller than the space under the nav, and
+     nothing inside it scrolls. Sizing below is keyed to viewport height so a
+     big screen gets big type and a short one shrinks to fit. */
+  height:calc(100dvh - 72px);
+  max-height:calc(100dvh - 72px);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  color:var(--fg);
+  /* measured live by MZ.menu() and written here as the foot bar's actual
+     rendered height; used by .mz-menu-body's bottom padding at narrow
+     widths (see §2 below) so the last row can scroll clear of the foot
+     instead of dissolving into the mask-fade right where the foot begins.
+     The fallback covers the moment before JS has measured once. */
+  --menu-foot-h:210px;
+  /* set by MZ.menu() after measuring: scales every type/space value below so
+     the row list fills the sheet exactly instead of floating in empty space */
+  --mfs:1;
+  border-radius:0 0 var(--r-card) var(--r-card);
+  border-bottom:1px solid var(--line-2);
+  box-shadow:inset 0 1px 0 rgba(233,230,221,.08);
+  /* Glassier, but still mostly opaque on purpose: the blur is an enhancement,
+     not the thing that makes this readable. If the backdrop layer ever fails to
+     composite, 86% ink still renders a solid panel with legible content rather
+     than an empty dark rectangle. Do not push this much below 85%. */
+  background:
+    linear-gradient(to bottom, rgba(233,230,221,.085), transparent 46%),
+    color-mix(in srgb, var(--ink) 86%, transparent);
+  -webkit-backdrop-filter:blur(34px) saturate(155%);
+  backdrop-filter:blur(34px) saturate(155%);
+  transform:translateY(-100%);
+  visibility:hidden;
+  transition:transform .46s var(--e-inout),visibility 0s linear .46s;
+}
+.mz-menu.is-open{
+  transform:translateY(0);
+  visibility:visible;
+  transition:transform .62s var(--e-inout),visibility 0s linear 0s;
+}
+/* fine noise so the blur never reads as flat plastic */
+.mz-menu::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  opacity:.03;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.mz-menu > *{position:relative;z-index:1}
+
+/* @supports fallback: never ship a transparent, unreadable panel on a
+   browser without backdrop-filter. Solid --ink-2, no blur, no noise. */
+@supports not (backdrop-filter:blur(1px)){
+  .mz-menu{background:var(--ink-2)}
+  .mz-menu::before{display:none}
+}
+
+.mz-menu-scrim{
+  position:fixed;inset:0;z-index:840;
+  background:color-mix(in srgb, var(--ink) 66%, transparent);
+  opacity:0;pointer-events:none;
+  transition:opacity .5s var(--e-out);
+}
+.mz-menu-scrim.is-open{opacity:1;pointer-events:auto}
+
+/* Body scroll lock. The page behind is dimmed by the scrim alone — it used to
+   also get transform:scale() + filter:brightness() on every top-level child,
+   which caused two problems:
+     1. Both properties promote those subtrees to their own composited layers,
+        and a large backdrop-filter panel sampling across them renders blank
+        intermittently on GPU-composited Chrome. That is the "sometimes the
+        menu opens to a black screen" bug, and it got likelier after scrolling
+        because more layers were live.
+     2. transform/filter on an ancestor makes it the containing block for any
+        position:fixed descendant, which silently broke pinned sections while
+        the menu was open.
+   Dimming is what a scrim is for. Keep it there. */
+html.mz-menu-lock{overflow:hidden}
+body.mz-menu-lock{overflow:hidden}
+
+.mz-menu-head{
+  flex:none;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px var(--pad) 16px;
+}
+.mz-menu-eyebrow{
+  font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--mut);
+}
+.mz-menu-close{
+  box-sizing:border-box;
+  display:inline-flex;align-items:center;gap:8px;
+  height:38px;padding:0 16px;border-radius:var(--r-pill);
+  border:1px solid var(--line);background:transparent;color:var(--fg);
+  font-family:var(--body);font-weight:500;font-size:12.5px;
+  cursor:pointer;
+  transition:border-color .3s var(--e-out),transform .3s var(--e-out);
+}
+.mz-menu-close:hover{border-color:var(--line-2);transform:translateY(-1px)}
+.mz-menu-close span:last-child{color:var(--mut);font-size:11px}
+
+.mz-menu-body{
+  flex:1 1 auto;min-height:0;overflow:hidden;
+  display:grid;grid-template-columns:minmax(0,1fr) clamp(230px,24vw,360px);
+  gap:clamp(4px,1vh,10px) clamp(20px,3vw,48px);
+  padding:clamp(6px,2vh,28px) var(--pad) clamp(6px,1.6vh,22px);
+  /* content is scaled by --mfs to fill this box, so it starts at the top */
+  align-content:stretch;
+}
+
+.mz-menu-groups{
+  /* minmax(0,1fr), not plain 1fr: a bare 1fr track's automatic minimum size
+     is its content's min-content width, so one long unbreakable label (or a
+     row wider than its neighbours) can quietly steal space from the other
+     two tracks and make them visibly unequal — the grid-blowout class of
+     bug already seen elsewhere in this project. minmax(0,…) removes that
+     floor so all three groups stay the same width regardless of content. */
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:calc(clamp(4px,1.15vh,20px) * var(--mfs)) clamp(18px,2.4vw,36px);
+  align-content:start;align-items:start;
+}
+.mz-menu-group{
+  display:flex;flex-direction:column;min-width:0;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .5s var(--e-out),transform .5s var(--e-out);
+}
+.mz-menu.is-open .mz-menu-group{opacity:1;transform:translateY(0)}
+.mz-menu-group:nth-child(1){transition-delay:.08s}
+.mz-menu-group:nth-child(2){transition-delay:.12s}
+.mz-menu-group:nth-child(3){transition-delay:.16s}
+
+.mz-menu-group-label{
+  font-family:var(--mono);font-weight:500;letter-spacing:.16em;
+  font-size:calc(clamp(9px,1.05vh,13px) * var(--mfs));
+  text-transform:uppercase;color:var(--mut);
+  padding-bottom:calc(clamp(5px,1.4vh,16px) * var(--mfs));
+  margin:0 0 calc(clamp(2px,.8vh,10px) * var(--mfs));
+  border-bottom:1px solid var(--line);
+}
+
+/* the row IS the record: number in the gutter / label on line one / a
+   full-width descriptor on line two / arrow at the far right. One grid,
+   the same shape at every width from 390 to 1920 — no inline-beside-label
+   layout that ellipsizes the descriptor after two or three words. */
+.mz-menu-row{
+  position:relative;display:grid;
+  grid-template-columns:20px minmax(0,1fr) auto;
+  grid-template-rows:auto auto;
+  align-items:center;column-gap:14px;row-gap:2px;
+  margin:0 -10px;padding:calc(clamp(7px,1.45vh,24px) * var(--mfs)) 10px;border-radius:10px;
+  text-decoration:none;color:var(--fg);
+  transition:background-color .35s var(--e-out);
+}
+.mz-menu-row-num{
+  grid-column:1;grid-row:1/3;align-self:center;
+  font-family:var(--mono);font-size:calc(11px * var(--mfs));color:var(--mut);
+  font-variant-numeric:tabular-nums;
+  transition:color .35s var(--e-out);
+}
+.mz-menu-row-label{
+  grid-column:2;grid-row:1;min-width:0;
+  font-family:var(--disp);font-weight:600;
+  font-size:calc(clamp(14px,min(1.48vw,1.86vh),29px) * var(--mfs));
+  letter-spacing:-.02em;line-height:1.14;
+  /* graceful multi-line breaks over one item looking like a ragged outlier
+     (e.g. "IoT & Connected Systems") — falls back to normal wrap where
+     text-wrap:balance isn't supported */
+  text-wrap:balance;
+}
+.mz-menu-row-desc{
+  grid-column:2;grid-row:2;min-width:0;
+  /* full row width on its own line, wraps rather than ellipsizing —
+     never truncated at any width from 390 to 1920 */
+  white-space:normal;overflow:visible;text-overflow:clip;
+  font-family:var(--body);font-size:calc(clamp(10.5px,min(.84vw,1.14vh),14.5px) * var(--mfs));
+  line-height:1.35;color:var(--soft);
+}
+.mz-menu-row-arrow{
+  grid-column:3;grid-row:1/3;align-self:center;
+  color:var(--acc);font-size:15px;
+  opacity:0;transform:translateX(-6px);
+  transition:opacity .3s var(--e-out),transform .3s var(--e-out);
+}
+.mz-menu-row::after{
+  content:"";position:absolute;left:10px;right:10px;bottom:3px;height:1px;
+  background:var(--line-2);transform:scaleX(0);transform-origin:left;
+  transition:transform .45s var(--e-out);
+}
+.mz-menu-row:hover,
+.mz-menu-row:focus-visible{background:color-mix(in srgb, var(--fg) 5%, transparent)}
+.mz-menu-row:hover .mz-menu-row-num,
+.mz-menu-row:focus-visible .mz-menu-row-num{color:var(--acc)}
+.mz-menu-row:hover .mz-menu-row-arrow,
+.mz-menu-row:focus-visible .mz-menu-row-arrow{opacity:1;transform:translateX(0)}
+.mz-menu-row:hover::after,
+.mz-menu-row:focus-visible::after{transform:scaleX(1)}
+.mz-menu-row:focus-visible{outline:1px solid var(--line-2);outline-offset:-1px}
+
+.mz-menu-feature{
+  display:flex;flex-direction:column;gap:clamp(6px,1.2vh,14px);padding-top:2px;min-height:0;
+  /* takes the height the taller sheet frees up, so the right-hand column fills
+     rather than leaving a void under a small thumbnail */
+  opacity:0;transform:translateY(10px);
+  transition:opacity .5s var(--e-out) .22s,transform .5s var(--e-out) .22s;
+}
+.mz-menu.is-open .mz-menu-feature{opacity:1;transform:translateY(0)}
+.mz-menu-feature-frame{
+  position:relative;overflow:hidden;
+  border-radius:var(--r-card);border:1px solid var(--line);
+  background:var(--panel);
+  /* fills the column height rather than holding a 4:3 box with a void under it;
+     the image is object-fit:cover so any resulting ratio still reads correctly */
+  flex:1 1 auto;min-height:140px;
+}
+.mz-menu-feature-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transform:scale(1.03);
+  transition:opacity .42s var(--e-out),transform .42s var(--e-out);
+}
+.mz-menu-feature-img.is-visible{opacity:1;transform:scale(1)}
+.mz-menu-feature-kicker{
+  margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mut);
+}
+.mz-menu-feature-caption{
+  margin:0;font-family:var(--body);font-size:13.5px;line-height:1.5;color:var(--soft);
+}
+
+.mz-menu-foot{
+  flex:none;display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(10px,2vw,24px);flex-wrap:wrap;
+  padding:clamp(9px,1.7vh,18px) var(--pad);border-top:1px solid var(--line);
+}
+.mz-menu-foot-mail{
+  font-family:var(--mono);font-size:12px;color:var(--soft);text-decoration:none;
+  transition:color .3s var(--e-out);
+}
+.mz-menu-foot-mail:hover{color:var(--fg)}
+.mz-menu-foot-clocks{
+  margin:0;display:flex;gap:18px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--mut);
+  font-variant-numeric:tabular-nums;
+}
+.mz-menu-foot-clocks span{display:inline-flex;gap:6px}
+
+@media (max-width:1080px){
+  /* The preview is a hover/focus payoff, and below this width it stacks under the
+     rows and eats the height they need to fill the sheet. Tablets do not hover;
+     the rows carry the whole record on their own. */
+  .mz-menu-body{grid-template-columns:minmax(0,1fr)}
+  .mz-menu-feature{display:none}
+}
+@media (max-width:760px){
+  /* the roomier block padding above is height the big screens can spare;
+     a phone cannot, and the requirement is that nothing scrolls */
+  .mz-menu-body{
+    grid-template-columns:minmax(0,1fr);gap:clamp(2px,.6vh,6px);
+    padding-block:clamp(4px,.9vh,10px);
+  }
+  /* Three groups become three columns of a single grid rather than a tall
+     stack — twelve stacked rows cannot fit a phone viewport without either
+     scrolling or shrinking the type past legibility. */
+  .mz-menu-groups{grid-template-columns:repeat(2,minmax(0,1fr));gap:2px clamp(12px,4vw,24px)}
+  .mz-menu-group:nth-child(3){grid-column:1/-1}
+  .mz-menu-group-label{padding-bottom:clamp(4px,.8vh,9px);margin-bottom:2px}
+  .mz-menu-row{padding:clamp(4px,.9vh,10px) 6px}
+  /* Feature panel is a hover/focus payoff — neither exists on touch, so it
+     only costs vertical space here. Rows carry the full record on their own. */
+  .mz-menu-feature{display:none}
+  /* The foot stays ONE row on phones. Stacking it into four lines cost about
+     90px of height, which is exactly what pushed the last rows past the fold —
+     and the requirement here is that nothing scrolls. The mail address and the
+     clocks are both repeated in the page footer, so they are the ones to drop. */
+  .mz-menu-foot{flex-direction:row;align-items:center;gap:10px;flex-wrap:nowrap}
+  .mz-menu-foot-mail,.mz-menu-foot-clocks{display:none}
+  .mz-menu-foot .mz-switch{flex:none}
+  .mz-menu-foot .mz-btn{margin-left:auto;flex:none}
+}
+/* Short viewports (landscape phones, small laptops): the descriptor is the
+   first thing to go. A visible, reachable row beats a described one that
+   needs scrolling — and the requirement is that nothing scrolls. */
+@media (max-height:700px){
+  .mz-menu-row-desc{display:none}
+  .mz-menu-row{padding:clamp(4px,.8vh,9px) 10px}
+}
+@media (max-height:560px){
+  .mz-menu-group-label{padding-bottom:4px;margin-bottom:0}
+  .mz-menu-foot-clocks,.mz-menu-foot-mail{display:none}
+}
+@media (max-width:640px){
+  .mz-menu-head,.mz-menu-body,.mz-menu-foot{padding-inline:20px}
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SERIF ACCENT — .mz-serif
+   One to three words per section, inside an otherwise sans headline.
+   ══════════════════════════════════════════════════════════════════════
+   <span class="mz-serif">the scene</span> */
+.mz-serif{font-family:var(--serif);font-style:italic;font-weight:400}
+
+/* ── 4. Reduced motion ────────────────────────────────────────────────
+   Neutralises every transition/animation this sheet introduces. Each
+   site's own stylesheet carries its own broader reduced-motion block for
+   its own animations — this one only owns the mz- components above. */
+@media (prefers-reduced-motion:reduce){
+  .mz-nav,
+  .mz-nav::after,
+  .mz-nav-menu,
+  .mz-nav-menu-line,
+  .mz-nav-here-label,
+  .mz-switch::before,
+  .mz-switch-opt,
+  .mz-btn,
+  .mz-btn-label,
+  .mz-btn-chip,
+  .mz-curtain,
+  .mz-eyebrow i,
+  .mz-card,
+  .mz-menu-scrim,
+  .mz-menu-group,
+  .mz-menu-feature,
+  .mz-menu-row,
+  .mz-menu-row-num,
+  .mz-menu-row-arrow,
+  .mz-menu-row::after,
+  .mz-menu-feature-img,
+  [data-magnetic]{
+    transition-duration:.001s!important;
+    transition-delay:0s!important;
+    animation-duration:.001s!important;
+    animation-iteration-count:1!important;
+  }
+  /* the sheet itself carries a second transition (visibility) whose delay
+     must also collapse, or it lingers on screen after an instant close */
+  .mz-menu{
+    transition:transform .001s linear,visibility .001s linear!important;
+  }
+}
+
+/* ── 5. Anchor scroll offset ──────────────────────────────────────────
+   Keeps every in-page jump target clear of the fixed 72px nav. */
+[id]{scroll-margin-top:96px}
+
+/* ══════════════════════════════════════════════════════════════════════
+   6.  SCROLLBAR — hidden, site-wide
+   The page still scrolls by wheel, trackpad, touch, keyboard and anchor;
+   only the bar itself is gone. Scoped to the document scroller so any
+   genuinely scrollable inner element keeps its own affordance.
+   ══════════════════════════════════════════════════════════════════════ */
+html{scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar{width:0;height:0;display:none}

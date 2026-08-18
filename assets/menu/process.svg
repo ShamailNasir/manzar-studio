@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.35" y2="1">
+<stop offset="0" stop-color="#131210"/><stop offset="1" stop-color="#0C0B09"/>
+</linearGradient>
+<pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+<path d="M50 0V50M0 50H50" fill="none" stroke="rgba(233,230,221,0.045)" stroke-width="1"/>
+</pattern>
+</defs>
+<rect width="800" height="500" fill="url(#bg)"/>
+<rect width="800" height="500" fill="url(#grid)"/>
+<!-- FIT is computed per frame: the motif is measured, then scaled and
+     translated so every drawing sits dead centre and carries the same
+     visual weight. The old wrapper scaled about (400,250), which is not
+     the centre of a 480x300 canvas, so everything drifted up and left. -->
+<g transform="translate(-63.60,-41.41) scale(1.9000)"
+   stroke="rgba(233,230,221,0.72)" fill="none" stroke-width="1.32" stroke-linecap="square"
+   vector-effect="non-scaling-stroke">
+<rect x="96" y="104" width="84" height="18" rx="2" stroke="rgba(233,230,221,0.22)"/><rect x="190" y="104" width="106" height="18" rx="2" stroke="rgba(233,230,221,0.42)"/><rect x="306" y="104" width="86" height="18" rx="2" stroke="rgba(233,230,221,0.18)"/><line x1="138" y1="122" x2="138" y2="168" stroke="rgba(233,230,221,0.14)"/><line x1="243" y1="122" x2="243" y2="168" stroke="rgba(233,230,221,0.14)"/><line x1="349" y1="122" x2="349" y2="168" stroke="rgba(233,230,221,0.14)"/><rect x="96" y="168" width="84" height="34" rx="3" stroke="rgba(233,230,221,0.42)"/><rect x="190" y="168" width="106" height="34" rx="3" stroke="rgba(233,230,221,0.92)" fill="rgba(233,230,221,0.1)"/><rect x="306" y="168" width="86" height="34" rx="3" stroke="rgba(233,230,221,0.3)"/><circle cx="112" cy="185" r="4.5" fill="rgba(233,230,221,0.42)" stroke="none"/><circle cx="206" cy="185" r="4.5" fill="rgba(233,230,221,0.92)" stroke="none"/><circle cx="322" cy="185" r="4.5" fill="rgba(233,230,221,0.3)" stroke="none"/><line x1="185" y1="92" x2="185" y2="248" stroke="rgba(233,230,221,0.18)" stroke-dasharray="3 6"/><line x1="301" y1="92" x2="301" y2="248" stroke="rgba(233,230,221,0.18)" stroke-dasharray="3 6"/><line x1="96" y1="230" x2="392" y2="230" stroke="rgba(233,230,221,0.16)"/><line x1="96" y1="230" x2="96" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="121" y1="230" x2="121" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="145" y1="230" x2="145" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="170" y1="230" x2="170" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="195" y1="230" x2="195" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="220" y1="230" x2="220" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="244" y1="230" x2="244" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="269" y1="230" x2="269" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="294" y1="230" x2="294" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="318" y1="230" x2="318" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="343" y1="230" x2="343" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="368" y1="230" x2="368" y2="238" stroke="rgba(233,230,221,0.16)"/><line x1="392" y1="230" x2="392" y2="238" stroke="rgba(233,230,221,0.16)"/><path d="M243 60 L243 88" stroke="rgba(233,230,221,0.7)"/><path d="M235 70 L243 60 L251 70" stroke="rgba(233,230,221,0.7)"/>
+</g>
+<rect x=".5" y=".5" width="799" height="499" fill="none" stroke="rgba(233,230,221,0.1)"/>
+
+</svg>

@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing · Sprint, Build or Retainer · Manzar</title>
+<meta name="description" content="How Manzar prices Sprints, Builds and Retainers — fixed and agreed before the work starts.">
+<link rel="canonical" href="https://manzar.studio/pricing.html">
+<meta property="og:title" content="Pricing · Manzar">
+<meta property="og:description" content="How Manzar prices Sprints, Builds and Retainers — fixed and agreed before the work starts.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://manzar.studio/pricing.html">
+<meta property="og:image" content="https://manzar.studio/assets/studio-preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="750">
+<meta property="og:image:alt" content="Manzar — creative technology studio, film, design and software">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pricing · Manzar">
+<meta name="twitter:description" content="How Manzar prices Sprints, Builds and Retainers — fixed and agreed before the work starts.">
+<meta name="twitter:image" content="https://manzar.studio/assets/studio-preview.jpg">
+<meta name="theme-color" content="#0B0A08">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/brand/favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/brand/favicon-512.png">
+<link rel="apple-touch-icon" href="assets/brand/favicon-180.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<!-- Fontshare silently drops the second family from a combined f[] request —
+     Tanker never loaded when bundled with General Sans. Two requests, not one. -->
+<link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=tanker@400&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Gulzar&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;display=swap">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=tanker@400&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gulzar&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&amp;display=swap">
+</noscript>
+<!-- The pointer. Deliberately the first stylesheet in the document, so
+     it is resolved before the page first paints and the browser never
+     gets a chance to show its own arrow. -->
+<link rel="stylesheet" href="assets/css/cursor.css">
+<link rel="stylesheet" href="assets/css/manzar-system.css">
+<script src="assets/js/manzar-system.js" defer></script>
+<style>
+/* ============================================================
+   Manzar — pricing.html
+   Tokens + shared components (nav, buttons, chips, notch, cards,
+   footer) come from assets/css/manzar-system.css. Everything below
+   is page-local: reset, layout primitives and this page's sections.
+   ============================================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{
+  background:var(--ink);color:var(--fg);font-family:var(--body);font-weight:400;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;overflow-x:hidden;
+}
+::selection{background:var(--acc);color:var(--ink)}
+/* Scrollbar is hidden site-wide from assets/css/manzar-system.css. */
+a{color:inherit;text-decoration:none}
+img,svg,canvas,video{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.skip{position:fixed;left:-999px;top:8px;z-index:2000;background:var(--acc);color:var(--ink);padding:8px 14px;font-family:var(--mono);font-size:12px}
+.skip:focus{left:8px}
+:focus-visible{outline:1.5px dashed var(--acc);outline-offset:3px}
+.shell{width:min(var(--shell),100% - var(--pad)*2);margin-inline:auto}
+
+/* Below ~860px the shared .mz-nav-right (switch + CTA pill) no longer
+   reliably fits beside the logo tab — same fix as index.html. */
+@media (max-width:860px){
+  .mz-nav-right{gap:8px}
+  .mz-nav-right .mz-switch{display:none}
+  .mz-nav .mz-btn-label{display:none}
+  .mz-nav .mz-btn{padding:0;width:44px;justify-content:center}
+  .mz-nav .mz-btn-chip{width:44px;height:44px}
+}
+
+/* ---------- reveal-on-scroll (dependency-free) ---------- */
+[data-reveal]{opacity:0;transform:translateY(18px);transition:opacity .7s var(--e-out),transform .7s var(--e-out)}
+[data-reveal].is-in{opacity:1;transform:none}
+
+/* ---------- hero ---------- */
+.p-hero{padding:calc(72px + clamp(48px,9vh,120px)) 0 clamp(70px,9vh,110px)}
+.p-hero-copy{max-width:760px}
+.p-hero-title{
+  font-family:var(--shout);font-weight:400;
+  font-size:clamp(38px,6.4vw,90px);line-height:1.02;letter-spacing:.002em;
+  margin:22px 0 0;color:var(--fg);
+}
+.p-hero-sub{margin:clamp(20px,3vh,28px) 0 0;font-size:clamp(16px,1.25vw,20px);line-height:1.6;color:var(--soft);max-width:58ch}
+.p-hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:clamp(28px,4.5vh,38px)}
+
+/* ---------- the models ---------- */
+.p-models{padding:clamp(60px,8vh,110px) 0 clamp(20px,3vh,36px)}
+.p-models-head{max-width:60ch;margin-bottom:clamp(34px,5.5vh,58px)}
+.p-models-title{font-family:var(--disp);font-weight:600;font-size:clamp(28px,3.3vw,48px);letter-spacing:-.02em;margin-top:18px}
+.p-models-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,28px)}
+.p-model{padding:clamp(28px,3.2vw,38px);display:flex;flex-direction:column;gap:22px}
+.p-model-name{font-family:var(--disp);font-weight:600;font-size:clamp(24px,2.2vw,30px);letter-spacing:-.015em}
+.p-model-row{display:flex;flex-direction:column;gap:8px}
+.p-model-row dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.p-model-row dd{color:var(--soft);font-size:14.5px;line-height:1.6}
+.p-model-range{border-top:1px solid var(--line);padding-top:16px;margin-top:2px}
+.p-model-range dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.p-model-range dd{font-family:var(--disp);font-weight:600;font-size:clamp(17px,1.5vw,20px);color:var(--fg);letter-spacing:-.01em;line-height:1.4;margin-top:6px}
+.p-model-range dd small{display:block;font-family:var(--body);font-weight:400;font-size:13px;color:var(--mut);margin-top:6px;line-height:1.5}
+@media (max-width:940px){
+  .p-models-grid{grid-template-columns:1fr}
+}
+
+/* ---------- what changes the number ---------- */
+.p-changes{padding:clamp(60px,7vh,90px) 0 clamp(20px,3vh,36px)}
+.p-changes-inner{border-top:1px solid var(--line);padding-top:clamp(30px,4.5vh,44px)}
+.p-changes-title{font-family:var(--disp);font-weight:600;font-size:clamp(24px,2.6vw,36px);letter-spacing:-.018em}
+.p-changes p{color:var(--soft);font-size:clamp(15.5px,1.1vw,18px);line-height:1.72;max-width:76ch;margin-top:18px}
+
+/* ---------- FAQ ---------- */
+.p-faq{padding:clamp(70px,9vh,120px) 0 clamp(20px,3vh,36px)}
+.p-faq-head{max-width:56ch;margin-bottom:clamp(34px,5.5vh,58px)}
+.p-faq-title{font-family:var(--disp);font-weight:600;font-size:clamp(28px,3.3vw,48px);letter-spacing:-.02em;margin-top:18px}
+.p-faq-list{border-top:1px solid var(--line)}
+.p-faq-item{border-bottom:1px solid var(--line)}
+.p-faq-q{
+  width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:clamp(20px,3vh,26px) 4px;text-align:left;
+  font-family:var(--body);font-weight:500;font-size:clamp(16.5px,1.35vw,20px);letter-spacing:-.01em;color:var(--fg);
+}
+.p-faq-x{flex:none;width:24px;height:24px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;position:relative;transition:transform .3s var(--e-out),border-color .3s var(--e-out)}
+.p-faq-x::before,.p-faq-x::after{content:"";position:absolute;background:var(--fg);transition:transform .3s var(--e-out)}
+.p-faq-x::before{width:10px;height:1px}
+.p-faq-x::after{width:1px;height:10px}
+.p-faq-item.is-open .p-faq-x{transform:rotate(45deg);border-color:var(--acc)}
+.p-faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--e-inout)}
+.p-faq-a p{padding:0 4px clamp(20px,3vh,26px);color:var(--mut);font-size:clamp(14.5px,1.08vw,16.5px);line-height:1.62;max-width:70ch}
+
+/* ---------- CTA ---------- */
+.p-cta{padding:0 0 clamp(96px,11vh,150px)}
+.p-cta-inner{
+  border:1px solid var(--line);border-radius:var(--r-card);
+  padding:clamp(34px,5vw,56px);display:flex;justify-content:space-between;align-items:center;
+  gap:24px;flex-wrap:wrap;
+}
+.p-cta-copy h2{font-family:var(--disp);font-weight:600;font-size:clamp(22px,2.2vw,32px);letter-spacing:-.015em;margin-bottom:8px}
+.p-cta-copy p{color:var(--soft);font-size:clamp(14.5px,1.05vw,16.5px);max-width:52ch}
+
+/* ---------- cross-world doorway (mirrors index.html's "Enter Manzar Labs") ---------- */
+.doorway{
+  position:relative;overflow:hidden;background:var(--ink);color:var(--bone);
+  padding:clamp(100px,14vh,160px) 0;
+  --line:rgba(233,230,221,.14);--line-2:rgba(233,230,221,.24);
+}
+.doorway .mz-notch{position:relative;z-index:2}
+.doorway-ghost{
+  position:absolute;top:50%;right:clamp(-40px,-2vw,0px);z-index:0;transform:translateY(-50%);
+  font-family:'Gulzar','Noto Nastaliq Urdu',serif;font-size:clamp(200px,28vw,480px);line-height:1;
+  color:rgba(233,230,221,.07);pointer-events:none;user-select:none;white-space:nowrap;
+}
+.doorway-grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,6.6fr) minmax(0,4.4fr);gap:clamp(40px,6vw,96px);align-items:center}
+.doorway-copy .mz-eyebrow{border-color:rgba(233,230,221,.16);color:rgba(233,230,221,.7)}
+.doorway-title{font-family:var(--disp);font-weight:600;font-size:clamp(28px,4vw,54px);line-height:1.06;letter-spacing:-.025em;margin:18px 0 0;color:var(--bone)}
+.doorway-lead{margin-top:16px;font-size:clamp(15px,1.1vw,17.5px);line-height:1.6;color:rgba(233,230,221,.6);max-width:48ch}
+.doorway-spec{list-style:none;margin:clamp(24px,3.5vh,34px) 0 0;padding:0;border-top:1px solid rgba(233,230,221,.14)}
+.doorway-spec li{
+  display:flex;align-items:baseline;gap:16px;padding:clamp(12px,1.8vh,17px) 4px;
+  border-bottom:1px solid rgba(233,230,221,.14);
+}
+.doorway-spec .ls-k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--acc);flex:none}
+.doorway-spec .ls-v{font-size:15px;font-weight:500;color:rgba(233,230,221,.85)}
+.doorway-cta{margin-top:clamp(28px,4vh,38px);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.doorway-preview{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-card);overflow:hidden;border:1px solid rgba(233,230,221,.18);background:var(--ink-2)}
+.doorway-preview img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:900px){
+  .doorway-grid{grid-template-columns:1fr;gap:clamp(30px,6vh,44px)}
+  .doorway-preview{max-width:340px}
+  .doorway-ghost{right:50%;transform:translate(50%,-50%);font-size:clamp(150px,42vw,260px)}
+}
+
+/* ---------- footer (shared grammar, page-local rules) ---------- */
+.foot{position:relative;border-top:1px solid var(--line)}
+.foot-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(30px,4vw,90px);padding:clamp(60px,9vh,110px) 0 clamp(40px,7vh,80px)}
+.fnav{display:flex;flex-direction:column}
+.fnav a{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--body);font-weight:500;font-size:clamp(24px,3.2vw,46px);line-height:1;letter-spacing:-.022em;
+  padding:clamp(14px,2.4vh,24px) 0;border-bottom:1px solid var(--line);
+  transition:padding-left .4s cubic-bezier(.2,.8,.2,1);
+}
+.fnav a .fa{font-size:.55em;opacity:0;transform:translateX(-14px);transition:opacity .35s,transform .35s;color:var(--acc)}
+.fnav a:hover{padding-left:18px}
+.fnav a:hover .fa{opacity:1;transform:none}
+.fcol{display:flex;flex-direction:column;gap:clamp(26px,4vh,44px);padding-top:8px}
+.fblock{display:flex;flex-direction:column;gap:11px}
+.fblock .fb-lab{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.fblock a.femail{font-family:var(--body);font-weight:600;font-size:clamp(19px,1.8vw,26px);letter-spacing:-.015em;position:relative;width:max-content}
+.fblock a.femail::after{content:"";position:absolute;left:0;bottom:-3px;width:100%;height:1px;background:var(--acc);transform:scaleX(1);transform-origin:left;transition:transform .4s}
+.fblock a.femail:hover::after{transform:scaleX(.35)}
+.fblock p{color:var(--mut);font-size:15px;line-height:1.6}
+.fsoc{display:flex;flex-direction:column;gap:10px}
+.fsoc a{font-family:var(--body);font-weight:500;font-size:15px;color:var(--soft);width:max-content;transition:color .3s}
+.fsoc a:hover{color:var(--fg)}
+.foot-meta{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;padding:18px 0 26px;border-top:1px solid var(--line);font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.06em;color:var(--mut)}
+.foot-meta .fm-clock{font-variant-numeric:tabular-nums}
+.totop{display:inline-flex;gap:8px;align-items:center;color:var(--soft);transition:color .3s;background:none;border:0;cursor:pointer;font:inherit}
+.totop:hover{color:var(--fg)}
+.foot-band{position:relative;height:clamp(220px,32vh,400px);overflow:hidden;background:var(--ink)}
+#cv-band-pricing{position:absolute;inset:0;width:100%;height:100%}
+.band-in{position:absolute;inset:0;padding:0 var(--pad)}
+.band-logo{position:absolute;left:var(--pad);top:clamp(22px,4.5vh,46px);display:flex;align-items:center;gap:clamp(10px,1.4vw,18px);color:var(--bone)}
+.band-logo-mark{flex:none;font-family:"Gulzar","Noto Nastaliq Urdu",serif;font-size:clamp(34px,4.4vw,58px);line-height:1;transform:translateY(6px);padding-inline-end:4px}
+.band-logo-word{font-family:var(--disp);font-weight:600;font-size:clamp(23px,3.4vw,48px);letter-spacing:-.02em}
+.band-logo-chip{
+  font-family:var(--mono);font-weight:500;font-size:clamp(10px,1vw,13px);letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(233,230,221,.6);padding-left:clamp(10px,1.2vw,16px);margin-left:2px;border-left:1px solid rgba(233,230,221,.25);
+}
+.band-tag{
+  position:absolute;right:var(--pad);bottom:clamp(18px,4.5vh,42px);
+  font-family:var(--mono);font-weight:500;font-size:clamp(10px,.85vw,12.5px);letter-spacing:.18em;text-transform:uppercase;text-align:right;
+  color:var(--ink);line-height:2.1;
+}
+@media (max-width:1024px){.foot-grid{grid-template-columns:1fr}}
+@media (max-width:680px){.band-logo{height:clamp(30px,9vw,48px)}.band-tag{font-size:9.5px;letter-spacing:.12em}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
+  [data-reveal]{opacity:1!important;transform:none!important}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://manzar.studio/#organization",
+      "name": "Manzar",
+      "url": "https://manzar.studio/",
+      "logo": "https://manzar.studio/assets/brand/favicon-512.png",
+      "sameAs": [
+        "https://www.instagram.com/manzar.studio/",
+        "https://www.linkedin.com/company/manzarstudio/"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://manzar.studio/#website",
+      "name": "Manzar",
+      "url": "https://manzar.studio/",
+      "publisher": {
+        "@id": "https://manzar.studio/#organization"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is the range final, or does it move?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You get the number after Discovery, and it doesn't drift. Every project is quoted fixed, so the risk of scope creep sits with us, not you."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hourly or fixed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fixed. We price the work, not the hours — a music video edit and a SaaS platform are different animals, and neither should be billed by the clock."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "I only need a small fix, not a full Build. What's that?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "That's a Sprint: two weeks, one defined problem, a fixed number before we start."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens after launch?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ninety days of included support, then a Retainer if you want us on call. Either way you own the code, the accounts and the docs."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="assets/css/menu.css">
+</head>
+<body data-theme="ink">
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- nav: shared grammar from manzar-system.css (.mz-nav / .mz-switch / .mz-btn).
+     Menu button opens the shared .mz-menu top sheet (pasted at the end of
+     <body>) — see manzar-system.css §3.9 for the markup contract. -->
+<header class="mz-nav" id="nav">
+  <div class="mz-nav-left">
+    <button class="mz-nav-menu" type="button" id="menuBtn"
+            data-mzx-open aria-controls="mzMenu" aria-expanded="false"
+            aria-label="Open menu">
+      <span class="mz-nav-menu-icon" aria-hidden="true">
+        <span class="mz-nav-menu-line"></span>
+        <span class="mz-nav-menu-line"></span>
+      </span>
+      <span class="mz-nav-menu-label">Menu</span>
+    </button>
+    <!-- where you are on the page: written by MZ.here() in
+         manzar-system.js, decorative (aria-hidden) because the same
+         structure is in the menu and in the page itself -->
+    <p class="mz-nav-here" aria-hidden="true">
+      <span class="mz-nav-here-label">Overview</span></p>
+  </div>
+  <a class="mz-nav-logo" href="index.html" aria-label="Manzar, back to home">
+    <img class="mz-nav-logo-img" src="assets/manzar-wordmark.png" alt="Manzar" width="2556" height="980" decoding="async">
+    <span class="mz-nav-chip mz-nav-chip-align">Studio</span>
+  </a>
+  <div class="mz-nav-right">
+    <div class="mz-switch mz-switch--studio" role="group" aria-label="Manzar worlds">
+      <a class="mz-switch-opt is-on" href="index.html" data-world="studio">Studio</a>
+      <a class="mz-switch-opt" href="labs/index.html" data-world="labs">Labs</a>
+    </div>
+    <a class="mz-btn mz-btn-light" data-magnetic href="mailto:hello@manzar.studio?subject=Starting%20a%20project%20with%20Manzar">
+      <span class="mz-btn-label">Start a project</span>
+      <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="p-hero" id="top">
+    <div class="shell p-hero-copy">
+      <span class="mz-eyebrow"><i></i>Manzar · Pricing</span>
+      <h1 class="p-hero-title">Quoted fixed, before we start.</h1>
+      <p class="p-hero-sub">Three ways to work with us, whether the deliverable is a cut of film, a shipped platform, or the infrastructure underneath it.</p>
+      <div class="p-hero-ctas">
+        <a class="mz-btn mz-btn-light" data-magnetic href="mailto:hello@manzar.studio?subject=Starting%20a%20project%20with%20Manzar">
+          <span class="mz-btn-label">Start a project</span>
+          <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+        <a class="mz-btn mz-btn-ghost" data-magnetic href="index.html#work">
+          <span class="mz-btn-label">See the work</span>
+          <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mz-notch" aria-hidden="true"></div>
+
+  <!-- ============ THE MODELS ============ -->
+  <section class="p-models" id="models">
+    <div class="shell">
+      <div class="p-models-head" data-reveal>
+        <span class="mz-eyebrow"><i></i>The models</span>
+        <h2 class="p-models-title">Three ways to work with us, not a supermarket</h2>
+      </div>
+      <div class="p-models-grid">
+
+        <article class="mz-card p-model" data-reveal>
+          <h3 class="p-model-name">Sprint</h3>
+          <dl class="p-model-row">
+            <dt>Who it suits</dt>
+            <dd>A defined problem you already understand — an audit, a prototype, a cost review, a proof of concept for one feature, a design pass on one flow.</dd>
+          </dl>
+          <dl class="p-model-row">
+            <dt>What you get</dt>
+            <dd>A fixed two-week block, one senior team, a written scope agreed before day one, and a working output you can act on, not a slide deck.</dd>
+          </dl>
+          <dl class="p-model-row">
+            <dt>What it doesn't include</dt>
+            <dd>Ongoing build, multi-feature scope, or anything that can't be described in one sentence before we start.</dd>
+          </dl>
+          <dl class="p-model-row p-model-range">
+            <dt>Typical range</dt>
+            <dd>From $6,000.
+              <!-- OWNER INPUT NEEDED: confirm $6k is still the current Sprint starting
+                   figure, and whether it holds for non-software Sprints (a design pass,
+                   a production audit) or needs its own number. -->
+              <small>Indicative. Confirmed after Discovery.</small>
+            </dd>
+          </dl>
+        </article>
+
+        <article class="mz-card p-model" data-reveal>
+          <h3 class="p-model-name">Build</h3>
+          <dl class="p-model-row">
+            <dt>Who it suits</dt>
+            <dd>A v1 with real scope — an AI product, an ERP or operations platform, a connected-device system, or a startup MVP that has to reach the market first.</dd>
+          </dl>
+          <dl class="p-model-row">
+            <dt>What you get</dt>
+            <dd>A milestone-billed engagement, a working cut you can watch or click every Friday, and a fixed number once scope is locked in Discovery.</dd>
+          </dl>
+          <dl class="p-model-row">
+            <dt>What it doesn't include</dt>
+            <dd>Undefined scope billed by the hour, an open-ended timeline, or work that starts before the number is agreed.</dd>
+          </dl>
+          <dl class="p-model-row p-model-range">
+            <dt>Typical range</dt>
+            <dd>$25,000 to $120,000, depending on scope. Timeline runs about six weeks for a startup MVP, three to five weeks for a marketing site, and eight to fourteen for a larger v1 platform.
+              <!-- OWNER INPUT NEEDED: confirm this range still holds, and whether
+                   Studio-side Builds (film, brand campaigns) sit in the same band
+                   or need their own. -->
+              <small>Indicative. Confirmed after Discovery.</small>
+            </dd>
+          </dl>
+        </article>
+
+        <article class="mz-card p-model" data-reveal>
+          <h3 class="p-model-name">Retainer</h3>
+          <dl class="p-model-row">
+            <dt>Who it suits</dt>
+            <dd>Teams who've shipped a v1 with us and want the same senior team on call — ongoing features, monitoring, incident response, or a production schedule that doesn't stop after one campaign.</dd>
+          </dl>
+          <dl class="p-model-row">
+            <dt>What you get</dt>
+            <dd>Reserved monthly capacity with the people who built the thing, priority response, folding the ninety days of post-launch support already included in every Build into an ongoing rhythm.</dd>
+          </dl>
+          <dl class="p-model-row">
+            <dt>What it doesn't include</dt>
+            <dd>A ticket queue, junior hands, or a contract that outlives the relationship — cancel with notice.</dd>
+          </dl>
+          <dl class="p-model-row p-model-range">
+            <dt>Typical range</dt>
+            <dd>Priced monthly, scoped to reserved capacity. A starting figure isn't published yet.
+              <!-- OWNER INPUT NEEDED: no Retainer figure exists anywhere on either
+                   site today. Supply a monthly starting number, or a "reserved days
+                   per month" structure, before this section can show even a
+                   qualitative band beyond "monthly." -->
+              <small>Qualitative only — see note above.</small>
+            </dd>
+          </dl>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT CHANGES THE NUMBER ============ -->
+  <section class="p-changes" id="changes">
+    <div class="shell p-changes-inner">
+      <h2 class="p-changes-title" data-reveal>What changes the number</h2>
+      <p data-reveal>Scope depth, third-party integrations (payment rails, hardware vendors, systems we don't control), compliance or regulatory requirements, and timeline compression — rushing a Build shortens Discovery, not the price.</p>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="p-faq" id="faq">
+    <div class="shell">
+      <div class="p-faq-head" data-reveal>
+        <span class="mz-eyebrow"><i></i>FAQ</span>
+        <h2 class="p-faq-title">Before you ask</h2>
+      </div>
+      <div class="p-faq-list" id="faqList">
+        <div class="p-faq-item">
+          <button class="p-faq-q" type="button" aria-expanded="false">
+            <span>Is the range final, or does it move?</span>
+            <span class="p-faq-x" aria-hidden="true"></span>
+          </button>
+          <div class="p-faq-a"><p>You get the number after Discovery, and it doesn't drift. Every project is quoted fixed, so the risk of scope creep sits with us, not you.</p></div>
+        </div>
+        <div class="p-faq-item">
+          <button class="p-faq-q" type="button" aria-expanded="false">
+            <span>Hourly or fixed?</span>
+            <span class="p-faq-x" aria-hidden="true"></span>
+          </button>
+          <div class="p-faq-a"><p>Fixed. We price the work, not the hours — a music video edit and a SaaS platform are different animals, and neither should be billed by the clock.</p></div>
+        </div>
+        <div class="p-faq-item">
+          <button class="p-faq-q" type="button" aria-expanded="false">
+            <span>I only need a small fix, not a full Build. What's that?</span>
+            <span class="p-faq-x" aria-hidden="true"></span>
+          </button>
+          <div class="p-faq-a"><p>That's a Sprint: two weeks, one defined problem, a fixed number before we start.</p></div>
+        </div>
+        <div class="p-faq-item">
+          <button class="p-faq-q" type="button" aria-expanded="false">
+            <span>What happens after launch?</span>
+            <span class="p-faq-x" aria-hidden="true"></span>
+          </button>
+          <div class="p-faq-a"><p>Ninety days of included support, then a Retainer if you want us on call. Either way you own the code, the accounts and the docs.</p></div>
+        </div>
+        <!-- OWNER INPUT NEEDED: no change-order or re-scope policy is stated
+             anywhere on either site. Supply the actual practice (e.g. "we stop,
+             re-scope, and requote before continuing") so this question can be
+             answered honestly instead of left as a flagged gap. The holding
+             answer below states no confirmed process, rather than inventing one. -->
+        <div class="p-faq-item">
+          <button class="p-faq-q" type="button" aria-expanded="false">
+            <span>What if scope changes mid-project?</span>
+            <span class="p-faq-x" aria-hidden="true"></span>
+          </button>
+          <div class="p-faq-a"><p>We haven't published a formal policy for this yet. If scope shifts once work is underway, get in touch and we'll agree the change with you directly before any extra work starts.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="p-cta" id="cta">
+    <div class="shell">
+      <div class="p-cta-inner" data-reveal>
+        <div class="p-cta-copy">
+          <h2>Ready to scope it?</h2>
+          <p>Write to us with what you're building. You'll leave Discovery with a fixed number, not a guess.</p>
+        </div>
+        <a class="mz-btn mz-btn-light" data-magnetic href="mailto:hello@manzar.studio?subject=Starting%20a%20project%20with%20Manzar">
+          <span class="mz-btn-label">Start a project</span>
+          <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CROSS-WORLD DOORWAY ============
+       Reuses the main site's existing "Enter Manzar Labs" doorway
+       (index.html #labs section) — same copy, same specification list,
+       same preview image, paths adjusted for pricing.html's root depth. -->
+  <section class="doorway" id="labs" aria-labelledby="labsDoorwayTitle">
+    <div class="mz-notch" aria-hidden="true"></div>
+    <span class="doorway-ghost" aria-hidden="true" lang="ur" dir="rtl">منظر</span>
+    <div class="shell doorway-grid">
+      <div class="doorway-copy">
+        <span class="mz-eyebrow"><i></i>Manzar Labs</span>
+        <h2 class="doorway-title" id="labsDoorwayTitle">The software side of the studio.</h2>
+        <p class="doorway-lead">Same taste, different instrument. Labs is where we build the products, platforms and AI systems the films are usually made about — cloud architecture, web and mobile, applied AI.</p>
+        <ul class="doorway-spec">
+          <li><span class="ls-k">01</span><span class="ls-v">Cloud &amp; infrastructure</span></li>
+          <li><span class="ls-k">02</span><span class="ls-v">Web &amp; product engineering</span></li>
+          <li><span class="ls-k">03</span><span class="ls-v">Applied AI &amp; automation</span></li>
+          <li><span class="ls-k">04</span><span class="ls-v">Performance &amp; cost audits</span></li>
+        </ul>
+        <div class="doorway-cta">
+          <div class="mz-switch mz-switch--studio" role="group" aria-label="Manzar worlds">
+            <a class="mz-switch-opt is-on" href="index.html" data-world="studio">Studio</a>
+            <a class="mz-switch-opt" href="labs/index.html" data-world="labs">Labs</a>
+          </div>
+          <a class="mz-btn mz-btn-light" data-magnetic href="labs/index.html">
+            <span class="mz-btn-label">Enter Manzar Labs</span>
+            <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </div>
+      </div>
+      <figure class="doorway-preview">
+        <img src="assets/labs-preview.jpg" alt="Preview of the Manzar Labs site" width="720" height="900" loading="lazy" decoding="async" onerror="this.style.display='none'">
+      </figure>
+    </div>
+    <div class="mz-notch" aria-hidden="true"></div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============
+     Same grammar as index.html's <footer class="foot">. Room chip and
+     copy are Studio's own; the dither band canvas gets a page-local id. -->
+<footer class="foot" id="footer">
+  <div class="shell">
+    <div class="foot-grid">
+      <nav class="fnav" aria-label="Footer">
+        <a href="index.html#work">Work <span class="fa">→</span></a>
+        <a href="index.html#services">Services <span class="fa">→</span></a>
+        <a href="index.html#process">Process <span class="fa">→</span></a>
+        <a href="index.html#studio">Studio <span class="fa">→</span></a>
+        <a href="index.html#faq">FAQ <span class="fa">→</span></a>
+        <a href="mailto:hello@manzar.studio">Contact <span class="fa">→</span></a>
+      </nav>
+      <div class="fcol">
+        <div class="fblock">
+          <span class="fb-lab">Write</span>
+          <a class="femail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
+        </div>
+        <div class="fblock">
+          <span class="fb-lab">Studios</span>
+          <p>Lahore, Pakistan · Paris, France<br>Working worldwide.</p>
+        </div>
+        <div class="fblock">
+          <span class="fb-lab">Elsewhere</span>
+          <div class="fsoc">
+            <a href="https://www.instagram.com/manzar.studio/" target="_blank" rel="noopener">Instagram ↗</a>
+            <a href="https://www.linkedin.com/company/manzarstudio/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot-meta">
+      <span class="fm-clock">Lahore <span data-clock="Asia/Karachi">--:--:--</span> · Paris <span data-clock="Europe/Paris">--:--:--</span></span>
+      <button class="totop" id="toTop" type="button">Back to top ↑</button>
+      <span>© <span id="year">2026</span> Manzar Studio</span>
+    </div>
+  </div>
+  <div class="foot-band">
+    <canvas id="cv-band-pricing" aria-hidden="true"></canvas>
+    <div class="band-in">
+      <span class="band-logo">
+        <span class="band-logo-mark" aria-hidden="true" dir="rtl" lang="ur">منظر</span>
+        <span class="band-logo-word">manzar</span>
+        <span class="band-logo-chip">Studio</span>
+      </span>
+      <span class="band-tag">Every screen, a scene.<br>Manzar Studio · Lahore / Paris</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var RM = false;
+  try { RM = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){}
+
+  document.getElementById("year") && (document.getElementById("year").textContent = new Date().getFullYear());
+
+  var toTop = document.getElementById("toTop");
+  if (toTop) toTop.addEventListener("click", function(){
+    window.scrollTo({ top: 0, behavior: RM ? "auto" : "smooth" });
+  });
+
+  /* reveal-on-scroll: fade/rise once, then stop watching */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
+  if (reveals.length) {
+    if (RM) {
+      reveals.forEach(function(el){ el.classList.add("is-in"); });
+    } else if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.18, rootMargin: "0px 0px -6% 0px" });
+      reveals.forEach(function(el){ io.observe(el); });
+    } else {
+      reveals.forEach(function(el){ el.classList.add("is-in"); });
+    }
+  }
+
+  /* ── reveal safety net ──────────────────────────────────────
+     The observer above fires once per element and then stops watching,
+     which is right, but it only fires while the tab is actually being
+     rendered. A tab restored from the back/forward cache, or one opened
+     in the background and scrolled before it is looked at, can leave
+     rows sitting at opacity 0 for good — the section is simply gone.
+     Three cheap nets: on show, on becoming visible, and on load. Each
+     just reveals anything already inside the viewport. */
+  function mzSweep(){
+    for (var i = 0; i < reveals.length; i++) {
+      var el = reveals[i];
+      if (el.classList.contains("is-in")) continue;
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) el.classList.add("is-in");
+    }
+  }
+  window.addEventListener("pageshow", mzSweep);
+  window.addEventListener("load", mzSweep);
+  document.addEventListener("visibilitychange", function(){
+    if (!document.hidden) mzSweep();
+  });
+
+  /* FAQ accordion: single-open, keyboard-native via <button>, height-animated */
+  var faqItems = Array.prototype.slice.call(document.querySelectorAll(".p-faq-item"));
+  faqItems.forEach(function(item){
+    var btn = item.querySelector(".p-faq-q");
+    var body = item.querySelector(".p-faq-a");
+    if (!btn || !body) return;
+    body.style.maxHeight = "0px";
+    btn.addEventListener("click", function(){
+      var isOpen = item.classList.contains("is-open");
+      faqItems.forEach(function(other){
+        other.classList.remove("is-open");
+        other.querySelector(".p-faq-q").setAttribute("aria-expanded", "false");
+        other.querySelector(".p-faq-a").style.maxHeight = "0px";
+      });
+      if (!isOpen) {
+        item.classList.add("is-open");
+        btn.setAttribute("aria-expanded", "true");
+        body.style.maxHeight = body.scrollHeight + "px";
+      }
+    });
+  });
+
+  /* footer dither band — 2D Bayer dither, IntersectionObserver-gated,
+     paused under reduced motion. Same technique as index.html's #cv-band,
+     given a page-local canvas id. */
+  function dither(sel, opts) {
+    var cv = document.querySelector(sel);
+    if (!cv) return;
+    var ctx = cv.getContext("2d");
+    var cell = (opts && opts.cell) || 9;
+    var color = (opts && opts.color) || "#E9E6DD";
+    var speed = (opts && opts.speed) || 0.00042;
+    var B = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+    var W, H, cols, rows;
+    function resize(){
+      W = cv.width = Math.max(2, cv.offsetWidth);
+      H = cv.height = Math.max(2, cv.offsetHeight);
+      cols = Math.ceil(W / cell); rows = Math.ceil(H / cell);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    function paint(t){
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = color;
+      var tt = t * speed;
+      for (var y = 0; y < rows; y++) {
+        var v = y / rows;
+        for (var x = 0; x < cols; x++) {
+          var u = x / cols;
+          var r1 = .38 + .16 * Math.sin(u * 2.2 + tt) + .07 * Math.sin(u * 5.3 - tt * .6);
+          var r2 = .68 + .12 * Math.sin(u * 1.6 - tt * .5 + 1.7) + .06 * Math.sin(u * 4.1 + tt * .8);
+          var val = Math.max((v - r1) * 3.4, (v - r2) * 5) + .5;
+          val = Math.max(0, Math.min(1, val));
+          val = val * val * (3 - 2 * val);
+          if (val > (B[y % 4][x % 4] + .5) / 16) ctx.fillRect(x * cell, y * cell, cell, cell);
+        }
+      }
+    }
+    if (RM) { paint(1200); return; }
+    var run = true;
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function(en){ run = en[0].isIntersecting; }).observe(cv);
+    }
+    var last = 0;
+    (function frame(t){
+      if (run && t - last > 50) { last = t; paint(t); }
+      window.requestAnimationFrame(frame);
+    })(0);
+  }
+  dither("#cv-band-pricing", { cell: 9, color: "#E9E6DD" });
+})();
+</script>
+
+
+
+
+<script src="assets/js/menu.js" defer></script>
+<!-- ══════════════ MENU ══════════════
+     Component: /assets/css/menu.css + /assets/js/menu.js. Self-contained,
+     so the same markup runs on Studio, Labs and every subpage.
+     Twelve rows, three groups, in the order Ali specified. --i drives the
+     open stagger from CSS, so no script has to touch the rows. -->
+<div class="mzx" id="mzxMenu" role="dialog" aria-modal="true"
+     aria-label="Main menu" aria-hidden="true" hidden>
+
+  <div class="mzx-head">
+    <span class="mzx-eyebrow">Menu</span>
+    <button class="mzx-close" type="button" data-mzx-close aria-label="Close menu">
+      <span class="mzx-close-label">Close</span>
+      <span class="mzx-close-x" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 6 18 18M18 6 6 18"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+
+  <div class="mzx-body">
+    <nav class="mzx-nav" aria-label="Main">
+
+      <div class="mzx-group">
+        <p class="mzx-group-label">Studio</p>
+        <a class="mzx-row" href="index.html#work" style="--i:0"
+           data-media="assets/menu/work.svg" data-kicker="Selected work">
+          <span class="mzx-n">01</span>
+          <span class="mzx-t">Work</span>
+          <span class="mzx-d">Selected engagements, shipped and live.</span>
+        </a>
+        <a class="mzx-row" href="index.html#services" style="--i:1"
+           data-media="assets/menu/services.svg" data-kicker="What we do">
+          <span class="mzx-n">02</span>
+          <span class="mzx-t">Services</span>
+          <span class="mzx-d">Brand, product and the systems behind them.</span>
+        </a>
+        <a class="mzx-row" href="index.html#reel" style="--i:2"
+           data-media="assets/menu/reel.svg" data-kicker="In motion">
+          <span class="mzx-n">03</span>
+          <span class="mzx-t">Showreel</span>
+          <span class="mzx-d">The work in motion, thirty seconds at a time.</span>
+        </a>
+        <a class="mzx-row" href="index.html#process" style="--i:3"
+           data-media="assets/menu/process.svg" data-kicker="How we ship">
+          <span class="mzx-n">04</span>
+          <span class="mzx-t">Process</span>
+          <span class="mzx-d">Discover, build, ship &mdash; the discipline behind it.</span>
+        </a>
+        <a class="mzx-row" href="index.html#faq" style="--i:4"
+           data-media="assets/menu/faq.svg" data-kicker="Before you ask">
+          <span class="mzx-n">05</span>
+          <span class="mzx-t">FAQ</span>
+          <span class="mzx-d">Timelines, pricing, scope &mdash; answered plainly.</span>
+        </a>
+      </div>
+
+      <div class="mzx-group">
+        <p class="mzx-group-label">Labs</p>
+        <a class="mzx-row" href="capabilities/cloud.html" style="--i:5"
+           data-media="assets/menu/cloud.svg" data-kicker="Built to hold">
+          <span class="mzx-n">06</span>
+          <span class="mzx-t">Cloud &amp; Infrastructure</span>
+          <span class="mzx-d">Systems that hold under real load.</span>
+        </a>
+        <a class="mzx-row" href="capabilities/mobile.html" style="--i:6"
+           data-media="assets/menu/mobile.svg" data-kicker="In the store">
+          <span class="mzx-n">07</span>
+          <span class="mzx-t">Mobile Development</span>
+          <span class="mzx-d">iOS, Android, React Native. Shipped, not prototyped.</span>
+        </a>
+        <a class="mzx-row" href="capabilities/ai.html" style="--i:7"
+           data-media="assets/menu/ai.svg" data-kicker="Past the demo">
+          <span class="mzx-n">08</span>
+          <span class="mzx-t">AI Development</span>
+          <span class="mzx-d">Applied models, not demo-ware.</span>
+        </a>
+        <a class="mzx-row" href="capabilities/iot.html" style="--i:8"
+           data-media="assets/menu/iot.svg" data-kicker="Wired up">
+          <span class="mzx-n">09</span>
+          <span class="mzx-t">IoT &amp; Connected Systems</span>
+          <span class="mzx-d">Hardware and firmware, wired to software.</span>
+        </a>
+      </div>
+
+      <div class="mzx-group">
+        <p class="mzx-group-label">Company</p>
+        <a class="mzx-row is-here" href="pricing.html" style="--i:9" aria-current="page"
+           data-media="assets/menu/pricing.svg" data-kicker="Engagement models">
+          <span class="mzx-n">10</span>
+          <span class="mzx-t">Pricing</span>
+          <span class="mzx-d">Sprint, build or retainer &mdash; three ways in.</span>
+        </a>
+        <a class="mzx-row" href="index.html#studio" style="--i:10"
+           data-media="assets/menu/studio.svg" data-kicker="Who we are">
+          <span class="mzx-n">11</span>
+          <span class="mzx-t">Studio</span>
+          <span class="mzx-d">Who we are and how we work.</span>
+        </a>
+        <a class="mzx-row" href="index.html#contact" style="--i:11"
+           data-media="assets/menu/contact.svg" data-kicker="Start a conversation">
+          <span class="mzx-n">12</span>
+          <span class="mzx-t">Contact</span>
+          <span class="mzx-d">hello@manzar.studio &mdash; say what you need.</span>
+        </a>
+      </div>
+
+    </nav>
+
+    <aside class="mzx-media" data-mzx-media
+           data-default-media="assets/menu/world.svg"
+           data-default-kicker="Two halves, one studio"
+           data-default-caption="Manzar Studio &mdash; film, design and software.">
+      <div class="mzx-frame" data-mzx-frame>
+        <img class="is-on" src="assets/menu/world.svg" alt="" width="800" height="500" decoding="async">
+        <img src="" alt="" aria-hidden="true" width="800" height="500" decoding="async">
+      </div>
+      <p class="mzx-kicker" data-mzx-kicker>Two halves, one studio</p>
+      <p class="mzx-caption" data-mzx-caption>Manzar Studio &mdash; film, design and software.</p>
+    </aside>
+  </div>
+
+  <div class="mzx-foot">
+    <div class="mzx-switch" role="group" aria-label="Manzar worlds">
+      <span class="mzx-switch-rail" aria-hidden="true"></span>
+      <a href="index.html" class="is-on" data-world="studio">Studio</a>
+      <a href="labs/index.html" data-world="labs">Labs</a>
+    </div>
+    <a class="mzx-mail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
+    <div class="mzx-clocks">
+      <div class="mzx-clock">
+        <span class="mzx-clock-city">Lahore</span>
+        <time class="mzx-clock-time" data-mzx-clock="Asia/Karachi">--:--</time>
+      </div>
+      <div class="mzx-clock">
+        <span class="mzx-clock-city">Paris</span>
+        <time class="mzx-clock-time" data-mzx-clock="Europe/Paris">--:--</time>
+      </div>
+    </div>
+    <a class="mzx-cta" href="index.html#contact">Start a project <i aria-hidden="true">&#8599;</i></a>
+  </div>
+</div>
+</body>
+</html>

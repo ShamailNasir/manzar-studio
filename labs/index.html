@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- First-paint guard. This runs during parse, before any stylesheet has
+     loaded, so the very first frame the browser paints is ink rather than the
+     browser default white. Without it a slow stylesheet shows a white page with
+     blue links for a frame, which is precisely what a crossover looked like.
+     The second half raises the crossover cover during parse too, so arriving
+     from the other world is covered from frame one rather than from whenever
+     crossover.js happens to execute at the end of the body. -->
+<style>html{background:#0B0A08}html.mz-xover-boot{overflow:hidden}html.mz-xover-boot::before{content:"";position:fixed;inset:0;z-index:4001;background:#0B0A08;pointer-events:none}</style>
+<script>(function(){var d=document.documentElement;try{if(sessionStorage.getItem('mz:crossover')){d.className+=' mz-xover-boot';}}catch(e){}
+/* Activate the Manzar pointer during parse. It used to be switched on by
+   the main script at the end of the body, so for the whole of a page load
+   — and therefore for the whole of a crossover — the visitor got the
+   system arrow back. Setting it here means the pointer never changes
+   identity between the two worlds. */
+})();</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manzar Labs · Software engineering at startup speed, Lahore ↔ Paris</title>
+<meta name="description" content="Manzar Labs is a software engineering company. MVPs live in six weeks, AI products that hold up past the demo, and healthcare and fintech platforms built to pass audit. Lahore and Paris, working worldwide.">
+<link rel="canonical" href="https://manzar.studio/labs/">
+<meta property="og:title" content="Manzar Labs · Software engineering at startup speed">
+<meta property="og:description" content="MVPs live in six weeks. AI products past the demo. HIPAA and SOC 2 platforms that pass audit the first time. Built between Lahore and Paris.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://manzar.studio/labs/">
+<meta property="og:image" content="https://manzar.studio/assets/labs-preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="750">
+<meta property="og:image:alt" content="Manzar Labs — software engineering at startup speed">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Manzar Labs · Software engineering at startup speed">
+<meta name="twitter:description" content="MVPs live in six weeks. AI products past the demo. HIPAA and SOC 2 platforms that pass audit the first time. Built between Lahore and Paris.">
+<meta name="twitter:image" content="https://manzar.studio/assets/labs-preview.jpg">
+<meta name="theme-color" content="#0B0A08">
+<link rel="icon" href="../favicon.ico" sizes="32x32">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="../assets/brand/favicon-512.png">
+<link rel="apple-touch-icon" href="../assets/brand/favicon-180.png">
+<link rel="manifest" href="../site.webmanifest">
+<script>if("scrollRestoration" in history)history.scrollRestoration="manual";
+/* Crossover gating, before first paint. main.js runs during parse and takes this
+   page's own preloader straight down the moment it sees a crossover, but the
+   curtain that should be covering is built by the deferred manzar-system.js —
+   between the two the Labs hero flashed for a frame or two mid-transition. This
+   holds the same ink from frame one (html.mz-crossing in manzar-system.css);
+   MZ.arrive() clears it once the real curtain is up, and the timer is the
+   failsafe for the shared script never loading. */
+window.__mzCrossover=false;
+try{window.__mzCrossover=!!sessionStorage.getItem("mz-crossover");}catch(e){}
+if(window.__mzCrossover){
+  document.documentElement.classList.add("mz-crossing");
+  setTimeout(function(){document.documentElement.classList.remove("mz-crossing");},3000);
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<!-- Two requests, not one: Fontshare silently drops the second family from a
+     combined f[] request, so Tanker never loaded here and every --shout element
+     was falling back. Same fix already applied on index.html. -->
+<link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=tanker@400&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;display=swap">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=tanker@400&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&amp;display=swap">
+</noscript>
+<!-- The pointer. Deliberately the first stylesheet in the document, so
+     it is resolved before the page first paints and the browser never
+     gets a chance to show its own arrow. -->
+<link rel="stylesheet" href="../assets/css/cursor.css">
+<link rel="stylesheet" href="../assets/css/manzar-system.css">
+<link rel="stylesheet" href="assets/css/style.css">
+  <!-- Manzar theme layer: re-skins Labs onto the Studio type system. Remove to restore original. -->
+  <link rel="stylesheet" href="assets/css/manzar-theme.css">
+<script src="../assets/js/manzar-system.js" defer></script>
+<style>
+.skip{position:fixed;left:-999px;top:8px;z-index:2000;background:var(--acc);color:var(--ink);padding:8px 14px;font-family:var(--mono);font-size:12px}
+.skip:focus{left:8px}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://manzar.studio/#organization",
+      "name": "Manzar",
+      "url": "https://manzar.studio/",
+      "logo": "https://manzar.studio/assets/brand/favicon-512.png",
+      "sameAs": [
+        "https://www.instagram.com/manzar.studio/",
+        "https://www.linkedin.com/company/manzarstudio/"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://manzar.studio/#website",
+      "name": "Manzar",
+      "url": "https://manzar.studio/",
+      "publisher": {
+        "@id": "https://manzar.studio/#organization"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "We're a startup and need an MVP fast. How fast is fast?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Six weeks from a signed scope to something real users can log into, for a typical first product. You get an openable build in week two and a feature-complete beta around week four, so you are testing with actual people long before launch day. Tell us your date on the first call — if it can't be held, you'll hear that immediately rather than in week eleven."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you build an AI chat product?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, and past the demo stage. We wire the model into the systems that run your business — your databases, documents and APIs — so answers are grounded in records it can cite. Assistants and copilots inside your product, voice and phone agents, and automation that stops for a named human before it does anything expensive or irreversible. Evals, PII redaction and fallbacks come with the build, not after it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you handle HIPAA, PCI or SOC 2 work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We build healthcare and finance products to those controls from week one — append-only audit trails, least-privilege access, encryption with managed keys, data residency you can point at — and hand over the architecture diagrams, data-flow maps, threat model and policies as part of the delivery. The certificate is issued to you by your own auditor; our job is to make sure nothing in the build stands between you and it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does a project start?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "With a call and a one-page brief we write for you, free. If we're not the right fit, we'll say so and point you to someone who is."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does an engagement cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Scoping sprints start around $6k. Full builds typically run $25k to $120k depending on scope. You get the number after scoping, and it doesn't drift."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who actually works on our product?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The senior team that scoped it, plus specialists we bring in by name when a project needs them. Nothing is outsourced anonymously."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How fast do you ship?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An MVP in about six weeks. A marketing site in three to five. A larger v1 platform in eight to fourteen. Whichever it is, you open a working build every Friday from week two, so you can check the answer yourself instead of taking it on trust."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens after launch?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ninety days of included support, then a retainer if you want us on call. Either way you own the code, the accounts, and the docs."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="../assets/css/crossover.css">
+<link rel="stylesheet" href="../assets/css/menu.css">
+</head>
+<body>
+<a class="skip" href="#top">Skip to content</a>
+
+<!-- ══════════════ PRELOADER ══════════════ -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <!-- The real bilingual wordmark, same mark the Studio loader uses — Labs was
+       rebuilding "MANZAR" out of display type, so the two worlds opened on
+       different marks. -->
+  <img class="preloader-logo" id="preloaderLogo" src="../assets/manzar-wordmark.png" alt="Manzar"
+       width="2556" height="980" fetchpriority="high" decoding="async">
+  <div class="preloader-count" id="preloaderCount">00</div>
+</div>
+
+<!-- ══════════════ NAV ══════════════
+     Shared .mz-nav markup + component CSS from manzar-system.css (§3.1),
+     driven by MZ.nav()/MZ.switcher(). Same grammar as the Studio page:
+     left = Menu pill + locale + clock, centre = logo tab, right =
+     world switcher + Start a project. -->
+<header class="nav" id="nav">
+  <div class="nav-left">
+    <a class="brand" href="#top" aria-label="Manzar Labs, back to top"><img src="../assets/manzar-wordmark.png" alt="Manzar" width="2556" height="980" decoding="async"></a>
+    <div class="mz-switch" role="group" aria-label="Manzar worlds">
+      <a class="mz-sw-opt" href="../index.html" data-world="studio">Studio</a>
+      <a class="mz-sw-opt is-on" href="index.html" data-world="labs">Labs</a>
+    </div>
+  </div>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="#speed">Timeline</a>
+    <a href="#services">What we build</a>
+    <a href="#work">Work</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div class="nav-right">
+    <a class="nav-cta magnetic" href="#contact">Start a project <span class="arr">↗</span></a>
+    <button class="menu-btn" type="button" id="menuBtn" data-mzx-open aria-controls="mzMenu" aria-expanded="false" aria-label="Open menu"><span></span><span></span>Menu</button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-shell" id="heroShell">
+      <div class="hero-media" aria-hidden="true">
+        <div class="hero-fallback"></div>
+        <img class="hero-img" src="assets/img/hero.jpg" alt="" width="1920" height="1080" loading="eager" decoding="async" onerror="this.style.display='none'">
+        <div class="hero-shade"></div>
+      </div>
+      <!-- Sits outside .hero-media on purpose: the media parallaxes and this must
+           stay locked to the shell edge. Fades up with the inset (see --feather). -->
+      <div class="hero-feather" aria-hidden="true"></div>
+      <div class="hero-grid" aria-hidden="true">
+        <i></i><i></i><i></i>
+        <b class="plus p1">+</b><b class="plus p2">+</b><b class="plus p3">+</b>
+      </div>
+      <div class="hero-inner">
+        <h1 class="hero-title" id="heroTitle" aria-label="Manzar">Manzar</h1>
+        <div class="hero-row">
+          <div class="hero-col-left">
+            <h2 class="hero-sub" data-reveal>Software, built<br>at startup speed</h2>
+            <div class="hero-clients" data-reveal>
+              <div class="hero-avatars" aria-hidden="true"><span>SH</span><span>PV</span><span>SG</span></div>
+              <div class="hero-clients-copy"><strong class="stat-num" data-count="40" data-suffix="+">0</strong><em>products shipped</em></div>
+            </div>
+            <p class="hero-blurb" data-reveal>AI products, enterprise platforms and connected systems. MVPs live in six weeks.</p>
+            <div class="hero-ctas" data-reveal>
+              <a class="btn btn-light" href="#work"><span class="btn-label">See the work</span><span class="btn-chip"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+              <div class="hero-socials">
+                <a href="https://www.instagram.com/manzar.studio/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 16 16" width="13" height="13"><rect x="1.5" y="1.5" width="13" height="13" rx="3.6" stroke="currentColor" fill="none" stroke-width="1.3"/><circle cx="8" cy="8" r="3" stroke="currentColor" fill="none" stroke-width="1.3"/><circle cx="12" cy="4" r="1" fill="currentColor"/></svg></a>
+                <a href="https://www.linkedin.com/company/manzarstudio/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M2 5.5h2.6V14H2zM3.3 1.8a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM6.4 5.5H9v1.2c.5-.9 1.5-1.5 2.8-1.5 2 0 3.2 1.3 3.2 3.7V14h-2.6V9.4c0-1.2-.5-1.9-1.5-1.9S9.3 8.2 9.3 9.4V14H6.4z" fill="currentColor"/></svg></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-scrollcue" aria-hidden="true"><span></span></div>
+    </div>
+  </section>
+
+  <!-- ══════════════ TICKER ══════════════ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" data-marquee><span>AI Products</span><b>&#9670;</b><span>Enterprise &amp; ERP</span><b>&#9670;</b><span>IoT &amp; Connected Systems</span><b>&#9670;</b><span>SaaS Platforms</span><b>&#9670;</b><span>MVP Sprints</span><b>&#9670;</b><span>Mobile</span><b>&#9670;</b><span>Design Systems</span><b>&#9670;</b><span class="tick-hl">Manzar Studio</span><b>&#9670;</b></div>
+  </div>
+
+  <!-- ══════════════ MISSION ══════════════ -->
+  <section class="mission section" id="mission">
+    <div class="mission-top">
+      <figure class="mission-fig" data-reveal>
+        <div class="mission-fig-fallback"></div>
+        <img loading="lazy" decoding="async" src="assets/img/mission.jpg" alt="Long-exposure light trails" width="1200" height="765" onerror="this.style.display='none'">
+      </figure>
+      <div class="mission-copy">
+        <h2 class="mission-head" data-wipe>
+          <span class="line-a">Software that earns the second look,</span>
+          <span class="line-b">live before your window closes.</span>
+        </h2>
+        <p class="mission-blurb" data-reveal>The <em class="serif">software company</em> inside Manzar. Engineers who ship, not a ticket queue.</p>
+        <a class="btn btn-ghost" href="#services" data-reveal><span class="btn-label">What we do</span><span class="btn-chip"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+    </div>
+    <div class="stats" id="stats">
+      <div class="stat" data-reveal><h3 class="stat-big"><span data-count="6">0</span></h3><p>Weeks, typical, from<br>signed scope to a live MVP</p></div>
+      <div class="stat" data-reveal><h3 class="stat-big"><span data-count="40">0</span><i>+</i></h3><p>Products shipped<br>and still in production</p></div>
+      <div class="stat" data-reveal><h3 class="stat-big"><span data-count="9">0</span></h3><p>Countries where<br>our work runs daily</p></div>
+      <div class="stat" data-reveal><h3 class="stat-big"><span data-count="99">0</span><em>.9%</em></h3><p>Uptime across the<br>platforms we operate</p></div>
+    </div>
+  </section>
+
+  <div class="mz-notch" aria-hidden="true"></div>
+
+  <!-- ══════════════ VELOCITY ══════════════
+       The page's central claim, placed before the service blocks
+       because it is the reason a founder keeps reading. Two halves: a
+       dated track that says exactly what exists in which week, then the
+       mechanics that make those dates possible. The second half matters
+       more than the first — "we are fast" is worth nothing without the
+       reason, and the reason here is removed overhead, not cut corners. -->
+  <section class="section vel" id="speed" data-nav-label="Timeline">
+    <div class="vel-head">
+      <div>
+        <p class="pill" data-reveal><i></i>Timeline</p>
+        <h2 class="giant" data-wipe-words>Six weeks to live</h2>
+      </div>
+      <p class="vel-sub" data-reveal>Every week you are not live, the market belongs to someone else. The speed comes out of the <span class="serif">overhead</span>, not the quality.</p>
+    </div>
+
+    <ol class="vel-track">
+      <li class="vel-step" data-reveal><span class="vel-wk">Week 01</span><h3>Scope locked</h3><p>Architecture, risks and a fixed price. Days, not a research phase.</p></li>
+      <li class="vel-step" data-reveal><span class="vel-wk">Week 02</span><h3>A build you can open</h3><p>A real URL you can log into. It never goes dark after this.</p></li>
+      <li class="vel-step" data-reveal><span class="vel-wk">Week 04</span><h3>Feature-complete beta</h3><p>Core loop working, first testers inside it.</p></li>
+      <li class="vel-step" data-reveal><span class="vel-wk">Week 06</span><h3>Live, on your accounts</h3><p>Production on your domain and repo. Then 90 days on call.</p></li>
+    </ol>
+
+    <div class="vel-why">
+      <div class="vel-why-grid">
+        <div data-reveal><h4><i>01</i>A foundation, not an empty repo</h4><p>Auth, roles, billing, audit logging, CI, monitoring &mdash; already written. Week one starts at the part that is yours.</p></div>
+        <div data-reveal><h4><i>02</i>One team, no handoffs</h4><p>Design and engineering on the same call. A sprint of tickets becomes an afternoon.</p></div>
+        <div data-reveal><h4><i>03</i>Decisions in hours</h4><p>One decision-maker each side, a slot every working day. Nothing queues for a week.</p></div>
+        <div data-reveal><h4><i>04</i>Something ships every Friday</h4><p>A deployable build from week two. You check progress by opening it.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="mz-notch" aria-hidden="true"></div>
+
+  <!-- ══════════════ SERVICES ══════════════ -->
+  <section class="section services-intro" id="services">
+    <p class="pill" data-reveal><i></i>Capabilities</p>
+    <h2 class="giant" data-wipe-words>What we build</h2>
+    <p class="services-intro-sub" data-reveal>Five disciplines, one team, and a single path from the first call to launch day.</p>
+  </section>
+
+  <!-- 01 · From idea to launched -->
+  <section class="svc" id="svc-01">
+    <div class="svc-head">
+      <span class="svc-ghost" aria-hidden="true">01</span>
+      <h3 class="svc-title">From idea<br>to launched</h3>
+      <p class="svc-sub" data-reveal>The same six weeks from your side of the table: what we ask of you, what you decide, and exactly what you hold at the end of each stage.</p>
+    </div>
+
+    <!-- ── The rail ──────────────────────────────────────────────────
+         Five stops on one line. The rail fills with the accent as the
+         section scrolls, so the path reads as motion rather than as a
+         diagram. Every stop carries what it costs in time and what you
+         walk away holding. -->
+    <ol class="jr" id="jr">
+      <li class="jr-stop" data-reveal>
+        <span class="jr-node" aria-hidden="true"></span>
+        <span class="jr-when">Week 0 &middot; free</span>
+        <h4>Validate</h4>
+        <p>We pressure-test the idea before anyone writes code. If it should not be built, we say so.</p>
+        <span class="jr-get">A one-page brief</span>
+        <span class="jr-ask"><i>Your part</i>Ninety minutes and an honest answer about who this is for.</span>
+      </li>
+      <li class="jr-stop" data-reveal>
+        <span class="jr-node" aria-hidden="true"></span>
+        <span class="jr-when">Week 1</span>
+        <h4>Scope</h4>
+        <p>Architecture, risks, and the smallest version worth putting in front of a user.</p>
+        <span class="jr-get">A number that does not drift</span>
+        <span class="jr-ask"><i>Your part</i>One decision-maker named, and the must-haves separated from the wants.</span>
+      </li>
+      <li class="jr-stop" data-reveal>
+        <span class="jr-node" aria-hidden="true"></span>
+        <span class="jr-when">Weeks 2&ndash;6</span>
+        <h4>Design &amp; build</h4>
+        <p>Design and engineering as one team. You open a working build every Friday.</p>
+        <span class="jr-get">Your product, weekly</span>
+        <span class="jr-ask"><i>Your part</i>Thirty minutes on a Friday to open the build and say what is wrong.</span>
+      </li>
+      <li class="jr-stop" data-reveal>
+        <span class="jr-node" aria-hidden="true"></span>
+        <span class="jr-when">Week 6</span>
+        <h4>Launch</h4>
+        <p>We ship it, hand over the keys, and sit through the first day with you.</p>
+        <span class="jr-get">The code, accounts and docs</span>
+        <span class="jr-ask"><i>Your part</i>A domain, and someone on your side to hold the keys.</span>
+      </li>
+      <li class="jr-stop" data-reveal>
+        <span class="jr-node" aria-hidden="true"></span>
+        <span class="jr-when">90 days</span>
+        <h4>On call</h4>
+        <p>Ninety days of support included. A retainer after that, only if you still want us.</p>
+        <span class="jr-get">A number that answers</span>
+        <span class="jr-ask"><i>Your part</i>Tell us what broke. That is the whole process.</span>
+      </li>
+    </ol>
+
+    <p class="jr-foot" data-reveal>
+      <span>What gets built</span>
+      AI products &middot; Enterprise &amp; ERP &middot; IoT &amp; connected systems &middot; SaaS platforms &middot; MVPs &middot; Mobile
+    </p>
+  </section>
+
+  <!-- 02 · AI ──────────────────────────────────────────────────────
+       The transcript is the argument, so the prose beside it stays
+       short: four turns show a cited answer and an action the model is
+       not allowed to take alone. Static markup, no JS, nothing to
+       fall out of sync. -->
+  <section class="svc" id="svc-ai" data-nav-label="AI">
+    <div class="svc-head">
+      <span class="svc-ghost" aria-hidden="true">02</span>
+      <h3 class="svc-title">AI, past<br>the demo</h3>
+      <p class="svc-sub" data-reveal>Products people keep using after the novelty wears off.</p>
+    </div>
+
+    <div class="ai-lead">
+      <div class="ai-copy">
+        <h4 data-reveal>Chat that knows your business</h4>
+        <p data-reveal>We wire the model into the systems that actually run your company &mdash; ledgers, tickets, documents, your own APIs &mdash; so every answer cites a record. Anything expensive or irreversible stops for a named human, by design.</p>
+        <a class="btn btn-ghost" href="#contact" data-reveal><span class="btn-label">Talk about an AI build</span><span class="btn-chip"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+
+      <!-- The transcript is the argument for the whole section: an answer that
+           names the record it came from, and an expensive action that stops for
+           a named human. The composer bar at the bottom is what makes it read
+           as a product a client could have rather than a diagram. -->
+      <figure class="ai-chat" data-reveal>
+        <figcaption class="ai-chat-bar">
+          <span class="ai-avatar" aria-hidden="true">M</span>
+          <span class="ai-chat-id">
+            <span class="ai-chat-name">Billing assistant</span>
+            <span class="ai-chat-status"><i aria-hidden="true"></i>Connected to 3 systems</span>
+          </span>
+          <span class="ai-chat-env">Live</span>
+        </figcaption>
+
+        <div class="ai-thread">
+          <p class="ai-msg ai-msg--in">Where is invoice 4471?<time>09:24</time></p>
+
+          <p class="ai-msg ai-msg--out">
+            Cleared 12 March &mdash; <b>$8,240</b> by ACH, reference 9F2C.
+            <span class="ai-cite">billing_ledger &middot; payments_api</span>
+            <time>09:24</time>
+          </p>
+
+          <p class="ai-msg ai-msg--in">Refund it.<time>09:25</time></p>
+
+          <p class="ai-msg ai-msg--out ai-msg--gate">
+            <span class="ai-gate-tag">Held for approval</span>
+            That is over your $5,000 limit, so I have not sent it.
+            Queued for <b>Sara</b> with the invoice attached.
+            <span class="ai-cite">policy &middot; refund_limit_v3</span>
+            <time>09:25</time>
+          </p>
+        </div>
+
+        <div class="ai-compose" aria-hidden="true">
+          <span class="ai-compose-field">Ask about an invoice, a customer, a policy&hellip;</span>
+          <span class="ai-compose-send">
+            <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h11M9 4l4 4-4 4"/></svg>
+          </span>
+        </div>
+      </figure>
+    </div>
+
+    <ol class="ai-list">
+      <li data-reveal><h5>Assistants &amp; copilots</h5><p>In-product chat grounded in your documents and databases.</p></li>
+      <li data-reveal><h5>Voice &amp; phone agents</h5><p>Answer, qualify, book &mdash; then hand to a human where you decide.</p></li>
+      <li data-reveal><h5>Automation with a gate</h5><p>Drafting and routing run unattended. Costly actions wait for a name.</p></li>
+      <li data-reveal><h5>Evals &amp; guardrails</h5><p>A test suite for a non-deterministic system, plus PII redaction.</p></li>
+    </ol>
+
+    <!-- OWNER INPUT NEEDED: swap the waitlist mailto for the real Ardenta
+         URL once the site is deployed on its own domain. -->
+    <p class="ai-proof" data-reveal>
+      <span>Built here</span>
+      <b>Ardenta</b> is our own AI front desk: answers around the clock, cites the document it used, books into the calendar, keeps your existing number.
+      <a class="ai-proof-link" href="mailto:hello@manzar.studio?subject=Ardenta%20waitlist">Join the waitlist &rarr;</a>
+    </p>
+  </section>
+
+  <!-- 03 · Enterprise & connected systems ──────────────────────────
+       Two panels for recognition (the ERP/operations side and the
+       device/IoT side), then the controls that make a regulated build
+       survive an auditor. Kept to one line each — the buyer is
+       scanning for their own category, not reading an essay. -->
+  <section class="svc" id="svc-regulated" data-nav-label="Enterprise">
+    <div class="svc-head">
+      <span class="svc-ghost" aria-hidden="true">03</span>
+      <h3 class="svc-title">Enterprise<br>&amp; connected</h3>
+      <p class="svc-sub" data-reveal>ERP and operations platforms, and the devices that feed them.</p>
+    </div>
+
+    <div class="reg-grid">
+      <article class="reg-card" data-reveal>
+        <p class="reg-kind">Enterprise &amp; ERP</p>
+        <h4>The system the company runs on</h4>
+        <p>HR and payroll, finance, inventory, procurement, field operations. Built as one platform with real roles and a real audit trail &mdash; not nine tools and a spreadsheet holding them together.</p>
+        <ul class="reg-tags"><li>ERP &amp; HRMS</li><li>Payroll &amp; finance</li><li>Integrations</li><li>SOC 2</li></ul>
+      </article>
+      <article class="reg-card" data-reveal>
+        <p class="reg-kind">IoT &amp; connected</p>
+        <h4>Hardware that reports for duty</h4>
+        <p>Fleets, sensors, access control and device policy, wired to dashboards people act on. Telemetry that arrives, commands that land, and a record of both.</p>
+        <ul class="reg-tags"><li>MQTT / BLE</li><li>Telemetry</li><li>Device policy</li><li>Edge &amp; gateway</li></ul>
+      </article>
+    </div>
+
+    <ol class="reg-how">
+      <li data-reveal><span class="reg-n">01</span><h5>Append-only audit trail</h5></li>
+      <li data-reveal><span class="reg-n">02</span><h5>Least privilege, ours included</h5></li>
+      <li data-reveal><span class="reg-n">03</span><h5>Encryption &amp; key custody</h5></li>
+      <li data-reveal><span class="reg-n">04</span><h5>Data residency you can point at</h5></li>
+      <li data-reveal><span class="reg-n">05</span><h5>The evidence pack</h5></li>
+    </ol>
+
+    <p class="reg-note" data-reveal>
+      <span>Regulated work</span>
+      Healthcare and finance builds carry these from week one &mdash; HIPAA, PCI DSS, SOC 2, ISO 27001. We build to the controls and hand you the evidence; the certificate is issued to you by your auditor.
+    </p>
+  </section>
+
+  <!-- 04 · Interface & Interactive -->
+  <section class="svc" id="svc-02">
+    <div class="svc-head">
+      <span class="svc-ghost" aria-hidden="true">04</span>
+      <h3 class="svc-title">Interface &amp;<br>Interactive</h3>
+      <p class="svc-sub" data-reveal>The part people call the product. Interfaces with a point of view, motion with a reason.</p>
+    </div>
+    <div class="acc" id="acc">
+      <div class="acc-item is-open">
+        <button class="acc-row" aria-expanded="true">
+          <span class="acc-num">01.</span>
+          <span class="acc-name">Marketing sites that win attention</span>
+          <span class="acc-count">[ 34 shipped ]</span>
+          <span class="acc-chip" aria-hidden="true"></span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-media"><div class="acc-fallback af-1"></div><img loading="lazy" decoding="async" src="assets/img/acc-web.jpg" alt="Marketing site preview" width="1200" height="720" onerror="this.style.display='none'"></div>
+          <p>Launches, rebrands, campaign pages. Fast enough to score green across the board, distinct enough to be remembered after the tab is closed.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-row" aria-expanded="false">
+          <span class="acc-num">02.</span>
+          <span class="acc-name">Product interfaces</span>
+          <span class="acc-count">[ 58 shipped ]</span>
+          <span class="acc-chip" aria-hidden="true"></span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-media"><div class="acc-fallback af-2"></div><img loading="lazy" decoding="async" src="assets/img/acc-product.jpg" alt="Product interface preview" width="1200" height="720" onerror="this.style.display='none'"></div>
+          <p>Dashboards, consoles, and tools people sit inside for eight hours. We sweat the empty states, the keyboard paths, and the thousand-row tables.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-row" aria-expanded="false">
+          <span class="acc-num">03.</span>
+          <span class="acc-name">Motion &amp; interactive</span>
+          <span class="acc-count">[ 21 shipped ]</span>
+          <span class="acc-chip" aria-hidden="true"></span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-media"><div class="acc-fallback af-3"></div><img loading="lazy" decoding="async" src="assets/img/acc-motion.jpg" alt="Motion and interactive preview" width="1200" height="720" onerror="this.style.display='none'"></div>
+          <p>Scroll stories, launches with a pulse, product films embedded where they convert. This is where the film side of Manzar earns its keep.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · Design Systems -->
+  <section class="svc" id="svc-03">
+    <div class="svc-head">
+      <span class="svc-ghost" aria-hidden="true">05</span>
+      <h3 class="svc-title">Design<br>Systems</h3>
+      <p class="svc-sub" data-reveal>The product behind the product. One language every screen speaks.</p>
+    </div>
+    <div class="ds-grid">
+      <article class="ds-card" data-reveal><span class="ds-i">Aa</span><h4>Tokens &amp; theming</h4><p>Color, type, and spacing as data. Dark mode stops being a rebuild.</p></article>
+      <article class="ds-card" data-reveal><span class="ds-i">⌘</span><h4>Component libraries</h4><p>Accessible, documented, versioned. Figma and code that agree with each other.</p></article>
+      <article class="ds-card" data-reveal><span class="ds-i">¶</span><h4>Docs &amp; governance</h4><p>Contribution rules and changelogs, so the system outlives its authors.</p></article>
+      <article class="ds-card" data-reveal><span class="ds-i">◎</span><h4>Accessibility</h4><p>WCAG AA as a floor, not a feature. Audited with real assistive tech.</p></article>
+    </div>
+  </section>
+
+  <!-- ══════════════ WORK ══════════════ -->
+  <section class="section work" id="work">
+    <p class="pill pill-center" data-reveal><i></i>Selected work</p>
+    <h2 class="giant giant-center" data-wipe-words>The proof</h2>
+    <p class="work-lede" data-reveal>Six sites, designed and built end to end. Pick one from either side, then rest your cursor on the screen &mdash; or click it &mdash; and use the real thing.</p>
+
+    <!-- ── The machine ───────────────────────────────────────────────
+         A laptop drawn in the site's own language rather than rendered
+         or filmed: a photoreal chassis cannot hold a live screen, since
+         tilting one in 3D drags the iframe with it and softens every
+         glyph inside. Here the lid hinges open on scroll, the screen is
+         a real iframe, and taking control rotates the whole machine
+         square to camera so the page inside is pixel-crisp.
+
+         Each reel carries its own --tint, which lights the bloom, the
+         desk spill and the bezel — so every project is a different room.
+         The belt feeds the machine; only the loaded reel is ever live. -->
+    <div class="mach" id="mach" style="--tint:#4f46e5">
+
+      <div class="mach-stage">
+        <div class="mach-glow" aria-hidden="true"></div>
+
+        <div class="plate" id="plate">
+          <img class="plate-img" src="assets/img/machine-plate.webp" alt=""
+               width="2600" height="1418" decoding="async" fetchpriority="low">
+          <div class="mach-screen" id="machScreen" role="tabpanel" aria-labelledby="mach-t1">
+            <div class="mach-poster" aria-hidden="true"></div>
+            <iframe class="mach-frame" id="machFrame" title="Live preview of the selected project"
+                    referrerpolicy="no-referrer" loading="lazy"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
+            <span class="mach-hint" aria-hidden="true">Hover or click to use it<i>esc to exit</i></span>
+            <span class="mach-thread" aria-hidden="true"></span>
+            <span class="mach-glare" aria-hidden="true"></span>
+            <p class="mach-cold" aria-hidden="true">This one will not run inside a frame.<b>Open it in a tab &#8599;</b></p>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="mach-hud">
+        <span class="mach-led" aria-hidden="true"></span>
+        <span class="mach-status" id="machStatus">Standby</span>
+        <button class="mach-exit" type="button" id="machExit">Step back<i>esc</i></button>
+      </div>
+
+      <div class="mach-slate">
+        <span class="mach-idx" aria-hidden="true" id="machIdx">01<i>/</i>06</span>
+        <div class="mach-id">
+          <h3 class="mach-title" id="machTitle">NORTHLIGHT</h3>
+          <p class="mach-meta" id="machMeta">Product engineering &middot; Copenhagen &amp; Lisbon</p>
+          <p class="mach-line" id="machLine">WebGL and GSAP, with a panel that re-themes the whole site live.</p>
+        </div>
+        <a class="mach-open" id="machOpen" href="https://northlight-co.vercel.app" target="_blank" rel="noopener">
+          Open site<svg viewBox="0 0 14 14" width="11" height="11" aria-hidden="true"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Six live builds, three either side, ordered best design first.
+           data-src and data-href are the same URL: the screen loads the real
+           site, and "Open site" hands you the same page in its own tab. -->
+      <div class="mach-wing mach-wing--l" role="tablist" aria-label="Projects, left">
+          <button class="reel is-on" type="button" role="tab"
+                  aria-selected="true" tabindex="0"
+                  id="mach-t1" aria-controls="machScreen" style="--tint:#38bdf8;--d:0"
+                  data-src="https://northlight-co.vercel.app" data-href="https://northlight-co.vercel.app" data-tint="#38bdf8"
+                  data-title="NORTHLIGHT" data-meta="Product engineering &middot; Copenhagen &amp; Lisbon" data-line="WebGL and GSAP, with a panel that re-themes the whole site live.">
+            <span class="reel-art" aria-hidden="true"></span>
+            <span class="reel-body">
+              <span class="reel-n" aria-hidden="true">01</span>
+              <span class="reel-name">NORTHLIGHT</span>
+              <span class="reel-meta">Engineering</span>
+            </span>
+            <span class="reel-tether" aria-hidden="true"></span>
+          </button>
+          <button class="reel" type="button" role="tab"
+                  aria-selected="false" tabindex="-1"
+                  id="mach-t2" aria-controls="machScreen" style="--tint:#ff4d2e;--d:1"
+                  data-src="https://belleville-works.vercel.app" data-href="https://belleville-works.vercel.app" data-tint="#ff4d2e"
+                  data-title="Belleville Works" data-meta="Product engineering &middot; Paris &amp; Antwerp" data-line="Six product interfaces drawn from scratch, cut like a film reel.">
+            <span class="reel-art" aria-hidden="true"></span>
+            <span class="reel-body">
+              <span class="reel-n" aria-hidden="true">02</span>
+              <span class="reel-name">Belleville Works</span>
+              <span class="reel-meta">Product</span>
+            </span>
+            <span class="reel-tether" aria-hidden="true"></span>
+          </button>
+          <button class="reel" type="button" role="tab"
+                  aria-selected="false" tabindex="-1"
+                  id="mach-t3" aria-controls="machScreen" style="--tint:#8b5cf6;--d:2"
+                  data-src="https://velox-vape.vercel.app" data-href="https://velox-vape.vercel.app" data-tint="#8b5cf6"
+                  data-title="V&#926;LOX" data-meta="Commerce &middot; Devices and e-liquid" data-line="A storefront built for the dark: pods, mods and flavour.">
+            <span class="reel-art" aria-hidden="true"></span>
+            <span class="reel-body">
+              <span class="reel-n" aria-hidden="true">03</span>
+              <span class="reel-name">V&#926;LOX</span>
+              <span class="reel-meta">Commerce</span>
+            </span>
+            <span class="reel-tether" aria-hidden="true"></span>
+          </button>
+      </div>
+
+      <div class="mach-wing mach-wing--r" role="tablist" aria-label="Projects, right">
+          <button class="reel" type="button" role="tab"
+                  aria-selected="false" tabindex="-1"
+                  id="mach-t4" aria-controls="machScreen" style="--tint:#d9b382;--d:0"
+                  data-src="https://broadside-software.vercel.app" data-href="https://broadside-software.vercel.app" data-tint="#d9b382"
+                  data-title="Broadside" data-meta="Software studio &middot; Edinburgh &amp; Kyoto" data-line="A letterpress conceit held all the way down to the colophon.">
+            <span class="reel-art" aria-hidden="true"></span>
+            <span class="reel-body">
+              <span class="reel-n" aria-hidden="true">04</span>
+              <span class="reel-name">Broadside</span>
+              <span class="reel-meta">Studio</span>
+            </span>
+            <span class="reel-tether" aria-hidden="true"></span>
+          </button>
+          <button class="reel" type="button" role="tab"
+                  aria-selected="false" tabindex="-1"
+                  id="mach-t5" aria-controls="machScreen" style="--tint:#ff8a1f;--d:1"
+                  data-src="https://halloran-instruments.vercel.app" data-href="https://halloran-instruments.vercel.app" data-tint="#ff8a1f"
+                  data-title="Halloran Instrument Co." data-meta="Industrial &middot; Thermal sensing" data-line="Spec tables, calibration tolerances and a live thermal readout.">
+            <span class="reel-art" aria-hidden="true"></span>
+            <span class="reel-body">
+              <span class="reel-n" aria-hidden="true">05</span>
+              <span class="reel-name">Halloran Instrument Co.</span>
+              <span class="reel-meta">Industrial</span>
+            </span>
+            <span class="reel-tether" aria-hidden="true"></span>
+          </button>
+          <button class="reel" type="button" role="tab"
+                  aria-selected="false" tabindex="-1"
+                  id="mach-t6" aria-controls="machScreen" style="--tint:#8ea3b8;--d:2"
+                  data-src="https://hollis-and-page.vercel.app" data-href="https://hollis-and-page.vercel.app" data-tint="#8ea3b8"
+                  data-title="Hollis &amp; Page" data-meta="Design-led engineering &middot; New York &amp; Rotterdam" data-line="A slow loader, a work slider, and two clocks that disagree.">
+            <span class="reel-art" aria-hidden="true"></span>
+            <span class="reel-body">
+              <span class="reel-n" aria-hidden="true">06</span>
+              <span class="reel-name">Hollis &amp; Page</span>
+              <span class="reel-meta">Studio</span>
+            </span>
+            <span class="reel-tether" aria-hidden="true"></span>
+          </button>
+      </div>
+
+    <div class="work-cta" data-reveal>
+      <a class="btn btn-light" href="#contact"><span class="btn-label">Your project here</span><span class="btn-chip"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    </div>
+  </section>
+
+  <!-- ══════════════ CROSS MARQUEES ══════════════ -->
+  <div class="xmarq" aria-hidden="true">
+    <div class="xmarq-band xmarq-dark"><div class="xmarq-track" data-marquee-rev><span>Lahore</span><b>&#9670;</b><span>Paris</span><b>&#9670;</b><span>Worldwide</span><b>&#9670;</b><span>Since 2019</span><b>&#9670;</b><span>Remote-first</span><b>&#9670;</b><span>Nine countries</span><b>&#9670;</b></div></div>
+    <div class="xmarq-band xmarq-light"><div class="xmarq-track" data-marquee><span>Cloud Native</span><b>&#9670;</b><span>Automation</span><b>&#9670;</b><span>Integrations</span><b>&#9670;</b><span>Data Platforms</span><b>&#9670;</b><span>Product Design</span><b>&#9670;</b><span>API Engineering</span><b>&#9670;</b><span>DevOps</span><b>&#9670;</b><span>Machine Learning</span><b>&#9670;</b></div></div>
+  </div>
+
+  <!-- ══════════════ STUDIO ══════════════
+       No client quotes here — the invented testimonials (fabricated
+       names, companies) were removed. The paragraph and the arch photo
+       carry the section: a factual statement of how the studio works. -->
+  <section class="section studio" id="studio" data-nav-label="How we work">
+    <div class="studio-grid">
+      <!-- OWNER INPUT NEEDED: confirm the attribution line below. I have used
+           "Uzair · Founder" because I could not verify a surname or exact title
+           from the brand material. -->
+      <figure class="studio-fig" data-reveal>
+        <div class="studio-fallback"></div>
+        <img loading="lazy" decoding="async" src="../assets/uzair.jpg" alt="Uzair, founder of Manzar" width="760" height="950" onerror="this.style.display='none'">
+      </figure>
+      <div class="studio-copy">
+        <p class="pill" data-reveal><i></i>How we work</p>
+        <h2 class="giant giant-sm" data-wipe-words>One team, start to finish</h2>
+        <blockquote class="studio-statement" data-reveal>
+          <p>You will not be handed to an account manager. The people who scope your project are the ones who write it, and they stay in every call until it is live.</p>
+          <p>If a deadline is wrong you hear it in week one, <span class="serif">not week eleven</span>.</p>
+        </blockquote>
+        <p class="studio-attrib" data-reveal>
+          <span class="studio-attrib-name">Uzair</span>
+          <span class="studio-attrib-role">Founder, Manzar</span>
+        </p>
+        <!-- OWNER INPUT NEEDED: confirm the repeat-work figure before this
+             goes live. The other two are facts already stated elsewhere. -->
+        <ul class="studio-facts" data-reveal>
+          <li><b>70<i>%</i></b><span>Of new work comes from clients we have already shipped for</span></li>
+          <li><b>90</b><span>Days on call after every launch, included as standard</span></li>
+          <li><b>2</b><span>Studios, Lahore and Paris, one team across both</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ COMMITMENTS ══════════════
+       Replaces the old crew grid. Bios with no faces and no
+       credentials were the least useful thing a stranger could read
+       here — the page already says who does the work (#studio) and
+       that nothing is outsourced anonymously (FAQ). What a buyer
+       actually carries into a first call is the list of ways a build
+       goes wrong: a budget that drifts, months with nothing to click, a
+       slipped date heard too late, a team that goes dark after launch,
+       a repo they turn out not to own. Each clause names one of those
+       and answers it with a term we sign, not an adjective. -->
+  <section class="section cmt" id="commitments">
+    <div class="cmt-head">
+      <div>
+        <p class="pill" data-reveal><i></i>Before you commit</p>
+        <h2 class="giant" data-wipe-words>What we put in writing</h2>
+      </div>
+      <p class="cmt-sub" data-reveal>Budgets drift, dates slip quietly, teams go dark after launch. Six clauses answer that &mdash; and all six are in the agreement, <span class="serif">not just on this page</span>.</p>
+    </div>
+
+    <ol class="cmt-list">
+      <li class="cmt-card" data-reveal>
+        <figure class="cmt-fig">
+        <svg class="cd cd-01" viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <g transform="translate(33.60,-15.99) scale(0.9361)">
+          <line x1="48" y1="252" x2="440" y2="252" stroke="rgba(233,230,221,.16)"/>
+          <line x1="48" y1="252" x2="48" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="87" y1="252" x2="87" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="126" y1="252" x2="126" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="166" y1="252" x2="166" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="205" y1="252" x2="205" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="244" y1="252" x2="244" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="283" y1="252" x2="283" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="322" y1="252" x2="322" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="362" y1="252" x2="362" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="401" y1="252" x2="401" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="440" y1="252" x2="440" y2="258" stroke="rgba(233,230,221,.16)"/>
+          <path d="M60 232 C92 226 122 214 152 196" stroke="rgba(233,230,221,.34)" stroke-width="1.4"
+                pathLength="1" class="cd-draw" style="--d:.9s"/>
+          <line x1="152" y1="176" x2="152" y2="262" stroke="rgba(233,230,221,.34)" stroke-dasharray="3 6"/>
+          <path d="M152 196 L200 196 L200 164 L258 164 L258 130 L330 130 L330 92 L432 92"
+                stroke="rgba(233,230,221,.16)" stroke-width="1.4" pathLength="1" class="cd-draw" style="--d:1.5s"/>
+          <path d="M152 196 L432 196" stroke="rgba(233,230,221,.90)" stroke-width="1.6"
+                pathLength="1" class="cd-draw" style="--d:1.5s"/>
+          <circle cx="0" cy="196" r="4.5" fill="rgba(233,230,221,.90)" class="cd-run01"/>
+          <text x="152" y="284" class="cd-t" text-anchor="middle">SCOPE LOCKED</text>
+          <text x="432" y="80" class="cd-t" text-anchor="end">TYPICAL</text>
+          <text x="432" y="184" class="cd-t" text-anchor="end">FIXED</text>
+          </g>
+        </svg>
+        </figure>
+        <div class="cmt-meta">
+          <span class="cmt-n">01</span>
+          <span class="cmt-risk">Budget drift</span>
+        </div>
+        <h3>The price is fixed at the end of discovery.</h3>
+        <p>One number, approved by you at the end of the scoping week. It moves only if you change the scope in writing.</p>
+      </li>
+      <li class="cmt-card" data-reveal>
+        <figure class="cmt-fig">
+        <svg class="cd cd-02" viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <g transform="translate(-7.68,-42.30) scale(1.0320)">
+          <line x1="40" y1="252" x2="440" y2="252" stroke="rgba(233,230,221,.16)"/>
+          <line x1="58" y1="252" x2="58" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="91" y1="252" x2="91" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="124" y1="252" x2="124" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="157" y1="252" x2="157" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="190" y1="252" x2="190" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="223" y1="252" x2="223" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="256" y1="252" x2="256" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="289" y1="252" x2="289" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="322" y1="252" x2="322" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="355" y1="252" x2="355" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="388" y1="252" x2="388" y2="258" stroke="rgba(233,230,221,.16)"/><line x1="421" y1="252" x2="421" y2="258" stroke="rgba(233,230,221,.16)"/>
+          <rect x="46" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="79" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="112" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="145" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="178" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="211" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="244" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="277" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="310" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="343" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="376" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/><rect x="409" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.16)"/>
+          <g class="cd-drop" style="--i:0"><rect x="46" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="52" y1="225" x2="64" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:1"><rect x="79" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="85" y1="225" x2="97" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:2"><rect x="112" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="118" y1="225" x2="130" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:3"><rect x="145" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="151" y1="225" x2="163" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:4"><rect x="178" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="184" y1="225" x2="196" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:5"><rect x="211" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="217" y1="225" x2="229" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:6"><rect x="244" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="250" y1="225" x2="262" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:7"><rect x="277" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="283" y1="225" x2="295" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:8"><rect x="310" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="316" y1="225" x2="328" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:9"><rect x="343" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="349" y1="225" x2="361" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:10"><rect x="376" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="382" y1="225" x2="394" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g><g class="cd-drop" style="--i:11"><rect x="409" y="206" width="24" height="38" rx="2" stroke="rgba(233,230,221,.90)" stroke-width="1.4" fill="rgba(233,230,221,.09)"/><line x1="415" y1="225" x2="427" y2="225" stroke="rgba(233,230,221,.90)" stroke-width="1.3"/></g>
+          <text x="58" y="278" class="cd-t" text-anchor="middle">W01</text>
+          <text x="421" y="278" class="cd-t" text-anchor="middle">W12</text>
+          <text x="240" y="104" class="cd-t" text-anchor="middle">ONE OPENABLE BUILD A WEEK</text>
+          <line x1="40" y1="126" x2="440" y2="126" stroke="rgba(233,230,221,.16)" stroke-dasharray="2 8"/>
+          </g>
+        </svg>
+        </figure>
+        <div class="cmt-meta">
+          <span class="cmt-n">02</span>
+          <span class="cmt-risk">Nothing to show</span>
+        </div>
+        <h3>A working build lands every Friday.</h3>
+        <p>From week two you get a URL, not a status report. Progress you cannot open is not progress.</p>
+      </li>
+      <li class="cmt-card" data-reveal>
+        <figure class="cmt-fig">
+        <svg class="cd cd-03" viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <g transform="translate(-97.12,-34.62) scale(1.2040)">
+          <path d="M170 74 L152 74 L152 252 L170 252" stroke="rgba(233,230,221,.90)" stroke-width="1.6"
+                pathLength="1" class="cd-draw" style="--d:1.1s"/>
+          <path d="M310 74 L328 74 L328 252 L310 252" stroke="rgba(233,230,221,.90)" stroke-width="1.6"
+                pathLength="1" class="cd-draw" style="--d:1.1s" transform="translate(80,0)"/>
+          <rect x="196" y="96" width="84" height="56" rx="4" stroke="rgba(233,230,221,.34)" stroke-width="1.4"/><circle cx="214" cy="124" r="5.5" stroke="rgba(233,230,221,.90)" stroke-width="1.4" class="cd-pop" style="--i:0"/><line x1="222" y1="124" x2="242" y2="124" stroke="rgba(233,230,221,.90)" stroke-width="1.4" class="cd-pop" style="--i:0"/><rect x="300" y="96" width="84" height="56" rx="4" stroke="rgba(233,230,221,.34)" stroke-width="1.4"/><circle cx="318" cy="124" r="5.5" stroke="rgba(233,230,221,.90)" stroke-width="1.4" class="cd-pop" style="--i:1"/><line x1="326" y1="124" x2="346" y2="124" stroke="rgba(233,230,221,.90)" stroke-width="1.4" class="cd-pop" style="--i:1"/><rect x="196" y="170" width="84" height="56" rx="4" stroke="rgba(233,230,221,.34)" stroke-width="1.4"/><circle cx="214" cy="198" r="5.5" stroke="rgba(233,230,221,.90)" stroke-width="1.4" class="cd-pop" style="--i:2"/><line x1="222" y1="198" x2="242" y2="198" stroke="rgba(233,230,221,.90)" stroke-width="1.4" class="cd-pop" style="--i:2"/><rect x="300" y="170" width="84" height="56" rx="4" stroke="rgba(233,230,221,.34)" stroke-width="1.4"/><circle cx="318" cy="198" r="5.5" stroke="rgba(233,230,221,.90)" stroke-width="1.4" class="cd-pop" style="--i:3"/><line x1="326" y1="198" x2="346" y2="198" stroke="rgba(233,230,221,.90)" stroke-width="1.4" class="cd-pop" style="--i:3"/>
+          <text x="240" y="64" class="cd-t" text-anchor="middle">IN YOUR NAME</text>
+          </g>
+        </svg>
+        </figure>
+        <div class="cmt-meta">
+          <span class="cmt-n">03</span>
+          <span class="cmt-risk">Vendor lock-in</span>
+        </div>
+        <h3>Every account is opened in your name.</h3>
+        <p>Repo, cloud, domain, design files &mdash; opened under your organisation in week one. Nothing to migrate at the end.</p>
+      </li>
+      <li class="cmt-card" data-reveal>
+        <figure class="cmt-fig">
+        <svg class="cd cd-04" viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <g transform="translate(33.60,-10.07) scale(0.9235)">
+          <line x1="48" y1="182" x2="440" y2="182" stroke="rgba(233,230,221,.34)"/>
+          <line x1="56" y1="176" x2="56" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="89" y1="176" x2="89" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="122" y1="176" x2="122" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="155" y1="176" x2="155" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="188" y1="176" x2="188" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="221" y1="176" x2="221" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="254" y1="176" x2="254" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="287" y1="176" x2="287" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="320" y1="176" x2="320" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="353" y1="176" x2="353" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="386" y1="176" x2="386" y2="188" stroke="rgba(233,230,221,.16)"/><line x1="419" y1="176" x2="419" y2="188" stroke="rgba(233,230,221,.16)"/>
+          <g class="cd-ghost">
+            <path d="M419 96 L433 116 L419 136 L405 116 Z" stroke="rgba(233,230,221,.16)" stroke-width="1.4"/>
+            <line x1="419" y1="136" x2="419" y2="176" stroke="rgba(233,230,221,.16)" stroke-dasharray="3 5"/>
+          </g>
+          <g class="cd-early">
+            <circle cx="122" cy="116" r="26" stroke="rgba(233,230,221,.34)" stroke-width="1.2" class="cd-ring"/>
+            <path d="M122 96 L136 116 L122 136 L108 116 Z" stroke="rgba(233,230,221,.90)" stroke-width="1.6"
+                  fill="rgba(233,230,221,.10)"/>
+            <line x1="122" y1="108" x2="122" y2="119" stroke="rgba(233,230,221,.90)" stroke-width="1.6"/>
+            <circle cx="122" cy="126" r="1.6" fill="rgba(233,230,221,.90)"/>
+            <line x1="122" y1="136" x2="122" y2="176" stroke="rgba(233,230,221,.34)"/>
+          </g>
+          <line x1="0" y1="72" x2="0" y2="236" stroke="rgba(233,230,221,.34)" class="cd-play"/>
+          <text x="122" y="232" class="cd-t" text-anchor="middle">WEEK 03</text>
+          <text x="419" y="232" class="cd-t" text-anchor="middle">WEEK 11</text>
+          <text x="240" y="272" class="cd-t" text-anchor="middle">TOLD EARLY, NOT LATE</text>
+          </g>
+        </svg>
+        </figure>
+        <div class="cmt-meta">
+          <span class="cmt-n">04</span>
+          <span class="cmt-risk">The late surprise</span>
+        </div>
+        <h3>You hear bad news the week we know it.</h3>
+        <p>A date at risk or an approach that is not working goes in that Monday&rsquo;s note, not week eleven&rsquo;s.</p>
+      </li>
+      <li class="cmt-card" data-reveal>
+        <figure class="cmt-fig">
+        <svg class="cd cd-05" viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <g transform="translate(-17.91,-39.05) scale(1.0731)">
+          <line x1="48" y1="186" x2="228" y2="186" stroke="rgba(233,230,221,.16)" stroke-width="1.4"/>
+          <text x="48" y="168" class="cd-t">BUILD</text>
+          <line x1="228" y1="120" x2="228" y2="234" stroke="rgba(233,230,221,.90)" stroke-width="1.6"/>
+          <circle cx="228" cy="186" r="6" fill="rgba(233,230,221,.90)"/>
+          <text x="228" y="110" class="cd-t" text-anchor="middle">LAUNCH</text>
+          <path d="M228 186 L432 186" stroke="rgba(233,230,221,.90)" stroke-width="1.8"
+                pathLength="1" class="cd-draw" style="--d:1.6s"/>
+          <path d="M228 214 L228 226 L432 226 L432 214" stroke="rgba(233,230,221,.34)" stroke-width="1.3"
+                pathLength="1" class="cd-draw" style="--d:1.6s"/>
+          <text x="330" y="250" class="cd-t" text-anchor="middle">90 DAYS, INCLUDED</text>
+          <g class="cd-pop" style="--i:0"><line x1="288" y1="178" x2="288" y2="194" stroke="rgba(233,230,221,.34)"/><text x="288" y="166" class="cd-t" text-anchor="middle">30</text></g><g class="cd-pop" style="--i:1"><line x1="348" y1="178" x2="348" y2="194" stroke="rgba(233,230,221,.34)"/><text x="348" y="166" class="cd-t" text-anchor="middle">60</text></g><g class="cd-pop" style="--i:2"><line x1="408" y1="178" x2="408" y2="194" stroke="rgba(233,230,221,.34)"/><text x="408" y="166" class="cd-t" text-anchor="middle">90</text></g>
+          </g>
+        </svg>
+        </figure>
+        <div class="cmt-meta">
+          <span class="cmt-n">05</span>
+          <span class="cmt-risk">The team that vanishes</span>
+        </div>
+        <h3>Ninety days of support come with the launch.</h3>
+        <p>Included, not invoiced. A written runbook, a recorded walkthrough, and the same people on the same channel.</p>
+      </li>
+      <li class="cmt-card" data-reveal>
+        <figure class="cmt-fig">
+        <svg class="cd cd-06" viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <g transform="translate(-27.30,-30.51) scale(1.0940)">
+          <path d="M56 150 L214 150" stroke="rgba(233,230,221,.90)" stroke-width="1.6"
+                pathLength="1" class="cd-draw" style="--d:.9s"/>
+          <text x="56" y="132" class="cd-t">SCOPING WEEK</text>
+          <circle cx="238" cy="150" r="13" stroke="rgba(233,230,221,.90)" stroke-width="1.6"
+                  fill="rgba(233,230,221,.10)"/>
+          <path d="M258 144 C300 128 316 106 348 96" stroke="rgba(233,230,221,.90)" stroke-width="1.5"
+                pathLength="1" class="cd-draw" style="--d:1.5s"/>
+          <path d="M258 156 C300 172 316 194 348 204" stroke="rgba(233,230,221,.90)" stroke-width="1.5"
+                pathLength="1" class="cd-draw" style="--d:1.5s"/>
+          <g class="cd-pop" style="--i:0">
+            <rect x="356" y="80" width="76" height="32" rx="4" stroke="rgba(233,230,221,.90)" stroke-width="1.4"/>
+            <text x="394" y="100" class="cd-t" text-anchor="middle">BUILD</text>
+          </g>
+          <g class="cd-pop" style="--i:1">
+            <rect x="356" y="188" width="76" height="32" rx="4" stroke="rgba(233,230,221,.34)" stroke-width="1.4"/>
+            <text x="394" y="208" class="cd-t" text-anchor="middle">WALK</text>
+          </g>
+          <text x="240" y="250" class="cd-t" text-anchor="middle">BOTH DOORS OPEN</text>
+          </g>
+        </svg>
+        </figure>
+        <div class="cmt-meta">
+          <span class="cmt-n">06</span>
+          <span class="cmt-risk">Signing blind</span>
+        </div>
+        <h3>Scoping ends in a decision, not an obligation.</h3>
+        <p>The brief, the architecture and the estimate are yours whatever you decide next.</p>
+      </li>
+    </ol>
+
+    <p class="cmt-foot" data-reveal>
+      <span>Standard terms</span>
+      The agreement goes out unredacted after the first call.
+      <a class="cmt-foot-link" href="#contact">Request a copy &rarr;</a>
+    </p>
+  </section>
+
+  <div class="mz-notch" aria-hidden="true"></div>
+
+  <!-- ══════════════ FAQ ══════════════ -->
+  <section class="section faq" id="faq">
+    <div class="faq-left">
+      <p class="pill" data-reveal><i></i>Before you ask</p>
+      <h2 class="giant" data-wipe-words>FAQ</h2>
+      <div class="faq-note" data-reveal>
+        <p>“If your question isn't here, it fits in an email. We read everything that lands in the inbox.”</p>
+        <div class="faq-note-meta"><span>RESPONSE TIME</span><strong>Under 24h</strong></div>
+      </div>
+    </div>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span>We're a startup and need an MVP fast. How fast is fast?</span><span class="faq-x" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>Six weeks from signed scope to a product real users can log into. An openable build in week two, a feature-complete beta around week four. Tell us your date on the first call — if it can't be held you'll hear that immediately, not in week eleven.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span>Can you build an AI chat product?</span><span class="faq-x" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>Yes. Assistants and copilots inside your product, voice and phone agents, and automation with a human gate on anything irreversible — all grounded in your own data so answers cite a record. Evals, PII redaction and fallbacks come with the build.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span>Can you handle HIPAA, PCI or SOC 2 work?</span><span class="faq-x" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>Yes. Those controls go in from week one — append-only audit trails, least privilege, managed keys, data residency — and the evidence pack ships with the code. The certificate is issued to you by your auditor; we make sure nothing in the build stands between you and it.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span>How does a project start?</span><span class="faq-x" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>With a call and a one-page brief we write for you, free. If we're not the right fit, we'll say so and point you to someone who is.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span>What does an engagement cost?</span><span class="faq-x" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>Scoping sprints start around $6k. Full builds typically run $25k to $120k depending on scope. You get the number after scoping, and it doesn't drift.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span>Who actually works on our product?</span><span class="faq-x" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>The same senior team that scoped it, plus specialists we bring in by name when a project needs them. You meet everyone who touches the codebase. Nothing is outsourced anonymously.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span>How fast do you ship?</span><span class="faq-x" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>An MVP in about six weeks. A marketing site in three to five. A larger v1 platform in eight to fourteen. You open a working build every Friday from week two either way.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span>What happens after launch?</span><span class="faq-x" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>Ninety days of included support, then a retainer if you want us on call. Either way you own the code, the accounts, and the docs.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ CONTACT ══════════════ -->
+  <section class="section contact" id="contact">
+    <div class="contact-map" aria-hidden="true" id="contactMap"></div>
+    <div class="contact-left">
+      <p class="pill" data-reveal><i></i>Contact</p>
+      <h2 class="giant" data-wipe-words>Say hello</h2>
+      <div class="contact-lines" data-reveal>
+        <a class="contact-mail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
+        <p class="contact-phone">+92 300 843 7581 <span>·</span> +33 6 24 51 08 92</p>
+      </div>
+      <div class="contact-cities" data-reveal>
+        <p><b>Lahore</b> <span data-clock="Asia/Karachi">--:--</span></p>
+        <p><b>Paris</b> <span data-clock="Europe/Paris">--:--</span></p>
+      </div>
+    </div>
+    <form class="contact-form" id="contactForm" data-reveal novalidate>
+      <div class="form-row">
+        <label>Name<input type="text" name="name" placeholder="Ayesha Khan" required></label>
+        <label>Email<input type="email" name="email" placeholder="you@company.com" required></label>
+      </div>
+      <div class="form-row">
+        <label>You need<select name="need"><option>An MVP, fast</option><option>An AI product or chat</option><option>A regulated platform (healthcare / finance)</option><option>Product engineering</option><option>Interface &amp; interactive</option><option>Technical strategy</option><option>Design systems</option><option>Film &amp; production (Manzar Studio)</option></select></label>
+        <label>Budget<select name="budget"><option>Under $10k</option><option>$10k to $25k</option><option>$25k to $75k</option><option>$75k +</option></select></label>
+      </div>
+      <label>Message<textarea name="message" rows="4" placeholder="Tell us what you're building, and when it needs to exist."></textarea></label>
+      <button class="btn btn-light btn-submit" type="submit"><span class="btn-label">Send it</span><span class="btn-chip"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      <p class="form-ok" id="formOk">Opening your mail app. If nothing happens, write to hello@manzar.studio.</p>
+    </form>
+  </section>
+
+  <!-- ══════════════ BACK TO STUDIO ══════════════
+       The mirrored doorway: full-bleed act, .mz-notch top and bottom,
+       ghost منظر behind, a preview window onto the Studio page. Same
+       shape as the "Enter Manzar Labs" doorway on the main site, so
+       crossing between the two rooms reads as one product. -->
+  <section class="studio-return" id="studio-return" aria-labelledby="studioReturnTitle">
+    <div class="return-act">
+      <div class="return-inner">
+        <span class="mz-eyebrow"><i></i>Manzar Studio</span>
+        <h2 class="return-title" id="studioReturnTitle">Film, photography and <span class="mz-serif">post</span>, cut with the same discipline we ship code.</h2>
+        <p class="return-lead">The other room. Commercials, brand films and campaign stills, from Lahore and Paris.</p>
+        <!-- The preview used to be a JPEG of the Studio hero, which had
+             already gone stale once Studio's hero changed. It is now the
+             actual hero rebuilt in markup: the same eyebrow, the same
+             headline, the same drawn wordmark. It cannot fall out of date,
+             it stays sharp at any size, and the browser chrome around it
+             says "another website" more plainly than any caption. -->
+        <figure class="return-preview" aria-label="Manzar Studio, manzar.studio">
+          <div class="rp-screen" aria-hidden="true">
+            <div class="rp-glow"></div>
+            <!-- The real site, not a drawing of it. src is set by
+                 studioPreview() in main.js only once this section comes
+                 near the viewport, so the visitor never pays for Studio's
+                 hero film unless they actually scroll this far. The
+                 composed hero below stays as the placeholder underneath
+                 and as the fallback if the frame cannot load. -->
+            <iframe class="rp-frame" title="Manzar Studio" tabindex="-1"
+                    scrolling="no" loading="lazy"
+                    referrerpolicy="no-referrer"></iframe>
+            <div class="rp-hero">
+              <span class="rp-eyebrow">Creative Technology Studio</span>
+              <p class="rp-head">Attention is the hardest<br>thing to earn.</p>
+              <p class="rp-sub">Film, design and software from an independent<br>studio in Lahore and Paris, since 2019.</p>
+              <img class="rp-mark" src="../assets/manzar-wordmark.png" alt="" width="2556" height="980" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </figure>
+        <div class="return-cta">
+          <div class="mz-switch mz-switch--labs" role="group" aria-label="Manzar worlds">
+            <a class="mz-switch-opt" href="../index.html" data-world="studio">Studio</a>
+            <a class="mz-switch-opt is-on" href="index.html" data-world="labs">Labs</a>
+          </div>
+          <a class="mz-btn mz-btn-light" href="../index.html" data-world="studio">
+            <span class="mz-btn-label">Back to Manzar Studio</span>
+            <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══════════════ FOOTER ══════════════
+     Same grammar as the main site's footer (index.html <footer class="foot">):
+     a big link-nav on the left, a Write/Studios/Elsewhere column on the
+     right, a meta bar with live clocks + back-to-top, then the full-bleed
+     dither band. Room chip reads "Labs"; copy below is Labs' own. -->
+<footer class="foot" id="footer">
+  <div class="foot-shell">
+    <div class="foot-grid">
+      <nav class="fnav" aria-label="Footer">
+        <a href="#mission">About <span class="fa">→</span></a>
+        <a href="#speed">Timeline <span class="fa">→</span></a>
+        <a href="#services">What we build <span class="fa">→</span></a>
+        <a href="#work">Work <span class="fa">→</span></a>
+        <a href="#faq">FAQ <span class="fa">→</span></a>
+        <a href="#contact">Contact <span class="fa">→</span></a>
+      </nav>
+      <div class="fcol">
+        <div class="fblock">
+          <span class="fb-lab">Write</span>
+          <a class="femail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
+        </div>
+        <div class="fblock">
+          <span class="fb-lab">Offices</span>
+          <p>Lahore, Pakistan · Paris, France<br>Working worldwide.</p>
+        </div>
+        <div class="fblock">
+          <span class="fb-lab">Elsewhere</span>
+          <div class="fsoc">
+            <a href="https://www.instagram.com/manzar.studio/" target="_blank" rel="noopener">Instagram ↗</a>
+            <a href="https://www.linkedin.com/company/manzarstudio/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot-meta">
+      <span class="fm-clock">Lahore <span data-clock="Asia/Karachi">--:--:--</span> · Paris <span data-clock="Europe/Paris">--:--:--</span></span>
+      <a class="totop" href="#top">Back to top ↑</a>
+      <span>© <span id="year">2026</span> Manzar Labs</span>
+    </div>
+  </div>
+  <div class="foot-band">
+    <canvas id="cv-band-labs" aria-hidden="true"></canvas>
+    <div class="band-in">
+      <span class="band-logo">
+        <img src="../assets/manzar-wordmark.png" alt="Manzar">
+        <span class="band-logo-chip">Labs</span>
+      </span>
+      <span class="band-tag">Software that earns the second look.<br>Manzar Labs · Lahore / Paris</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/vendor/gsap.min.js"></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/js/vendor/SplitText.min.js"></script>
+<script src="assets/js/vendor/lenis.min.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/plate.js" defer></script>
+
+
+<script src="../assets/js/crossover.js"></script>
+<script src="../assets/js/menu.js" defer></script>
+<!-- ══════════════ MENU ══════════════
+     Component: /assets/css/menu.css + /assets/js/menu.js. Self-contained,
+     so the same markup runs on Studio, Labs and every subpage.
+     Twelve rows, three groups, in the order Ali specified. --i drives the
+     open stagger from CSS, so no script has to touch the rows. -->
+<div class="mzx" id="mzxMenu" role="dialog" aria-modal="true"
+     aria-label="Main menu" aria-hidden="true" hidden>
+
+  <div class="mzx-head">
+    <span class="mzx-eyebrow">Menu</span>
+    <button class="mzx-close" type="button" data-mzx-close aria-label="Close menu">
+      <span class="mzx-close-label">Close</span>
+      <span class="mzx-close-x" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 6 18 18M18 6 6 18"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+
+  <div class="mzx-body">
+    <nav class="mzx-nav" aria-label="Main">
+
+      <div class="mzx-group">
+        <p class="mzx-group-label">Studio</p>
+        <a class="mzx-row" href="../index.html#work" style="--i:0"
+           data-media="../assets/menu/work.svg" data-kicker="Selected work">
+          <span class="mzx-n">01</span>
+          <span class="mzx-t">Work</span>
+          <span class="mzx-d">Selected engagements, shipped and live.</span>
+        </a>
+        <a class="mzx-row" href="../index.html#services" style="--i:1"
+           data-media="../assets/menu/services.svg" data-kicker="What we do">
+          <span class="mzx-n">02</span>
+          <span class="mzx-t">Services</span>
+          <span class="mzx-d">Brand, product and the systems behind them.</span>
+        </a>
+        <a class="mzx-row" href="../index.html#reel" style="--i:2"
+           data-media="../assets/menu/reel.svg" data-kicker="In motion">
+          <span class="mzx-n">03</span>
+          <span class="mzx-t">Showreel</span>
+          <span class="mzx-d">The work in motion, thirty seconds at a time.</span>
+        </a>
+        <a class="mzx-row" href="../index.html#process" style="--i:3"
+           data-media="../assets/menu/process.svg" data-kicker="How we ship">
+          <span class="mzx-n">04</span>
+          <span class="mzx-t">Process</span>
+          <span class="mzx-d">Discover, build, ship &mdash; the discipline behind it.</span>
+        </a>
+        <a class="mzx-row" href="#faq" style="--i:4"
+           data-media="../assets/menu/faq.svg" data-kicker="Before you ask">
+          <span class="mzx-n">05</span>
+          <span class="mzx-t">FAQ</span>
+          <span class="mzx-d">Timelines, pricing, scope &mdash; answered plainly.</span>
+        </a>
+      </div>
+
+      <div class="mzx-group">
+        <p class="mzx-group-label">Labs</p>
+        <a class="mzx-row" href="../capabilities/cloud.html" style="--i:5"
+           data-media="../assets/menu/cloud.svg" data-kicker="Built to hold">
+          <span class="mzx-n">06</span>
+          <span class="mzx-t">Cloud &amp; Infrastructure</span>
+          <span class="mzx-d">Systems that hold under real load.</span>
+        </a>
+        <a class="mzx-row" href="../capabilities/mobile.html" style="--i:6"
+           data-media="../assets/menu/mobile.svg" data-kicker="In the store">
+          <span class="mzx-n">07</span>
+          <span class="mzx-t">Mobile Development</span>
+          <span class="mzx-d">iOS, Android, React Native. Shipped, not prototyped.</span>
+        </a>
+        <a class="mzx-row" href="../capabilities/ai.html" style="--i:7"
+           data-media="../assets/menu/ai.svg" data-kicker="Past the demo">
+          <span class="mzx-n">08</span>
+          <span class="mzx-t">AI Development</span>
+          <span class="mzx-d">Applied models, not demo-ware.</span>
+        </a>
+        <a class="mzx-row" href="../capabilities/iot.html" style="--i:8"
+           data-media="../assets/menu/iot.svg" data-kicker="Wired up">
+          <span class="mzx-n">09</span>
+          <span class="mzx-t">IoT &amp; Connected Systems</span>
+          <span class="mzx-d">Hardware and firmware, wired to software.</span>
+        </a>
+      </div>
+
+      <div class="mzx-group">
+        <p class="mzx-group-label">Company</p>
+        <a class="mzx-row" href="../pricing.html" style="--i:9"
+           data-media="../assets/menu/pricing.svg" data-kicker="Engagement models">
+          <span class="mzx-n">10</span>
+          <span class="mzx-t">Pricing</span>
+          <span class="mzx-d">Sprint, build or retainer &mdash; three ways in.</span>
+        </a>
+        <a class="mzx-row" href="../index.html#studio" style="--i:10"
+           data-media="../assets/menu/studio.svg" data-kicker="Who we are">
+          <span class="mzx-n">11</span>
+          <span class="mzx-t">Studio</span>
+          <span class="mzx-d">Who we are and how we work.</span>
+        </a>
+        <a class="mzx-row" href="#contact" style="--i:11"
+           data-media="../assets/menu/contact.svg" data-kicker="Start a conversation">
+          <span class="mzx-n">12</span>
+          <span class="mzx-t">Contact</span>
+          <span class="mzx-d">hello@manzar.studio &mdash; say what you need.</span>
+        </a>
+      </div>
+
+    </nav>
+
+    <aside class="mzx-media" data-mzx-media
+           data-default-media="../assets/menu/world.svg"
+           data-default-kicker="Two halves, one studio"
+           data-default-caption="Manzar Labs &mdash; software, built at startup speed.">
+      <div class="mzx-frame" data-mzx-frame>
+        <img class="is-on" src="../assets/menu/world.svg" alt="" width="800" height="500" decoding="async">
+        <img src="" alt="" aria-hidden="true" width="800" height="500" decoding="async">
+      </div>
+      <p class="mzx-kicker" data-mzx-kicker>Two halves, one studio</p>
+      <p class="mzx-caption" data-mzx-caption>Manzar Labs &mdash; software, built at startup speed.</p>
+    </aside>
+  </div>
+
+  <div class="mzx-foot">
+    <div class="mzx-switch" role="group" aria-label="Manzar worlds">
+      <span class="mzx-switch-rail" aria-hidden="true"></span>
+      <a href="../index.html" data-world="studio">Studio</a>
+      <a href="../labs/index.html" class="is-on" data-world="labs">Labs</a>
+    </div>
+    <a class="mzx-mail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
+    <div class="mzx-clocks">
+      <div class="mzx-clock">
+        <span class="mzx-clock-city">Lahore</span>
+        <time class="mzx-clock-time" data-mzx-clock="Asia/Karachi">--:--</time>
+      </div>
+      <div class="mzx-clock">
+        <span class="mzx-clock-city">Paris</span>
+        <time class="mzx-clock-time" data-mzx-clock="Europe/Paris">--:--</time>
+      </div>
+    </div>
+    <a class="mzx-cta" href="#contact">Start a project <i aria-hidden="true">&#8599;</i></a>
+  </div>
+</div>
+</body>
+</html>

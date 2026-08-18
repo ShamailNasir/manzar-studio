@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.35" y2="1">
+<stop offset="0" stop-color="#131210"/><stop offset="1" stop-color="#0C0B09"/>
+</linearGradient>
+<pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+<path d="M50 0V50M0 50H50" fill="none" stroke="rgba(233,230,221,0.045)" stroke-width="1"/>
+</pattern>
+</defs>
+<rect width="800" height="500" fill="url(#bg)"/>
+<rect width="800" height="500" fill="url(#grid)"/>
+<!-- FIT is computed per frame: the motif is measured, then scaled and
+     translated so every drawing sits dead centre and carries the same
+     visual weight. The old wrapper scaled about (400,250), which is not
+     the centre of a 480x300 canvas, so everything drifted up and left. -->
+<g transform="translate(-256.84,-160.53) scale(1.6421)"
+   stroke="rgba(233,230,221,0.72)" fill="none" stroke-width="1.32" stroke-linecap="square"
+   vector-effect="non-scaling-stroke">
+<circle cx="400.0" cy="250.0" r="118" stroke="rgba(233,230,221,0.7)"/><ellipse cx="400.0" cy="250.0" rx="40" ry="118" stroke="rgba(233,230,221,0.22)"/><ellipse cx="400.0" cy="250.0" rx="79" ry="118" stroke="rgba(233,230,221,0.22)"/><line x1="282.0" y1="250.0" x2="518.0" y2="250.0" stroke="rgba(233,230,221,0.22)"/><line x1="296.0" y1="194.0" x2="504.0" y2="194.0" stroke="rgba(233,230,221,0.14)"/><line x1="296.0" y1="306.0" x2="504.0" y2="306.0" stroke="rgba(233,230,221,0.14)"/>
+</g>
+<rect x=".5" y=".5" width="799" height="499" fill="none" stroke="rgba(233,230,221,0.1)"/>
+
+</svg>

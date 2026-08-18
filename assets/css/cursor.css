@@ -1,0 +1,82 @@
+/* ============================================================
+   THE MANZAR POINTER
+   ============================================================
+   This file exists on its own, and is linked FIRST in the <head>
+   of every page, for one reason: the pointer used to fall back to
+   the browser default whenever you changed page.
+
+   Two things were causing that, and both are fixed here.
+
+   1. The rule only existed on the two main pages. The capability
+      pages and the pricing page had no pointer rule at all, so they
+      simply showed the system arrow. Linking this one file on every
+      page fixes that permanently — a new page only has to add the
+      link, and it inherits the pointer.
+
+   2. `cursor:url(file.png), auto` does not fetch the image until the
+      rule first applies, and shows the `auto` fallback while it is in
+      flight. That is the flicker on every fresh navigation. The two
+      images are therefore embedded below as data URIs: they arrive
+      with the stylesheet, so there is nothing left to wait for.
+
+   There is deliberately no JavaScript involved. It used to be gated
+   behind a class that JS added to <html>; if that script was slow,
+   or threw, or the page was restored from the back/forward cache,
+   the pointer was gone. A media query cannot fail that way.
+
+   Both images are monochrome. Default is the white dart with a thin
+   grey keyline (so it survives on white) and a soft cast shadow.
+   The clickable state is the same dart inverted onto a white plate,
+   lifted 6%, with a deeper shadow. No accent colour anywhere.
+
+   Hotspot is 2 2 on both, and the clickable dart is scaled about
+   that exact point, so the tip does not move as the state changes.
+   ============================================================ */
+
+@media (hover: hover) and (pointer: fine){
+
+  html, body{
+    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFK0lEQVR4nO2VX0xTVxzHf+f0nlagTNCQhaIdyh//EBZJkz0sMVk1mCCPC7wY0elssxr3YrKXJda+mL0vPjTubYkmJHOLWRSmm0GQ4QQVegsClt7elouW/rHlT3vvPeeePSD4ByeosCe/Tzf3nNzf5/f9/bkIXpHX6xXq6gCXlX1hOJ1O+ur5WgsBAFy4cOFjJSZ/qeos7HQ6exsbGzNer1ew2WyotraWrycIAgA4c+b741SnP3HO9dmZ2T8KNhScr6yq6vN4PGmXy0UcDgfU1irc6fStOQgGAEinU1Gz2aw2HWwmu+t2N1Om/zYyIv783enTTXv27LG63W790qUp5Pf7yc2bXmEtAVBLS4vJbrfbETeu7G9srGs8cIAODQ4Kvbd70MTEhKZT/XqBef0cQV6vd8PAwBSutOMfqqqqT7m/8VCBEAScw/Bw0NTTfQvWEwS1t7ebW1tbtSNHDjVX2Lb8csLltmzdajcopYgQwg3D4MGguG4gyO/3k4sXL/Jdu3ZVFRZYLu/bt39308FmRik1YYyBc84JIZxSuiJIeXk5qqurY62trextHDAFg0FTKBQiG4uLzlXX1H7rOXmSIYQxIQQBAFBKXwsSDodVTdduFJjJ+cqqHX0ejycNC5PFVw0AAOD3+4nb7aZHDx9usm2xXT7hclsqK7cZjDFsMpmWLr8OpPtWF0iSpGq6doMQ8qPFUvigt7c32dXVxVYDghcfHA6HsKGIhPL5fEgUA2AYBmeMvfQBQRCAEIJ0XceMMVxf/ynznDxFj351zLJzx85mwST8TgR8rri4uKSlpYW0t7eblod8DUBpaanR1vY5jsXi0XxOvT42Ogq6rgNCCDh/OQlKKWCMF12AyclJLEcikM/nOXCuZbNZNDQ09FEwGDQHg0G0EsDSBa/Xa/b5fHrboUONti22X48d/7qwpqbaoNTAgrCwewzDAADgM9ksF8UAFsUAyJGIkX76NP546nF/OCLfjsfjYjKZfKiq6hQA5ADAeBPA0laz2Wzc5XIJABBSVW00KIoNNTW1nHPGOeeIcw6GYUBnxzXU1/c3mp2dySaSqVFpQvonnkhMSJIka5qWIISkdF3PAgCFVfTAEoDLpbCzZ8uFO3fuxD6x2ztDoUcN+XweCYIAjFEQBGL0999FHdeuGqFw+KokyX2JREKZnp6eEgRhzmq1ZktLS7MWiyUjy/I8AOirAVhqQoR8BgBAR0eHOp+b/TORSOSiURkLgsANg3NN03hP9y2UzmTu3x24f2VsbOweY2y4rKwsVFFR8QhjLD158kSRZTkDANpK1i9z4IUyEAAIq6r6UBQDDZWV2zjGmN8bGMARSdLGx8c708mkXF1dPTUzM6MoijL3LNvFgKveAS85ALBQhvLyciTLciw3n++YCIWAUgqMMd7T041SqfSgJMnDVqt1OpfLxRRFSQOACgCLM/9WwZcBvFAGbS43+1diOpFTlElTIDBkkqSwNvYo1BmPx5XNmzcnZVmee9egL2rZv/35NOTDmq6ODA0ONkSjUZRKpR5IkjRSUlKSZoytustXEn71haIozGKx4J6e/qiu6R2iGECxaFR9ODp+LR6PT27atCkdiUQWs39vLQPw+XzG3r17+fDwsD6XU28kEtPJTCbTJ8uyWFRUlAaADDyv+Xvrv1YlAgBUX1+/cfv27Z8FAgFBluW42WyOzc/PJ2CN7H8TwKLMAGAFgGJYmO0MAORhlTO+FsIul6vQ4XAUPoNZVrL/SwhWduuDPuiD3kn/ArcQIOpYMSwJAAAAAElFTkSuQmCC") 2 2, default;
+  }
+
+  /* Anything that can be clicked, plus the children of those things,
+     because a <span> inside a button gets its own cursor otherwise. */
+  a, a *,
+  button, button *,
+  [role="button"], [role="button"] *,
+  summary, summary *,
+  label[for], label[for] *,
+  select, option,
+  [onclick], [data-href],
+  .acc-item, .acc-row, .acc-q, .acc-head,
+  .faq-item, .faq-q, .faq-head,
+  .mz-switch-opt, .mz-sw-opt, .mz-switch, .mz-menu-row, .mz-menu-row *,
+  .mz-burger, .mz-menu-close, .menu-toggle,
+  .reel, .mach-exit, .mach-open,
+  .btn, .btn *, .btn-light, .btn-ghost, .btn-dark,
+  input[type="submit"], input[type="button"], input[type="checkbox"], input[type="radio"]{
+    cursor: url("data:image/png;base64,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") 2 2, pointer;
+  }
+
+  /* Text you can actually select gets the I-beam — but never inside a
+     link or button, where the click matters more than the selection. */
+  p, h1, h2, h3, h4, h5, h6, li, blockquote, td, th,
+  input[type="text"], input[type="email"], input[type="search"], textarea{
+    cursor: text;
+  }
+  a p, a h1, a h2, a h3, a h4, a h5, a h6, a li,
+  button p, button h1, button h2, button h3, button h4, button li,
+  [role="button"] p, [role="button"] li,
+  .mz-menu-row p, .mz-menu-row h1, .mz-menu-row h2, .mz-menu-row h3,
+  .mz-menu-row h4, .mz-menu-row li,
+  summary p, summary h1, summary h2, summary h3, summary h4{
+    cursor: url("data:image/png;base64,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") 2 2, pointer;
+  }
+
+  [disabled], .is-disabled{ cursor: not-allowed; }
+
+  /* The crossover curtain sits over everything during a world change.
+     Without this it would reset the pointer to the default for the
+     length of the transition. */
+  .mz-cross, .mz-cross *, .mz-xover, .mz-xover *{ cursor: inherit; }
+}

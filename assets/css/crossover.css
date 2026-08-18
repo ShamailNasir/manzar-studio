@@ -1,0 +1,59 @@
+/* ============================================================
+   MANZAR · world crossover — the curtain
+   Loaded by both Studio and Labs so the two halves of the
+   movement match exactly.
+   ============================================================ */
+
+/* the curtain sits over everything, so it must not reset the pointer */
+.mz-cross{
+  cursor:inherit;
+  position:fixed; inset:0; z-index:4000;
+  background:#0B0A08;
+  display:grid; place-items:center;
+  transform:translateY(100%);
+  will-change:transform;
+  pointer-events:none;
+}
+/* covering: the curtain has wiped up over the page */
+.mz-cross.is-covering{
+  transform:translateY(0);
+  transition:transform .46s cubic-bezier(.65,.05,0,1);
+  pointer-events:auto;
+}
+/* lifting: it continues in the same direction rather than reversing,
+   so leaving and arriving read as one continuous movement */
+.mz-cross.is-lifting{
+  transform:translateY(-100%);
+  transition:transform .62s cubic-bezier(.65,.05,0,1);
+  pointer-events:none;
+}
+
+.mz-cross-in{
+  display:flex; align-items:center; gap:clamp(14px,1.4vw,22px);
+  opacity:0;
+  transition:opacity .3s ease .06s;
+}
+.mz-cross.is-covering .mz-cross-in{ opacity:1; }
+.mz-cross.is-lifting  .mz-cross-in{ opacity:0; transition:opacity .22s ease; }
+
+.mz-cross-logo{
+  height:clamp(28px,3.2vw,46px); width:auto; display:block;
+}
+.mz-cross-room{
+  font-family:"General Sans","Inter",system-ui,sans-serif;
+  font-weight:600; font-size:clamp(11px,.85vw,13px);
+  letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(233,230,221,.5);
+  padding-left:clamp(14px,1.4vw,22px);
+  border-left:1px solid rgba(233,230,221,.22);
+}
+
+/* while the curtain is down the page underneath must not scroll.
+   NOT .mz-crossing — his manzar-system.css owns that class for its own
+   first-paint ink shim, and MZ.arrive() removes it on a timer of its
+   own, which would have silently released this lock. */
+html.mz-xover, html.mz-xover body{ overflow:hidden; }
+
+@media (prefers-reduced-motion: reduce){
+  .mz-cross{ display:none; }
+}
