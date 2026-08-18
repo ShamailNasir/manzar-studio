@@ -1075,3 +1075,218 @@
    In-page anchor smoothing is already handled by the global
    a[href^="#"] handler further up this file.
    ============================================================ */
+
+
+/* ============================================================
+   SERVICES CAROUSEL — infinite
+   ============================================================
+   The first version advanced with a modulo, so going from the last card
+   to the first slid the whole track backwards across five widths. That
+   is a rewind, not a loop, and it is why it did not read as a carousel.
+
+   This clones the set either side of the real one and always steps in
+   the direction you asked for. When a step lands in a clone, the track
+   is silently rebased onto the matching real card with the transition
+   switched off for one frame — so the motion never reverses and there is
+   no seam to see. Same trick a marquee uses, applied to a stepped track.
+
+   Controls are dots only, as on the reference. A running counter is a
+   detail nobody needs and it made the section look like a slideshow.
+   ============================================================ */
+(function services() {
+  var stage = document.querySelector('[data-lsv]');
+  if (!stage) return;
+  var track = stage.querySelector('[data-lsv-track]');
+  var dots  = [].slice.call(stage.querySelectorAll('.lsv-dot'));
+  var prev  = stage.querySelector('[data-step="-1"]');
+  var next  = stage.querySelector('[data-step="1"]');
+  var real  = [].slice.call(track.children);
+  var N     = real.length;
+  if (!track || N < 2) return;
+
+  /* One clone set either side, so there is always a card to move onto.
+     Built with fragments: inserting one at a time in a forward loop
+     reverses the leading set, which put two copies of the same card
+     next to each other at the seam. */
+  function cloneSet() {
+    var f = document.createDocumentFragment();
+    real.forEach(function (c) {
+      var k = c.cloneNode(true);
+      k.setAttribute('data-clone', '1');
+      k.removeAttribute('id');
+      f.appendChild(k);
+    });
+    return f;
+  }
+  track.insertBefore(cloneSet(), track.firstChild);
+  track.appendChild(cloneSet());
+
+  var cards = [].slice.call(track.children);
+  var i = N;                       /* start on the first real card */
+  var timer = null, surrendered = false, animating = false;
+  var DWELL = 4600;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function place(withMotion) {
+    track.style.transition = withMotion ? '' : 'none';
+    track.style.setProperty('--i', i);
+    if (!withMotion) { void track.offsetWidth; track.style.transition = ''; }
+    var liveIndex = ((i - N) % N + N) % N;
+    for (var c = 0; c < cards.length; c++) {
+      var on = c === i;
+      cards[c].classList.toggle('is-on', on);
+      cards[c].setAttribute('aria-hidden', on ? 'false' : 'true');
+      var f = cards[c].querySelectorAll('a, button');
+      for (var k = 0; k < f.length; k++) f[k].tabIndex = on ? 0 : -1;
+    }
+    for (var d = 0; d < dots.length; d++) {
+      dots[d].classList.toggle('is-on', d === liveIndex);
+      dots[d].setAttribute('aria-selected', d === liveIndex ? 'true' : 'false');
+    }
+  }
+
+  /* When the slide has finished, if we are standing on a clone, hop to
+     the identical real card with motion off. Nothing visible changes.
+
+     This must NOT be driven by transitionend alone. That event does not
+     fire in a background tab, under reduced-motion, or when a transition
+     is interrupted — and the first build gated the next step on it, so a
+     single missed event left `animating` true and the carousel frozen
+     for good. A timer is the authority; the event is only an early exit. */
+  var SLIDE = 720, settleTimer = null;
+
+  function settle() {
+    if (settleTimer) { clearTimeout(settleTimer); settleTimer = null; }
+    animating = false;
+    if (i < N)           { i += N; place(false); }
+    else if (i >= N * 2) { i -= N; place(false); }
+  }
+  track.addEventListener('transitionend', function (e) {
+    if (e.propertyName === 'transform') settle();
+  });
+
+  function commit(byHand) {
+    if (byHand) surrender();
+    animating = true;
+    place(true);
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(settle, SLIDE + 120);
+  }
+  function step(dir, byHand) {
+    if (animating) return;
+    i += dir;
+    commit(byHand);
+  }
+  function goTo(liveIndex, byHand) {
+    if (animating) return;
+    var target = N + liveIndex;
+    if (target === i) return;
+    i = target;
+    commit(byHand);
+  }
+
+  /* Autoplay runs only when the section is actually on screen, the tab is
+     actually in front, and the visitor hasn't taken hold of it. Those are
+     three separate conditions, so they are three separate flags checked in
+     one place rather than start() being called from three handlers that
+     each know only their own half of the picture. */
+  var inView = false, byPointer = false;
+
+  function sync() {
+    var should = inView && !surrendered && !reduce && !document.hidden && !byPointer;
+    if (should && !timer) timer = setInterval(function(){ step(1); }, DWELL);
+    if (!should) stop();
+  }
+  function start() { inView = true;  sync(); }
+  function stop()  { clearInterval(timer); timer = null; }
+  function surrender() { surrendered = true; stop(); }
+
+  if (prev) prev.addEventListener('click', function(){ step(-1, true); });
+  if (next) next.addEventListener('click', function(){ step(1, true); });
+  dots.forEach(function (d) {
+    d.addEventListener('click', function(){ goTo(+d.getAttribute('data-go'), true); });
+  });
+
+  stage.addEventListener('pointerenter', function(){ byPointer = true;  sync(); });
+  stage.addEventListener('pointerleave', function(){ byPointer = false; sync(); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); step(-1, true); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); step(1, true); }
+  });
+
+  /* ── drag ──────────────────────────────────────────────────
+     A rail you can take hold of is most of why the reference feels
+     better than two arrows. While dragging, the track follows the
+     pointer 1:1 with the transition suspended; on release it snaps to
+     whichever card ended up nearest the centre, so a small drag settles
+     back and a decisive one moves on. */
+  var dragging = false, startX = 0, startI = 0, moved = 0;
+
+  function cardStride() {
+    var cs = getComputedStyle(track);
+    var card = parseFloat(cs.getPropertyValue('--card')) || cards[0].getBoundingClientRect().width;
+    var gap  = parseFloat(cs.columnGap || cs.gap) || 0;
+    return card + gap;
+  }
+
+  stage.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('.lsv-arrow, .lsv-dot')) return;
+    dragging = true; moved = 0;
+    startX = e.clientX; startI = i;
+    stage.classList.add('is-dragging');
+    stop();
+    if (stage.setPointerCapture) { try { stage.setPointerCapture(e.pointerId); } catch (err) {} }
+  });
+
+  stage.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    moved = e.clientX - startX;
+    /* fractional index: the track follows the finger exactly */
+    track.style.setProperty('--i', startI - moved / cardStride());
+  });
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    stage.classList.remove('is-dragging');
+    var stride = cardStride();
+    /* a flick of a third of a card is enough to commit to the next one */
+    var shift = Math.abs(moved) > stride * 0.33
+      ? (moved < 0 ? Math.ceil(moved / stride * -1) : -Math.ceil(moved / stride))
+      : 0;
+    i = startI + shift;
+    if (Math.abs(moved) > 6) surrender();
+    commit(false);
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+  stage.addEventListener('pointerleave', function () { if (dragging) endDrag(); });
+
+  /* a drag that crossed any real distance must not also fire a click */
+  stage.addEventListener('click', function (e) {
+    if (Math.abs(moved) > 6) { e.preventDefault(); e.stopPropagation(); moved = 0; }
+  }, true);
+
+  document.addEventListener('visibilitychange', sync);
+
+  /* IntersectionObserver is the right instrument, but it is not guaranteed
+     to have reported by the time the page settles — it is suspended while
+     the tab is in the background, and its first callback can be deferred.
+     If nothing has been heard from it shortly after load, read the rect
+     once so the carousel is never left waiting on an event that already
+     came and went. */
+  var ioSpoke = false;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) {
+      ioSpoke = true; inView = en[0].isIntersecting; sync();
+    }, { threshold: 0.25 }).observe(stage);
+    setTimeout(function () {
+      if (ioSpoke) return;
+      var b = stage.getBoundingClientRect();
+      inView = b.bottom > 0 && b.top < (window.innerHeight || 0);
+      sync();
+    }, 1600);
+  } else { inView = true; sync(); }
+
+  place(false);
+})();

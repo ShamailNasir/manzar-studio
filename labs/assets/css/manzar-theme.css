@@ -44,9 +44,9 @@
      layout padding mean the page re-measures whenever the
      viewport height changes, which is one of the ways a page
      ends up visibly breathing while you scroll. */
-  --sp-sec:  clamp(96px, 9.4vw, 162px);   /* section top and bottom   */
-  --sp-blk:  clamp(48px, 4.8vw,  84px);   /* between blocks in a section */
-  --sp-rule: clamp(30px, 3.1vw,  54px);   /* after a hairline rule    */
+  --sp-sec:  clamp(96px, 6.328vw, 162px);   /* section top and bottom   */
+  --sp-blk:  clamp(48px, 3.281vw,  84px);   /* between blocks in a section */
+  --sp-rule: clamp(30px, 2.109vw,  54px);   /* after a hairline rule    */
   --sp-itm:  clamp(20px, 2.1vw,  34px);   /* between items in a group */
 
   /* ── PART 2 · TYPE ────────────────────────────────────────
@@ -54,11 +54,11 @@
      sizes with 7 different line-heights. This is the whole scale.
      Leading is tight (Norvin never exceeds 1.25 on body) and
      tracking tightens as size grows. */
-  --t-hero:    clamp(76px, 17vw,   280px);
-  --t-display: clamp(52px, 8.6vw,  148px);
-  --t-title:   clamp(40px, 6.2vw,   96px);
-  --t-h2:      clamp(30px, 3.9vw,   58px);
-  --t-h3:      clamp(22px, 2.4vw,   34px);
+  --t-hero:    clamp(76px, 10.938vw,   280px);
+  --t-display: clamp(52px, 5.781vw,  148px);
+  --t-title:   clamp(40px, 3.75vw,   96px);
+  --t-h2:      clamp(30px, 2.266vw,   58px);
+  --t-h3:      clamp(22px, 1.328vw,   34px);
   --t-h4:      clamp(18px, 1.5vw,   22px);
   --t-lead:    clamp(16px, 1.15vw,  18px);
   --t-body:    15px;
@@ -126,7 +126,7 @@ body{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
 /* his .svc-title carried its own large top padding to clear the ghost
    numeral. With the ghost repositioned in PART 7 it no longer needs to
    double the section padding. */
-.svc-title{ padding-top:clamp(24px,3.4vw,64px); }
+.svc-title{ padding-top:clamp(24px,2.5vw,64px); }
 
 
 /* ============================================================
@@ -171,7 +171,7 @@ body{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
      it started at. Tracking tightens a touch to match: heavier letter-
      forms need slightly less air between them to stay a single word. */
   font-weight:600;
-  font-size:clamp(76px, 16.5vw, 268px);
+  font-size:clamp(76px, 10.469vw, 268px);
   line-height:.88;
   letter-spacing:-.038em;
 }
@@ -350,7 +350,7 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 /* the phrases are longer than the single words this belt started with,
    so they need more room between them to read at speed */
 .xmarq-track{ gap:clamp(40px,4vw,78px); }
-.ticker-track{ gap:clamp(30px,3vw,54px); }
+.ticker-track{ gap:clamp(30px,2.109vw,54px); }
 
 
 /* ============================================================
@@ -378,7 +378,7 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 .hero-shell{ height:100svh; }
 
 .hero-inner{ padding:0 var(--pad) clamp(40px,3.4vw,72px); }
-.hero-title{ margin-bottom:clamp(20px,2.4vw,44px); }
+.hero-title{ margin-bottom:clamp(20px,1.719vw,44px); }
 .hero-sub{ margin-bottom:var(--sp-itm); }
 .hero-blurb{ max-width:38ch; margin-bottom:var(--sp-itm); }
 
@@ -395,7 +395,7 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 /* the ghost numerals were set at 30vw — up to 460px of numeral behind
    a 98px title. Norvin numbers its services at a fraction of that and
    the sections read cleaner for it. */
-.svc-ghost{ font-size:clamp(120px,17vw,300px); line-height:.8; opacity:.55; }
+.svc-ghost{ font-size:clamp(120px,11.719vw,300px); line-height:.8; opacity:.55; }
 
 /* Norvin's cards are quiet: a hairline, a flat panel, no glow. */
 .ds-card, .reg-card, .ai-chat, .faq-item, .faq-note, .contact-form{
@@ -409,7 +409,7 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 
 /* card interiors get room; his padding was tight against 20px corners */
 .ds-card{ padding:clamp(26px,2.4vw,34px); min-height:0; }
-.reg-card{ padding:clamp(28px,2.8vw,44px); }
+.reg-card{ padding:clamp(28px,1.719vw,44px); }
 
 /* four- and five-column rails are dense at this type size; let them
    breathe horizontally the way Norvin's do */
@@ -430,7 +430,7 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 .faq{ gap:clamp(40px,5vw,110px); }
 .contact{ gap:clamp(40px,5vw,100px); }
 .mission-top{ gap:clamp(30px,4vw,80px); }
-.studio-grid{ gap:clamp(36px,5vw,90px); }
+.studio-grid{ gap:clamp(36px,3.516vw,90px); }
 
 
 /* ── eyebrows ─────────────────────────────────────────────────
@@ -669,7 +669,7 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 }
 .studio-facts b{
   font-family:var(--disp); font-weight:500;
-  font-size:clamp(34px,3.2vw,52px); line-height:1;
+  font-size:clamp(34px,2.031vw,52px); line-height:1;
   letter-spacing:var(--tr-display); color:var(--fg);
   font-variant-numeric:tabular-nums;
 }
@@ -936,6 +936,13 @@ html.js [data-reveal].is-in{
 }
 
 /* the bloom the section arrives out of */
+/* The glow behind a section head is deliberately wider than the head, and
+   at 1366 and 1440 that extra width pushed past the right edge of the page
+   and produced a horizontal scrollbar. `clip` cuts it without turning the
+   section into a scroll container the way `hidden` would — sticky children
+   and anchor scrolling keep working. */
+.svc{ overflow-x:clip; }
+
 .svc-head::before{
   content:"";
   position:absolute; z-index:0;
@@ -1007,7 +1014,7 @@ html.js [data-reveal].is-in{
   padding-top:0 !important;
   margin:0 auto;
   max-width:16ch;
-  font-size:clamp(46px, 7vw, 132px) !important;
+  font-size:clamp(46px, 5.156vw, 132px) !important;
   line-height:.94 !important;
   letter-spacing:-.045em !important;
 }
@@ -1073,12 +1080,12 @@ html.js [data-reveal].is-in{
    it cannot stall part-way and leave a number sitting low. */
 .stats{
   border-top:1px solid rgba(233,230,221,.12);
-  padding-top:clamp(34px,3.6vw,62px);
+  padding-top:clamp(34px,2.422vw,62px);
   gap:0;
 }
 .stat{
   position:relative;
-  padding:0 clamp(18px,2.2vw,40px);
+  padding:0 clamp(18px,1.562vw,40px);
 }
 .stat:first-child{ padding-left:0; }
 .stat:last-child{ padding-right:0; }
@@ -1131,7 +1138,7 @@ html.js .stat[data-reveal]:nth-child(4){ transition-delay:.27s; }
   --vfill:0;
   position:relative;
   margin-top:var(--sp-blk);
-  padding-top:clamp(44px,3.6vw,68px);
+  padding-top:clamp(44px,2.656vw,68px);
   gap:var(--sp-itm);
 }
 .vel-track::before{
@@ -1209,7 +1216,7 @@ html.js .stat[data-reveal]:nth-child(4){ transition-delay:.27s; }
 .vel-why-grid{
   display:grid;
   grid-template-columns:repeat(2, minmax(0,1fr));
-  gap:clamp(30px,3vw,56px) clamp(40px,5vw,110px);
+  gap:clamp(30px,2.188vw,56px) clamp(40px,5vw,110px);
 }
 .vel-why-grid h4{
   display:flex; align-items:baseline; gap:clamp(12px,1.1vw,18px);
@@ -1690,7 +1697,7 @@ html.js .stat[data-reveal]:nth-child(4){ transition-delay:.27s; }
 .brand{display:flex;align-items:center}
 .brand img{height:clamp(26px,2.1vw,33px);width:auto;display:block}
 .nav-links{
-  justify-self:center;display:flex;gap:clamp(22px,2.6vw,40px);
+  justify-self:center;display:flex;gap:clamp(22px,1.562vw,40px);
   font-family:var(--body);font-weight:500;
   font-size:clamp(17px,1.32vw,21px);letter-spacing:-.022em;
 }
@@ -1738,19 +1745,13 @@ html.js .stat[data-reveal]:nth-child(4){ transition-delay:.27s; }
 }
 .nav-cta:hover .arr{transform:translate(2px,-2px)}
 
-.menu-btn{
-  display:inline-flex;align-items:center;gap:9px;
-  font-family:var(--body);font-weight:500;font-size:clamp(15px,1.15vw,17px);letter-spacing:-.015em;
-  color:#fff;padding:10px 4px;background:none;border:0;cursor:pointer;
-}
-.menu-btn span{display:block;width:20px;height:1.5px;background:currentColor;transition:transform .35s,width .35s}
-.menu-btn span:nth-child(2){width:13px}
-.menu-btn:hover span:nth-child(2){width:20px}
-/* MZ.menu() adds .is-open to the trigger. The two rules sit side by side
-   rather than stacked, so the cross is made by sliding the second one back
-   over the first (20px rule + 9px gap = 29px) and counter-rotating. */
-.menu-btn.is-open span:nth-child(1){transform:rotate(45deg)}
-.menu-btn.is-open span:nth-child(2){width:20px;transform:translateX(-29px) rotate(-45deg)}
+/* The trigger's old rules lived here: two bare <span> rules laid out in a
+   row, plus an .is-open cross for MZ.menu(), which no longer drives this
+   button. They are deleted rather than overridden, because
+   `.menu-btn span` (0,1,1) outranks `.menu-btn-label` (0,1,0) — so the
+   label span was being painted as a 20x1.5px white bar with the word
+   "Menu" spilling out of it. That was the broken control. The live rules
+   are in PART 13. */
 
 
 /* ── menu: his sheet, our surface ───────────────────────────── */
@@ -1791,10 +1792,10 @@ html.js .stat[data-reveal]:nth-child(4){ transition-delay:.27s; }
 
 .mz-menu-body{
   grid-template-columns:minmax(0,1fr) clamp(260px,25vw,400px);
-  gap:clamp(8px,1.4vh,16px) clamp(28px,3.4vw,64px);
+  gap:clamp(8px,1.4vh,16px) clamp(28px,2.5vw,64px);
   padding:clamp(10px,2.2vh,32px) var(--pad) clamp(10px,1.8vh,26px);
 }
-.mz-menu-groups{ gap:calc(clamp(6px,1.2vh,22px) * var(--mfs)) clamp(24px,2.8vw,48px); }
+.mz-menu-groups{ gap:calc(clamp(6px,1.2vh,22px) * var(--mfs)) clamp(24px,1.875vw,48px); }
 
 .mz-menu-group-label{
   font-family:var(--mono);font-weight:600;
@@ -2077,3 +2078,249 @@ html.js .svc-ghost{ opacity:1; }
    one of them, so keeping its overrides here meant the capability and
    pricing pages got the unfixed version — a 0.42-ratio preview frame
    and a full-height sheet. Shared component, shared stylesheet. */
+
+
+/* ============================================================
+   PART 12 · SMALL SCREENS
+   ============================================================
+   The nav on this page is .nav / .nav-links / .nav-right. The mobile
+   rules that already existed target .mz-nav-*, which is the shared
+   system nav — a different element that this page does not use. So on a
+   phone the primary links and the CTA button were still laid out at
+   desktop size and ran to x=823 on a 390px screen, dragging a sideways
+   scrollbar across the whole site.
+
+   The menu button stays, and the full menu is the navigation on a phone
+   — which is what it is for. ============================================================ */
+
+@media (max-width:900px){
+  .nav-links{ display:none; }                 /* the menu covers these */
+  .nav-cta .nav-cta-label,
+  .nav-cta span:not(.arr){ display:none; }    /* icon-only CTA */
+  .nav-cta{ padding:9px; gap:0; }
+  .nav-right{ gap:8px; }
+}
+@media (max-width:520px){
+  .nav-left .mz-switch{ display:none; }       /* the switch lives in the menu foot */
+  .nav-cta{ display:none; }
+}
+
+/* Nothing on a phone should be able to push the page sideways. This is a
+   guard, not a fix — every overflow found was corrected at source — but
+   one long unbreakable string should never cost the whole page a
+   horizontal scrollbar. */
+@media (max-width:900px){
+  html, body{ overflow-x:hidden; }
+}
+
+
+/* ============================================================
+   PART 13 · THE MENU TRIGGER
+   ============================================================ */
+
+/* ── the menu trigger ─────────────────────────────────────────
+   It was two bare rules and a word, laid out by an inline-flex with
+   gap:9px — so the two lines sat side by side and the control read as
+   "— — Menu", a pair of stray dashes rather than a menu.
+
+   Now it is the sibling of the two other controls in this system: the
+   "Start a project" pill and the menu's own Close button. Label first,
+   then a square chip holding the stacked rules. The chip inverts on
+   hover and the short rule runs out to full width. */
+.menu-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  height:46px;padding:0 6px 0 18px;
+  border:1px solid rgba(255,255,255,.22);border-radius:100px;
+  background:none;cursor:pointer;color:#fff;
+  font-family:var(--body);font-weight:500;
+  font-size:clamp(14px,1.05vw,16px);letter-spacing:-.015em;
+  transition:border-color .35s var(--e-out,cubic-bezier(.22,1,.36,1)),background-color .35s;
+}
+.menu-btn:hover{border-color:rgba(255,255,255,.5)}
+.menu-btn-label{line-height:1}
+.menu-btn-icon{
+  display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px;
+  width:32px;height:32px;border-radius:100px;
+  background:rgba(255,255,255,.10);
+  transition:background-color .35s;
+}
+.menu-btn:hover .menu-btn-icon{background:rgba(255,255,255,.2)}
+.menu-btn-icon i{
+  display:block;height:1.5px;background:currentColor;border-radius:2px;
+  transition:width .35s cubic-bezier(.22,1,.36,1);
+}
+.menu-btn-icon i:nth-child(1){width:15px}
+.menu-btn-icon i:nth-child(2){width:9px}
+.menu-btn:hover .menu-btn-icon i:nth-child(2){width:15px}
+.menu-btn-icon i:first-child{margin-right:8px}
+.menu-btn-icon i:last-child{margin-right:8px}
+
+
+/* ============================================================
+   PART 14 · SERVICES — one card at a time
+   ============================================================
+   Five cards side by side meant five things competing for the same
+   glance and none of them read. This shows one, centred and at full
+   strength, with its neighbours scaled back and dimmed so they read as
+   depth rather than as more to get through.
+
+   The stack leads the card. A visitor who recognises AWS or PyTorch has
+   placed us before reading a line, which is what lets the copy below be
+   short. The marks sit at full colour on the active card and desaturate
+   on the ones either side, so colour tracks attention.
+
+   Motion is CSS transform on one track; JS only sets --i and a class.
+   ============================================================ */
+
+.lsv{ padding-block:var(--sp-sec); overflow:hidden; }
+.lsv-head{ max-width:1780px; margin:0 auto var(--sp-blk); }
+.lsv-sub{
+  margin:var(--sp-itm) 0 0; max-width:62ch;
+  font-size:clamp(15px,.86vw,20px); line-height:1.6; color:var(--g-2);
+}
+
+.lsv-stage{ position:relative; }
+/* The cards either side run off the edge of the screen and get cut by a
+   hard vertical line, which reads as a mistake. A mask fades them out
+   instead, so the rail looks like it continues rather than stopping. */
+.lsv-viewport{
+  overflow:hidden; padding-block:clamp(10px,1vw,22px);
+  -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+          mask-image:linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+}
+.lsv-track{
+  --card: clamp(276px, 29vw, 500px);
+  --gap:  clamp(14px, 1.1vw, 22px);
+  display:flex; gap:var(--gap);
+  padding-inline:calc(50% - var(--card) / 2);
+  transform:translate3d(calc(var(--i,0) * -1 * (var(--card) + var(--gap))),0,0);
+  transition:transform .72s var(--e-out);
+  will-change:transform;
+}
+@media (prefers-reduced-motion:reduce){ .lsv-track{ transition-duration:.01s; } }
+
+.lsv-card{
+  flex:0 0 var(--card); min-width:0;
+  opacity:.32; transform:scale(.93);
+  transition:opacity .6s var(--e-out), transform .6s var(--e-out);
+}
+.lsv-card.is-on{ opacity:1; transform:none; }
+.lsv-card-in{
+  height:100%; display:flex; flex-direction:column;
+  padding:clamp(22px,1.5vw,30px);
+  border:1px solid var(--line); border-radius:var(--r-card);
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(233,230,221,.05), transparent 62%),
+    #0D0C0A;
+  transition:border-color .6s var(--e-out);
+}
+.lsv-card.is-on .lsv-card-in{ border-color:var(--line2); }
+
+.lsv-top{ display:flex; align-items:center; margin-bottom:clamp(14px,1.1vw,20px); }
+.lsv-n{ font-family:var(--mono); font-size:var(--t-label); letter-spacing:.14em; color:var(--g-3); }
+.lsv-tag{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--g-3); padding:5px 11px; border:1px solid var(--line); border-radius:100px;
+}
+
+/* the stack, leading the card */
+.lsv-brands{
+  list-style:none; margin:0 0 clamp(18px,1.4vw,26px); padding:0;
+  display:flex; flex-wrap:wrap; gap:10px;
+  min-height:36px; align-content:flex-start;
+}
+.lsv-brands li{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 12px 6px 8px; border-radius:100px;
+  border:1px solid var(--line); background:rgba(233,230,221,.03);
+  transition:border-color .5s var(--e-out), background-color .5s var(--e-out);
+}
+.lsv-card.is-on .lsv-brands li{ border-color:rgba(233,230,221,.17); background:rgba(233,230,221,.055); }
+.lsv-brands img{
+  width:22px; height:22px; display:block; flex:none;
+  filter:saturate(.25) opacity(.7);
+  transition:filter .6s var(--e-out);
+}
+.lsv-card.is-on .lsv-brands img{ filter:none; }
+.lsv-brands span{
+  font-family:var(--mono); font-size:11px; letter-spacing:.04em;
+  color:var(--g-2); white-space:nowrap;
+}
+
+.lsv-title{
+  margin:0; font-family:var(--disp); font-weight:600;
+  font-size:clamp(21px,1.25vw,29px); letter-spacing:-.028em; line-height:1.14; color:var(--bone);
+}
+.lsv-lead{ margin:10px 0 0; font-size:clamp(14px,.78vw,16.5px); line-height:1.5; color:var(--g-1); max-width:46ch; }
+.lsv-body{ margin:12px 0 0; font-size:15px; line-height:1.62; color:var(--g-3); max-width:58ch; }
+
+.lsv-points{
+  list-style:none; margin:auto 0 0; padding:clamp(18px,1.4vw,26px) 0 0;
+  display:flex; flex-wrap:wrap; gap:8px;
+}
+.lsv-points li{
+  padding:6px 11px; border-radius:100px; border:1px solid var(--line);
+  font-size:11.5px; color:var(--g-3);
+}
+
+.lsv-meta{ margin-top:auto; padding-top:clamp(24px,2.2vw,36px); display:flex; flex-wrap:wrap; gap:clamp(22px,2.2vw,46px); }
+.lsv-meta div{ display:flex; flex-direction:column; gap:3px; }
+.lsv-meta b{ font-family:var(--disp); font-weight:600; font-size:clamp(17px,1.1vw,24px); letter-spacing:-.02em; color:var(--bone); }
+.lsv-meta span{ font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--g-3); }
+
+/* ── controls ─────────────────────────────────────────────────
+   The arrows used to float over the cards either side, which meant two
+   pieces of chrome permanently sitting on top of content. They now live
+   in the rail with the dots — one row of controls, under the card,
+   nothing covering anything. */
+.lsv-arrow{
+  width:38px; height:38px; flex:none;
+  display:grid; place-items:center;
+  border:1px solid var(--line); border-radius:100px;
+  background:transparent; color:var(--g-2); cursor:pointer;
+  transition:background-color .35s var(--e-out), border-color .35s var(--e-out), color .35s var(--e-out);
+}
+.lsv-arrow svg{ width:17px; height:17px; }
+.lsv-arrow:hover{ background:var(--bone); color:#0B0A08; border-color:var(--bone); }
+.lsv-arrow[disabled]{ opacity:.28; pointer-events:none; }
+
+.lsv-rail{
+  display:flex; align-items:center; justify-content:center; gap:clamp(14px,1.4vw,24px);
+  margin-top:clamp(26px,2.4vw,42px);
+}
+.lsv-dots{ display:flex; align-items:center; gap:10px; }
+.lsv-dot{
+  width:34px; height:4px; border-radius:100px; border:0; padding:0; cursor:pointer;
+  background:rgba(233,230,221,.18);
+  transition:background-color .4s var(--e-out), width .4s var(--e-out);
+}
+.lsv-dot:hover{ background:rgba(233,230,221,.34); }
+.lsv-dot.is-on{ background:var(--bone); width:52px; }
+.lsv-count{ font-family:var(--mono); font-size:12.5px; letter-spacing:.12em; color:var(--g-3); }
+.lsv-count b{ color:var(--bone); font-weight:500; }
+.lsv-count i{ font-style:normal; margin:0 3px; opacity:.5; }
+
+@media (max-width:900px){
+  .lsv-track{ --card: min(86vw, 480px); }
+  .lsv-card{ opacity:.5; }
+}
+
+
+/* ── the rail is draggable ────────────────────────────────────
+   Norvin's reads as something you can take hold of, and that is most of
+   why it feels better than a pair of arrows. The cursor states say so
+   before you try it, and while a drag is in flight the transition is
+   suspended so the track tracks the pointer exactly rather than easing
+   behind it. */
+.lsv-viewport{ cursor:grab; }
+.lsv-stage.is-dragging .lsv-viewport{ cursor:grabbing; }
+.lsv-stage.is-dragging .lsv-track{ transition:none; }
+.lsv-stage.is-dragging .lsv-card{ transition:none; }
+/* a card being dragged should not select its own text */
+.lsv-stage.is-dragging, .lsv-stage.is-dragging *{ user-select:none; }
+
+/* Services now uses .svc-head like every other section on the page, so
+   its ghost numeral and title inherit that treatment. Only the sub needs
+   holding back — the ghost sits behind a shorter block here. */
+.lsv .svc-sub{ max-width:56ch; }
+.lsv .svc-head{ margin-bottom:var(--sp-blk); }
