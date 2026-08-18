@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 190" width="640" height="190" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+<defs>
+  <pattern id="g_cloud" width="32" height="32" patternUnits="userSpaceOnUse">
+    <path d="M32 0V32M0 32H32" fill="none" stroke="rgba(233,230,221,0.035)" stroke-width="1"/>
+  </pattern>
+  <radialGradient id="w_cloud" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="rgba(233,230,221,0.05)"/><stop offset="1" stop-color="rgba(233,230,221,0)"/>
+  </radialGradient>
+</defs>
+<rect width="640" height="190" fill="url(#g_cloud)"/>
+<rect width="640" height="190" fill="url(#w_cloud)"/>
+<path d="M206 38 L326.0 56 L206 74 L86.0 56 Z" fill="none" stroke="rgba(233,230,221,0.55)" stroke-width="1.15"/>
+<path d="M334 56 H354" fill="none" stroke="rgba(233,230,221,0.14)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="360" y="59.4" text-anchor="start" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.34)">EDGE</text>
+<path d="M206 80 L326.0 98 L206 116 L86.0 98 Z" fill="none" stroke="rgba(233,230,221,0.36)" stroke-width="1.15"/>
+<path d="M334 98 H354" fill="none" stroke="rgba(233,230,221,0.14)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="360" y="101.4" text-anchor="start" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.34)">SERVICES</text>
+<path d="M206 122 L326.0 140 L206 158 L86.0 140 Z" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1.15"/>
+<path d="M334 140 H354" fill="none" stroke="rgba(233,230,221,0.14)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="360" y="143.4" text-anchor="start" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.34)">DATA</text>
+<path d="M206 32 V164" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 5"/>
+<circle cx="206" cy="56" r="3.6" fill="rgba(233,230,221,0.85)"/>
+<circle cx="206" cy="98" r="3.6" fill="rgba(233,230,221,0.85)"/>
+<circle cx="206" cy="140" r="3.6" fill="rgba(233,230,221,0.85)"/>
+<text x="206" y="180" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.3)">ONE REQUEST, THREE TIERS</text>
+<path d="M452 140 H582" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M452 140 V52" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M452 126 L478 112 L504 102 L530 80 L556 72 L582 60" fill="none" stroke="rgba(233,230,221,0.24)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path d="M452 118 L478 118 L478 98 L510 98 L510 84 L544 84 L544 66 L582 66" fill="none" stroke="rgba(233,230,221,0.72)" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="round"/>
+<text x="517" y="162" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.3)">CAPACITY vs LOAD</text>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 190" width="640" height="190" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+<defs>
+  <pattern id="g_iot" width="32" height="32" patternUnits="userSpaceOnUse">
+    <path d="M32 0V32M0 32H32" fill="none" stroke="rgba(233,230,221,0.035)" stroke-width="1"/>
+  </pattern>
+  <radialGradient id="w_iot" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="rgba(233,230,221,0.05)"/><stop offset="1" stop-color="rgba(233,230,221,0)"/>
+  </radialGradient>
+</defs>
+<rect width="640" height="190" fill="url(#g_iot)"/>
+<rect width="640" height="190" fill="url(#w_iot)"/>
+<path d="M62 142 H286" fill="none" stroke="rgba(233,230,221,0.16)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M70 142 V116" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="70" cy="116" r="2" fill="rgba(233,230,221,0.24)"/>
+<path d="M94 142 V98" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="94" cy="98" r="2" fill="rgba(233,230,221,0.24)"/>
+<path d="M118 142 V110" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="118" cy="110" r="2" fill="rgba(233,230,221,0.24)"/>
+<path d="M142 142 V86" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="142" cy="86" r="2" fill="rgba(233,230,221,0.24)"/>
+<path d="M166 142 V104" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="166" cy="104" r="2" fill="rgba(233,230,221,0.24)"/>
+<path d="M190 142 V80" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="190" cy="80" r="2" fill="rgba(233,230,221,0.24)"/>
+<path d="M214 142 V98" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="214" cy="98" r="2" fill="rgba(233,230,221,0.24)"/>
+<path d="M238 142 V70" fill="none" stroke="rgba(233,230,221,0.72)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="238" cy="70" r="2.9" fill="rgba(233,230,221,0.9)"/>
+<path d="M262 142 V90" fill="none" stroke="rgba(233,230,221,0.2)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="262" cy="90" r="2" fill="rgba(233,230,221,0.24)"/>
+<text x="174" y="164" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.3)">DEVICES IN THE FIELD</text>
+<path d="M238 70 C280 46 348 62 386 82" fill="none" stroke="rgba(233,230,221,0.5)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 5"/>
+<rect x="386" y="64" width="86" height="36" rx="8" fill="none" stroke="rgba(233,230,221,0.42)" stroke-width="1.1"/>
+<text x="429" y="86.5" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="10" letter-spacing="1.7" fill="rgba(233,230,221,0.66)">MQTT</text>
+<path d="M472 82 H502" fill="none" stroke="rgba(233,230,221,0.5)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="502" y="48" width="78" height="64" rx="8" fill="none" stroke="rgba(233,230,221,0.5)" stroke-width="1.1"/>
+<path d="M502 64 H580" fill="none" stroke="rgba(233,230,221,0.28)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M513 100 l13 -17 11 10 13 -21 12 13" fill="none" stroke="rgba(233,230,221,0.72)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="541" y="132" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.3)">WATCHED, WITH LEAD TIME</text>
+</svg>
