@@ -48,35 +48,26 @@
     'precision highp float; varying vec2 vUv;',
     'uniform sampler2D uA, uN;',
     'uniform float uGrainT, uDiff, uSpec, uSpecPow, uAniso, uRim, uLift, uGrain, uRM, uHasN;',
-    'uniform float uBlur, uFocR, uAb, uBloom;',
-    'uniform vec2 uRes, uVRes, uFoc;',
+    'uniform float uClar, uCurve, uZoom;',
+    'uniform vec2 uRes, uVRes;',
     'uniform vec3 uL;',
     'float lum(vec3 c){ return dot(c, vec3(.299,.587,.114)); }',
     'vec3 vid(vec2 uv){ return texture2D(uA, uv).rgb; }',
-    /* one lens tap with radial dispersion about the focal point */
-    'vec3 tap(vec2 uv, vec2 dir, float ab){',
-    '  return vec3(vid(uv + dir * ab).r, vid(uv).g, vid(uv - dir * ab).b);',
-    '}',
     'void main(){',
     '  float ca = uRes.x / uRes.y, va = uVRes.x / uVRes.y;',
     '  vec2 st = vUv - .5;',
     '  if (ca > va) st.y *= va / ca; else st.x *= ca / va;',
+    /* a slow breath: the frame eases between 1.00 and ~1.045 scale over
+       the orbit - motion with no blur and no loss of sharpness */
+    '  st /= uZoom;',
     '  vec2 uv = st + .5;',
-    /* ── the lens: focus rides the key light's spot on the cloth.
-       Away from it, the frame melts into soft glass with a whisper of
-       chromatic dispersion - the Studio hero's texture, without any
-       cursor in the loop. */
-    '  vec2 toF = vUv - uFoc; toF.x *= ca;',
-    '  float dF = length(toF);',
-    '  vec2 dir = toF / max(dF, .0001);',
-    '  float defoc = smoothstep(uFocR, uFocR * 2.9, dF);',
-    '  float br = uBlur * defoc;',
-    '  float ab = uAb * dF * (.3 + defoc);',
-    '  vec3 col = tap(uv, dir, ab) * .34;',
-    '  col += tap(uv + vec2(br, br * .6), dir, ab) * .165;',
-    '  col += tap(uv - vec2(br, br * .6), dir, ab) * .165;',
-    '  col += tap(uv + vec2(-br * .6, br), dir, ab) * .165;',
-    '  col += tap(uv + vec2(br * .6, -br), dir, ab) * .165;',
+    '  vec3 col = vid(uv);',
+    /* clarity: unsharp micro-contrast. Local contrast in the weave is
+       what reads as "high quality" - never softness */
+    '  vec2 tx = 1.4 / uVRes;',
+    '  vec3 nb = vid(uv + vec2(tx.x, 0.)) + vid(uv - vec2(tx.x, 0.))',
+    '          + vid(uv + vec2(0., tx.y)) + vid(uv - vec2(0., tx.y));',
+    '  col = clamp(col + (col - nb * .25) * uClar, 0., 1.);',
     '  float l0 = lum(col);',
     '  if (uHasN > .5) {',
     '    vec3 N = normalize(texture2D(uN, uv).rgb * 2. - 1.);',
@@ -97,12 +88,12 @@
     '    float rim = pow(1. - abs(N.z), 2.6);',
     '    col += vec3(.9, .92, .98) * rim * uRim * smoothstep(.03, .2, l0);',
     '  }',
-    /* the sheen in focus blooms, the way a lens gathers light */
-    '  float bl = smoothstep(.18, .55, lum(col)) * (1. - defoc * .55);',
-    '  col += col * bl * uBloom;',
-    /* filmic shaping: lift the toe, keep the blacks alive */
+    /* filmic S: toe lifted so the blacks breathe, mids opened,
+       highlights rolled - a grade, not a filter */
     '  col = col + uLift * (1. - col) * .05;',
-    '  col = pow(col, vec3(.97));',
+    '  vec3 scv = col * col * (3. - 2. * col);',
+    '  col = mix(col, scv, uCurve);',
+    '  col = pow(col, vec3(.965));',
     /* gentle vignette */
     '  float vg = smoothstep(1.55, .55, length(vUv - vec2(.5, .5)));',
     '  col *= mix(.88, 1., vg);',
@@ -148,8 +139,8 @@
 
   /* dials — live via window.__hero.set */
   var DIFF = .34, SPEC = .38, SPECPOW = 84., ANISO = .45, RIM = .10,
-      LIFT = .5, GRAIN = .032, ORBIT = .10, ELEV = .58,
-      BLUR = .0065, FOCR = .26, AB = .0019, BLOOM = .34;
+      LIFT = .55, GRAIN = .034, ORBIT = .10, ELEV = .58,
+      CLAR = .55, CURVE = .38;
 
   var started = false, run = true;
   var tryPlay = function (vv) { if (vv) { var p = vv.play(); if (p && p.catch) p.catch(function () {}); } };
@@ -202,10 +193,8 @@
     if (o.grain != null) GRAIN = o.grain;
     if (o.orbit != null) ORBIT = o.orbit;
     if (o.elev != null) ELEV = o.elev;
-    if (o.blur != null) BLUR = o.blur;
-    if (o.focr != null) FOCR = o.focr;
-    if (o.ab != null) AB = o.ab;
-    if (o.bloom != null) BLOOM = o.bloom;
+    if (o.clar != null) CLAR = o.clar;
+    if (o.curve != null) CURVE = o.curve;
     if (o.phase != null) window.__hero.phase = o.phase;
     return { DIFF: DIFF, SPEC: SPEC, SPECPOW: SPECPOW, ANISO: ANISO, RIM: RIM, LIFT: LIFT, GRAIN: GRAIN, ORBIT: ORBIT, ELEV: ELEV };
   };
@@ -221,8 +210,8 @@
     var az = t * ORBIT;
     var el = ELEV + .16 * Math.sin(t * .05 + 1.1);
     var Lx = Math.cos(az), Ly = Math.sin(az) * .7;
-    /* where the key strikes the cloth is where the lens focuses */
-    var fx = .5 + Lx * .24, fy = .5 + Ly * .3;
+    /* the breath: a slow ease in and out of the frame */
+    var zoom = 1.0 + .045 * (0.5 + 0.5 * Math.sin(t * .045));
 
     syncN(true);
     upload(texA, vA, 0);
@@ -242,13 +231,11 @@
     gl.uniform1f(U.uGrain, GRAIN);
     gl.uniform1f(U.uRM, RM ? 1 : 0);
     gl.uniform1f(U.uHasN, nV ? 1 : 0);
-    gl.uniform1f(U.uBlur, BLUR);
-    gl.uniform1f(U.uFocR, FOCR);
-    gl.uniform1f(U.uAb, AB);
-    gl.uniform1f(U.uBloom, BLOOM);
+    gl.uniform1f(U.uClar, CLAR);
+    gl.uniform1f(U.uCurve, CURVE);
+    gl.uniform1f(U.uZoom, zoom);
     gl.uniform2f(U.uRes, cv.width, cv.height);
     gl.uniform2f(U.uVRes, vA.videoWidth || 1920, vA.videoHeight || 1080);
-    gl.uniform2f(U.uFoc, fx, fy);
     gl.uniform3f(U.uL, Lx, Ly, el);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, cv.width, cv.height);
