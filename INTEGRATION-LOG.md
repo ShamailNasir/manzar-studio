@@ -2956,3 +2956,30 @@ res the blur floor scaled up and read far softer than in 1568px captures.
 fringes, dense contrast; phase 47 rest state moody. No errors. Cost ≤ v11.
 
 **Files:** hero-silk.js. Reverts: v11 810e5bf, v8 tag hero-v8-approved.
+
+## 149 — Labs hero: v8 restored as FINAL (2026-08-21)
+
+User on v12: "officially more fucked up than ever... RESEARCH AND ITERATE
+AND THEN FINALIZE."
+
+**The research that mattered was the twelve rounds themselves.** One build
+got approved — v8, macro lens ("Bro, it's good") — approved by the user at
+his native 2560×1440 with his own eyes. Every departure after it (v9
+abstraction, v10 rays, v11 bloom+blur floor, v12 refraction) was rejected.
+A second finding explains my repeated misjudgment: extension screenshots
+downsample his 2560-wide viewport to 1568 captures, which visually hides
+softness/mush — effects that read "fine" in my captures read soft or
+smeared at his native pixels.
+
+**Action: restored v8 byte-exact** (md5 verified against
+Backup/2026-08-21-hero-v8/hero-silk.v8.js = 207d869...) — no tweaks, no
+new effects. Live verification: dial fingerprint matches v8 (BLUR 26, no
+REFR/BLOOM keys), phase-33 screenshot shows the approved character (sharp
+rack-focus band, bokeh melt, deep blacks, silver key).
+
+**Standing decision:** v8 is the baseline. Changes from here happen in
+single small steps, only on request, judged against native-resolution
+perception.
+
+**Files:** hero-silk.js (restored). v9–v12 remain in git history
+(ab8ebea / 563f840 / 810e5bf / 2dc92ea) if ever wanted.
