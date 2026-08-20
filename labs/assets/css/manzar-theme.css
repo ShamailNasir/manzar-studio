@@ -2577,9 +2577,11 @@ html.js .svc-ghost{ opacity:1; }
   position:absolute; inset:0; width:100%; height:100%;
   object-fit:cover; opacity:0; pointer-events:none;
 }
-/* fallback ladder: no WebGL → the video plays plainly; no video → still */
+/* fallback ladder: no WebGL → the video plays plainly; no video → still.
+   The file is an atlas (footage over its normal strip), so the flat
+   video is cropped to its top two-thirds. */
 .hero-vid-flat #cv-hero{ display:none; }
-.hero-vid-flat .hv-a{ opacity:1; }
+.hero-vid-flat .hv-a{ opacity:1; height:150%; object-fit:cover; object-position:top; }
 .hero-flat #cv-hero, .hero-flat .hv{ display:none; }
 .hero-fallback{
   background-size:cover; background-position:50% 50%;
