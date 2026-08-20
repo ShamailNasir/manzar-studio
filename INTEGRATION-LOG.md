@@ -2795,3 +2795,38 @@ cast anywhere. Dials: window.__hero.set (exp/cac/ca/namp/det/sheen/etc).
 
 **Files:** hero-silk.js only (weave-normal.js + png unchanged from v6).
 Revert: git-revert this commit (v6 look) or a59e892^ (v5 look).
+
+## 144 — Labs hero v8: macro lens (2026-08-21)
+
+User on v7: still not satisfied — different direction, "maybe some cool blur
+effect", wants higher quality.
+
+**Direction change: optics, not another grade.** Seven versions of regrading
+the same sharp footage each read as "a video behind text". v8 makes the silk
+read as MACRO footage on a wide-open cinema prime:
+
+- **Tilt-shift depth of field**: a razor-thin focus band with everything
+  else melting into creamy blur. Gather is a Vogel/golden-angle spiral disc
+  (20 taps — the standard single-pass bokeh pattern, per research), rotated
+  per pixel so undersampling dithers into noise the grain then owns.
+- **Bokeh weighting**: samples weighted 1 + luma² × uBokeh(4) — defocused
+  highlights bloom into bright discs, the wide-aperture signature.
+- **Rack focus**: the focus line breathes through the frame (~60s sin), so
+  the image is alive even where the cloth rests. Driven by the same clock as
+  the light orbit (phase dial controls both).
+- Defocus erases residual codec artefacts — the honest answer to the
+  recurring "low quality" perception.
+- v7's dark-cinema scene kept intact in pass A (relight, silver Charlie
+  sheen, cool CA w/ centre floor, cool streaks); grade (split tone → ACES →
+  crush → vignette → grain) moved AFTER the lens in pass B, colorist order.
+  Grain applied after blur — grain over cream keeps "soft" from "smeared".
+
+**Dials added**: blur(26 px@1080), bokeh(4), focusw(.11), feather(.60),
+racka(.15), racks(.10) on window.__hero.set.
+
+**Verified**: 61fps, no errors; screenshots at phase 16/33 show the sharp
+band migrating (rack focus live), crisp fabric texture inside focus, glowing
+cream melt outside, steel/silver grade intact, no vintage cast.
+
+**Files**: hero-silk.js only. Revert: git-revert this commit → v7 dark
+cinema; 79ee4fd^ → v6; a59e892^ → v5.
