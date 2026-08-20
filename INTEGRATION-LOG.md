@@ -2762,3 +2762,36 @@ soft2 sat (window.__hero.set).
 **Files:** hero-silk.js (v6 rewrite), weave-normal.js + silk-weave-normal.png
 (new), labs/index.html (script include). Revert: git-revert this commit; video
 assets untouched from v5.
+
+## 143 — Labs hero v7: dark cinema (2026-08-21)
+
+User on v6: vintage/'90s-filter feel, a downgrade — revert to the previous
+version's character and go DARK CINEMATIC instead.
+
+**Diagnosis:** v6's film-era cues stacked into a period look — iridescent
+rainbow (reads as VHS color misregistration), warm amber fill (sepia), 6-tap
+dispersion + jitter (old-lens haze), gate weave (projector wobble), halation
+(emulsion glow). All removed.
+
+**v7 = v5's single-pass architecture (the version he preferred) + the one
+v6 win (normals you can see) + a dark-cinema grade:**
+- kept: amplified baked normals (uNAmp 2.4) + rotated weave detail
+  (uDet .20, crest-weighted) — the visible relight; Charlie sheen kept
+  SILVER (no iridescent tint); single cool key, no warm fill.
+- CA: back to three clean taps (digital-lens fringe, not rainbow haze),
+  small centre floor (uCAc .0012) + r² growth (uCA .0032) — still present
+  mid-frame per the earlier request, but restrained.
+- grade (researched): steel-blue shadows / silver highlights split tone,
+  then the ACES filmic curve (Narkowicz fit — the Academy tone curve,
+  UE4's default) with exposure dial + black crush .010: deep toe, rolled
+  highlights, nothing clips flat. Deeper vignette (.86), grain .028.
+- streaks kept, tinted cool (.85,.92,1.08); halation nearly off (.12 wt,
+  HAL .15); no gate weave; breathing zoom softened to .03.
+- micro-soften .9 THEN clarity .30 (denoise-then-sharpen, colorist order).
+
+**Verified:** 60fps, no errors, A/B phase screenshots (16/47) show the sheen
+river migrating with deep blacks and textured silver highlights; no color
+cast anywhere. Dials: window.__hero.set (exp/cac/ca/namp/det/sheen/etc).
+
+**Files:** hero-silk.js only (weave-normal.js + png unchanged from v6).
+Revert: git-revert this commit (v6 look) or a59e892^ (v5 look).
