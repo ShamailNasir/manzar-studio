@@ -472,11 +472,11 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
    composer is doing most of the work — without it this is a picture
    of a conversation; with it, it is a picture of software.
    ============================================================ */
-.ai-lead{ grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr); }
+.ai-lead{ grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr); }
 .ai-chat{
   position:relative;
   margin:0;
-  width:min(100%, 920px);
+  width:min(100%, 1020px);
   justify-self:end;
   padding:0;
   overflow:hidden;
@@ -634,7 +634,7 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
    The thread is a fixed-height window that scrolls like a real chat,
    so the panel never changes size while it plays. */
 .ai-thread{
-  height:clamp(330px, 30vw, 470px);
+  height:clamp(330px, 30vw, 500px);
   overflow-y:auto; overscroll-behavior:contain;
   scrollbar-width:none;
 }
@@ -2394,7 +2394,13 @@ html.js .svc-ghost{ opacity:1; }
   pointer-events:none; user-select:none;
 }
 
-.wb-copy{ position:relative; z-index:2; max-width:56ch; padding-top:clamp(40px,7vh,90px); }
+/* the spread sits on a diagonal: copy high on the left, photograph low
+   on the right. More air than a flat centre line, and the numeral fills
+   the corner the copy vacates. */
+.wb-copy{
+  position:relative; z-index:2; max-width:56ch;
+  margin-bottom:clamp(56px,10vh,140px);
+}
 .wb-title{
   margin:0; font-family:var(--disp); font-weight:600;
   font-size:clamp(30px,2.9vw,58px); letter-spacing:-.035em; line-height:1.02;
@@ -2418,40 +2424,36 @@ html.js .svc-ghost{ opacity:1; }
   text-transform:uppercase; color:var(--g-3);
 }
 
-/* the stack: one square plate per technology, mark centred, name under */
+/* the stack rests bare on the page: the real marks and their names in
+   one quiet row, separated by a hairline above. No containers. */
 .wb-stack{
-  list-style:none; margin:clamp(20px,2vw,36px) 0 0; padding:0;
-  display:flex; flex-wrap:wrap; gap:clamp(9px,.7vw,12px);
+  list-style:none; padding:clamp(16px,1.5vw,26px) 0 0;
+  margin:clamp(18px,1.8vw,32px) 0 0;
+  border-top:1px solid rgba(233,230,221,.1);
+  display:flex; flex-wrap:wrap;
+  gap:clamp(14px,1.1vw,22px) clamp(20px,1.8vw,34px);
 }
 .wb-stack li{
-  flex:none; width:clamp(86px,6.6vw,118px);
-  display:flex; flex-direction:column; align-items:center; gap:9px;
-  padding:clamp(13px,1vw,18px) 8px clamp(10px,.8vw,14px);
-  border-radius:14px;
-  background:rgba(233,230,221,.032);
-  box-shadow:inset 0 1px 0 rgba(233,230,221,.05), inset 0 0 0 1px rgba(233,230,221,.06);
-  transition:background-color .5s var(--e-out), box-shadow .5s var(--e-out), transform .35s var(--e-out);
-}
-.wb-stack li:hover{ transform:translateY(-3px); }
-.wb-panel.is-on .wb-stack li{
-  background:rgba(233,230,221,.05);
-  box-shadow:inset 0 1px 0 rgba(233,230,221,.08), inset 0 0 0 1px rgba(233,230,221,.1);
+  flex:none; display:inline-flex; align-items:center; gap:10px;
 }
 .wb-stack img{
-  width:clamp(26px,1.8vw,32px); height:clamp(26px,1.8vw,32px); display:block;
+  width:clamp(22px,1.5vw,27px); height:clamp(22px,1.5vw,27px); display:block;
   filter:saturate(.15) opacity(.5);
-  transition:filter .6s var(--e-out);
+  transition:filter .6s var(--e-out), transform .4s var(--e-out);
 }
+.wb-stack li:hover img{ transform:translateY(-2px); }
 .wb-panel.is-on .wb-stack img{ filter:none; }
 .wb-stack span{
-  font-family:var(--mono); font-size:clamp(9.5px,.58vw,11px); letter-spacing:.03em;
-  color:var(--g-2); white-space:nowrap; max-width:100%;
-  overflow:hidden; text-overflow:ellipsis;
+  font-family:var(--mono); font-size:clamp(10.5px,.62vw,12px); letter-spacing:.04em;
+  color:var(--g-3); white-space:nowrap;
+  transition:color .5s var(--e-out);
 }
+.wb-panel.is-on .wb-stack span{ color:var(--g-1); }
 
 /* the photograph, hung on its plate */
 .wb-fig{
-  position:relative; z-index:1; margin:0;
+  position:relative; z-index:1;
+  margin:clamp(56px,10vh,140px) 0 0;
   border-radius:var(--r-card); overflow:hidden;
   aspect-ratio:16 / 10;
   max-height:min(62vh, 640px);
@@ -2518,10 +2520,10 @@ html.js .svc-ghost{ opacity:1; }
   font-size:clamp(110px,22vw,200px);
   display:block; line-height:.9; margin-bottom:-10px;
 }
-.wb--flat .wb-copy{ order:3; max-width:none; padding-top:0; }
-.wb--flat .wb-fig{ order:2; max-height:none; }
+.wb--flat .wb-copy{ order:3; max-width:none; margin-bottom:0; }
+.wb--flat .wb-fig{ order:2; max-height:none; margin-top:0; }
 .wb--flat .wb-stack img{ filter:none; }
-.wb--flat .wb-stack li{ box-shadow:inset 0 0 0 1px rgba(233,230,221,.09); }
+.wb--flat .wb-stack span{ color:var(--g-1); }
 .wb--flat .wb-hud{ display:none; }
 
 @media (max-width:1180px){

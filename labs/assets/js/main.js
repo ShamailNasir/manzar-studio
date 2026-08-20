@@ -313,8 +313,10 @@
       });
     });
 
-    /* service ghosts drift + titles rise over them */
-    gsap.utils.toArray('.svc').forEach(function (svc) {
+    /* service ghosts drift + titles rise over them — including the walk's
+       own section head (.lsv), which was missing from this list and was
+       the one static numeral on the page */
+    gsap.utils.toArray('.svc, .lsv').forEach(function (svc) {
       var ghost = svc.querySelector('.svc-ghost');
       var title = svc.querySelector('.svc-title');
       /* ── paired parallax on the header ────────────────────────
@@ -1719,7 +1721,39 @@
     paint(current);
   });
 
-  window.addEventListener('scroll', readScroll, { passive: true });
+  /* ── the hook ──────────────────────────────────────────────
+     Stopping between doorways leaves two half-spreads on stage, so
+     when scrolling goes quiet the walk commits: past thirty percent
+     into the next room (in your direction of travel) it carries you
+     forward; short of that it settles back. Lenis drives the glide
+     when it is present, so the snap has the same feel as the scroll. */
+  var snapTimer = null, lastY = window.pageYOffset, lastDir = 0;
+
+  function trySnap () {
+    if (target <= 0.0005 || target >= 0.9995) return;
+    var f = target * (n - 1), i = Math.floor(f), frac = f - i, goal;
+    if (lastDir > 0)      goal = frac > 0.3 ? i + 1 : i;
+    else if (lastDir < 0) goal = frac < 0.7 ? i : i + 1;
+    else                  goal = Math.round(f);
+    goal = Math.max(0, Math.min(n - 1, goal));
+    var y = Math.round(wbTop + (goal / (n - 1)) * travel);
+    if (Math.abs(y - window.pageYOffset) < 6) return;
+    var l = window.lenisInstance || window.lenis;
+    if (l && typeof l.scrollTo === 'function') {
+      l.scrollTo(y, { duration: .8, easing: function (t) { return 1 - Math.pow(1 - t, 3); } });
+    } else {
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }
+
+  window.addEventListener('scroll', function () {
+    var y = window.pageYOffset;
+    if (y !== lastY) lastDir = y > lastY ? 1 : -1;
+    lastY = y;
+    readScroll();
+    clearTimeout(snapTimer);
+    snapTimer = setTimeout(trySnap, 170);
+  }, { passive: true });
   var rt;
   window.addEventListener('resize', function () {
     clearTimeout(rt); rt = setTimeout(measure, 140);
