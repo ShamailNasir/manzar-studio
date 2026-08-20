@@ -2399,7 +2399,15 @@ html.js .svc-ghost{ opacity:1; }
      ink inside the painted area. */
   line-height:1.12; padding:.04em 0;
   color:transparent;
-  background:linear-gradient(180deg, rgba(233,230,221,.11), rgba(233,230,221,.014));
+  /* Measured: the ink occupies roughly the 25-85% band of the line box
+     (font ascent 283px vs actual cap ink 192px at 280px size). The old
+     gradient ran .11 to .014 across the FULL box, so the digits started
+     already dimmed and their lower halves were painted at 1.6% alpha,
+     invisible on a real monitor - which reads exactly as "cut off". The
+     stops now bracket the ink itself and the floor stays legible. */
+  background:linear-gradient(180deg,
+              rgba(233,230,221,.13) 22%,
+              rgba(233,230,221,.05) 86%);
   -webkit-background-clip:text; background-clip:text;
   pointer-events:none; user-select:none;
 }
