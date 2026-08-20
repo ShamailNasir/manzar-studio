@@ -319,6 +319,11 @@
     gsap.utils.toArray('.svc, .lsv').forEach(function (svc) {
       var ghost = svc.querySelector('.svc-ghost');
       var title = svc.querySelector('.svc-title');
+      /* the walk's section is six screens tall; its numeral must ride
+         the HEAD's passage, not the whole section's, or the drift is
+         homeopathic. Other sections are compact, so section == window. */
+      var trigEl = svc.classList.contains('lsv')
+        ? (svc.querySelector('.svc-head') || svc) : svc;
       /* ── paired parallax on the header ────────────────────────
          Rebuilt as a computed curve rather than a straight A-to-B tween,
          because a linear ramp is what made the old one feel mechanical:
@@ -347,7 +352,7 @@
         var ease  = function (t) { return t * t * (3 - 2 * t); };   // smoothstep
 
         ScrollTrigger.create({
-          trigger: svc,
+          trigger: trigEl,
           start: 'top bottom',
           end: 'bottom top',
           scrub: 1.25,
@@ -1674,7 +1679,7 @@
 
   var figs   = panels.map(function (p) { return p.querySelector('.wb-fig'); });
   var ghosts = panels.map(function (p) { return p.querySelector('.wb-ghost'); });
-  var cur = -1, target = 0, current = 0, wbTop = 0, travel = 1, span = 1;
+  var cur = -1, target = 0, current = 0, travel = 1, span = 1;
 
   function setActive (i) {
     if (i === cur) return;
@@ -1685,15 +1690,23 @@
 
   function measure () {
     var vh = window.innerHeight;
-    wb.style.height = Math.round(vh + (n - 1) * vh * 0.92) + 'px';
-    var r = wb.getBoundingClientRect();
-    wbTop  = r.top + window.pageYOffset;
-    travel = wb.offsetHeight - vh;
+    /* travel walks the doorways; the tail is a hold — the last spread
+       stays on stage for almost two more screens of scroll before the
+       page moves on, so arriving at 05 does not immediately dump you
+       out of the section. */
+    travel = Math.round((n - 1) * vh * 0.92);
+    var tail = Math.round(vh * 1.7);
+    wb.style.height = (vh + travel + tail) + 'px';
     span   = track.scrollWidth - window.innerWidth;
     readScroll();
   }
+  /* progress is read off the section's own live rect rather than a
+     cached document offset: anything above this section can change
+     height at any time (video posters, fonts, a window resize mid-
+     reflow), and a stale top froze the whole walk once. The rect can
+     never be stale. */
   function readScroll () {
-    var p = (window.pageYOffset - wbTop) / (travel || 1);
+    var p = -wb.getBoundingClientRect().top / (travel || 1);
     target = Math.min(1, Math.max(0, p));
   }
 
@@ -1736,7 +1749,8 @@
     else if (lastDir < 0) goal = frac < 0.7 ? i : i + 1;
     else                  goal = Math.round(f);
     goal = Math.max(0, Math.min(n - 1, goal));
-    var y = Math.round(wbTop + (goal / (n - 1)) * travel);
+    var y = Math.round(window.pageYOffset + wb.getBoundingClientRect().top +
+                       (goal / (n - 1)) * travel);
     if (Math.abs(y - window.pageYOffset) < 6) return;
     var l = window.lenisInstance || window.lenis;
     if (l && typeof l.scrollTo === 'function') {

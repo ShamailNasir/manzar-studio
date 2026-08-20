@@ -2385,9 +2385,9 @@ html.js .svc-ghost{ opacity:1; }
 /* the numeral: whole, behind the copy, never under the nav */
 .wb-ghost{
   position:absolute; z-index:0;
-  left:clamp(8px,2.4vw,60px); top:clamp(-8px,-1vh,0px);
+  left:clamp(8px,2.4vw,60px); top:clamp(16px,3.5vh,48px);
   font-family:var(--disp); font-weight:700;
-  font-size:clamp(150px,16.5vw,320px); line-height:.86; letter-spacing:-.055em;
+  font-size:clamp(150px,16vw,310px); line-height:.98; letter-spacing:-.055em;
   color:transparent;
   background:linear-gradient(180deg, rgba(233,230,221,.11), rgba(233,230,221,.014));
   -webkit-background-clip:text; background-clip:text;
@@ -2399,7 +2399,8 @@ html.js .svc-ghost{ opacity:1; }
    the corner the copy vacates. */
 .wb-copy{
   position:relative; z-index:2; max-width:56ch;
-  margin-bottom:clamp(56px,10vh,140px);
+  margin-top:clamp(30px,6vh,80px);
+  margin-bottom:clamp(20px,3.5vh,50px);
 }
 .wb-title{
   margin:0; font-family:var(--disp); font-weight:600;
