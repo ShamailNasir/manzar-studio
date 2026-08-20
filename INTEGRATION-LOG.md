@@ -2983,3 +2983,46 @@ perception.
 
 **Files:** hero-silk.js (restored). v9–v12 remain in git history
 (ab8ebea / 563f840 / 810e5bf / 2dc92ea) if ever wanted.
+
+## 150 — Capability subpages: full overhaul (2026-08-21)
+
+Brief: the four capability pages (carryovers) rebuilt properly — appealing
+hero/body layouts, web-sourced photography, smooth scroll + animations at
+main-site polish, footer parity, cursor integrity, menu typography fixes.
+
+**Audit found:** no Lenis/GSAP on any capability page (no smooth scroll, no
+motion lib); flat wireframe-SVG heroes; dim numbered lists; footer labels/
+email/logo diverged from Labs (Studios vs Offices, manzar.solutions vs
+manzar.studio, text-built band logo); menu overlay's own switch/CTA at
+15px:500/600 + 15.5px:600 vs system 13/500 + 14/500 (the "unusual weights").
+
+**Shared layer (new):**
+- assets/css/cap-extra.css — hero media panel (photo, duotone overlay, meta
+  tag, floating glass "signal chip"), offer-card grid (replaces the numbered
+  list; DS-card hover language; odd-count last card spans full width),
+  full-bleed parallax image band with one serif pull-line (left-anchored,
+  scrimmed), stat band, proof accent rule, next-capability doorway band,
+  responsive + reduced-motion.
+- assets/js/cap-motion.js — Lenis (same wheel feel as Labs) wired to gsap
+  ticker; hero entrance timeline (eyebrow → clip-rise title → sub → CTAs →
+  media scale-settle → chip); [data-plx] scrubbed parallax; [data-count]
+  counters; leaves [data-reveal] to each page's own IO system (double-
+  driving would pin elements at inline opacity 0).
+- menu.css — overlay switch/CTA/mail aligned to system metrics (13/500,
+  14/500, pill radius, round chip). NOTE: "slow menu fade" seen during QA
+  was tab-occlusion throttling (his other window on top), not a defect —
+  target opacity 1, class correct, .42s transition.
+
+**Per page:** hero photography (Unsplash hotlink + guaranteed local
+fallback from labs/assets/img/svc/ — cloud's CDN pick 404'd in QA and the
+fallback engaged invisibly, proving the pattern): ai waves/rack-cables,
+cloud aisle/patch-panel(fallback), mobile hello-phone/home-screen, iot
+PCB/red-circuit (accent-hued). Distinct chips + band lines per discipline;
+cloud + mobile get animated stat bands (uptime/p95/alert-to-human; platforms
+/TestFlight-weeks/crash-free); every page gets a Next-capability doorway
+(ai→cloud→mobile→iot→ai); footers matched to Labs verbatim (labels, targets,
+hello@manzar.studio, Offices, wordmark-image band logo).
+
+**Verified in browser:** all four pages walked; hotlinks/naturalWidth
+checked; counters fire; menu metrics measured 13/500+14/500; lenis+gsap
+present on every page. Backup: Backup/2026-08-21-pre-capability-overhaul/.

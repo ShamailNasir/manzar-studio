@@ -323,6 +323,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 </script>
 <link rel="stylesheet" href="../assets/css/menu.css">
+<link rel="stylesheet" href="../assets/css/cap-extra.css">
 </head>
 <body data-theme="ink">
 <a class="skip" href="#main">Skip to content</a>
@@ -383,36 +384,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           </a>
         </div>
       </div>
-      <figure class="mz-frame p-hero-frame" id="heroFrame" data-frame="flow">
-        <span class="mz-frame-tag">L/03 · AI Development</span>
-        <svg class="mz-frame-art" viewBox="0 0 1400 900" role="img" aria-label="A flow diagram of input, model and output blocks, with an accent gate on the line between model and output catching a rejected response">
-          <g class="fl">
-            <rect data-ln x="120" y="380" width="260" height="140" rx="6"/>
-            <rect data-ln x="570" y="380" width="260" height="140" rx="6"/>
-            <rect data-ln x="1020" y="380" width="260" height="140" rx="6"/>
-          </g>
-          <text class="ft" x="250" y="455" text-anchor="middle">INPUT</text>
-          <text class="ft" x="700" y="455" text-anchor="middle">MODEL</text>
-          <text class="ft" x="1150" y="455" text-anchor="middle">OUTPUT</text>
-
-          <!-- orthogonal connectors -->
-          <line data-ln class="fl-dim" x1="380" y1="450" x2="570" y2="450"/>
-          <line data-ln class="fl-dim" x1="829" y1="450" x2="900" y2="450"/>
-          <line data-ln class="fa" x1="940" y1="450" x2="1020" y2="450"/>
-
-          <!-- guardrail gate, on the model→output line -->
-          <path data-ln class="fa" d="M900 450 L920 428 L940 450 L920 472 Z"/>
-          <path data-ln class="fa" d="M912 450 l6 7 l11 -14"/>
-
-          <!-- rejected response, caught and diverted down -->
-          <line data-ln class="fl-dim" x1="920" y1="472" x2="920" y2="560"/>
-          <rect data-ln class="fl-dim" x="820" y="560" width="200" height="80" rx="6"/>
-          <text class="ft" x="920" y="606" text-anchor="middle">REJECTED</text>
-          <circle class="fa-dot" cx="920" cy="450" r="0"/>
-
-          <text class="ft" x="120" y="740">GUARDRAIL, CAUGHT IT</text>
-        </svg>
-        <span class="mz-frame-word">AI Development</span>
+      <figure class="cap-media" id="heroMedia">
+        <img src="https://images.unsplash.com/photo-1695278255455-9afc87008775?q=80&amp;w=1600&amp;h=1200&amp;fit=crop"
+             onerror="this.onerror=null;this.src='../labs/assets/img/svc/ai.jpg'"
+             alt="Dark liquid waves catching a single light, the texture of a model's latent space" width="1600" height="1200" decoding="async" fetchpriority="high">
+        <span class="cap-media-tag">L/03 · AI Development</span>
+        <span class="cap-media-word">Applied models · not demo-ware</span>
+        <div class="cap-chip" aria-hidden="true">
+          <div class="cap-chip-item"><span class="cap-chip-k">Grounded</span><span class="cap-chip-l">answers cite your data</span></div>
+          <div class="cap-chip-item"><span class="cap-chip-k">Guardrailed</span><span class="cap-chip-l">bad outputs caught</span></div>
+        </div>
       </figure>
     </div>
   </section>
@@ -426,58 +407,43 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         <span class="mz-eyebrow"><i></i>What we actually do</span>
         <h2 class="p-do-title">Seven ways models earn their place in production</h2>
       </div>
-      <div class="p-do-list">
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">01</span>
-          <div class="p-do-copy">
-            <h3>AI chat &amp; copilots</h3>
-            <p>Chat for your customers and copilots for your staff, grounded in your own databases and documents, so every answer cites the record it came from.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">02</span>
-          <div class="p-do-copy">
-            <h3>LLM-backed features</h3>
-            <p>Retrieval-augmented generation wired into an existing product, grounded in your data, not the open internet.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">03</span>
-          <div class="p-do-copy">
-            <h3>Voice agents &amp; conversational systems</h3>
-            <p>Speech-to-text, dialogue logic and text-to-speech chained into an agent that runs a real conversation, not a scripted menu.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">04</span>
-          <div class="p-do-copy">
-            <h3>Workflow automation</h3>
-            <p>The repetitive steps between two systems handed to an agent that runs unattended and logs what it did.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">05</span>
-          <div class="p-do-copy">
-            <h3>Model evaluation &amp; guardrails</h3>
-            <p>Prompt testing, output validation and fallback paths, so a bad response gets caught before a customer sees it.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">06</span>
-          <div class="p-do-copy">
-            <h3>Fine-tuning &amp; prompt engineering</h3>
-            <p>Tuning a model's behaviour to your product's voice and edge cases, not the default assistant tone.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">07</span>
-          <div class="p-do-copy">
-            <h3>AI infrastructure</h3>
-            <p>Vector databases, embedding pipelines and inference cost kept under control at production volume.</p>
-          </div>
-        </div>
+      <div class="cap-cards">
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">01</span>
+          <h3>AI chat &amp; copilots</h3>
+          <p>Chat for your customers and copilots for your staff, grounded in your own databases and documents, so every answer cites the record it came from.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">02</span>
+          <h3>LLM-backed features</h3>
+          <p>Retrieval-augmented generation wired into an existing product, grounded in your data, not the open internet.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">03</span>
+          <h3>Voice agents &amp; conversational systems</h3>
+          <p>Speech-to-text, dialogue logic and text-to-speech chained into an agent that runs a real conversation, not a scripted menu.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">04</span>
+          <h3>Workflow automation</h3>
+          <p>The repetitive steps between two systems handed to an agent that runs unattended and logs what it did.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">05</span>
+          <h3>Model evaluation &amp; guardrails</h3>
+          <p>Prompt testing, output validation and fallback paths, so a bad response gets caught before a customer sees it.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">06</span>
+          <h3>Fine-tuning &amp; prompt engineering</h3>
+          <p>Tuning a model's behaviour to your product's voice and edge cases, not the default assistant tone.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">07</span>
+          <h3>AI infrastructure</h3>
+          <p>Vector databases, embedding pipelines and inference cost kept under control at production volume.</p>
+        </article>
       </div>
-    </div>
   </section>
 
   <!-- ============ HOW IT SHIPS ============ -->
@@ -505,6 +471,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         </article>
       </div>
     </div>
+  </section>
+
+  <!-- ============ IMAGE BREAK ============ -->
+  <section class="cap-band" aria-label="Production AI, in one line">
+    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&amp;w=2200&amp;h=1000&amp;fit=crop"
+         onerror="this.onerror=null;this.src='../labs/assets/img/svc/reg-erp.jpg'"
+         alt="A server aisle disappearing into darkness, lit from one end" width="2200" height="1000" loading="lazy" decoding="async" data-plx>
+    <span class="cap-band-tag">Production AI</span>
+    <p class="cap-band-line" data-reveal>Answers that <span class="mz-serif">cite</span> the record they came from.</p>
   </section>
 
   <!-- ============ THE STACK ============ -->
@@ -545,6 +520,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     </div>
   </section>
 
+  <!-- ============ NEXT CAPABILITY ============ -->
+  <a class="cap-next" href="cloud.html" data-reveal aria-label="Next capability: Cloud and Infrastructure">
+    <span class="cap-next-in">
+      <span class="cap-next-lab">Next capability · L/01</span>
+      <span class="cap-next-title">Cloud &amp; Infrastructure
+        <span class="cap-next-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </span>
+    </span>
+  </a>
+
   <!-- ============ CROSS-WORLD DOORWAY ============
        Mirrors the shared "Manzar Studio" doorway on labs/index.html's
        #studio-return section. Same shape, paths adjusted for this page's
@@ -584,20 +569,20 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   <div class="shell">
     <div class="foot-grid">
       <nav class="fnav" aria-label="Footer">
-        <a href="../labs/index.html#mission">Studio <span class="fa">→</span></a>
-        <a href="../labs/index.html#services">Services <span class="fa">→</span></a>
+        <a href="../labs/index.html#mission">About <span class="fa">→</span></a>
+        <a href="../labs/index.html#speed">Timeline <span class="fa">→</span></a>
+        <a href="../labs/index.html#services">What we build <span class="fa">→</span></a>
         <a href="../labs/index.html#work">Work <span class="fa">→</span></a>
         <a href="../pricing.html">Pricing <span class="fa">→</span></a>
-        <a href="../labs/index.html#faq">FAQ <span class="fa">→</span></a>
-        <a href="mailto:hello@manzar.solutions">Contact <span class="fa">→</span></a>
+        <a href="../labs/index.html#contact">Contact <span class="fa">→</span></a>
       </nav>
       <div class="fcol">
         <div class="fblock">
           <span class="fb-lab">Write</span>
-          <a class="femail" href="mailto:hello@manzar.solutions">hello@manzar.solutions</a>
+          <a class="femail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
         </div>
         <div class="fblock">
-          <span class="fb-lab">Studios</span>
+          <span class="fb-lab">Offices</span>
           <p>Lahore, Pakistan · Paris, France<br>Working worldwide.</p>
         </div>
         <div class="fblock">
@@ -619,8 +604,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <canvas id="cv-band-ai" aria-hidden="true"></canvas>
     <div class="band-in">
       <span class="band-logo">
-        <span class="band-logo-mark" aria-hidden="true" dir="rtl" lang="ur">منظر</span>
-        <span class="band-logo-word">manzar</span>
+        <img src="../assets/manzar-wordmark.png" alt="Manzar">
         <span class="band-logo-chip">Labs</span>
       </span>
       <span class="band-tag">Software that earns the second look.<br>Manzar Labs · Lahore / Paris</span>
@@ -906,5 +890,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <a class="mzx-cta" href="../index.html#contact">Start a project <i aria-hidden="true">&#8599;</i></a>
   </div>
 </div>
+<script src="../labs/assets/js/vendor/gsap.min.js"></script>
+<script src="../labs/assets/js/vendor/ScrollTrigger.min.js"></script>
+<script src="../labs/assets/js/vendor/lenis.min.js"></script>
+<script src="../assets/js/cap-motion.js"></script>
 </body>
 </html>

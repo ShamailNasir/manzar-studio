@@ -323,6 +323,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 </script>
 <link rel="stylesheet" href="../assets/css/menu.css">
+<link rel="stylesheet" href="../assets/css/cap-extra.css">
 </head>
 <body data-theme="ink">
 <a class="skip" href="#main">Skip to content</a>
@@ -383,53 +384,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           </a>
         </div>
       </div>
-      <figure class="mz-frame p-hero-frame" id="heroFrame" data-frame="phones">
-        <span class="mz-frame-tag">L/02 · Mobile Development</span>
-        <svg class="mz-frame-art" viewBox="0 0 1400 900" role="img" aria-label="Two phone outlines, one with a notch and one with a punch-hole camera, fed by a shared component tree, with the branch where the two screens diverge marked in accent">
-          <!-- shared component tree: one root, branching to both phones -->
-          <g class="fl-dim">
-            <line data-ln x1="700" y1="80" x2="700" y2="140"/>
-            <line data-ln x1="470" y1="140" x2="930" y2="140"/>
-            <line data-ln x1="470" y1="140" x2="470" y2="190"/>
-            <line data-ln x1="930" y1="140" x2="930" y2="190"/>
-            <circle data-ln class="fl" cx="700" cy="80" r="7"/>
-            <circle data-ln class="fl" cx="470" cy="140" r="6"/>
-          </g>
-          <line data-ln class="fa" x1="930" y1="140" x2="930" y2="190"/>
-          <circle data-ln class="fa" cx="930" cy="140" r="6"/>
-
-          <!-- left phone: notch -->
-          <g class="fl">
-            <rect data-ln x="300" y="190" width="340" height="510" rx="38"/>
-          </g>
-          <rect data-ln class="fl-dim" x="430" y="212" width="80" height="16" rx="8"/>
-          <g class="fl-dim">
-            <line data-ln x1="330" y1="270" x2="610" y2="270"/>
-            <line data-ln x1="330" y1="320" x2="610" y2="320"/>
-            <line data-ln x1="330" y1="370" x2="540" y2="370"/>
-            <rect data-ln x="330" y="430" width="280" height="150" rx="6"/>
-            <line data-ln x1="330" y1="620" x2="610" y2="620"/>
-            <line data-ln x1="330" y1="660" x2="540" y2="660"/>
-          </g>
-
-          <!-- right phone: punch-hole camera, accent screen -->
-          <g class="fa">
-            <rect data-ln x="760" y="190" width="340" height="510" rx="38"/>
-          </g>
-          <circle data-ln class="fl-dim" cx="930" cy="224" r="8"/>
-          <g class="fl-dim">
-            <line data-ln x1="790" y1="280" x2="1070" y2="280"/>
-            <line data-ln x1="790" y1="330" x2="1070" y2="330"/>
-            <line data-ln x1="790" y1="380" x2="1000" y2="380"/>
-            <rect data-ln x="790" y="440" width="280" height="150" rx="6"/>
-          </g>
-          <line data-ln class="fa" x1="790" y1="620" x2="1070" y2="620"/>
-          <line data-ln class="fa" x1="790" y1="660" x2="1000" y2="660"/>
-          <circle class="fa-dot" cx="930" cy="140" r="8"/>
-
-          <text class="ft" x="300" y="782">SHARED CORE, NATIVE EDGE</text>
-        </svg>
-        <span class="mz-frame-word">Mobile Development</span>
+      <figure class="cap-media" id="heroMedia">
+        <img src="https://images.unsplash.com/photo-1511140973288-19bf21d7e771?q=80&amp;w=1600&amp;h=1200&amp;fit=crop"
+             onerror="this.onerror=null;this.src='../labs/assets/img/svc/mob.jpg'"
+             alt="A phone lighting up hello on a dark desk" width="1600" height="1200" decoding="async" fetchpriority="high">
+        <span class="cap-media-tag">L/02 · Mobile Development</span>
+        <span class="cap-media-word">iOS · Android · shipped, not prototyped</span>
+        <div class="cap-chip" aria-hidden="true"><div class="cap-chip-item"><span class="cap-chip-k">One codebase</span><span class="cap-chip-l">both stores</span></div><div class="cap-chip-item"><span class="cap-chip-k">OTA</span><span class="cap-chip-l">fixes without the review wait</span></div></div>
       </figure>
     </div>
   </section>
@@ -443,51 +404,38 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         <span class="mz-eyebrow"><i></i>What we actually do</span>
         <h2 class="p-do-title">Six ways we get an app through review</h2>
       </div>
-      <div class="p-do-list">
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">01</span>
-          <div class="p-do-copy">
-            <h3>Native iOS &amp; Android</h3>
-            <p>Swift and Kotlin where performance, camera or hardware access make React Native the wrong call.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">02</span>
-          <div class="p-do-copy">
-            <h3>Cross-platform builds</h3>
-            <p>One React Native codebase for the screens that don't need to be native, so features ship to both stores together.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">03</span>
-          <div class="p-do-copy">
-            <h3>Offline-first sync</h3>
-            <p>Local-first data with conflict resolution, so the app works on a flight and reconciles the moment signal returns.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">04</span>
-          <div class="p-do-copy">
-            <h3>Push, permissions &amp; background jobs</h3>
-            <p>Notifications, location and background sync configured to survive App Store and Play Store review, not just a demo build.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">05</span>
-          <div class="p-do-copy">
-            <h3>App Store &amp; Play Store delivery</h3>
-            <p>Submission, review notes and release management, so a rejected build doesn't sit in your inbox for a week.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">06</span>
-          <div class="p-do-copy">
-            <h3>Device &amp; fleet management</h3>
-            <p>Enterprise device policy and feature restrictions for companies issuing phones at scale, not just consumer app releases.</p>
-          </div>
-        </div>
+      <div class="cap-cards">
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">01</span>
+          <h3>Native iOS &amp; Android</h3>
+          <p>Swift and Kotlin where performance, camera or hardware access make React Native the wrong call.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">02</span>
+          <h3>Cross-platform builds</h3>
+          <p>One React Native codebase for the screens that don't need to be native, so features ship to both stores together.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">03</span>
+          <h3>Offline-first sync</h3>
+          <p>Local-first data with conflict resolution, so the app works on a flight and reconciles the moment signal returns.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">04</span>
+          <h3>Push, permissions &amp; background jobs</h3>
+          <p>Notifications, location and background sync configured to survive App Store and Play Store review, not just a demo build.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">05</span>
+          <h3>App Store &amp; Play Store delivery</h3>
+          <p>Submission, review notes and release management, so a rejected build doesn't sit in your inbox for a week.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">06</span>
+          <h3>Device &amp; fleet management</h3>
+          <p>Enterprise device policy and feature restrictions for companies issuing phones at scale, not just consumer app releases.</p>
+        </article>
       </div>
-    </div>
   </section>
 
   <!-- ============ HOW IT SHIPS ============ -->
@@ -513,6 +461,41 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           <h3>Ship</h3>
           <p>Store submission, release notes and the first update cycle, so version 1.0.1 isn't a scramble.</p>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ IMAGE BREAK ============ -->
+  <section class="cap-band" aria-label="Store-ready">
+    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&amp;w=2200&amp;h=1000&amp;fit=crop"
+         onerror="this.onerror=null;this.src='../labs/assets/img/svc/web.jpg'"
+         alt="A phone held up against city light at night" width="2200" height="1000" loading="lazy" decoding="async" data-plx>
+    <span class="cap-band-tag">Store-ready</span>
+    <p class="cap-band-line" data-reveal>Six weeks to the <span class="mz-serif">store</span>, not six quarters.</p>
+  </section>
+
+  <!-- ============ WHAT WE ENGINEER FOR ============ -->
+  <section class="p-do" aria-label="What we engineer for">
+    <div class="shell">
+      <div class="p-do-head" data-reveal>
+        <span class="mz-eyebrow"><i></i>What we engineer for</span>
+      </div>
+      <div class="cap-stats">
+        <div class="cap-stat" data-reveal>
+          <span class="cap-stat-num" data-count="2">2</span>
+          <span class="cap-stat-lab">Platforms, one codebase</span>
+          <span class="cap-stat-note">React Native or Flutter where it fits, native where it matters.</span>
+        </div>
+        <div class="cap-stat" data-reveal>
+          <span class="cap-stat-num" data-count="6">6<span class="u">wk</span></span>
+          <span class="cap-stat-lab">To a first TestFlight</span>
+          <span class="cap-stat-note">A real build on your phone, not a clickable mockup.</span>
+        </div>
+        <div class="cap-stat" data-reveal>
+          <span class="cap-stat-num" data-count="99.5">99.5<span class="u">%+</span></span>
+          <span class="cap-stat-lab">Crash-free sessions, the bar</span>
+          <span class="cap-stat-note">Monitored from day one; regressions get caught in hours.</span>
+        </div>
       </div>
     </div>
   </section>
@@ -557,6 +540,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     </div>
   </section>
 
+  <!-- ============ NEXT CAPABILITY ============ -->
+  <a class="cap-next" href="iot.html" data-reveal aria-label="Next capability: IoT &amp; Connected Systems">
+    <span class="cap-next-in">
+      <span class="cap-next-lab">Next capability · L/04</span>
+      <span class="cap-next-title">IoT &amp; Connected Systems
+        <span class="cap-next-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </span>
+    </span>
+  </a>
+
   <!-- ============ CROSS-WORLD DOORWAY ============
        Mirrors the shared "Manzar Studio" doorway on labs/index.html's
        #studio-return section. Same shape, paths adjusted for this page's
@@ -596,20 +589,20 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   <div class="shell">
     <div class="foot-grid">
       <nav class="fnav" aria-label="Footer">
-        <a href="../labs/index.html#mission">Studio <span class="fa">→</span></a>
-        <a href="../labs/index.html#services">Services <span class="fa">→</span></a>
+        <a href="../labs/index.html#mission">About <span class="fa">→</span></a>
+        <a href="../labs/index.html#speed">Timeline <span class="fa">→</span></a>
+        <a href="../labs/index.html#services">What we build <span class="fa">→</span></a>
         <a href="../labs/index.html#work">Work <span class="fa">→</span></a>
         <a href="../pricing.html">Pricing <span class="fa">→</span></a>
-        <a href="../labs/index.html#faq">FAQ <span class="fa">→</span></a>
-        <a href="mailto:hello@manzar.solutions">Contact <span class="fa">→</span></a>
+        <a href="../labs/index.html#contact">Contact <span class="fa">→</span></a>
       </nav>
       <div class="fcol">
         <div class="fblock">
           <span class="fb-lab">Write</span>
-          <a class="femail" href="mailto:hello@manzar.solutions">hello@manzar.solutions</a>
+          <a class="femail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
         </div>
         <div class="fblock">
-          <span class="fb-lab">Studios</span>
+          <span class="fb-lab">Offices</span>
           <p>Lahore, Pakistan · Paris, France<br>Working worldwide.</p>
         </div>
         <div class="fblock">
@@ -631,8 +624,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <canvas id="cv-band-mobile" aria-hidden="true"></canvas>
     <div class="band-in">
       <span class="band-logo">
-        <span class="band-logo-mark" aria-hidden="true" dir="rtl" lang="ur">منظر</span>
-        <span class="band-logo-word">manzar</span>
+        <img src="../assets/manzar-wordmark.png" alt="Manzar">
         <span class="band-logo-chip">Labs</span>
       </span>
       <span class="band-tag">Software that earns the second look.<br>Manzar Labs · Lahore / Paris</span>
@@ -918,5 +910,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <a class="mzx-cta" href="../index.html#contact">Start a project <i aria-hidden="true">&#8599;</i></a>
   </div>
 </div>
+<script src="../labs/assets/js/vendor/gsap.min.js"></script>
+<script src="../labs/assets/js/vendor/ScrollTrigger.min.js"></script>
+<script src="../labs/assets/js/vendor/lenis.min.js"></script>
+<script src="../assets/js/cap-motion.js"></script>
 </body>
 </html>

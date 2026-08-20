@@ -223,19 +223,19 @@ html.mzx-lock, body.mzx-lock{ overflow:hidden; }
 .mzx-switch a{
   position:relative; z-index:1;
   display:inline-flex; align-items:center; justify-content:center;
-  min-width:86px; height:40px; padding:0 22px; border-radius:100px;
-  font-size:15px; font-weight:500; letter-spacing:-.014em;
+  min-width:80px; height:36px; padding:0 18px; border-radius:100px;
+  font-size:13px; font-weight:500; letter-spacing:0;
   color:var(--x-2); text-decoration:none;
   transition:color .32s var(--x-ease), background-color .32s var(--x-ease);
 }
 .mzx-switch a:hover{ color:var(--x-1); }
 .mzx-switch a.is-on{
-  background:var(--x-bone); color:var(--x-ink); font-weight:600;
+  background:var(--x-bone); color:var(--x-ink);
 }
 .mzx-switch a.is-on:hover{ color:var(--x-ink); }
 
 .mzx-mail{
-  font-size:15px; font-weight:500; letter-spacing:-.012em;
+  font-size:14px; font-weight:500; letter-spacing:0;
   color:var(--x-2); text-decoration:none;
   border-bottom:1px solid transparent; padding-bottom:2px;
   transition:color .3s var(--x-ease), border-color .3s var(--x-ease);
@@ -258,15 +258,15 @@ html.mzx-lock, body.mzx-lock{ overflow:hidden; }
 
 .mzx-cta{
   display:inline-flex; align-items:center; gap:14px;
-  height:52px; padding:0 8px 0 24px; border-radius:10px;
+  height:52px; padding:0 8px 0 24px; border-radius:100px;
   background:var(--x-bone); color:var(--x-ink); text-decoration:none;
-  font-size:15.5px; font-weight:600; letter-spacing:-.016em;
+  font-size:14px; font-weight:500; letter-spacing:0;
   transition:transform .3s var(--x-ease);
 }
 .mzx-cta:hover{ transform:translateY(-1px); }
 .mzx-cta i{
-  display:grid; place-items:center; width:36px; height:36px;
-  border-radius:8px; background:var(--x-ink); color:var(--x-bone);
+  display:grid; place-items:center; width:38px; height:38px;
+  border-radius:50%; background:var(--x-ink); color:var(--x-bone);
   font-style:normal; font-size:13px;
 }
 
@@ -294,3 +294,73 @@ html.mzx-lock, body.mzx-lock{ overflow:hidden; }
 
 /* the retired component must never render alongside this one */
 .mz-menu, .mz-menu-scrim{ display:none !important; }
+
+/* ── head and foot ────────────────────────────────────────────
+   The head was 120px holding a 36px "MENU" label on the left and the
+   Close button on the right, with roughly 2,200px of nothing between
+   them on a wide screen. Opening the menu meant losing all sense of
+   where you were. It now carries the wordmark and the world you are
+   currently in, which is the one thing a menu should never make you
+   guess.
+
+   The foot was four items under `justify-content:space-between`, which
+   scattered them at 92, 857, 1581 and 2281 — the mail and the clocks
+   floating in open space with nothing to align to. It is a grid now:
+   switch and mail grouped left, clocks and CTA grouped right, one
+   flexible gap between. Same four items, on a rhythm. */
+
+.mzx-head-left{
+  display:flex; align-items:center; gap:clamp(14px,1.1vw,22px);
+  min-width:0;
+}
+.mzx-mark{
+  height:clamp(20px,1.5vw,28px); width:auto; display:block;
+  opacity:.92;
+}
+.mzx-head-rule{
+  width:1px; height:clamp(18px,1.4vw,26px);
+  background:var(--x-line-2); flex:none;
+}
+.mzx-head .mzx-eyebrow{ font-size:clamp(11px,.68vw,13px); color:var(--x-2); }
+
+.mzx-foot{
+  display:grid;
+  grid-template-columns:auto auto 1fr auto auto;
+  align-items:center;
+  gap:clamp(18px,1.8vw,38px);
+}
+.mzx-foot .mzx-clocks{ justify-self:end; }
+.mzx-foot .mzx-cta{ justify-self:end; }
+
+@media (max-width:900px){
+  .mzx-mark{ height:20px; }
+  .mzx-foot{
+    grid-template-columns:auto 1fr auto;
+    row-gap:16px;
+  }
+  .mzx-foot .mzx-mail{ grid-column:1 / -1; order:3; }
+  .mzx-foot .mzx-clocks{ display:none; }
+}
+
+/* ── the page nav, while the menu is open ─────────────────────
+   Two reasons this has to go, not just be covered.
+
+   Correctness: the Labs nav carries `mix-blend-mode:difference`. A
+   blended element composites against its backdrop, and pairing that with
+   a full-screen overlay is exactly the combination that renders
+   inconsistently — the nav was showing through the open menu even though
+   hit-testing and paint order both put the menu on top and opaque.
+
+   Design: the menu now has the wordmark and the world in its own head,
+   so leaving the page nav visible underneath means two wordmarks and two
+   "Menu" affordances competing in the same 120px.
+
+   .mzx-lock is already set on <html> whenever the menu opens. */
+html.mzx-lock .nav,
+html.mzx-lock .mz-nav,
+html.mzx-lock header.nav{
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .28s var(--x-ease, cubic-bezier(.22,1,.36,1));
+}
+.nav, .mz-nav{ transition:opacity .32s cubic-bezier(.22,1,.36,1); }

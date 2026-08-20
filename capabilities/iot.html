@@ -323,6 +323,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 </script>
 <link rel="stylesheet" href="../assets/css/menu.css">
+<link rel="stylesheet" href="../assets/css/cap-extra.css">
 </head>
 <body data-theme="ink">
 <a class="skip" href="#main">Skip to content</a>
@@ -383,32 +384,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           </a>
         </div>
       </div>
-      <figure class="mz-frame p-hero-frame" id="heroFrame" data-frame="sensor">
-        <span class="mz-frame-tag">L/04 · IoT &amp; Connected Systems</span>
-        <svg class="mz-frame-art" viewBox="0 0 1400 900" role="img" aria-label="A device sending a signal to a line chart, with the point where the chart crosses an alert threshold marked in accent">
-          <!-- device glyph -->
-          <rect data-ln class="fl" x="140" y="380" width="110" height="140" rx="14"/>
-          <line data-ln class="fl" x1="195" y1="380" x2="195" y2="350"/>
-          <circle data-ln class="fl" cx="195" cy="340" r="6"/>
-
-          <!-- signal-strength arcs travelling toward the chart -->
-          <path data-ln class="fl-dim" d="M195 400 A 40 40 0 0 1 195 440"/>
-          <path data-ln class="fl-dim" d="M195 370 A 70 70 0 0 1 195 470"/>
-          <path data-ln class="fl-dim" d="M195 335 A 105 105 0 0 1 195 505"/>
-
-          <!-- plot area -->
-          <rect data-ln class="fl" x="560" y="200" width="700" height="460" rx="6"/>
-          <line data-ln class="fl-dim" x1="560" y1="380" x2="1260" y2="380" stroke-dasharray="10 10"/>
-          <text class="ft" x="1170" y="368">ALERT LEVEL</text>
-
-          <!-- telemetry line, crossing the threshold once -->
-          <path data-ln class="fl" d="M600,540 L680,520 L760,470 L840,440 L920,380 L1000,340 L1080,360 L1160,320 L1220,300"/>
-          <circle class="fa-dot" cx="920" cy="380" r="9"/>
-          <line data-ln class="fa" x1="920" y1="380" x2="920" y2="200"/>
-
-          <text class="ft" x="140" y="700">THRESHOLD CROSSED</text>
-        </svg>
-        <span class="mz-frame-word">IoT &amp; Connected Systems</span>
+      <figure class="cap-media" id="heroMedia">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&amp;w=1600&amp;h=1200&amp;fit=crop"
+             onerror="this.onerror=null;this.src='../labs/assets/img/svc/iot.jpg'"
+             alt="A circuit board in macro, traces catching the light" width="1600" height="1200" decoding="async" fetchpriority="high">
+        <span class="cap-media-tag">L/04 · IoT &amp; Connected Systems</span>
+        <span class="cap-media-word">Hardware and firmware, wired to software</span>
+        <div class="cap-chip" aria-hidden="true"><div class="cap-chip-item"><span class="cap-chip-k">Sensor → dashboard</span><span class="cap-chip-l">one pipeline</span></div><div class="cap-chip-item"><span class="cap-chip-k">Fleet-ready</span><span class="cap-chip-l">provisioning + OTA</span></div></div>
       </figure>
     </div>
   </section>
@@ -422,51 +404,38 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         <span class="mz-eyebrow"><i></i>What we actually do</span>
         <h2 class="p-do-title">Six ways a physical event becomes a decision</h2>
       </div>
-      <div class="p-do-list">
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">01</span>
-          <div class="p-do-copy">
-            <h3>Device firmware &amp; connectivity</h3>
-            <p>Sensors and gateways talking over MQTT or BLE, tuned for the power budget of a device that can't be recharged daily.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">02</span>
-          <div class="p-do-copy">
-            <h3>Real-time monitoring dashboards</h3>
-            <p>A live view of every connected device, built for someone glancing at it between other jobs, not a data analyst.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">03</span>
-          <div class="p-do-copy">
-            <h3>Alerting &amp; escalation logic</h3>
-            <p>Thresholds and escalation paths that wake the right person for the right event, and stay quiet for everything else.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">04</span>
-          <div class="p-do-copy">
-            <h3>Edge-to-cloud data pipelines</h3>
-            <p>Telemetry from thousands of devices ingested, buffered and stored without losing a reading when connectivity drops.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">05</span>
-          <div class="p-do-copy">
-            <h3>Device provisioning &amp; fleet management</h3>
-            <p>Onboarding, firmware updates and remote configuration for a fleet that's grown past the point of doing it by hand.</p>
-          </div>
-        </div>
-        <div class="p-do-row" data-reveal>
-          <span class="p-do-num">06</span>
-          <div class="p-do-copy">
-            <h3>Integration with existing hardware</h3>
-            <p>Working inside the constraints of hardware that's already shipped, not redesigning it from scratch.</p>
-          </div>
-        </div>
+      <div class="cap-cards">
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">01</span>
+          <h3>Device firmware &amp; connectivity</h3>
+          <p>Sensors and gateways talking over MQTT or BLE, tuned for the power budget of a device that can't be recharged daily.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">02</span>
+          <h3>Real-time monitoring dashboards</h3>
+          <p>A live view of every connected device, built for someone glancing at it between other jobs, not a data analyst.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">03</span>
+          <h3>Alerting &amp; escalation logic</h3>
+          <p>Thresholds and escalation paths that wake the right person for the right event, and stay quiet for everything else.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">04</span>
+          <h3>Edge-to-cloud data pipelines</h3>
+          <p>Telemetry from thousands of devices ingested, buffered and stored without losing a reading when connectivity drops.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">05</span>
+          <h3>Device provisioning &amp; fleet management</h3>
+          <p>Onboarding, firmware updates and remote configuration for a fleet that's grown past the point of doing it by hand.</p>
+        </article>
+        <article class="cap-card" data-reveal>
+          <span class="cap-card-num">06</span>
+          <h3>Integration with existing hardware</h3>
+          <p>Working inside the constraints of hardware that's already shipped, not redesigning it from scratch.</p>
+        </article>
       </div>
-    </div>
   </section>
 
   <!-- ============ HOW IT SHIPS ============ -->
@@ -494,6 +463,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         </article>
       </div>
     </div>
+  </section>
+
+  <!-- ============ IMAGE BREAK ============ -->
+  <section class="cap-band" aria-label="Field-deployed">
+    <img src="https://images.unsplash.com/photo-1580584126903-c17d41830450?q=80&amp;w=2200&amp;h=1000&amp;fit=crop"
+         onerror="this.onerror=null;this.src='../labs/assets/img/svc/reg-iot.jpg'"
+         alt="Rows of indicator lights across installed field hardware" width="2200" height="1000" loading="lazy" decoding="async" data-plx>
+    <span class="cap-band-tag">Field-deployed</span>
+    <p class="cap-band-line" data-reveal>From the <span class="mz-serif">bench</span> to a thousand devices.</p>
   </section>
 
   <!-- ============ THE STACK ============ -->
@@ -531,6 +509,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       </div>
     </div>
   </section>
+
+  <!-- ============ NEXT CAPABILITY ============ -->
+  <a class="cap-next" href="ai.html" data-reveal aria-label="Next capability: AI Development">
+    <span class="cap-next-in">
+      <span class="cap-next-lab">Next capability · L/03</span>
+      <span class="cap-next-title">AI Development
+        <span class="cap-next-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </span>
+    </span>
+  </a>
 
   <!-- ============ CROSS-WORLD DOORWAY ============
        Mirrors the shared "Manzar Studio" doorway on labs/index.html's
@@ -571,20 +559,20 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   <div class="shell">
     <div class="foot-grid">
       <nav class="fnav" aria-label="Footer">
-        <a href="../labs/index.html#mission">Studio <span class="fa">→</span></a>
-        <a href="../labs/index.html#services">Services <span class="fa">→</span></a>
+        <a href="../labs/index.html#mission">About <span class="fa">→</span></a>
+        <a href="../labs/index.html#speed">Timeline <span class="fa">→</span></a>
+        <a href="../labs/index.html#services">What we build <span class="fa">→</span></a>
         <a href="../labs/index.html#work">Work <span class="fa">→</span></a>
         <a href="../pricing.html">Pricing <span class="fa">→</span></a>
-        <a href="../labs/index.html#faq">FAQ <span class="fa">→</span></a>
-        <a href="mailto:hello@manzar.solutions">Contact <span class="fa">→</span></a>
+        <a href="../labs/index.html#contact">Contact <span class="fa">→</span></a>
       </nav>
       <div class="fcol">
         <div class="fblock">
           <span class="fb-lab">Write</span>
-          <a class="femail" href="mailto:hello@manzar.solutions">hello@manzar.solutions</a>
+          <a class="femail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
         </div>
         <div class="fblock">
-          <span class="fb-lab">Studios</span>
+          <span class="fb-lab">Offices</span>
           <p>Lahore, Pakistan · Paris, France<br>Working worldwide.</p>
         </div>
         <div class="fblock">
@@ -606,8 +594,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <canvas id="cv-band-iot" aria-hidden="true"></canvas>
     <div class="band-in">
       <span class="band-logo">
-        <span class="band-logo-mark" aria-hidden="true" dir="rtl" lang="ur">منظر</span>
-        <span class="band-logo-word">manzar</span>
+        <img src="../assets/manzar-wordmark.png" alt="Manzar">
         <span class="band-logo-chip">Labs</span>
       </span>
       <span class="band-tag">Software that earns the second look.<br>Manzar Labs · Lahore / Paris</span>
@@ -893,5 +880,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <a class="mzx-cta" href="../index.html#contact">Start a project <i aria-hidden="true">&#8599;</i></a>
   </div>
 </div>
+<script src="../labs/assets/js/vendor/gsap.min.js"></script>
+<script src="../labs/assets/js/vendor/ScrollTrigger.min.js"></script>
+<script src="../labs/assets/js/vendor/lenis.min.js"></script>
+<script src="../assets/js/cap-motion.js"></script>
 </body>
 </html>
