@@ -3026,3 +3026,52 @@ hello@manzar.studio, Offices, wordmark-image band logo).
 **Verified in browser:** all four pages walked; hotlinks/naturalWidth
 checked; counters fire; menu metrics measured 13/500+14/500; lenis+gsap
 present on every page. Backup: Backup/2026-08-21-pre-capability-overhaul/.
+
+## 151 — Capability pages REBUILT FROM SCRATCH + SEO/a11y/branding pass (2026-08-21)
+
+User on the retrofit: still the old crappy site (giant unstyled wordmark in
+the footer band — my bug; old template skeleton showing through). Ordered:
+rebuild each page from scratch, integral to the new site; plus a11y + deep
+SEO, favicons/tab titles for both worlds, clean URLs, full audit.
+
+**REBUILD (build_caps.py generator, outputs are now source):**
+Pages are built ON the Labs stack — same head pattern (first-paint guard,
+crossover gating, fonts), cursor.css → manzar-system.css → labs/style.css →
+labs/manzar-theme.css → caps.css (new page layer). Nav, footer (incl. dither
+band), mzx menu and the studio doorway are EXTRACTED from labs/index.html at
+build time and path-adapted — parity by construction, drift impossible.
+New per-page composition: full-bleed photographic hero (scrim, crumb,
+display title, meta rail) → sticky chapter rail with scroll-spy → offers as
+2 editorial feature rows + card grid under a ghost numeral → per-page SET
+PIECE (AI: self-running eval terminal · Cloud: live status wall · Mobile:
+parallax device duo · IoT: SVG pipeline line-draw with travelling packet) →
+process cells → stack + tool chips → accent-rule proof → pricing pointer →
+next-capability doorway (hover image) → labs studio doorway → labs footer.
+caps.js: Lenis+gsap (Labs recipe), hero entrance, [data-cv] IO reveals
+(gated on html.cp-js so no-JS reads everything), scroll-spy, parallax,
+counters, set-piece drivers, Bayer band dither (ResizeObserver-sized).
+Fixed during QA: cp-hero-in width override; toc/nav collision (top:88px);
+band canvas ID rule (#cv-band-cap — labs sizes by #cv-band-labs, band had
+collapsed to 300×150); MZX extraction bug (end marker preceded start → menu
+silently missing; now </body>-bounded + length-asserted); local ai.jpg is a
+corridor photo, not waves → plates/fallbacks re-pointed (CDN + safe locals).
+
+**SEO (researched):** keyword-first titles ≤~55ch sitewide (AI/Cloud/Mobile/
+IoT Development Services | Manzar Labs; Manzar Studio — Film, Photography &
+Post; Manzar Labs — Software Engineering at Startup Speed; Pricing —
+Sprints, Builds & Retainers); unique keyworded descriptions + meta keywords;
+Service + BreadcrumbList JSON-LD per capability; canonicals extensionless
+everywhere; robots.txt + sitemap.xml (root + deploy); vercel.json
+cleanUrls:true (live URLs drop .html; file:// links untouched).
+
+**Branding:** Labs favicon variant (accent badge on the mark) generated at
+32/180/192/512 — Labs, pricing and all capability tabs now visually
+distinct from Studio in Chrome.
+
+**A11y:** aria-current on scroll-spy rail; contrast bumps on the smallest
+mono labels (.35→.55); skip links, landmarks, reduced-motion, alt text
+throughout; no-JS renders fully.
+
+**Audit:** all 7 pages walked; titles/favicons verified live; full link
+inventory on ai.html resolves; zero console errors sitewide. Dead retrofit
+files (cap-extra.css, cap-motion.js) deleted from working + deploy.

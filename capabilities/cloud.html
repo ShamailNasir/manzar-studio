@@ -2,462 +2,246 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cloud &amp; Infrastructure · Manzar Labs</title>
-<meta name="description" content="Cloud architecture, infrastructure-as-code and cost audits from a studio that runs its own platforms in production. Manzar Labs.">
-<link rel="canonical" href="https://manzar.studio/capabilities/cloud.html">
-<meta property="og:title" content="Cloud &amp; Infrastructure · Manzar Labs">
-<meta property="og:description" content="Cloud architecture, infrastructure-as-code and cost audits from a studio that runs its own platforms in production.">
+<style>html{background:#0B0A08}html.mz-xover-boot{overflow:hidden}html.mz-xover-boot::before{content:"";position:fixed;inset:0;z-index:4001;background:#0B0A08;pointer-events:none}</style>
+<script>(function(){var d=document.documentElement;try{if(sessionStorage.getItem('mz:crossover')){d.className+=' mz-xover-boot';}}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Infrastructure & DevOps Services | Manzar Labs</title>
+<meta name="description" content="Cloud infrastructure consulting and DevOps engineering: architecture and migration, Kubernetes, CI/CD pipelines, infrastructure as code, observability and cost audits. AWS-first, engineered for uptime. Manzar Labs.">
+<meta name="keywords" content="cloud infrastructure services, DevOps consulting, Kubernetes consulting, CI/CD pipeline, infrastructure as code, cloud migration, cloud cost optimization, SRE">
+<link rel="canonical" href="https://manzar.studio/capabilities/cloud">
+<meta property="og:site_name" content="Manzar Labs">
+<meta property="og:title" content="Cloud & Infrastructure · Manzar Labs">
+<meta property="og:description" content="Cloud infrastructure consulting and DevOps engineering: architecture and migration, Kubernetes, CI/CD pipelines, infrastructure as code, observability and cost audits. AWS-first, engineered for uptime. Manzar Labs.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://manzar.studio/capabilities/cloud.html">
+<meta property="og:url" content="https://manzar.studio/capabilities/cloud">
 <meta property="og:image" content="https://manzar.studio/assets/labs-preview.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="750">
-<meta property="og:image:alt" content="Manzar Labs, design-led engineering studio">
+<meta property="og:image:alt" content="Manzar Labs — design-led software engineering, Lahore and Paris">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cloud &amp; Infrastructure · Manzar Labs">
-<meta name="twitter:description" content="Cloud architecture, infrastructure-as-code and cost audits from a studio that runs its own platforms in production.">
+<meta name="twitter:title" content="Cloud & Infrastructure · Manzar Labs">
+<meta name="twitter:description" content="Cloud infrastructure consulting and DevOps engineering: architecture and migration, Kubernetes, CI/CD pipelines, infrastructure as code, observability and cost audits. AWS-first, engineered for uptime. Manzar Labs.">
 <meta name="twitter:image" content="https://manzar.studio/assets/labs-preview.jpg">
 <meta name="theme-color" content="#0B0A08">
 <link rel="icon" href="../favicon.ico" sizes="32x32">
-<link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/favicon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="../assets/brand/favicon-512.png">
-<link rel="apple-touch-icon" href="../assets/brand/favicon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-labs-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/brand/favicon-labs-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="../assets/brand/favicon-labs-512.png">
+<link rel="apple-touch-icon" href="../assets/brand/favicon-labs-180.png">
 <link rel="manifest" href="../site.webmanifest">
+<script>if("scrollRestoration" in history)history.scrollRestoration="manual";
+window.__mzCrossover=false;
+try{window.__mzCrossover=!!sessionStorage.getItem("mz-crossover");}catch(e){}
+if(window.__mzCrossover){
+  document.documentElement.classList.add("mz-crossing");
+  setTimeout(function(){document.documentElement.classList.remove("mz-crossing");},3000);
+}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://api.fontshare.com">
-<!-- Fontshare silently drops the second family from a combined f[] request —
-     Tanker never loaded when bundled with General Sans. Two requests, not one. -->
 <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=tanker@400&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Gulzar&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript>
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;display=swap">
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=tanker@400&amp;display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gulzar&amp;display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&amp;display=swap">
 </noscript>
-<!-- The pointer. Deliberately the first stylesheet in the document, so
-     it is resolved before the page first paints and the browser never
-     gets a chance to show its own arrow. -->
 <link rel="stylesheet" href="../assets/css/cursor.css">
 <link rel="stylesheet" href="../assets/css/manzar-system.css">
+<link rel="stylesheet" href="../labs/assets/css/style.css">
+<link rel="stylesheet" href="../labs/assets/css/manzar-theme.css">
+<link rel="stylesheet" href="../assets/css/crossover.css">
+<link rel="stylesheet" href="../assets/css/menu.css">
+<link rel="stylesheet" href="../assets/css/caps.css">
 <script src="../assets/js/manzar-system.js" defer></script>
-<style>
-/* ============================================================
-   Manzar Labs — capability page template (cloud.html)
-   Tokens + shared components (nav, buttons, chips, notch, cards,
-   footer) come from assets/css/manzar-system.css. Everything below
-   is page-local: reset, layout primitives and this page's sections.
-   ============================================================ */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:auto}
-body{
-  background:var(--ink);color:var(--fg);font-family:var(--body);font-weight:400;
-  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;overflow-x:hidden;
-}
-::selection{background:var(--acc);color:var(--ink)}
-/* Scrollbar is hidden site-wide from assets/css/manzar-system.css. */
-a{color:inherit;text-decoration:none}
-img,svg,canvas,video{display:block;max-width:100%}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-.skip{position:fixed;left:-999px;top:8px;z-index:2000;background:var(--acc);color:var(--ink);padding:8px 14px;font-family:var(--mono);font-size:12px}
-.skip:focus{left:8px}
-:focus-visible{outline:1.5px dashed var(--acc);outline-offset:3px}
-.shell{width:min(var(--shell),100% - var(--pad)*2);margin-inline:auto}
-
-/* Below ~860px the shared .mz-nav-right (switch + CTA pill) no longer
-   reliably fits beside the logo tab — same fix as index.html. */
-@media (max-width:860px){
-  .mz-nav-right{gap:8px}
-  .mz-nav-right .mz-switch{display:none}
-  .mz-nav .mz-btn-label{display:none}
-  .mz-nav .mz-btn{padding:0;width:44px;justify-content:center}
-  .mz-nav .mz-btn-chip{width:44px;height:44px}
-}
-
-/* ---------- reveal-on-scroll (dependency-free) ---------- */
-[data-reveal]{opacity:0;transform:translateY(18px);transition:opacity .7s var(--e-out),transform .7s var(--e-out)}
-[data-reveal].is-in{opacity:1;transform:none}
-
-/* ---------- designed frame (MANZAR-FRAMES.md) ----------
-   Live inline SVG + CSS, ink ground / bone line art / one accent element. */
-.mz-frame{position:relative;background:var(--ink);border:1px solid var(--line);border-radius:var(--r-card);display:block;overflow:hidden}
-.mz-frame-tag{
-  position:absolute;top:14px;left:16px;z-index:2;
-  font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--soft);
-}
-.mz-frame-word{
-  position:absolute;left:16px;bottom:14px;z-index:2;
-  font-family:var(--disp);font-weight:600;font-size:clamp(15px,1.4vw,20px);letter-spacing:-.01em;color:var(--fg);
-}
-.mz-frame-art{position:absolute;inset:0;width:100%;height:100%;display:block}
-.mz-frame-art .fl{fill:none;stroke:var(--soft);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.mz-frame-art .fl-dim{fill:none;stroke:var(--mut);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.mz-frame-art .fa{fill:none;stroke:var(--acc);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;transition:transform .45s var(--e-out);transform-box:fill-box;transform-origin:center}
-.mz-frame-art .fa-dot{fill:var(--acc);stroke:none;transition:opacity .5s var(--e-out),transform .5s var(--e-out);transform-box:fill-box;transform-origin:center}
-.mz-frame-art .ft{font-family:var(--mono);font-size:11px;letter-spacing:.16em;fill:var(--mut)}
-.mz-frame-art .ft-num{font-family:var(--disp);font-weight:600;fill:var(--fg);letter-spacing:-.01em}
-/* draw-in: pathLength=1 normalises every shape to the same dash length,
-   so one rule staggers regardless of actual geometry length. */
-.mz-frame-art [data-ln]{stroke-dasharray:1 1;stroke-dashoffset:1;transition:stroke-dashoffset .9s var(--e-out)}
-.mz-frame-art .fa-dot{opacity:0;transform:scale(.4)}
-.mz-frame.is-in .mz-frame-art [data-ln]{stroke-dashoffset:0}
-.mz-frame.is-in .mz-frame-art .fa-dot{opacity:1;transform:scale(1)}
-
-/* ---------- hero ---------- */
-.p-hero{padding:calc(72px + clamp(40px,8vh,96px)) 0 clamp(70px,9vh,110px)}
-.p-hero-grid{display:grid;grid-template-columns:minmax(0,6.2fr) minmax(0,5.8fr);gap:clamp(40px,5vw,88px);align-items:center}
-.p-hero-copy{max-width:640px}
-.p-hero-title{
-  /* Was var(--shout) — Tanker, which is caps-only, so this page heading
-     came out shouting in a face the house rules reserve for the giant
-     display lines ("General Sans everywhere, Tanker only for the shout
-     lines", index.html:40). Studio's and Labs' heroes are General Sans
-     500 at -.024em; this now matches them, and reads in sentence case. */
-  font-family:var(--disp,var(--body));font-weight:500;
-  font-size:clamp(32px,4.4vw,62px);line-height:1.06;letter-spacing:-.024em;
-  margin:22px 0 0;color:var(--fg);
-}
-.p-hero-title .mz-serif{color:var(--soft);font-size:.92em}
-.p-hero-sub{margin:clamp(20px,3vh,28px) 0 0;font-size:clamp(15.5px,1.15vw,18.5px);line-height:1.62;color:var(--soft);max-width:52ch}
-.p-hero-sub .mz-serif{color:var(--fg)}
-.p-hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:clamp(28px,4.5vh,38px)}
-.p-hero-frame{aspect-ratio:1400/900;width:100%}
-@media (max-width:900px){
-  .p-hero-grid{grid-template-columns:1fr;gap:36px}
-}
-
-/* ---------- what we actually do ---------- */
-.p-do{padding:clamp(70px,8vh,100px) 0 clamp(20px,3vh,36px)}
-.p-do-head{max-width:56ch;margin-bottom:clamp(34px,5.5vh,58px)}
-.p-do-title{font-family:var(--disp);font-weight:600;font-size:clamp(28px,3.3vw,48px);letter-spacing:-.02em;margin-top:18px;max-width:16ch}
-.p-do-list{border-top:1px solid var(--line)}
-.p-do-row{display:grid;grid-template-columns:minmax(0,52px) minmax(0,1fr);gap:20px;padding:clamp(22px,3.4vh,32px) 0;border-bottom:1px solid var(--line)}
-.p-do-num{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--soft);padding-top:3px;font-variant-numeric:tabular-nums}
-.p-do-copy h3{font-family:var(--body);font-weight:600;font-size:clamp(17px,1.3vw,20.5px);letter-spacing:-.01em;margin-bottom:7px}
-.p-do-copy p{color:var(--mut);font-size:clamp(14.5px,1.05vw,16px);line-height:1.62;max-width:66ch}
-
-/* ---------- how it ships ---------- */
-.p-ship{padding:clamp(70px,8vh,100px) 0 clamp(20px,3vh,36px)}
-.p-ship-head{max-width:56ch}
-.p-ship-title{font-family:var(--disp);font-weight:600;font-size:clamp(28px,3.3vw,48px);letter-spacing:-.02em;margin-top:18px;max-width:16ch}
-.p-ship-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,28px);margin-top:clamp(34px,5.5vh,56px)}
-.p-ship-card{padding:clamp(26px,3vw,34px);display:flex;flex-direction:column;gap:12px}
-.p-ship-k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--acc);text-transform:uppercase}
-.p-ship-card h3{font-family:var(--body);font-weight:600;font-size:clamp(19px,1.6vw,23px);letter-spacing:-.015em}
-.p-ship-card p{color:var(--mut);font-size:14.5px;line-height:1.62}
-@media (max-width:820px){
-  .p-ship-grid{grid-template-columns:1fr}
-}
-
-/* ---------- the stack ---------- */
-.p-stack{padding:clamp(60px,7vh,90px) 0 clamp(20px,3vh,36px)}
-.p-stack-inner{border-top:1px solid var(--line);padding-top:clamp(30px,4.5vh,44px)}
-.p-stack-title{font-family:var(--disp);font-weight:600;font-size:clamp(24px,2.6vw,36px);letter-spacing:-.018em}
-.p-stack p{color:var(--soft);font-size:clamp(15.5px,1.1vw,18px);line-height:1.72;max-width:76ch;margin-top:18px}
-
-/* ---------- proof ---------- */
-.p-proof{padding:clamp(60px,7vh,90px) 0 clamp(20px,3vh,36px)}
-.p-proof-title{font-family:var(--disp);font-weight:600;font-size:clamp(24px,2.6vw,36px);letter-spacing:-.018em;margin-bottom:clamp(26px,4vh,36px)}
-.p-proof-card{padding:clamp(34px,5vw,54px);display:flex;flex-direction:column;gap:18px}
-.p-proof-tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
-.p-proof-quote{font-family:var(--disp);font-weight:500;font-size:clamp(19px,1.9vw,28px);line-height:1.4;letter-spacing:-.01em;max-width:52ch;color:var(--fg)}
-.p-proof-link{display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-weight:500;font-size:14.5px;width:max-content;position:relative}
-.p-proof-link::after{content:"";position:absolute;left:0;bottom:-4px;width:100%;height:1px;background:var(--fg);transform:scaleX(1);transform-origin:left;transition:transform .4s}
-.p-proof-link:hover::after{transform:scaleX(.4)}
-
-/* ---------- pricing pointer ---------- */
-.p-pricer{padding:0 0 clamp(70px,9vh,110px)}
-.p-pricer-inner{
-  border:1px solid var(--line);border-radius:var(--r-card);
-  padding:clamp(30px,4.4vw,50px);display:flex;justify-content:space-between;align-items:center;
-  gap:24px;flex-wrap:wrap;
-}
-.p-pricer-copy p{font-family:var(--body);font-size:clamp(15px,1.15vw,18px);line-height:1.55;color:var(--soft);max-width:56ch}
-.p-pricer-copy .mz-eyebrow{margin-bottom:14px}
-
-/* ---------- cross-world doorway ---------- */
-.doorway{
-  position:relative;overflow:hidden;background:var(--ink);color:var(--bone);
-  padding:clamp(100px,14vh,160px) 0;
-  --line:rgba(233,230,221,.14);--line-2:rgba(233,230,221,.24);
-}
-.doorway .mz-notch{position:relative;z-index:2}
-.doorway-ghost{
-  position:absolute;top:50%;right:clamp(-40px,-2vw,0px);z-index:0;transform:translateY(-50%);
-  font-family:'Gulzar','Noto Nastaliq Urdu',serif;font-size:clamp(200px,28vw,480px);line-height:1;
-  color:rgba(233,230,221,.07);pointer-events:none;user-select:none;white-space:nowrap;
-}
-.doorway-grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,6.6fr) minmax(0,4.4fr);gap:clamp(40px,6vw,96px);align-items:center}
-.doorway-copy .mz-eyebrow{border-color:rgba(233,230,221,.16);color:rgba(233,230,221,.7)}
-.doorway-title{font-family:var(--disp);font-weight:600;font-size:clamp(28px,4vw,54px);line-height:1.06;letter-spacing:-.025em;margin:18px 0 0;color:var(--bone)}
-.doorway-title .mz-serif{color:rgba(233,230,221,.88)}
-.doorway-lead{margin-top:16px;font-size:clamp(15px,1.1vw,17.5px);line-height:1.6;color:rgba(233,230,221,.6);max-width:46ch}
-.doorway-cta{margin-top:clamp(28px,4vh,38px);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.doorway-preview{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-card);overflow:hidden;border:1px solid rgba(233,230,221,.18);background:var(--ink-2)}
-.doorway-preview img{width:100%;height:100%;object-fit:cover;display:block}
-@media (max-width:900px){
-  .doorway-grid{grid-template-columns:1fr;gap:clamp(30px,6vh,44px)}
-  .doorway-preview{max-width:340px}
-  .doorway-ghost{right:50%;transform:translate(50%,-50%);font-size:clamp(150px,42vw,260px)}
-}
-
-/* ---------- footer (shared grammar, page-local rules) ---------- */
-.foot{position:relative;border-top:1px solid var(--line)}
-.foot-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(30px,4vw,90px);padding:clamp(60px,9vh,110px) 0 clamp(40px,7vh,80px)}
-.fnav{display:flex;flex-direction:column}
-.fnav a{
-  display:flex;justify-content:space-between;align-items:center;
-  font-family:var(--body);font-weight:500;font-size:clamp(24px,3.2vw,46px);line-height:1;letter-spacing:-.022em;
-  padding:clamp(14px,2.4vh,24px) 0;border-bottom:1px solid var(--line);
-  transition:padding-left .4s cubic-bezier(.2,.8,.2,1);
-}
-.fnav a .fa{font-size:.55em;opacity:0;transform:translateX(-14px);transition:opacity .35s,transform .35s;color:var(--acc)}
-.fnav a:hover{padding-left:18px}
-.fnav a:hover .fa{opacity:1;transform:none}
-.fcol{display:flex;flex-direction:column;gap:clamp(26px,4vh,44px);padding-top:8px}
-.fblock{display:flex;flex-direction:column;gap:11px}
-.fblock .fb-lab{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
-.fblock a.femail{font-family:var(--body);font-weight:600;font-size:clamp(19px,1.8vw,26px);letter-spacing:-.015em;position:relative;width:max-content}
-.fblock a.femail::after{content:"";position:absolute;left:0;bottom:-3px;width:100%;height:1px;background:var(--acc);transform:scaleX(1);transform-origin:left;transition:transform .4s}
-.fblock a.femail:hover::after{transform:scaleX(.35)}
-.fblock p{color:var(--mut);font-size:15px;line-height:1.6}
-.fsoc{display:flex;flex-direction:column;gap:10px}
-.fsoc a{font-family:var(--body);font-weight:500;font-size:15px;color:var(--soft);width:max-content;transition:color .3s}
-.fsoc a:hover{color:var(--fg)}
-.foot-meta{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;padding:18px 0 26px;border-top:1px solid var(--line);font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.06em;color:var(--mut)}
-.foot-meta .fm-clock{font-variant-numeric:tabular-nums}
-.totop{display:inline-flex;gap:8px;align-items:center;color:var(--soft);transition:color .3s;background:none;border:0;cursor:pointer;font:inherit}
-.totop:hover{color:var(--fg)}
-.foot-band{position:relative;height:clamp(220px,32vh,400px);overflow:hidden;background:var(--ink)}
-#cv-band-cloud{position:absolute;inset:0;width:100%;height:100%}
-.band-in{position:absolute;inset:0;padding:0 var(--pad)}
-.band-logo{position:absolute;left:var(--pad);top:clamp(22px,4.5vh,46px);display:flex;align-items:center;gap:clamp(10px,1.4vw,18px);color:var(--bone)}
-.band-logo-mark{flex:none;font-family:"Gulzar","Noto Nastaliq Urdu",serif;font-size:clamp(34px,4.4vw,58px);line-height:1;transform:translateY(6px);padding-inline-end:4px}
-.band-logo-word{font-family:var(--disp);font-weight:600;font-size:clamp(23px,3.4vw,48px);letter-spacing:-.02em}
-.band-logo-chip{
-  font-family:var(--mono);font-weight:500;font-size:clamp(10px,1vw,13px);letter-spacing:.16em;text-transform:uppercase;
-  color:rgba(233,230,221,.6);padding-left:clamp(10px,1.2vw,16px);margin-left:2px;border-left:1px solid rgba(233,230,221,.25);
-}
-.band-tag{
-  position:absolute;right:var(--pad);bottom:clamp(18px,4.5vh,42px);
-  font-family:var(--mono);font-weight:500;font-size:clamp(10px,.85vw,12.5px);letter-spacing:.18em;text-transform:uppercase;text-align:right;
-  color:var(--ink);line-height:2.1;
-}
-@media (max-width:1024px){.foot-grid{grid-template-columns:1fr}}
-@media (max-width:680px){.band-logo{height:clamp(30px,9vw,48px)}.band-tag{font-size:9.5px;letter-spacing:.12em}}
-
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
-  [data-reveal]{opacity:1!important;transform:none!important}
-  .mz-frame-art [data-ln]{stroke-dashoffset:0!important}
-  .mz-frame-art .fa-dot{opacity:1!important;transform:none!important}
-}
-</style>
+<style>.skip{position:fixed;left:-999px;top:8px;z-index:2000;background:var(--acc);color:var(--ink);padding:8px 14px;font-family:var(--mono);font-size:12px}.skip:focus{left:8px}</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization",
-      "@id": "https://manzar.studio/#organization",
-      "name": "Manzar",
-      "url": "https://manzar.studio/",
-      "logo": "https://manzar.studio/assets/brand/favicon-512.png",
-      "sameAs": [
-        "https://www.instagram.com/manzar.studio/",
-        "https://www.linkedin.com/company/manzarstudio/"
-      ]
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://manzar.studio/#website",
-      "name": "Manzar",
-      "url": "https://manzar.studio/",
-      "publisher": {
-        "@id": "https://manzar.studio/#organization"
-      }
-    },
-    {
       "@type": "Service",
       "name": "Cloud & Infrastructure",
-      "description": "Cloud architecture, infrastructure-as-code and cost audits from a studio that runs its own platforms in production. Manzar Labs.",
+      "serviceType": "Cloud & Infrastructure",
+      "description": "Cloud infrastructure consulting and DevOps engineering: architecture and migration, Kubernetes, CI/CD pipelines, infrastructure as code, observability and cost audits. AWS-first, engineered for uptime. Manzar Labs.",
+      "url": "https://manzar.studio/capabilities/cloud",
       "provider": {
-        "@id": "https://manzar.studio/#organization"
+        "@type": "Organization",
+        "name": "Manzar Labs",
+        "url": "https://manzar.studio/labs/",
+        "logo": "https://manzar.studio/assets/brand/favicon-512.png",
+        "sameAs": [
+          "https://www.instagram.com/manzar.studio/",
+          "https://www.linkedin.com/company/manzarstudio/"
+        ]
       },
-      "areaServed": [
-        "Lahore, Pakistan",
-        "Paris, France",
-        "Worldwide"
-      ]
+      "areaServed": "Worldwide",
+      "availableChannel": { "@type": "ServiceChannel", "serviceUrl": "https://manzar.studio/capabilities/cloud" }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://manzar.studio/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Capabilities"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Cloud & Infrastructure",
-          "item": "https://manzar.studio/capabilities/cloud.html"
-        }
+        { "@type": "ListItem", "position": 1, "name": "Manzar Labs", "item": "https://manzar.studio/labs/" },
+        { "@type": "ListItem", "position": 2, "name": "Cloud & Infrastructure", "item": "https://manzar.studio/capabilities/cloud" }
       ]
     }
   ]
 }
 </script>
-<link rel="stylesheet" href="../assets/css/menu.css">
-<link rel="stylesheet" href="../assets/css/cap-extra.css">
 </head>
-<body data-theme="ink">
+<body id="page-top">
 <a class="skip" href="#main">Skip to content</a>
-
-<!-- nav: shared grammar from manzar-system.css (.mz-nav / .mz-switch / .mz-btn).
-     Menu button opens the shared .mz-menu top sheet (pasted at the end of
-     <body>) — see manzar-system.css §3.9 for the markup contract. -->
-<header class="mz-nav" id="nav">
-  <div class="mz-nav-left">
-    <button class="mz-nav-menu" type="button" id="menuBtn"
-            data-mzx-open aria-controls="mzMenu" aria-expanded="false"
-            aria-label="Open menu">
-      <span class="mz-nav-menu-icon" aria-hidden="true">
-        <span class="mz-nav-menu-line"></span>
-        <span class="mz-nav-menu-line"></span>
-      </span>
-      <span class="mz-nav-menu-label">Menu</span>
-    </button>
-    <!-- where you are on the page: written by MZ.here() in
-         manzar-system.js, decorative (aria-hidden) because the same
-         structure is in the menu and in the page itself -->
-    <p class="mz-nav-here" aria-hidden="true">
-      <span class="mz-nav-here-label">Overview</span></p>
-  </div>
-  <a class="mz-nav-logo" href="../labs/index.html" aria-label="Manzar Labs, home">
-    <img class="mz-nav-logo-img" src="../assets/manzar-wordmark.png" alt="Manzar" width="2556" height="980" decoding="async">
-    <span class="mz-nav-chip mz-nav-chip-align">Labs</span>
-  </a>
-  <div class="mz-nav-right">
-    <div class="mz-switch mz-switch--labs" role="group" aria-label="Manzar worlds">
-      <a class="mz-switch-opt" href="../index.html" data-world="studio">Studio</a>
-      <a class="mz-switch-opt is-on" href="../labs/index.html" data-world="labs">Labs</a>
+<header class="nav" id="nav">
+  <div class="nav-left">
+    <a class="brand" href="../labs/index.html#top" aria-label="Manzar Labs, back to top"><img src="../assets/manzar-wordmark.png" alt="Manzar" width="2556" height="980" decoding="async"></a>
+    <div class="mz-switch" role="group" aria-label="Manzar worlds">
+      <a class="mz-sw-opt" href="../index.html" data-world="studio">Studio</a>
+      <a class="mz-sw-opt is-on" href="../labs/index.html" data-world="labs">Labs</a>
     </div>
-    <a class="mz-btn mz-btn-light" data-magnetic href="mailto:hello@manzar.solutions?subject=Starting%20a%20cloud%20project%20with%20Manzar%20Labs">
-      <span class="mz-btn-label">Start a project</span>
-      <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-    </a>
+  </div>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="../labs/index.html#speed">Timeline</a>
+    <a href="../labs/index.html#services">What we build</a>
+    <a href="../labs/index.html#work">Work</a>
+    <a href="../labs/index.html#faq">FAQ</a>
+  </nav>
+  <div class="nav-right">
+    <a class="nav-cta magnetic" href="../labs/index.html#contact">Start a project <span class="arr">↗</span></a>
+    <button class="menu-btn" type="button" id="menuBtn" data-mzx-open aria-controls="mzMenu" aria-expanded="false" aria-label="Open menu"><span class="menu-btn-label">Menu</span><span class="menu-btn-icon" aria-hidden="true"><i></i><i></i></span></button>
   </div>
 </header>
+<main id="main" class="cp-main">
 
-<main id="main">
-
-  <!-- ============ HERO ============ -->
-  <section class="p-hero" id="top">
-    <div class="shell p-hero-grid">
-      <div class="p-hero-copy">
-        <span class="mz-eyebrow"><i></i>Manzar Labs · Cloud &amp; Infrastructure</span>
-        <h1 class="p-hero-title">The plumbing, done so it never makes the news.</h1>
-        <p class="p-hero-sub">We design, build and operate the cloud underneath products people depend on daily, so the pager stays quiet and the bill <span class="mz-serif">makes sense</span>.</p>
-        <div class="p-hero-ctas">
-          <a class="mz-btn mz-btn-light" data-magnetic href="mailto:hello@manzar.solutions?subject=Starting%20a%20cloud%20project%20with%20Manzar%20Labs">
-            <span class="mz-btn-label">Start a project</span>
-            <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </a>
-          <a class="mz-btn mz-btn-ghost" data-magnetic href="../labs/index.html#work">
-            <span class="mz-btn-label">See the work</span>
-            <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </a>
+  <!-- ══════════════ HERO ══════════════ -->
+  <section class="cp-hero" aria-labelledby="capTitle">
+    <div class="cp-hero-media" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2400&h=1400&fit=crop" onerror="this.onerror=null;this.src='../labs/assets/img/svc/cloud.jpg'" alt="" fetchpriority="high" decoding="async">
+    </div>
+    <div class="cp-shell cp-hero-in">
+      <div>
+        <p class="cp-crumb"><a href="../labs/index.html">Manzar Labs</a> <span class="sep">▸</span> <span>Cloud & Infrastructure</span> <span class="sep">·</span> <span>L/01</span></p>
+        <h1 class="cp-hero-title" id="capTitle">The plumbing, done so it never makes the news.</h1>
+        <p class="cp-hero-sub">We design, build and operate the cloud underneath products people depend on daily, so the pager stays quiet and the bill <span class="mz-serif">makes sense</span>.</p>
+        <div class="cp-hero-ctas">
+          <a class="nav-cta magnetic" href="../labs/index.html#contact">Start a project <span class="arr">↗</span></a>
+          <a class="cp-proof-link" href="../labs/index.html#work">See the work <span aria-hidden="true">→</span></a>
         </div>
       </div>
-      <figure class="cap-media" id="heroMedia">
-        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&amp;w=1600&amp;h=1200&amp;fit=crop"
-             onerror="this.onerror=null;this.src='../labs/assets/img/svc/cloud.jpg'"
-             alt="A server aisle disappearing into darkness, one end lit" width="1600" height="1200" decoding="async" fetchpriority="high">
-        <span class="cap-media-tag">L/01 · Cloud &amp; Infrastructure</span>
-        <span class="cap-media-word">Systems that hold under real load</span>
-        <div class="cap-chip" aria-hidden="true"><div class="cap-chip-item"><span class="cap-chip-k">Zero-downtime</span><span class="cap-chip-l">deploys as routine</span></div><div class="cap-chip-item"><span class="cap-chip-k">Observed</span><span class="cap-chip-l">logs, traces, alerts</span></div></div>
-      </figure>
+      <dl class="cp-hero-meta">
+          <div><dt>Engagement</dt><dd>Audit first, then build</dd></div>
+          <div><dt>Working from</dt><dd>Lahore · Paris</dd></div>
+          <div><dt>Index</dt><dd>L/01</dd></div>
+      </dl>
     </div>
   </section>
 
-  <div class="mz-notch" aria-hidden="true"></div>
+  <!-- ══════════════ CHAPTER RAIL ══════════════ -->
+  <nav class="cp-toc" aria-label="On this page">
+    <div class="cp-shell cp-toc-in">
+      <a href="#offers">The work</a>
+      <a href="#piece">Up close</a>
+      <a href="#process">Process</a>
+      <a href="#stack">Stack</a>
+      <a href="#proof">Proof</a>
+      <a href="#pricing">Pricing</a>
+      <span class="cp-toc-index">L/01 · Cloud & Infrastructure</span>
+    </div>
+  </nav>
 
-  <!-- ============ WHAT WE ACTUALLY DO ============ -->
-  <section class="p-do" id="what-we-do">
-    <div class="shell">
-      <div class="p-do-head" data-reveal>
+  <!-- ══════════════ OFFERS ══════════════ -->
+  <section class="cp-sec" id="offers">
+    <span class="cp-ghost" aria-hidden="true">01</span>
+    <div class="cp-shell" style="position:relative;z-index:1">
+      <div class="cp-sec-head" data-cv>
         <span class="mz-eyebrow"><i></i>What we actually do</span>
-        <h2 class="p-do-title">Six ways we take the plumbing off your plate</h2>
+        <h2 class="cp-h2">Six ways we take the <span class="mz-serif">pager</span> off your mind</h2>
+        <p class="cp-lead">Infrastructure work is invisible when it’s done right. Everything below exists so that launches are calm, bills make sense, and 3 a.m. stays quiet.</p>
       </div>
-      <div class="cap-cards">
-        <article class="cap-card" data-reveal>
-          <span class="cap-card-num">01</span>
+<div class="cp-feat" data-cv>
+        <figure class="cp-feat-plate"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1400&h=900&fit=crop" onerror="this.onerror=null;this.src='../labs/assets/img/svc/cloud.jpg'" alt="" loading="lazy" decoding="async" data-plx><span class="tag">The racks</span></figure>
+        <div class="cp-feat-copy">
+          <span class="cp-feat-num">01</span>
           <h3>Cloud architecture &amp; migration</h3>
           <p>Moving a monolith onto infrastructure that can be scaled, load-tested and rolled back without a war room.</p>
-        </article>
-        <article class="cap-card" data-reveal>
-          <span class="cap-card-num">02</span>
+        </div>
+      </div>
+<div class="cp-feat alt" data-cv>
+        <figure class="cp-feat-plate"><img src="https://images.unsplash.com/photo-1580584126903-c17d41830450?q=80&w=1400&h=900&fit=crop" onerror="this.onerror=null;this.src='../labs/assets/img/svc/reg-iot.jpg'" alt="" loading="lazy" decoding="async" data-plx><span class="tag">The wiring</span></figure>
+        <div class="cp-feat-copy">
+          <span class="cp-feat-num">02</span>
           <h3>Infrastructure as code</h3>
           <p>Every environment defined in Terraform or equivalent, so "it worked on staging" stops being an excuse.</p>
-        </article>
-        <article class="cap-card" data-reveal>
-          <span class="cap-card-num">03</span>
+        </div>
+      </div>
+      <div class="cp-grid">
+        <article class="cp-cell" data-cv>
+          <span class="cp-cell-num">03</span>
           <h3>CI/CD pipelines</h3>
           <p>Build, test and deploy on every merge, with a rollback faster than the deploy that broke it.</p>
         </article>
-        <article class="cap-card" data-reveal>
-          <span class="cap-card-num">04</span>
+        <article class="cp-cell" data-cv>
+          <span class="cp-cell-num">04</span>
           <h3>Observability &amp; incident response</h3>
           <p>Logs, metrics and alerts wired to the people who can act on them, not a dashboard nobody opens.</p>
         </article>
-        <article class="cap-card" data-reveal>
-          <span class="cap-card-num">05</span>
+        <article class="cp-cell" data-cv>
+          <span class="cp-cell-num">05</span>
           <h3>Cost audits</h3>
           <p>A line-by-line review of a cloud bill to find the 40% nobody on the team can explain, then cut it.</p>
         </article>
-        <article class="cap-card" data-reveal>
-          <span class="cap-card-num">06</span>
+        <article class="cp-cell" data-cv>
+          <span class="cp-cell-num">06</span>
           <h3>Containerisation &amp; orchestration</h3>
           <p>Docker images and Kubernetes clusters sized for the traffic you actually get, not the traffic you hope for.</p>
         </article>
       </div>
+    </div>
   </section>
 
-  <!-- ============ HOW IT SHIPS ============ -->
-  <section class="p-ship" id="how-it-ships">
-    <div class="shell">
-      <div class="p-ship-head" data-reveal>
-        <span class="mz-eyebrow"><i></i>How it ships</span>
-        <h2 class="p-ship-title">Discover, build, ship</h2>
+  <!-- ══════════════ SET PIECE ══════════════ -->
+  <section class="cp-sec" id="piece" style="padding-top:0">
+    <div class="cp-shell">
+      <div class="cp-piece" data-cv>
+        <div class="cp-piece-grid">
+          <div class="cp-piece-copy">
+            <span class="mz-eyebrow"><i></i>Up close</span>
+            <h3 style="margin-top:16px">The wall we watch.</h3>
+            <p>Every system we run reports here: health checks green, latency budgets held, a deploy going out without a war room. When a cell flips, a human is paged — one who can actually fix it.</p>
+          </div>
+          <div class="cp-wall" id="cpWall" aria-label="A live status wall: services reporting health, latency and deploys">
+            <div class="cp-wall-row"><span class="cp-wall-name">api-gateway</span><span class="cp-wall-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cp-wall-val">p95 141ms</span></div>
+            <div class="cp-wall-row"><span class="cp-wall-name">payments</span><span class="cp-wall-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cp-wall-val">p95 88ms</span></div>
+            <div class="cp-wall-row"><span class="cp-wall-name">workers</span><span class="cp-wall-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cp-wall-val">queue 0</span></div>
+            <div class="cp-wall-row"><span class="cp-wall-name">postgres</span><span class="cp-wall-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cp-wall-val">repl 12ms</span></div>
+            <div class="cp-wall-row"><span class="cp-wall-name">search</span><span class="cp-wall-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cp-wall-val">p95 61ms</span></div>
+            <div class="cp-wall-foot" aria-hidden="true"><span>last deploy · 14:02 · zero downtime</span><span>all regions green</span></div>
+          </div>
+        </div>
       </div>
-      <div class="p-ship-grid">
-        <article class="mz-card p-ship-card" data-reveal>
-          <span class="p-ship-k">Discover</span>
+    </div>
+  </section>
+
+  <!-- ══════════════ PROCESS ══════════════ -->
+  <section class="cp-sec" id="process" style="padding-top:0">
+    <div class="cp-shell">
+      <div class="cp-sec-head" data-cv>
+        <span class="mz-eyebrow"><i></i>How it ships</span>
+        <h2 class="cp-h2">Discover, build, <span class="mz-serif">ship</span></h2>
+      </div>
+      <div class="cp-ship">
+        <article class="cp-step" data-cv>
+          <span class="cp-step-num">01</span>
           <h3>Discover</h3>
           <p>We audit what's running today: architecture, cost, failure points. You leave with a written map of what's fragile and what fixing it would take.</p>
         </article>
-        <article class="mz-card p-ship-card" data-reveal>
-          <span class="p-ship-k">Build</span>
+        <article class="cp-step" data-cv>
+          <span class="cp-step-num">02</span>
           <h3>Build</h3>
           <p>Infrastructure goes in as code, environment by environment, with staging mirroring production before anything real touches it.</p>
         </article>
-        <article class="mz-card p-ship-card" data-reveal>
-          <span class="p-ship-k">Ship</span>
+        <article class="cp-step" data-cv>
+          <span class="cp-step-num">03</span>
           <h3>Ship</h3>
           <p>Cutover happens on a schedule you choose, with a rollback plan tested in advance, not improvised after something breaks.</p>
         </article>
@@ -465,131 +249,108 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     </div>
   </section>
 
-  <!-- ============ IMAGE BREAK ============ -->
-  <section class="cap-band" aria-label="Production infrastructure">
-    <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&amp;w=2200&amp;h=1000&amp;fit=crop"
-         onerror="this.onerror=null;this.src='../labs/assets/img/svc/reg-iot.jpg'"
-         alt="Network cables patched into a switch, lit low" width="2200" height="1000" loading="lazy" decoding="async" data-plx>
-    <span class="cap-band-tag">Production infrastructure</span>
-    <p class="cap-band-line" data-reveal>Boring on purpose. <span class="mz-serif">Calm</span> pagers at 3 a.m.</p>
+  <!-- ══════════════ STACK ══════════════ -->
+  <section class="cp-sec cp-stack" id="stack" style="padding-top:0">
+    <div class="cp-shell">
+      <div class="cp-sec-head" data-cv>
+        <span class="mz-eyebrow"><i></i>The stack</span>
+      </div>
+      <p data-cv>AWS, Docker, Kubernetes, Terraform, Postgres, Node and Go for services, CI/CD built around GitHub Actions or GitLab CI. What we reach for, not a badge wall. The actual choice depends on what's already running.</p>
+      <div class="cp-chips" data-cv aria-label="Tools we reach for"><span>AWS</span><span>Docker</span><span>Kubernetes</span><span>Terraform</span><span>Postgres</span><span>Node</span><span>Go</span><span>GitHub Actions</span><span>GitLab CI</span><span>Grafana</span></div>
+    </div>
   </section>
 
-  <!-- ============ WHAT WE ENGINEER FOR ============ -->
-  <section class="p-do" aria-label="What we engineer for">
-    <div class="shell">
-      <div class="p-do-head" data-reveal>
-        <span class="mz-eyebrow"><i></i>What we engineer for</span>
-      </div>
-      <div class="cap-stats">
-        <div class="cap-stat" data-reveal>
-          <span class="cap-stat-num" data-count="99.9">99.9<span class="u">%+</span></span>
-          <span class="cap-stat-lab">Uptime engineered for</span>
-          <span class="cap-stat-note">Multi-zone, health-checked, auto-healing. Boring by design.</span>
-        </div>
-        <div class="cap-stat" data-reveal>
-          <span class="cap-stat-num" data-count="200" data-pre="&lt;">&lt;200<span class="u">ms</span></span>
-          <span class="cap-stat-lab">P95 response, held under load</span>
-          <span class="cap-stat-note">Budgets set before launch and watched after it.</span>
-        </div>
-        <div class="cap-stat" data-reveal>
-          <span class="cap-stat-num" data-count="15">15<span class="u">min</span></span>
-          <span class="cap-stat-lab">Alert to a human</span>
-          <span class="cap-stat-note">Paging that reaches someone who can act, not a dashboard.</span>
-        </div>
+  <!-- ══════════════ PROOF ══════════════ -->
+  <section class="cp-sec" id="proof" style="padding-top:0">
+    <div class="cp-shell">
+      <div class="cp-proof" data-cv>
+        <span class="cp-proof-tag">Smart HR · Infenet</span>
+        <p class="cp-proof-q">"Smart HR, the HRMS we built for Infenet, processes 40,000-plus payslips every month on infrastructure we designed and still operate."</p>
+        <a class="cp-proof-link" href="https://infenet.net" target="_blank" rel="noopener">infenet.net <span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </section>
 
-  <!-- ============ THE STACK ============ -->
-  <section class="p-stack" id="stack">
-    <div class="shell p-stack-inner">
-      <h2 class="p-stack-title" data-reveal>The stack</h2>
-      <p data-reveal>AWS, Docker, Kubernetes, Terraform, Postgres, Node and Go for services, CI/CD built around GitHub Actions or GitLab CI. What we reach for, not a badge wall. The actual choice depends on what's already running.</p>
-    </div>
-  </section>
-
-  <!-- ============ PROOF ============ -->
-  <section class="p-proof" id="proof">
-    <div class="shell">
-      <h2 class="p-proof-title" data-reveal>Proof</h2>
-      <div class="mz-card p-proof-card" data-reveal>
-        <span class="p-proof-tag">Smart HR · Infenet</span>
-        <p class="p-proof-quote">"Smart HR, the HRMS we built for Infenet, processes 40,000-plus payslips every month on infrastructure we designed and still operate."</p>
-        <a class="p-proof-link" href="https://infenet.net" target="_blank" rel="noopener">infenet.net <span aria-hidden="true">↗</span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PRICING POINTER ============ -->
-  <section class="p-pricer" id="pricing-pointer">
-    <div class="shell">
-      <div class="p-pricer-inner" data-reveal>
-        <div class="p-pricer-copy">
+  <!-- ══════════════ PRICING ══════════════ -->
+  <section class="cp-sec" id="pricing" style="padding-top:0">
+    <div class="cp-shell">
+      <div class="cp-price" data-cv>
+        <div>
           <span class="mz-eyebrow"><i></i>Pricing</span>
           <p>Infrastructure work is usually scoped as a Sprint (an audit, a defined fix) or folded into a Build. See how engagements are typically priced.</p>
         </div>
-        <a class="mz-btn mz-btn-ghost" data-magnetic href="../pricing.html">
-          <span class="mz-btn-label">See pricing</span>
-          <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
+        <a class="nav-cta magnetic" href="../pricing.html">See pricing <span class="arr">↗</span></a>
       </div>
     </div>
   </section>
 
-  <!-- ============ NEXT CAPABILITY ============ -->
-  <a class="cap-next" href="mobile.html" data-reveal aria-label="Next capability: Mobile Development">
-    <span class="cap-next-in">
-      <span class="cap-next-lab">Next capability · L/02</span>
-      <span class="cap-next-title">Mobile Development
-        <span class="cap-next-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  <!-- ══════════════ NEXT ══════════════ -->
+  <a class="cp-next" href="mobile.html" aria-label="Next capability: Mobile Development">
+    <span class="cp-next-img" aria-hidden="true"><img src="../labs/assets/img/svc/mob.jpg" alt="" loading="lazy" decoding="async"></span>
+    <span class="cp-shell cp-next-in">
+      <span class="cp-next-lab">Next capability · L/02</span>
+      <span class="cp-next-title">Mobile Development
+        <span class="cp-next-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11" aria-hidden="true"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </span>
     </span>
   </a>
 
-  <!-- ============ CROSS-WORLD DOORWAY ============
-       Mirrors the shared "Manzar Studio" doorway on labs/index.html's
-       #studio-return section. Same shape, paths adjusted for this page's
-       own depth (one level under root, same as labs/index.html itself). -->
-  <section class="doorway" id="studio-return" aria-labelledby="studioReturnTitle">
-    <div class="mz-notch" aria-hidden="true"></div>
-    <span class="doorway-ghost" aria-hidden="true" lang="ur" dir="rtl">منظر</span>
-    <div class="shell doorway-grid">
-      <div class="doorway-copy">
+<section class="studio-return" id="studio-return" aria-labelledby="studioReturnTitle">
+    <div class="return-act">
+      <div class="return-inner">
         <span class="mz-eyebrow"><i></i>Manzar Studio</span>
-        <h2 class="doorway-title" id="studioReturnTitle">Film, photography and <span class="mz-serif">post</span>, cut with the same discipline we ship code.</h2>
-        <p class="doorway-lead">The other room. Commercials, brand films and campaign stills, from Lahore and Paris.</p>
-        <div class="doorway-cta">
+        <h2 class="return-title" id="studioReturnTitle">Film, photography and <span class="mz-serif">post</span>, cut with the same discipline we ship code.</h2>
+        <p class="return-lead">The other room. Commercials, brand films and campaign stills, from Lahore and Paris.</p>
+        <!-- The preview used to be a JPEG of the Studio hero, which had
+             already gone stale once Studio's hero changed. It is now the
+             actual hero rebuilt in markup: the same eyebrow, the same
+             headline, the same drawn wordmark. It cannot fall out of date,
+             it stays sharp at any size, and the browser chrome around it
+             says "another website" more plainly than any caption. -->
+        <figure class="return-preview" aria-label="Manzar Studio, manzar.studio">
+          <div class="rp-screen" aria-hidden="true">
+            <div class="rp-glow"></div>
+            <!-- The real site, not a drawing of it. src is set by
+                 studioPreview() in main.js only once this section comes
+                 near the viewport, so the visitor never pays for Studio's
+                 hero film unless they actually scroll this far. The
+                 composed hero below stays as the placeholder underneath
+                 and as the fallback if the frame cannot load. -->
+            <iframe class="rp-frame" title="Manzar Studio" tabindex="-1"
+                    scrolling="no" loading="lazy"
+                    referrerpolicy="no-referrer"></iframe>
+            <div class="rp-hero">
+              <span class="rp-eyebrow">Creative Technology Studio</span>
+              <p class="rp-head">Attention is the hardest<br>thing to earn.</p>
+              <p class="rp-sub">Film, design and software from an independent<br>studio in Lahore and Paris, since 2019.</p>
+              <img class="rp-mark" src="../assets/manzar-wordmark.png" alt="" width="2556" height="980" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </figure>
+        <div class="return-cta">
           <div class="mz-switch mz-switch--labs" role="group" aria-label="Manzar worlds">
             <a class="mz-switch-opt" href="../index.html" data-world="studio">Studio</a>
             <a class="mz-switch-opt is-on" href="../labs/index.html" data-world="labs">Labs</a>
           </div>
-          <a class="mz-btn mz-btn-light" data-magnetic href="../index.html">
+          <a class="mz-btn mz-btn-light" href="../index.html" data-world="studio">
             <span class="mz-btn-label">Back to Manzar Studio</span>
             <span class="mz-btn-chip" aria-hidden="true"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </a>
         </div>
       </div>
-      <figure class="doorway-preview">
-        <img src="../assets/studio-preview.jpg" alt="A still from a recent Manzar Studio production" width="1440" height="900" loading="lazy" decoding="async" onerror="this.style.display='none'">
-      </figure>
     </div>
-    <div class="mz-notch" aria-hidden="true"></div>
   </section>
-
 </main>
 
-<!-- ============ FOOTER ============
-     Same grammar as index.html's <footer class="foot">. Room chip and
-     copy are Labs' own; the dither band canvas gets a page-local id. -->
 <footer class="foot" id="footer">
-  <div class="shell">
+  <div class="foot-shell">
     <div class="foot-grid">
       <nav class="fnav" aria-label="Footer">
         <a href="../labs/index.html#mission">About <span class="fa">→</span></a>
         <a href="../labs/index.html#speed">Timeline <span class="fa">→</span></a>
         <a href="../labs/index.html#services">What we build <span class="fa">→</span></a>
         <a href="../labs/index.html#work">Work <span class="fa">→</span></a>
-        <a href="../pricing.html">Pricing <span class="fa">→</span></a>
+        <a href="../labs/index.html#faq">FAQ <span class="fa">→</span></a>
         <a href="../labs/index.html#contact">Contact <span class="fa">→</span></a>
       </nav>
       <div class="fcol">
@@ -612,12 +373,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     </div>
     <div class="foot-meta">
       <span class="fm-clock">Lahore <span data-clock="Asia/Karachi">--:--:--</span> · Paris <span data-clock="Europe/Paris">--:--:--</span></span>
-      <button class="totop" id="toTop" type="button">Back to top ↑</button>
+      <a class="totop" href="#page-top">Back to top ↑</a>
       <span>© <span id="year">2026</span> Manzar Labs</span>
     </div>
   </div>
   <div class="foot-band">
-    <canvas id="cv-band-cloud" aria-hidden="true"></canvas>
+    <canvas id="cv-band-cap" aria-hidden="true"></canvas>
     <div class="band-in">
       <span class="band-logo">
         <img src="../assets/manzar-wordmark.png" alt="Manzar">
@@ -628,142 +389,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   </div>
 </footer>
 
-<script>
-(function(){
-  "use strict";
-  var RM = false;
-  try { RM = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){}
-
-  document.getElementById("year") && (document.getElementById("year").textContent = new Date().getFullYear());
-
-  var toTop = document.getElementById("toTop");
-  if (toTop) toTop.addEventListener("click", function(){
-    window.scrollTo({ top: 0, behavior: RM ? "auto" : "smooth" });
-  });
-
-  /* reveal-on-scroll: fade/rise once, then stop watching */
-  var reveals = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
-  if (reveals.length) {
-    if (RM) {
-      reveals.forEach(function(el){ el.classList.add("is-in"); });
-    } else if ("IntersectionObserver" in window) {
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(en){
-          if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
-        });
-      }, { threshold: 0.18, rootMargin: "0px 0px -6% 0px" });
-      reveals.forEach(function(el){ io.observe(el); });
-    } else {
-      reveals.forEach(function(el){ el.classList.add("is-in"); });
-    }
-  }
-
-  /* ── reveal safety net ──────────────────────────────────────
-     The observer above fires once per element and then stops watching,
-     which is right, but it only fires while the tab is actually being
-     rendered. A tab restored from the back/forward cache, or one opened
-     in the background and scrolled before it is looked at, can leave
-     rows sitting at opacity 0 for good — the section is simply gone.
-     Three cheap nets: on show, on becoming visible, and on load. Each
-     just reveals anything already inside the viewport. */
-  function mzSweep(){
-    for (var i = 0; i < reveals.length; i++) {
-      var el = reveals[i];
-      if (el.classList.contains("is-in")) continue;
-      var r = el.getBoundingClientRect();
-      if (r.top < window.innerHeight && r.bottom > 0) el.classList.add("is-in");
-    }
-  }
-  window.addEventListener("pageshow", mzSweep);
-  window.addEventListener("load", mzSweep);
-  document.addEventListener("visibilitychange", function(){
-    if (!document.hidden) mzSweep();
-  });
-
-  /* hero frame: draw in once on enter (see MANZAR-FRAMES.md "Motion") */
-  var frame = document.getElementById("heroFrame");
-  if (frame) {
-    if (RM) {
-      frame.classList.add("is-in");
-    } else if ("IntersectionObserver" in window) {
-      var fio = new IntersectionObserver(function(entries){
-        entries.forEach(function(en){
-          if (en.isIntersecting) { en.target.classList.add("is-in"); fio.unobserve(en.target); }
-        });
-      }, { threshold: 0.3 });
-      fio.observe(frame);
-    } else {
-      frame.classList.add("is-in");
-    }
-    /* stagger each stroked shape by document order; the accent arrives
-       last, 200ms after the final base line — MANZAR-FRAMES.md "Motion" */
-    var shapes = Array.prototype.slice.call(frame.querySelectorAll("[data-ln]"));
-    shapes.forEach(function(el, i){ el.style.transitionDelay = (i * 22) + "ms"; });
-    var lastDelay = shapes.length * 22;
-    var accents = Array.prototype.slice.call(frame.querySelectorAll(".fa-dot"));
-    accents.forEach(function(el){ el.style.transitionDelay = (lastDelay + 200) + "ms"; });
-  }
-
-  /* footer dither band — 2D Bayer dither, IntersectionObserver-gated,
-     paused under reduced motion. Same technique as index.html's #cv-band,
-     given a page-local canvas id. */
-  function dither(sel, opts) {
-    var cv = document.querySelector(sel);
-    if (!cv) return;
-    var ctx = cv.getContext("2d");
-    var cell = (opts && opts.cell) || 9;
-    var color = (opts && opts.color) || "#E9E6DD";
-    var speed = (opts && opts.speed) || 0.00042;
-    var B = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
-    var W, H, cols, rows;
-    function resize(){
-      W = cv.width = Math.max(2, cv.offsetWidth);
-      H = cv.height = Math.max(2, cv.offsetHeight);
-      cols = Math.ceil(W / cell); rows = Math.ceil(H / cell);
-    }
-    resize();
-    window.addEventListener("resize", resize);
-    function paint(t){
-      ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = color;
-      var tt = t * speed;
-      for (var y = 0; y < rows; y++) {
-        var v = y / rows;
-        for (var x = 0; x < cols; x++) {
-          var u = x / cols;
-          var r1 = .38 + .16 * Math.sin(u * 2.2 + tt) + .07 * Math.sin(u * 5.3 - tt * .6);
-          var r2 = .68 + .12 * Math.sin(u * 1.6 - tt * .5 + 1.7) + .06 * Math.sin(u * 4.1 + tt * .8);
-          var val = Math.max((v - r1) * 3.4, (v - r2) * 5) + .5;
-          val = Math.max(0, Math.min(1, val));
-          val = val * val * (3 - 2 * val);
-          if (val > (B[y % 4][x % 4] + .5) / 16) ctx.fillRect(x * cell, y * cell, cell, cell);
-        }
-      }
-    }
-    if (RM) { paint(1200); return; }
-    var run = true;
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function(en){ run = en[0].isIntersecting; }).observe(cv);
-    }
-    var last = 0;
-    (function frame(t){
-      if (run && t - last > 50) { last = t; paint(t); }
-      window.requestAnimationFrame(frame);
-    })(0);
-  }
-  dither("#cv-band-cloud", { cell: 9, color: "#E9E6DD" });
-})();
-</script>
-
-
-
-
-<script src="../assets/js/menu.js" defer></script>
-<!-- ══════════════ MENU ══════════════
-     Component: /assets/css/menu.css + /assets/js/menu.js. Self-contained,
-     so the same markup runs on Studio, Labs and every subpage.
-     Twelve rows, three groups, in the order Ali specified. --i drives the
-     open stagger from CSS, so no script has to touch the rows. -->
 <div class="mzx" id="mzxMenu" role="dialog" aria-modal="true"
      aria-label="Main menu" aria-hidden="true" hidden>
 
@@ -813,7 +438,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           <span class="mzx-t">Process</span>
           <span class="mzx-d">Discover, build, ship. The discipline behind it.</span>
         </a>
-        <a class="mzx-row" href="../index.html#faq" style="--i:4"
+        <a class="mzx-row" href="../labs/index.html#faq" style="--i:4"
            data-media="../assets/menu/faq.svg" data-kicker="Before you ask">
           <span class="mzx-n">05</span>
           <span class="mzx-t">FAQ</span>
@@ -823,7 +448,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
       <div class="mzx-group">
         <p class="mzx-group-label">Labs</p>
-        <a class="mzx-row is-here" href="../capabilities/cloud.html" style="--i:5" aria-current="page"
+        <a class="mzx-row" href="../capabilities/cloud.html" style="--i:5"
            data-media="../assets/menu/cloud.svg" data-kicker="Built to hold">
           <span class="mzx-n">06</span>
           <span class="mzx-t">Cloud &amp; Infrastructure</span>
@@ -863,7 +488,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
           <span class="mzx-t">Studio</span>
           <span class="mzx-d">Who we are and how we work.</span>
         </a>
-        <a class="mzx-row" href="../index.html#contact" style="--i:11"
+        <a class="mzx-row" href="../labs/index.html#contact" style="--i:11"
            data-media="../assets/menu/contact.svg" data-kicker="Start a conversation">
           <span class="mzx-n">12</span>
           <span class="mzx-t">Contact</span>
@@ -903,12 +528,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         <time class="mzx-clock-time" data-mzx-clock="Europe/Paris">--:--</time>
       </div>
     </div>
-    <a class="mzx-cta" href="../index.html#contact">Start a project <i aria-hidden="true">&#8599;</i></a>
+    <a class="mzx-cta" href="../labs/index.html#contact">Start a project <i aria-hidden="true">&#8599;</i></a>
   </div>
 </div>
+
 <script src="../labs/assets/js/vendor/gsap.min.js"></script>
 <script src="../labs/assets/js/vendor/ScrollTrigger.min.js"></script>
 <script src="../labs/assets/js/vendor/lenis.min.js"></script>
-<script src="../assets/js/cap-motion.js"></script>
+<script src="../assets/js/caps.js"></script>
+<script src="../assets/js/crossover.js"></script>
+<script src="../assets/js/menu.js" defer></script>
 </body>
 </html>
