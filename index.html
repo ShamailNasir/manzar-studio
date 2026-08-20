@@ -215,6 +215,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .pre-top,.pre-bot{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);font-weight:500;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
 .pre-mid{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:26px}
 .pre-logo{width:min(46vw,480px);height:auto}
+.pre-rail{
+  width:min(34vw,340px);height:2px;border-radius:99px;overflow:hidden;
+  background:rgba(233,230,221,.12);
+}
+.pre-rail i{
+  display:block;height:100%;width:100%;border-radius:inherit;
+  background:var(--bone);box-shadow:0 0 14px rgba(233,230,221,.4);
+  transform:scaleX(0);transform-origin:0 50%;
+}
 .pre-word{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--soft);padding-left:.42em}
 .pre-count{font-family:var(--disp);font-weight:600;font-size:clamp(40px,3.281vw,84px);line-height:1;color:var(--bone);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .pre .hl{background:rgba(233,230,221,.18)}
@@ -818,6 +827,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
   <div class="pre-top"><span>Manzar Studio</span><span>Lahore / Paris</span></div>
   <div class="pre-mid">
     <img class="pre-logo" id="preLogo" src="assets/manzar-wordmark.png" alt="Manzar">
+    <span class="pre-rail" aria-hidden="true"><i id="preRail"></i></span>
     <div class="pre-word">manzar · the scene</div>
   </div>
   <div class="pre-bot"><span id="preHint">Setting the stage</span><span class="pre-count" id="preCount">00</span></div>
@@ -1059,7 +1069,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
         <div class="wmeta">
           <span class="windex">W ← <b>03/04</b></span>
           <h3 class="wname">Amantech</h3>
-          <p class="wdesc">Device management for rooms where phones aren’t allowed. Camera policy enforced in real time by geo-fence, access-card scan and role — then lifted the moment someone walks out. BYOD stops being a liability and starts being instrumented.</p>
+          <p class="wdesc">Device management for rooms where phones aren’t allowed. Camera policy enforced in real time by geo-fence, access-card scan and role, then lifted the moment someone walks out. BYOD stops being a liability and starts being instrumented.</p>
           <div class="metric"><b>Riyadh</b><span>enterprise mobility &amp; data security</span></div>
           <a class="wlink" href="https://www.aman-tech.sa" target="_blank" rel="noopener">aman-tech.sa <span aria-hidden="true">↗</span></a>
         </div>
@@ -1308,7 +1318,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
             One senior team for film, design and software. Hire a studio, not three vendors.
           </p>
           <p class="stu-sub">
-            <b>Manzar Studio</b> for creative production, <b>Manzar Labs</b> for software, <b>Manzar Films</b> for cinema from 2027. Three rooms, one door &mdash; so your film, your brand and your product stop being made by people who never speak.
+            <b>Manzar Studio</b> for creative production, <b>Manzar Labs</b> for software, <b>Manzar Films</b> for cinema from 2027. Three rooms, one door, so your film, your brand and your product stop being made by people who never speak.
           </p>
         </div>
         <div class="values">
@@ -1326,7 +1336,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
           </div>
           <div class="vrow">
             <h4><i>04</i>Yours to keep</h4>
-            <p>Your repo, your accounts, your keys &mdash; documented like we might leave tomorrow, built so you never want us to.</p>
+            <p>Your repo, your accounts, your keys, documented like we might leave tomorrow, built so you never want us to.</p>
           </div>
         </div>
       </div>
@@ -2143,13 +2153,16 @@ if (!window.gsap || RM) {
     lenis.stop();
     const o = { v: 0 };
     gsap.timeline({ onComplete: () => { pre.classList.remove("on"); lenis.start(); } })
-      .fromTo("#preLogo", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: .7, ease: "power3.out" }, 0)
-      .fromTo(".pre-word", { autoAlpha: 0 }, { autoAlpha: 1, duration: .6 }, .35)
-      .to(o, { v: 100, duration: 2.3, ease: "power2.inOut",
-        onUpdate: () => $("#preCount").textContent = String(Math.round(o.v)).padStart(2, "0") }, .1)
-      .to("#preHint", { textContent: "Rolling", duration: 0 }, 1.7)
-      .to(pre, { yPercent: -100, duration: .95, ease: "power4.inOut" }, 2.95)
-      .add(() => heroIntro(false), 3.05);
+      .fromTo("#preLogo", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: .55, ease: "power3.out" }, 0)
+      .fromTo(".pre-word", { autoAlpha: 0 }, { autoAlpha: 1, duration: .5 }, .25)
+      .to(o, { v: 100, duration: 1.2, ease: "power2.inOut",
+        onUpdate: () => {
+          $("#preCount").textContent = String(Math.round(o.v)).padStart(2, "0");
+          $("#preRail").style.transform = "scaleX(" + (o.v / 100) + ")";
+        } }, .1)
+      .to("#preHint", { textContent: "Rolling", duration: 0 }, .95)
+      .to(pre, { yPercent: -100, duration: .85, ease: "power4.inOut" }, 1.55)
+      .add(() => heroIntro(false), 1.62);
   } else {
     heroIntro(true);
   }
@@ -2264,7 +2277,7 @@ if (!window.gsap || RM) {
   /* ----- labs doorway spec list ----- */
   const LABS_DETAIL = [
     "Chat and copilots wired into your real data, with a human gate on anything irreversible.",
-    "ERP, HR and payroll, finance and operations — one platform, real roles, a real audit trail.",
+    "ERP, HR and payroll, finance and operations: one platform, real roles, a real audit trail.",
     "Fleets, sensors, access control and device policy, wired to dashboards people act on.",
     "Signed scope to a product real users can log into, typically in six weeks.",
   ];
@@ -2438,13 +2451,13 @@ if (!window.gsap || RM) {
            data-media="assets/menu/process.svg" data-kicker="How we ship">
           <span class="mzx-n">04</span>
           <span class="mzx-t">Process</span>
-          <span class="mzx-d">Discover, build, ship &mdash; the discipline behind it.</span>
+          <span class="mzx-d">Discover, build, ship. The discipline behind it.</span>
         </a>
         <a class="mzx-row" href="#faq" style="--i:4"
            data-media="assets/menu/faq.svg" data-kicker="Before you ask">
           <span class="mzx-n">05</span>
           <span class="mzx-t">FAQ</span>
-          <span class="mzx-d">Timelines, pricing, scope &mdash; answered plainly.</span>
+          <span class="mzx-d">Timelines, pricing and scope, answered plainly.</span>
         </a>
       </div>
 
@@ -2482,7 +2495,7 @@ if (!window.gsap || RM) {
            data-media="assets/menu/pricing.svg" data-kicker="Engagement models">
           <span class="mzx-n">10</span>
           <span class="mzx-t">Pricing</span>
-          <span class="mzx-d">Sprint, build or retainer &mdash; three ways in.</span>
+          <span class="mzx-d">Sprint, build or retainer: three ways in.</span>
         </a>
         <a class="mzx-row" href="#studio" style="--i:10"
            data-media="assets/menu/studio.svg" data-kicker="Who we are">
@@ -2494,7 +2507,7 @@ if (!window.gsap || RM) {
            data-media="assets/menu/contact.svg" data-kicker="Start a conversation">
           <span class="mzx-n">12</span>
           <span class="mzx-t">Contact</span>
-          <span class="mzx-d">hello@manzar.studio &mdash; say what you need.</span>
+          <span class="mzx-d">hello@manzar.studio. Say what you need.</span>
         </a>
       </div>
 
@@ -2503,13 +2516,13 @@ if (!window.gsap || RM) {
     <aside class="mzx-media" data-mzx-media
            data-default-media="assets/menu/world.svg"
            data-default-kicker="Two halves, one studio"
-           data-default-caption="Manzar Studio &mdash; film, design and software.">
+           data-default-caption="Manzar Studio. Film, design and software.">
       <div class="mzx-frame" data-mzx-frame>
         <img class="is-on" src="assets/menu/world.svg" alt="" width="800" height="500" decoding="async">
         <img alt="" aria-hidden="true" width="800" height="500" decoding="async">
       </div>
       <p class="mzx-kicker" data-mzx-kicker>Two halves, one studio</p>
-      <p class="mzx-caption" data-mzx-caption>Manzar Studio &mdash; film, design and software.</p>
+      <p class="mzx-caption" data-mzx-caption>Manzar Studio. Film, design and software.</p>
     </aside>
   </div>
 

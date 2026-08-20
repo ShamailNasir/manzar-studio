@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 190" width="640" height="190" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+<defs>
+  <pattern id="g_erp" width="32" height="32" patternUnits="userSpaceOnUse">
+    <path d="M32 0V32M0 32H32" fill="none" stroke="rgba(233,230,221,0.035)" stroke-width="1"/>
+  </pattern>
+  <radialGradient id="w_erp" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="rgba(233,230,221,0.05)"/><stop offset="1" stop-color="rgba(233,230,221,0)"/>
+  </radialGradient>
+</defs>
+<rect width="640" height="190" fill="url(#g_erp)"/>
+<rect width="640" height="190" fill="url(#w_erp)"/>
+<rect x="34" y="30" width="124" height="34" rx="8" fill="none" stroke="rgba(233,230,221,0.3)" stroke-width="1.1"/>
+<text x="96" y="51.5" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.5)">HR</text>
+<path d="M96 64 C96 84 241.60000000000002 84 241.60000000000002 96" fill="none" stroke="rgba(233,230,221,0.28)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="183" y="30" width="124" height="34" rx="8" fill="none" stroke="rgba(233,230,221,0.3)" stroke-width="1.1"/>
+<text x="245" y="51.5" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.5)">FINANCE</text>
+<path d="M245 64 C245 84 293.75 84 293.75 96" fill="none" stroke="rgba(233,230,221,0.28)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="332" y="30" width="124" height="34" rx="8" fill="none" stroke="rgba(233,230,221,0.3)" stroke-width="1.1"/>
+<text x="394" y="51.5" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.5)">INVENTORY</text>
+<path d="M394 64 C394 84 345.9 84 345.9 96" fill="none" stroke="rgba(233,230,221,0.28)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="481" y="30" width="124" height="34" rx="8" fill="none" stroke="rgba(233,230,221,0.3)" stroke-width="1.1"/>
+<text x="543" y="51.5" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.5)">OPS</text>
+<path d="M543 64 C543 84 398.05 84 398.05 96" fill="none" stroke="rgba(233,230,221,0.28)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="140" y="96" width="360" height="38" rx="9" fill="none" stroke="rgba(233,230,221,0.55)" stroke-width="1.1"/>
+<text x="320" y="119.5" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="10.5" letter-spacing="2.2" fill="rgba(233,230,221,0.72)">ONE PLATFORM</text>
+<path d="M320 134 V150" fill="none" stroke="rgba(233,230,221,0.3)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M96 156 H544" fill="none" stroke="rgba(233,230,221,0.3)" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="round"/>
+<path d="M96 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M128 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M192 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M224 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M256 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M288 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M320 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M352 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M384 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M416 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M448 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M480 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M512 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M544 152 V160" fill="none" stroke="rgba(233,230,221,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="544" cy="156" r="3" fill="rgba(233,230,221,0.8)"/>
+<text x="320" y="178" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" letter-spacing="1.5" fill="rgba(233,230,221,0.32)">APPEND-ONLY AUDIT TRAIL</text>
+</svg>

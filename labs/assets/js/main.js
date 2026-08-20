@@ -156,14 +156,14 @@
     if (!pre || pre.classList.contains('is-done')) return;
     pre.classList.add('is-done');
     if (hasGSAP && !reduceMotion && !skip) {
-      gsap.to('.preloader-logo', { opacity: 0, y: -14, duration: 0.5, ease: 'power2.in' });
+      gsap.to('.preloader-core', { opacity: 0, y: -14, duration: 0.45, ease: 'power2.in' });
       gsap.to(pre, {
         yPercent: -100, duration: 0.95, ease: 'expo.inOut', delay: 0.28,
         onComplete: function () { pre.style.display = 'none'; ScrollTrigger.refresh(); }
       });
       gsap.delayedCall(0.55, heroIntro);
     } else {
-      if (hasGSAP) gsap.killTweensOf([pre, '.preloader-logo']);
+      if (hasGSAP) gsap.killTweensOf([pre, '.preloader-core']);
       pre.style.display = 'none';
       heroIntroOnReveal();
     }
@@ -188,13 +188,17 @@
   } else if (pre && hasGSAP && !reduceMotion) {
     /* entrance is the CSS animation on .preloader-logo; JS only decides when to lift */
     var cnt = { v: 0 };
+    var preRail = document.getElementById('preloaderRail');
     gsap.to(cnt, {
-      v: 100, duration: 2.6, ease: 'power2.inOut',
-      onUpdate: function () { if (preCount) preCount.textContent = String(Math.round(cnt.v)).padStart(2, '0'); },
+      v: 100, duration: 1.3, ease: 'power2.inOut',
+      onUpdate: function () {
+        if (preCount) preCount.textContent = String(Math.round(cnt.v)).padStart(2, '0');
+        if (preRail) preRail.style.transform = 'scaleX(' + (cnt.v / 100) + ')';
+      },
       /* a beat at 100 before the lift, so the finished state registers */
-      onComplete: function () { gsap.delayedCall(0.35, hidePreloader); }
+      onComplete: function () { gsap.delayedCall(0.2, hidePreloader); }
     });
-    setTimeout(hidePreloader, 4200);
+    setTimeout(hidePreloader, 2600);
   } else {
     hidePreloader();
   }
@@ -389,35 +393,57 @@
       jr.classList.add('is-scrubbed');
       jr.style.setProperty('--fill', '0');
 
-      /* The clock above the rail is scrubbed through the same progress:
-         WEEK 00 → 01 → 02…06 across the first four stops, then the unit
-         flips to DAY and it runs 00 → 90 across the last. The markup
-         ships saying DAY 90 so the no-JS state reads finished, same as
-         the rail's --fill default; it is taken back to zero here, the
-         moment we know we can drive it. */
+      /* The clock above the rail is one continuous project clock,
+         scrubbed by the same progress as the rail fill:
+
+           WEEK 00 → 01 → 02 … 06,
+           then the unit flips and the SAME moment reads DAY 42
+           (week six IS day forty-two), and it rolls on 42 → 90.
+
+         No discontinuity anywhere: the quantity is monotonic, so the
+         hand-off from weeks to days is a change of unit, not a jump.
+         The displayed value is eased toward the target every frame,
+         so the digits roll through their values rather than skipping.
+         The markup ships saying DAY 90 so the no-JS state reads
+         finished, same as the rail's --fill default. */
       var clockU = document.getElementById('jrClockU');
       var clockV = document.getElementById('jrClockV');
+      var clockTarget = { unit: 'Week', val: 0 };
+      var clockShown = 0, clockRAF = null;
+
+      function clockGoal(progress) {
+        var t = progress * 4, seg = Math.min(Math.floor(t), 3), f = t - seg;
+        if (seg < 3) {
+          return { unit: 'Week', val: seg === 2 ? 2 + f * 4 : seg + f }; /* 0→1, 1→2, 2→6 */
+        }
+        return { unit: 'Day', val: 42 + f * 48 };                        /* 42 → 90 */
+      }
+      function clockPaint() {
+        clockRAF = null;
+        var d = clockTarget.val - clockShown;
+        clockShown += Math.abs(d) < .08 ? d : d * .16;
+        if (clockU.textContent !== clockTarget.unit) clockU.textContent = clockTarget.unit;
+        clockV.textContent = String(Math.round(clockShown)).padStart(2, '0');
+        if (Math.abs(clockTarget.val - clockShown) > .04) {
+          clockRAF = requestAnimationFrame(clockPaint);
+        }
+      }
       function setClock(progress) {
         if (!clockU || !clockV) return;
-        var t = progress * 4, seg = Math.min(Math.floor(t), 3), f = t - seg;
-        var unit, val;
-        if (seg < 3) {
-          unit = 'Week';
-          val = seg === 2 ? 2 + f * 4 : seg + f;   /* 0→1, 1→2, 2→6 */
-        } else {
-          unit = 'Day';
-          val = f * 90;
-        }
-        if (clockU.textContent !== unit) clockU.textContent = unit;
-        clockV.textContent = String(Math.round(val)).padStart(2, '0');
+        var g = clockGoal(progress);
+        /* crossing the unit boundary carries the value across in the new
+           unit's terms, so the easing never counts through a false gap */
+        if (g.unit !== clockTarget.unit) clockShown = g.unit === 'Day' ? 42 : 6;
+        clockTarget = g;
+        if (!clockRAF) clockRAF = requestAnimationFrame(clockPaint);
       }
-      setClock(0);
+      clockTarget = clockGoal(0); clockShown = 0; clockPaint();
 
       ScrollTrigger.create({
         trigger: jr,
-        start: 'top 74%',
-        end: 'bottom 55%',
-        scrub: .6,
+        start: 'top 78%',
+        end: 'bottom 32%',
+        scrub: 1,
         onUpdate: function (self) {
           var reached = self.progress * stops.length;
           jr.style.setProperty('--fill', reached.toFixed(3));
@@ -1465,7 +1491,17 @@
     return line;
   }
 
-  /* ── the composer types the question ─────────────────────── */
+  /* ── the composer types the question ─────────────────────────
+     Cadence modelled on a person rather than a metronome: quick runs
+     inside a word, a beat at each space, a longer one after
+     punctuation, and the occasional hesitation mid-word. */
+  function keystrokeDelay (ch, prev) {
+    var d = 34 + Math.random() * 40;              /* base run */
+    if (prev === ' ') d += 40 + Math.random() * 55;
+    if (prev === ',' || prev === '.' || prev === '?') d += 140 + Math.random() * 120;
+    if (Math.random() < 0.055) d += 160 + Math.random() * 220;  /* a thought */
+    return d;
+  }
   async function type (text) {
     field.classList.add('is-typing');
     var span  = el('span', 'ai-compose-text', '');
@@ -1473,14 +1509,36 @@
     field.appendChild(span); field.appendChild(caret);
     for (var i = 0; i < text.length; i++) {
       span.textContent = text.slice(0, i + 1);
-      await wait(26 + Math.random() * 46);
+      await wait(keystrokeDelay(text[i], text[i - 1] || ''));
     }
-    await wait(300);
+    await wait(340);
     if (send) { send.classList.add('is-press'); }
     await wait(140);
     if (send) { send.classList.remove('is-press'); }
     span.remove(); caret.remove();
     field.classList.remove('is-typing');
+  }
+
+  /* ── the pointer that approves ───────────────────────────────
+     A drawn cursor enters the panel, travels to the Approve button,
+     and presses it. Positions are computed against the panel each
+     move, so it survives any resize between loops. */
+  var cur = null;
+  function cursorEl () {
+    if (cur) return cur;
+    cur = el('span', 'ai-cursor',
+      '<svg viewBox="0 0 20 20" width="20" height="20"><path d="M3 1.8 16.4 9.4l-6 1.5-3 5.6z" fill="#E9E6DD" stroke="#0B0A08" stroke-width="1.1" stroke-linejoin="round"/></svg>');
+    chat.appendChild(cur);
+    return cur;
+  }
+  function cursorTo (target, dx, dy) {
+    var c = cursorEl();
+    var cb = chat.getBoundingClientRect();
+    var tb = target.getBoundingClientRect();
+    var x = tb.left - cb.left + (dx == null ? tb.width * .62 : dx);
+    var y = tb.top - cb.top + (dy == null ? tb.height * .58 : dy);
+    c.style.transform = 'translate3d(' + Math.round(x) + 'px,' + Math.round(y) + 'px,0)';
+    return c;
   }
 
   /* ── one full take ───────────────────────────────────────── */
@@ -1506,7 +1564,7 @@
     t1.classList.remove('is-live');
 
     await wait(350);
-    bubbleOut('Cleared 12 March &mdash; <b>$8,240</b> by ACH, reference 9F2C.',
+    bubbleOut('Cleared 12 March: <b>$8,240</b> by ACH, reference 9F2C.',
               'billing_ledger &middot; payments_api', '09:24');
 
     await wait(2100);
@@ -1531,18 +1589,40 @@
     var appr = el('span', 'ai-approve is-pending',
       '<span class="ai-approve-face">S</span>' +
       '<span class="ai-approve-who"><b>Sara Malik</b><span>Finance &middot; approver</span></span>' +
-      '<span class="ai-approve-state">Waiting&hellip;</span>');
+      '<span class="ai-approve-actions">' +
+        '<button class="ai-btn ai-btn--deny" type="button" tabindex="-1" aria-hidden="true">Deny</button>' +
+        '<button class="ai-btn ai-btn--ok" type="button" tabindex="-1" aria-hidden="true">Approve</button>' +
+      '</span>');
     gate.insertBefore(appr, gate.querySelector('time'));
     thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
 
-    await wait(2500);
+    /* Sara takes the mouse: enter low-right, travel to Approve, press */
+    await wait(1300);
+    var okBtn = appr.querySelector('.ai-btn--ok');
+    var c = cursorTo(chat.querySelector('.ai-compose') || chat, 60, -6);
+    void c.offsetWidth;
+    c.classList.add('is-in');
+    await wait(380);
+    cursorTo(okBtn);
+    await wait(1100);
+    okBtn.classList.add('is-hover');
+    await wait(330);
+    c.classList.add('is-press');
+    okBtn.classList.add('is-press');
+    await wait(150);
+    c.classList.remove('is-press');
+    okBtn.classList.remove('is-press');
+    await wait(120);
     appr.classList.remove('is-pending');
     appr.classList.add('is-ok');
-    appr.querySelector('.ai-approve-state').innerHTML =
-      '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8.5 3.2 3.2L13 5"/></svg>Approved &middot; 09:31';
+    appr.querySelector('.ai-approve-actions').outerHTML =
+      '<span class="ai-approve-state">' +
+      '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8.5 3.2 3.2L13 5"/></svg>' +
+      'Approved &middot; 09:31</span>';
+    c.classList.remove('is-in');
 
-    await wait(900);
-    bubbleOut('Approved by Sara. Refund of <b>$8,240</b> is on its way back to the card on file &mdash; reference R-2209.',
+    await wait(800);
+    bubbleOut('Approved by Sara. Refund of <b>$8,240</b> is on its way back to the card on file, reference R-2209.',
               'payments_api &middot; refunds', '09:31');
 
     /* hold the finished exchange, then fade and go again */
@@ -1555,4 +1635,73 @@
   (async function run () {
     for (;;) { await take(); }
   })();
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   WHAT WE BUILD — THE GALLERY WALK
+   ══════════════════════════════════════════════════════════════
+   The section pins and vertical scroll walks the five spreads
+   horizontally, snapping each one onto centre. The numeral and the
+   diagram drift at their own rates while the room slides, which is
+   what makes it read as a space rather than a slider.
+
+   Anything that cannot pin honestly — touch, small screens, reduced
+   motion, no GSAP — gets .wb--flat before a single measurement is
+   taken: the same spreads, stacked vertically, nothing broken.
+   ══════════════════════════════════════════════════════════════ */
+(function wbWalk () {
+  var wb = document.getElementById('wb');
+  if (!wb) return;
+  var track  = document.getElementById('wbTrack');
+  var idxEl  = document.getElementById('wbIdx');
+  var fill   = document.getElementById('wbFill');
+  var panels = [].slice.call(track.children);
+  var n = panels.length;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var wide   = window.matchMedia('(min-width: 901px)').matches;
+  var fine   = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (!window.gsap || !window.ScrollTrigger || reduce || !wide || !fine) {
+    wb.classList.add('wb--flat');
+    for (var i = 0; i < n; i++) panels[i].classList.add('is-on');
+    return;
+  }
+
+  var figs   = panels.map(function (p) { return p.querySelector('.wb-fig'); });
+  var ghosts = panels.map(function (p) { return p.querySelector('.wb-ghost'); });
+  var cur = -1;
+
+  function setActive (i) {
+    if (i === cur) return;
+    cur = i;
+    if (idxEl) idxEl.textContent = String(i + 1).padStart(2, '0');
+    for (var k = 0; k < n; k++) panels[k].classList.toggle('is-on', k === i);
+  }
+  setActive(0);
+
+  gsap.to(track, {
+    x: function () { return -(track.scrollWidth - window.innerWidth); },
+    ease: 'none',
+    scrollTrigger: {
+      trigger: wb,
+      pin: true,
+      scrub: 1,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      end: function () { return '+=' + Math.round(window.innerHeight * (n - 1) * 0.92); },
+      snap: { snapTo: 1 / (n - 1), duration: { min: .2, max: .55 }, ease: 'power2.out', delay: .06 },
+      onUpdate: function (self) {
+        var p = self.progress;
+        if (fill) fill.style.transform = 'scaleX(' + p + ')';
+        setActive(Math.round(p * (n - 1)));
+        /* parallax: the numeral outruns the room, the plate lags it */
+        for (var k = 0; k < n; k++) {
+          var off = k - p * (n - 1);   /* 0 when panel k is centred */
+          figs[k].style.transform   = 'translateX(' + (off * 34).toFixed(1) + 'px)';
+          ghosts[k].style.transform = 'translateX(' + (off * 110).toFixed(1) + 'px)';
+        }
+      }
+    }
+  });
 })();
