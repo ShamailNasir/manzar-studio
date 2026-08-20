@@ -2387,9 +2387,17 @@ html.js .svc-ghost{ opacity:1; }
 /* the numeral: whole, behind the copy, never under the nav */
 .wb-ghost{
   position:absolute; z-index:0;
-  left:clamp(44px,4.2vw,110px); top:clamp(16px,3.5vh,48px);
+  left:clamp(44px,4.2vw,110px); top:clamp(6px,1.5vh,24px);
   font-family:var(--disp); font-weight:700;
-  font-size:clamp(135px,14.5vw,280px); line-height:.98; letter-spacing:-.055em;
+  font-size:clamp(135px,14.5vw,280px); letter-spacing:-.055em;
+  /* The fill is a gradient painted through background-clip:text, and a
+     background only exists inside the element's own box. With a line
+     height under 1 the digits' caps rose ABOVE that box and went
+     unpainted — which looked exactly like the tops being cut off, and
+     survived every positioning fix because it was never clipping.
+     line-height 1.12 plus a whisker of padding keeps every part of the
+     ink inside the painted area. */
+  line-height:1.12; padding:.04em 0;
   color:transparent;
   background:linear-gradient(180deg, rgba(233,230,221,.11), rgba(233,230,221,.014));
   -webkit-background-clip:text; background-clip:text;
@@ -2508,7 +2516,7 @@ html.js .svc-ghost{ opacity:1; }
 .wb--flat .wb-ghost{
   position:static;
   font-size:clamp(110px,22vw,200px);
-  display:block; line-height:.9; margin-bottom:-10px;
+  display:block; line-height:1.08; padding:.04em 0; margin-bottom:-24px;
 }
 .wb--flat .wb-copy{ order:3; max-width:none; margin-bottom:0; }
 .wb--flat .wb-fig{ order:2; max-height:none; margin-top:0; }
