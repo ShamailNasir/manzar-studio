@@ -2719,3 +2719,46 @@ two orbit phases show streaks/CA/halation sitting where intended.
 **Revert:** `Backup/2026-08-20-pre-overhaul/labs-index.pre-silkhero.html` +
 restore silk.mp4/silk-normal.mp4 from that backup set; or git-revert deploy
 commits 0520318 + 787e0a8.
+
+## 142 — Labs hero v6: real normal maps, real shaders (2026-08-21)
+
+User: the normal map is practically nonexistent; CA must be in the CENTER too;
+whole thing still low quality — research properly and fix.
+
+**He was right, with numbers.** Decoded the baked normal strip: mean surface
+tilt 3.2° — near-flat, no visible light response possible. Real fabric normal
+maps carry 15–45°.
+
+**Research done** (sources in reply): Estevez & Kulla 2017 "Production
+Friendly Microfacet Sheen BRDF" (the Charlie cloth distribution, via Google
+Filament docs); Barré-Brisebois & Hill "Blending in Detail" (whiteout detail-
+normal blend); Sundararaman's RGB→rygcbv Fourier expansion for 6-channel
+spectral dispersion (via Maxime Heckel's dispersion write-up / junni.co.jp
+technique, incl. luminance resaturation).
+
+**v6 pipeline (two passes through a framebuffer, like a real post stack):**
+PASS A (scene): baked normals amplified in-shader (uNAmp 2.6) + NEW tileable
+silk-weave detail normal map (Python-baked: satin float pattern + FFT-periodic
+anisotropic fibre noise; mean tilt 29.1°, p90 39.5°, seam-verified tileable;
+512px, embedded as data-URI in weave-normal.js so file:// works) blended with
+whiteout, rotated 30° so the thread grid never aligns with the anisotropic
+axis (aligned it scanlined — caught in round 1 screenshots), weighted into lit
+crests. Lighting: wrap diffuse from a cool orbiting key + warm counter-fill +
+Charlie sheen + anisotropic gleam + thin-film iridescence (cosine spectral
+palette on the sheen — the blue/violet fold edges) + rim. 5-tap pre-soften
+melts codec artefacts before lighting.
+PASS B (glass): 6-tap 6-channel spectral dispersion with a CENTRE FLOOR
+(uCAc .0022 — fringing in the middle of frame, per request) growing r² toward
+corners (uCAr .0035), every tap Poisson-jittered (the dreamy soften he asked
+for as "more blurred"); anamorphic streaks + halation now sample the LIT
+image; resaturation, S-curve, vignette, grain.
+
+**Verified:** 60fps measured with both passes; no GL errors; A/B phase
+screenshots show unmistakable relighting (lit crest migrates across frame);
+weave reads as satin grain in the sheen; iridescent fold edges through frame
+CENTRE. New dials: namp det tile sheen sheenr irid iridf fill soft cac car
+soft2 sat (window.__hero.set).
+
+**Files:** hero-silk.js (v6 rewrite), weave-normal.js + silk-weave-normal.png
+(new), labs/index.html (script include). Revert: git-revert this commit; video
+assets untouched from v5.
