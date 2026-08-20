@@ -1638,16 +1638,18 @@
 })();
 
 /* ══════════════════════════════════════════════════════════════
-   WHAT WE BUILD — THE GALLERY WALK
+   WHAT WE BUILD — THE GALLERY WALK (sticky edition)
    ══════════════════════════════════════════════════════════════
-   The section pins and vertical scroll walks the five spreads
-   horizontally, snapping each one onto centre. The numeral and the
-   diagram drift at their own rates while the room slides, which is
-   what makes it read as a space rather than a slider.
+   The pin is CSS position:sticky; this script only sets the section's
+   height (one viewport of stay + 92svh of travel per doorway), reads
+   scroll into a target progress, and eases a transform toward it every
+   frame. No ScrollTrigger pin — the pin spacer was throwing off the
+   measured start of every trigger below this section on refresh, which
+   is what froze the section-header parallax further down the page.
 
-   Anything that cannot pin honestly — touch, small screens, reduced
-   motion, no GSAP — gets .wb--flat before a single measurement is
-   taken: the same spreads, stacked vertically, nothing broken.
+   The damping is frame-rate independent (exponential), so the walk
+   feels the same at 60 and 144Hz. Touch, small screens, reduced motion
+   and no-GSAP all get .wb--flat before anything is measured.
    ══════════════════════════════════════════════════════════════ */
 (function wbWalk () {
   var wb = document.getElementById('wb');
@@ -1662,7 +1664,7 @@
   var wide   = window.matchMedia('(min-width: 901px)').matches;
   var fine   = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  if (!window.gsap || !window.ScrollTrigger || reduce || !wide || !fine) {
+  if (!window.gsap || reduce || !wide || !fine) {
     wb.classList.add('wb--flat');
     for (var i = 0; i < n; i++) panels[i].classList.add('is-on');
     return;
@@ -1670,7 +1672,7 @@
 
   var figs   = panels.map(function (p) { return p.querySelector('.wb-fig'); });
   var ghosts = panels.map(function (p) { return p.querySelector('.wb-ghost'); });
-  var cur = -1;
+  var cur = -1, target = 0, current = 0, wbTop = 0, travel = 1, span = 1;
 
   function setActive (i) {
     if (i === cur) return;
@@ -1678,30 +1680,55 @@
     if (idxEl) idxEl.textContent = String(i + 1).padStart(2, '0');
     for (var k = 0; k < n; k++) panels[k].classList.toggle('is-on', k === i);
   }
-  setActive(0);
 
-  gsap.to(track, {
-    x: function () { return -(track.scrollWidth - window.innerWidth); },
-    ease: 'none',
-    scrollTrigger: {
-      trigger: wb,
-      pin: true,
-      scrub: 1,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-      end: function () { return '+=' + Math.round(window.innerHeight * (n - 1) * 0.92); },
-      snap: { snapTo: 1 / (n - 1), duration: { min: .2, max: .55 }, ease: 'power2.out', delay: .06 },
-      onUpdate: function (self) {
-        var p = self.progress;
-        if (fill) fill.style.transform = 'scaleX(' + p + ')';
-        setActive(Math.round(p * (n - 1)));
-        /* parallax: the numeral outruns the room, the plate lags it */
-        for (var k = 0; k < n; k++) {
-          var off = k - p * (n - 1);   /* 0 when panel k is centred */
-          figs[k].style.transform   = 'translateX(' + (off * 34).toFixed(1) + 'px)';
-          ghosts[k].style.transform = 'translateX(' + (off * 110).toFixed(1) + 'px)';
-        }
-      }
+  function measure () {
+    var vh = window.innerHeight;
+    wb.style.height = Math.round(vh + (n - 1) * vh * 0.92) + 'px';
+    var r = wb.getBoundingClientRect();
+    wbTop  = r.top + window.pageYOffset;
+    travel = wb.offsetHeight - vh;
+    span   = track.scrollWidth - window.innerWidth;
+    readScroll();
+  }
+  function readScroll () {
+    var p = (window.pageYOffset - wbTop) / (travel || 1);
+    target = Math.min(1, Math.max(0, p));
+  }
+
+  function paint (p) {
+    track.style.transform = 'translate3d(' + (-p * span).toFixed(1) + 'px,0,0)';
+    if (fill) fill.style.transform = 'scaleX(' + p + ')';
+    setActive(Math.round(p * (n - 1)));
+    for (var k = 0; k < n; k++) {
+      var off = k - p * (n - 1);            /* 0 when panel k is centred */
+      figs[k].style.transform   = 'translateX(' + (off * 30).toFixed(1) + 'px)';
+      ghosts[k].style.transform = 'translateX(' + (off * 84).toFixed(1) + 'px)';
     }
+  }
+
+  var settled = false;
+  gsap.ticker.add(function (t, dt) {
+    var d = target - current;
+    if (Math.abs(d) < 0.00045) {
+      if (!settled) { current = target; paint(current); settled = true; }
+      return;
+    }
+    settled = false;
+    /* exponential approach: same feel at any frame rate */
+    current += d * (1 - Math.pow(0.002, dt / 1000));
+    paint(current);
   });
+
+  window.addEventListener('scroll', readScroll, { passive: true });
+  var rt;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt); rt = setTimeout(measure, 140);
+  });
+  window.addEventListener('load', measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  setTimeout(measure, 1400);
+
+  measure();
+  current = target;
+  paint(current);
 })();
