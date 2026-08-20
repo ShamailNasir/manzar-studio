@@ -1622,12 +1622,16 @@
     c.classList.remove('is-gone', 'is-hand');
     void c.offsetWidth;
     c.classList.add('is-in');
-    await wait(420);
+    await wait(380);
     cursorTo(okBtn);
-    await wait(1080);
-    c.classList.add('is-hand');          /* the clickable pointer */
+    /* the hand flips DURING the approach, so by the time the glide
+       settles over the button it is already the clickable pointer -
+       no beat of the dart resting on a button */
+    await wait(520);
+    c.classList.add('is-hand');
+    await wait(280);
     okBtn.classList.add('is-hover');
-    await wait(360);
+    await wait(260);
     c.classList.add('is-press');
     okBtn.classList.add('is-press');
     await wait(140);
@@ -1748,8 +1752,10 @@
       return;
     }
     settled = false;
-    /* exponential approach: same feel at any frame rate */
-    current += d * (1 - Math.pow(0.002, dt / 1000));
+    /* exponential approach: same feel at any frame rate. Tight, because
+       the snap glide already carries the easing - two soft easings
+       stacked read as rubber-banding. */
+    current += d * (1 - Math.pow(0.0004, dt / 1000));
     paint(current);
   });
 
@@ -1773,7 +1779,7 @@
     if (Math.abs(y - window.pageYOffset) < 6) return;
     var l = window.lenisInstance || window.lenis;
     if (l && typeof l.scrollTo === 'function') {
-      l.scrollTo(y, { duration: .8, easing: function (t) { return 1 - Math.pow(1 - t, 3); } });
+      l.scrollTo(y, { duration: .55, easing: function (t) { return 1 - Math.pow(1 - t, 4); } });
     } else {
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
@@ -1785,7 +1791,7 @@
     lastY = y;
     readScroll();
     clearTimeout(snapTimer);
-    snapTimer = setTimeout(trySnap, 170);
+    snapTimer = setTimeout(trySnap, 110);
   }, { passive: true });
   var rt;
   window.addEventListener('resize', function () {
