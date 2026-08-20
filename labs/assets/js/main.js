@@ -1534,7 +1534,8 @@
   function cursorEl () {
     if (cur) return cur;
     cur = el('span', 'ai-cursor',
-      '<svg viewBox="0 0 20 20" width="20" height="20"><path d="M3 1.8 16.4 9.4l-6 1.5-3 5.6z" fill="#E9E6DD" stroke="#0B0A08" stroke-width="1.1" stroke-linejoin="round"/></svg>');
+      '<svg class="ai-cur-arrow" viewBox="0 0 20 20" width="20" height="20"><path d="M3 1.8 16.4 9.4l-6 1.5-3 5.6z" fill="#E9E6DD" stroke="#0B0A08" stroke-width="1.1" stroke-linejoin="round"/></svg>' +
+      '<svg class="ai-cur-hand" viewBox="0 0 16 16" width="21" height="21"><path d="M5.5 8.6V3.4a1.4 1.4 0 0 1 2.8 0v3.2l3.6.9a1.8 1.8 0 0 1 1.3 2.2l-.7 2.6a2 2 0 0 1-1.9 1.5H8.2a2 2 0 0 1-1.5-.7L3.6 9.9a1.3 1.3 0 0 1 1.9-1.8Z" fill="#E9E6DD" stroke="#0B0A08" stroke-width=".9" stroke-linejoin="round"/></svg>');
     chat.appendChild(cur);
     return cur;
   }
@@ -1549,12 +1550,21 @@
   }
 
   /* ── one full take ───────────────────────────────────────── */
-  async function take () {
-    /* the paced clock gates this on the panel actually being looked at,
-       so the static transcript stays up until the show really starts */
-    await wait(900);
+  /* fade the thread out, empty it while it is invisible, fade the
+     empty window back in. The old build removed the fade class before
+     clearing, so a frame of stale transcript flashed at full opacity
+     on every loop. */
+  async function clearThread () {
+    thread.classList.add('is-clearing');
+    await wait(500);
     thread.innerHTML = '';
-    await wait(400);
+    thread.scrollTop = 0;
+    thread.classList.remove('is-clearing');
+    await wait(380);
+  }
+
+  async function take () {
+    await wait(650);
     await type('Where is invoice 4471?');
     bubbleIn('Where is invoice 4471?', '09:24');
 
@@ -1603,43 +1613,52 @@
     gate.insertBefore(appr, gate.querySelector('time'));
     thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
 
-    /* Sara takes the mouse: enter low-right, travel to Approve, press */
+    /* Sara takes the mouse: born at the panel's centre, glide to
+       Approve, become the pointing hand over it, click, vanish */
     await wait(1300);
     var okBtn = appr.querySelector('.ai-btn--ok');
-    var c = cursorTo(chat.querySelector('.ai-compose') || chat, 60, -6);
+    var cb = chat.getBoundingClientRect();
+    var c = cursorTo(chat, cb.width * .5, cb.height * .52);
+    c.classList.remove('is-gone', 'is-hand');
     void c.offsetWidth;
     c.classList.add('is-in');
-    await wait(380);
+    await wait(420);
     cursorTo(okBtn);
-    await wait(1100);
+    await wait(1080);
+    c.classList.add('is-hand');          /* the clickable pointer */
     okBtn.classList.add('is-hover');
-    await wait(330);
+    await wait(360);
     c.classList.add('is-press');
     okBtn.classList.add('is-press');
-    await wait(150);
+    await wait(140);
     c.classList.remove('is-press');
     okBtn.classList.remove('is-press');
-    await wait(120);
+    /* the click registers... */
     appr.classList.remove('is-pending');
     appr.classList.add('is-ok');
     appr.querySelector('.ai-approve-actions').outerHTML =
       '<span class="ai-approve-state">' +
       '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8.5 3.2 3.2L13 5"/></svg>' +
       'Approved &middot; 09:31</span>';
-    c.classList.remove('is-in');
+    /* ...and the hand is gone within the same beat */
+    await wait(90);
+    c.classList.add('is-gone');
+    c.classList.remove('is-in', 'is-hand');
 
     await wait(800);
     bubbleOut('Approved by Sara. Refund of <b>$8,240</b> is on its way back to the card on file, reference R-2209.',
               'payments_api &middot; refunds', '09:31');
 
-    /* hold the finished exchange, then fade and go again */
+    /* hold the finished exchange, then hand over cleanly */
     await wait(5200);
-    thread.classList.add('is-clearing');
-    await wait(600);
-    thread.classList.remove('is-clearing');
+    await clearThread();
   }
 
   (async function run () {
+    /* the static no-JS transcript leaves the same way every loop ends:
+       through the fade, never a hard swap */
+    await wait(900);
+    await clearThread();
     for (;;) { await take(); }
   })();
 })();

@@ -403,11 +403,11 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 .svc-ghost{ font-size:clamp(120px,11.719vw,300px); line-height:.8; opacity:.55; }
 
 /* Norvin's cards are quiet: a hairline, a flat panel, no glow. */
-.ds-card, .reg-card, .ai-chat, .faq-item, .faq-note, .contact-form{
+.ds-card, .reg-card, .reg-how li, .ai-chat, .faq-item, .faq-note, .contact-form{
   background:rgba(233,230,221,.025);
   border-color:rgba(233,230,221,.10);
 }
-.ds-card:hover, .reg-card:hover{
+.ds-card:hover, .reg-card:hover, .reg-how li:hover{
   background:rgba(233,230,221,.045);
   border-color:rgba(233,230,221,.18);
 }
@@ -764,6 +764,14 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 }
 .ai-cursor.is-in{ opacity:1; }
 .ai-cursor.is-press{ transition-duration:.12s; }
+/* the two faces of the cursor: dart while travelling, pointing hand
+   the moment it is over something clickable - same grammar as the
+   site's own cursor rules */
+.ai-cursor .ai-cur-hand{ display:none; }
+.ai-cursor.is-hand .ai-cur-arrow{ display:none; }
+.ai-cursor.is-hand .ai-cur-hand{ display:block; }
+/* after the click the hand leaves within a beat, not a fade-out */
+.ai-cursor.is-gone{ opacity:0; transition:opacity .12s linear; }
 
 /* composer, while the question types itself */
 .ai-compose-field{ position:relative; min-height:1.2em; }
@@ -780,8 +788,11 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 .ai-compose-send.is-hot{ background:var(--bone); color:var(--ink); }
 .ai-compose-send.is-press{ transform:scale(.88); }
 
-/* the whole thread crossfades on loop reset */
-.ai-thread.is-clearing{ transition:opacity .5s var(--e-out); opacity:0; }
+/* the whole thread crossfades on loop reset - the transition lives on
+   the base class so the empty window fades back IN as smoothly as the
+   finished one faded out */
+.ai-thread{ transition:opacity .45s var(--e-out); }
+.ai-thread.is-clearing{ opacity:0; }
 
 /* keep the two halves of the lead aligned */
 .ai-lead{ align-items:center; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); }
