@@ -2933,3 +2933,26 @@ intro state — known artifact, not a defect.)
 
 **Dials:** bloom/cab/con added; blur/blurmin/matte/warm/etc all live.
 Reverts: v8 tag hero-v8-approved; v9 ab8ebea; v10 563f840.
+
+## 148 — Labs hero v12: liquid glass (2026-08-21)
+
+User on v11 (with his own 2560×1440 screenshot): too blurry, wrong
+direction — LESS blur, some other, better effect. Note: at his fullscreen
+res the blur floor scaled up and read far softer than in 1568px captures.
+
+**v12 = v11 minus the blur, plus a signature material effect:**
+- blur floor 6.5→2px, max 18→9px: near-sharp, codec-melt only
+- NEW — LIQUID REFRACTION: colour is sampled where the (amplified base +
+  weave detail) normals bend the view ray (`ruv = uv + N.xy * uRefr`,
+  .0075). The silk warps its own image like molten obsidian — the normal
+  maps finally produce an unmissable material effect with ZERO added cost
+  (offset, not taps). Shader reordered: normals computed before colour;
+  detail-mask luma uses a pre-tap (l0p).
+- tighter chrome sheen: SPECPOW 90→120; clarity back to .26
+- kept: soft-knee bloom, dual CA passes, warm-kissed highlights, deep
+  blacks, fine grain — everything he didn't complain about.
+
+**Verified:** phase 21: molten-metal ribbons, crisp edges, spectral
+fringes, dense contrast; phase 47 rest state moody. No errors. Cost ≤ v11.
+
+**Files:** hero-silk.js. Reverts: v11 810e5bf, v8 tag hero-v8-approved.

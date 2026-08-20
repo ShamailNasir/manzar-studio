@@ -62,7 +62,7 @@
     'uniform sampler2D uA, uW;',
     'uniform float uDiff, uSpec, uSpecPow, uAniso, uRim;',
     'uniform float uClar, uSoft, uZoom, uCAc, uCA, uStreak, uHal;',
-    'uniform float uNAmp, uDet, uSheen, uSheenR;',
+    'uniform float uNAmp, uDet, uSheen, uSheenR, uRefr;',
     'uniform vec2 uRes, uTile;',
     'uniform vec3 uL;',
     'const vec2 VRES = vec2(1920., 1080.);',
@@ -85,26 +85,32 @@
     '  vec2 pc = vUv - .5; pc.x *= ca;',
     '  float r2 = dot(pc, pc);',
     '  vec2 cad = normalize(pc + 1e-6) * (uCAc + uCA * r2);',
-    '  vec2 sx = uSoft / VRES;',
-    '  vec3 base = vid(uv) * .40',
-    '            + vid(uv + sx) * .15 + vid(uv - sx) * .15',
-    '            + vid(uv + vec2(sx.x, -sx.y)) * .15 + vid(uv + vec2(-sx.x, sx.y)) * .15;',
-    '  vec3 col;',
-    '  col.r = mix(base.r, vid(uv + cad).r, .85);',
-    '  col.g = base.g;',
-    '  col.b = mix(base.b, vid(uv - cad).b, .85);',
-    '  vec2 tx = 1.4 / VRES;',
-    '  vec3 nb4 = vid(uv + vec2(tx.x, 0.)) + vid(uv - vec2(tx.x, 0.))',
-    '           + vid(uv + vec2(0., tx.y)) + vid(uv - vec2(0., tx.y));',
-    '  col = clamp(col + (col - nb4 * .25) * uClar, 0., 1.);',
-    '  float l0 = lum(col);',
+    /* normals FIRST - they drive the light and the liquid refraction */
     '  vec3 nb = texture2D(uA, nuv(uv)).rgb * 2. - 1.;',
     '  nb.xy *= uNAmp; nb = normalize(nb);',
+    '  float l0p = lum(vid(uv));',
     '  vec2 wuv = mat2(.866, -.5, .5, .866) * (uv * uTile);',
     '  vec3 nd = texture2D(uW, wuv).rgb * 2. - 1.;',
-    '  float dk = uDet * (.3 + .7 * smoothstep(.05, .35, l0));',
+    '  float dk = uDet * (.3 + .7 * smoothstep(.05, .35, l0p));',
     '  nd = normalize(mix(vec3(0., 0., 1.), nd, dk));',
     '  vec3 N = normalize(vec3(nb.xy + nd.xy, nb.z * nd.z));',
+    /* LIQUID GLASS: the surface refracts its own image - colour is
+       sampled where the normals bend the view ray, so the silk warps
+       like molten obsidian. Sharp, animated by the cloth itself. */
+    '  vec2 ruv = uv + N.xy * uRefr;',
+    '  vec2 sx = uSoft / VRES;',
+    '  vec3 base = vid(ruv) * .40',
+    '            + vid(ruv + sx) * .15 + vid(ruv - sx) * .15',
+    '            + vid(ruv + vec2(sx.x, -sx.y)) * .15 + vid(ruv + vec2(-sx.x, sx.y)) * .15;',
+    '  vec3 col;',
+    '  col.r = mix(base.r, vid(ruv + cad).r, .85);',
+    '  col.g = base.g;',
+    '  col.b = mix(base.b, vid(ruv - cad).b, .85);',
+    '  vec2 tx = 1.4 / VRES;',
+    '  vec3 nb4 = vid(ruv + vec2(tx.x, 0.)) + vid(ruv - vec2(tx.x, 0.))',
+    '           + vid(ruv + vec2(0., tx.y)) + vid(ruv - vec2(0., tx.y));',
+    '  col = clamp(col + (col - nb4 * .25) * uClar, 0., 1.);',
+    '  float l0 = lum(col);',
     '  vec3 L = normalize(uL);',
     '  float d = clamp(dot(N, L) * .5 + .5, 0., 1.);',
     '  d = pow(d, 1.4);',
@@ -317,12 +323,13 @@
   resize(); addEventListener('resize', resize);
 
   /* dials - live via window.__hero.set */
-  var DIFF = .38, SPEC = .32, SPECPOW = 90., ANISO = .42, RIM = .08,
+  var DIFF = .38, SPEC = .32, SPECPOW = 120., ANISO = .42, RIM = .08,
       GRAIN = .020, ORBIT = .07, ELEV = .58,
-      CLAR = .22, SOFT = .9, CAC = .0018, CA = .0048, STREAK = .35, HAL = .15,
-      NAMP = 2.4, DET = .16, TILE = 6.0, SHEEN = .32, SHEENR = .38, EXP = .92,
-      BLUR = 18., BOKEH = 4., FOCUSW = .10, FEATHER = .58, RACKA = .10, RACKS = .10,
-      BLURMIN = 6.5, MATTE = 0., WARM = .25,
+      CLAR = .26, SOFT = .9, CAC = .0018, CA = .0048, STREAK = .35, HAL = .15,
+      NAMP = 2.4, DET = .16, TILE = 6.0, SHEEN = .30, SHEENR = .38, EXP = .92,
+      BLUR = 9., BOKEH = 4., FOCUSW = .10, FEATHER = .58, RACKA = .10, RACKS = .10,
+      BLURMIN = 2., MATTE = 0., WARM = .25,
+      REFR = .0075,
       RAYI = 0., RAYDEN = .46, RAYDEC = .938, LPX = .82, LPY = .10,
       BLOOM = .55, CAB = .0035, CON = .16;
 
@@ -375,6 +382,7 @@
     if (o.matte != null) MATTE = o.matte;
     if (o.rayi != null) RAYI = o.rayi;
     if (o.bloom != null) BLOOM = o.bloom;
+    if (o.refr != null) REFR = o.refr;
     if (o.cab != null) CAB = o.cab;
     if (o.con != null) CON = o.con;
     if (o.rayden != null) RAYDEN = o.rayden;
@@ -394,7 +402,7 @@
              CAC: CAC, CA: CA, STREAK: STREAK, HAL: HAL, NAMP: NAMP, DET: DET,
              TILE: TILE, SHEEN: SHEEN, SHEENR: SHEENR, EXP: EXP,
              BLUR: BLUR, BLURMIN: BLURMIN, MATTE: MATTE, WARM: WARM,
-             RAYI: RAYI, BLOOM: BLOOM, CAB: CAB, CON: CON,
+             RAYI: RAYI, BLOOM: BLOOM, CAB: CAB, CON: CON, REFR: REFR,
              BOKEH: BOKEH, FOCUSW: FOCUSW, FEATHER: FEATHER,
              RACKA: RACKA, RACKS: RACKS, rate: vA.playbackRate };
   };
@@ -440,6 +448,7 @@
     gl.uniform1f(UA.uDet, DET);
     gl.uniform1f(UA.uSheen, SHEEN);
     gl.uniform1f(UA.uSheenR, SHEENR);
+    gl.uniform1f(UA.uRefr, REFR);
     gl.uniform2f(UA.uRes, cv.width, cv.height);
     gl.uniform2f(UA.uTile, TILE * (cv.width / Math.max(cv.height, 1)), TILE);
     gl.uniform3f(UA.uL, Lx, Ly, el);
