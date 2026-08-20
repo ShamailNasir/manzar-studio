@@ -1,42 +1,35 @@
 /* ============================================================
-   LABS HERO - charcoal silk, light through darkness  (engine v10)
+   LABS HERO - charcoal silk, dense dark glass        (engine v11)
    ============================================================
-   v7's dark-cinema relight stays. v8 adds the thing every grade
-   so far could not: OPTICS. The silk now reads as macro footage
-   on a wide-open cinema prime - a razor-thin band of focus with
-   everything else melting into creamy, highlight-weighted blur
-   (bokeh), and the focus plane itself slowly drifting up and down
-   the frame (a rack focus). Defocus also erases what remains of
-   the codec's fingerprints - blur is the honest end of
-   "make it look higher quality".
+   The brief: blurry and smooth, visibly chromatic, DENSE, dark,
+   high quality. Built on the approved v8 foundation.
 
    PASS A - the scene (renders into a framebuffer)
-     v7 unchanged: one atlas video (footage + baked normals, one
-     clock, loop-baked); normals amplified (uNAmp) + rotated silk-
-     weave detail normal, whiteout-blended, crest-weighted; one
-     cool orbiting key; wrap diffuse; SILVER Charlie sheen
-     [Estevez & Kulla 2017] + anisotropic gleam + rim; restrained
-     3-tap chromatic aberration with a centre floor; cool
-     anamorphic streaks; faint halation; micro-soften + clarity.
-     No grade here - the grade belongs after the glass.
+     one atlas video (footage + baked normal strip, one clock, so
+     the loop can never pop); normals amplified + rotated silk-
+     weave detail, whiteout-blended, crest-weighted; one cool key
+     slowly ORBITING again (the sheen travels); silver Charlie
+     sheen [Estevez & Kulla 2017] + anisotropic gleam + rim; first
+     chromatic pass (radial, centre floor + r^2); cool anamorphic
+     streaks; faint halation.
 
-   PASS B - the lens (framebuffer -> screen)
-     - tilt-shift DEPTH OF FIELD: per-pixel blur radius grows with
-       distance from an animated focus line. The gather is a
-       Vogel/golden-angle spiral disc (uniform coverage, the
-       standard single-pass bokeh pattern), per-pixel rotated so
-       undersampling dithers into noise the grain then owns.
-       Samples are weighted 1 + luma^2 * uBokeh - defocused
-       highlights bloom into bright discs, the bokeh signature.
-     - RACK FOCUS: the focus line breathes through the frame
-       (sin, ~60s period), so the image is alive even where the
-       cloth rests.
-     - then the dark-cinema grade, after the optics as a colorist
-       would: steel-blue shadows / silver highlights split tone,
-       ACES filmic curve [Narkowicz fit] with exposure dial, black
-       crush, deep vignette, fine animated grain (after the blur -
-       grain over cream is what keeps "soft" from becoming
-       "smeared").
+   PASS B - the glass (framebuffer -> screen)
+     - SMOOTHNESS with structure: the v8 bokeh gather (Vogel
+       spiral, luma-weighted taps) with a moderate blur floor -
+       everything is smooth, folds still read. The rack-focus band
+       keeps a calmer zone drifting through the frame.
+     - DENSITY = BLOOM: two-ring colored bloom with a SOFT-KNEE
+       threshold [Jimenez 2014, "Next Generation Post Processing
+       in Call of Duty" - the soft knee fades bloom in smoothly so
+       animated highlights never pulse]. Inner ring 10px, outer
+       26px: a thick luminous atmosphere around every lit fold.
+     - SECOND chromatic pass on the smooth image: wide radial
+       fringe (centre floor + r^2) - soft spectral edges you can
+       actually see, layered over pass A's tight fringe.
+     - the dark glass grade: steel shadows / faintly warm silver
+       highlights, ACES filmic curve [Narkowicz fit], extra
+       density contrast, black crush to true dark, deep vignette,
+       fine animated grain.
 
    Fallbacks: WebGL -> plain video (cropped via CSS) -> still.
    Reduced motion renders one lit frame and stops.
@@ -153,6 +146,7 @@
     'uniform sampler2D uT;',
     'uniform float uTime, uBlur, uBlurMin, uBokeh, uFocusW, uFeather, uRackA, uRackS;',
     'uniform float uMatte, uWarm, uRayI, uRayDen, uRayDec;',
+    'uniform float uBloom, uCAB, uCon;',
     'uniform vec2 uLightP;',
     'uniform float uExp, uGrain, uGrainT, uRM;',
     'uniform vec2 uRes;',
@@ -189,25 +183,31 @@
     '    col = acc / wsum;',
     '  }',
     /* the dark-cinema grade, after the optics */
-    /* volumetric light shafts [Kenny Mitchell, GPU Gems 3 ch.13]:
-       march from this pixel toward the light's screen position,
-       accumulating the lit crests' brightness with per-step decay -
-       the silk's own highlights become the emitters of the beams */
-    '  vec2 rd = (uLightP - uv) * uRayDen / 24.;',
-    '  vec2 ruv = uv; float dec = 1.; float ray = 0.;',
-    '  for (int i = 0; i < 24; i++) {',
-    '    ruv += rd;',
-    '    float inb = step(0., ruv.x) * step(ruv.x, 1.) * step(0., ruv.y) * step(ruv.y, 1.);',
-    '    ray += max(lum(texture2D(uT, ruv).rgb) - .28, 0.) * dec * inb;',
-    '    dec *= uRayDec;',
+    /* second chromatic pass, on the SMOOTH image: wide radial fringe
+       with a centre floor - soft spectral edges layered over pass A's
+       tight ones. Sampling the scene texture keeps it one gather. */
+    '  float aspB = uRes.x / uRes.y;',
+    '  vec2 pcB = vUv - .5; pcB.x *= aspB;',
+    '  float r2B = dot(pcB, pcB);',
+    '  vec2 cadB = normalize(pcB + 1e-6) * (uCAB * (.35 + r2B));',
+    '  col.r = mix(col.r, texture2D(uT, uv + cadB).r, .55);',
+    '  col.b = mix(col.b, texture2D(uT, uv - cadB).b, .55);',
+    /* DENSITY: two-ring colored bloom, soft-knee threshold
+       [Jimenez 2014] - the thick luminous atmosphere */
+    '  vec3 bl = vec3(0.);',
+    '  float rr1 = 10. * uRes.y / 1080., rr2 = 26. * uRes.y / 1080.;',
+    '  for (int k = 0; k < 8; k++) {',
+    '    float aa = float(k) * .7854;',
+    '    vec2 dd = vec2(cos(aa), sin(aa));',
+    '    vec3 s1 = texture2D(uT, uv + dd * rr1 / uRes).rgb;',
+    '    vec3 s2 = texture2D(uT, uv + dd * rr2 / uRes).rgb;',
+    '    float l1 = lum(s1), l2 = lum(s2);',
+    '    float k1 = clamp(l1 - .26 + .14, 0., .28); k1 = k1 * k1 / .56;',
+    '    float k2 = clamp(l2 - .26 + .14, 0., .28); k2 = k2 * k2 / .56;',
+    '    bl += s1 * (max(l1 - .26, k1) / max(l1, 1e-3)) * .075;',
+    '    bl += s2 * (max(l2 - .26, k2) / max(l2, 1e-3)) * .05;',
     '  }',
-    /* beam structure: without it the march reads as plain glow. The
-       accumulated light is broken into alternating shafts by value
-       noise over the ANGLE around the source, drifting very slowly. */
-    '  float ang = atan(uv.y - uLightP.y, uv.x - uLightP.x);',
-    '  float bn = sin(ang * 42. + uTime * .06) * .5 + sin(ang * 91. - uTime * .04) * .35 + sin(ang * 17. + uTime * .03) * .55;',
-    '  float beams = .55 + .45 * clamp(bn, -1., 1.);',
-    '  col += vec3(.80, .89, 1.08) * ray * beams * (uRayI * .125);',
+    '  col += bl * vec3(.96, .98, 1.04) * uBloom;',
     /* three-way split tone: steel shadows, sage-grey mids, and the one
        warm event - an ivory glow that lives only in the sheen band */
     '  float lm = lum(col);',
@@ -218,6 +218,7 @@
     '  col = aces(col * uExp);',
     /* matte finish: lifted toe, no clipped white - nothing in the field
        is ever pure black or pure white; the type does the contrast */
+    '  col = mix(col, col * col * (3. - 2. * col), uCon);',
     '  col = max(col - .012, 0.) / .988;',
     '  col = mix(col, col * .90 + .075, uMatte);',
     '  float vg = smoothstep(1.5, .5, length(vUv - vec2(.5, .5)));',
@@ -316,13 +317,14 @@
   resize(); addEventListener('resize', resize);
 
   /* dials - live via window.__hero.set */
-  var DIFF = .45, SPEC = .32, SPECPOW = 90., ANISO = .42, RIM = .08,
-      GRAIN = .022, ORBIT = .09, ELEV = .58,
-      CLAR = .30, SOFT = .9, CAC = .0012, CA = .0032, STREAK = .25, HAL = .10,
-      NAMP = 2.4, DET = .18, TILE = 6.0, SHEEN = .32, SHEENR = .38, EXP = .90,
-      BLUR = 0., BOKEH = 4., FOCUSW = .08, FEATHER = .55, RACKA = .15, RACKS = .10,
-      BLURMIN = 0., MATTE = 0., WARM = 0.,
-      RAYI = .72, RAYDEN = .46, RAYDEC = .938, LPX = .82, LPY = .10;
+  var DIFF = .38, SPEC = .32, SPECPOW = 90., ANISO = .42, RIM = .08,
+      GRAIN = .020, ORBIT = .07, ELEV = .58,
+      CLAR = .22, SOFT = .9, CAC = .0018, CA = .0048, STREAK = .35, HAL = .15,
+      NAMP = 2.4, DET = .16, TILE = 6.0, SHEEN = .32, SHEENR = .38, EXP = .92,
+      BLUR = 18., BOKEH = 4., FOCUSW = .10, FEATHER = .58, RACKA = .10, RACKS = .10,
+      BLURMIN = 6.5, MATTE = 0., WARM = .25,
+      RAYI = 0., RAYDEN = .46, RAYDEC = .938, LPX = .82, LPY = .10,
+      BLOOM = .55, CAB = .0035, CON = .16;
 
   var started = false, run = true;
   var tryPlay = function (vv) { if (vv) { var p = vv.play(); if (p && p.catch) p.catch(function () {}); } };
@@ -372,6 +374,9 @@
     if (o.blurmin != null) BLURMIN = o.blurmin;
     if (o.matte != null) MATTE = o.matte;
     if (o.rayi != null) RAYI = o.rayi;
+    if (o.bloom != null) BLOOM = o.bloom;
+    if (o.cab != null) CAB = o.cab;
+    if (o.con != null) CON = o.con;
     if (o.rayden != null) RAYDEN = o.rayden;
     if (o.raydec != null) RAYDEC = o.raydec;
     if (o.lpx != null) LPX = o.lpx;
@@ -389,7 +394,7 @@
              CAC: CAC, CA: CA, STREAK: STREAK, HAL: HAL, NAMP: NAMP, DET: DET,
              TILE: TILE, SHEEN: SHEEN, SHEENR: SHEENR, EXP: EXP,
              BLUR: BLUR, BLURMIN: BLURMIN, MATTE: MATTE, WARM: WARM,
-             RAYI: RAYI, RAYDEN: RAYDEN, RAYDEC: RAYDEC, LPX: LPX, LPY: LPY,
+             RAYI: RAYI, BLOOM: BLOOM, CAB: CAB, CON: CON,
              BOKEH: BOKEH, FOCUSW: FOCUSW, FEATHER: FEATHER,
              RACKA: RACKA, RACKS: RACKS, rate: vA.playbackRate };
   };
@@ -401,7 +406,7 @@
     if (!run && firstFrame) return;
 
     var t = (D.phase != null ? D.phase : now * .001);
-    var az = 1.45 + ORBIT * 2.0 * Math.sin(t * .05);
+    var az = t * ORBIT;
     var el = ELEV + .14 * Math.sin(t * .045 + 1.1);
     var Lx = Math.cos(az), Ly = Math.sin(az) * .7;
     var zoom = 1.05 + .03 * (0.5 + 0.5 * Math.sin(t * .032));
@@ -451,6 +456,9 @@
     gl.uniform1f(UB.uBlurMin, BLURMIN);
     gl.uniform1f(UB.uMatte, MATTE);
     gl.uniform1f(UB.uRayI, RAYI);
+    gl.uniform1f(UB.uBloom, BLOOM);
+    gl.uniform1f(UB.uCAB, CAB);
+    gl.uniform1f(UB.uCon, CON);
     gl.uniform1f(UB.uRayDen, RAYDEN);
     gl.uniform1f(UB.uRayDec, RAYDEC);
     gl.uniform2f(UB.uLightP, LPX + .03 * Math.sin(t * .043), LPY + .02 * Math.cos(t * .037));

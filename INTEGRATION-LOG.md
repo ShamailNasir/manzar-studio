@@ -2902,3 +2902,34 @@ cost sits in v6's measured-60fps league.
 
 **Dials:** rayi/rayden/raydec/lpx/lpy + all prior. v8 still one command
 away: tag hero-v8-approved / Backup/2026-08-21-hero-v8/.
+
+## 147 — Labs hero v11: dense dark glass (2026-08-21)
+
+User on v10: fucked up, don't need it, even v9 was better. New precise spec:
+blurry/smooth + visible chromatic aberration + highly dense + dark shaders +
+high quality + sexy.
+
+**v11 = the approved v8 foundation + the spec:**
+- rays deleted (guarded to zero, march removed); orbit light restored
+- SMOOTH: v8's Vogel bokeh gather with a moderate blur floor (6.5px min,
+  18px max via the drifting rack band) — everything smooth, folds still
+  read. Not v9's total 13-30px wash.
+- DENSE: two-ring colored BLOOM (10px + 26px, 8 taps each) with a
+  SOFT-KNEE threshold [Jimenez 2014, CoD:AW post-processing — soft knee
+  fades bloom in smoothly so animated highlights never pulse] — thick
+  luminous atmosphere around every lit fold. Plus density contrast
+  (uCon .16 post-ACES) and crush .012 → rich deep blacks, zero matte wash.
+- CHROMATIC: two CA passes — pass A tight radial (CAC .0018 + CA .0048 r²)
+  on the video, pass B WIDE fringe (uCAB .0035, centre floor + r²) on the
+  smooth image → soft amber/cyan spectral edges visible mid-frame.
+- warm .25 kiss on highlights only (sexy, not sepia); grain fine .020;
+  EXP .92.
+
+**Verified:** phase 47 screenshot: smooth structured masses, spectral fold
+edges through frame centre, bloom glow, deep blacks, crisp type. No engine
+errors. (Tab again visibilityState:hidden → fps unmeasurable; +18 bloom
+taps keeps cost in the proven league. Phase-16 shot caught the frozen-tab
+intro state — known artifact, not a defect.)
+
+**Dials:** bloom/cab/con added; blur/blurmin/matte/warm/etc all live.
+Reverts: v8 tag hero-v8-approved; v9 ab8ebea; v10 563f840.
