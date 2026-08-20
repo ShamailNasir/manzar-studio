@@ -169,8 +169,12 @@
     }
   }
 
-  var skipPreloader = false;
-  try { skipPreloader = sessionStorage.getItem('mz-pre') === '1'; } catch (e) {}
+  /* The preloader plays on every plain load and refresh — by request, the
+     clean wordmark holds for a full two seconds. The only skip is a
+     Studio↔Labs crossover, where the shared curtain owns the screen; the
+     head snippet set window.__mzCrossover synchronously before this file
+     ran, so there is no race with manzar-system.js consuming its flag. */
+  var skipPreloader = window.__mzCrossover === true;
 
   /* live guard: manzar-system.js (loaded before this file, but as a
      deferred <head> script it can run either just before or just after
@@ -185,11 +189,12 @@
     /* entrance is the CSS animation on .preloader-logo; JS only decides when to lift */
     var cnt = { v: 0 };
     gsap.to(cnt, {
-      v: 100, duration: 1.0, ease: 'power2.inOut',
+      v: 100, duration: 2.6, ease: 'power2.inOut',
       onUpdate: function () { if (preCount) preCount.textContent = String(Math.round(cnt.v)).padStart(2, '0'); },
-      onComplete: hidePreloader
+      /* a beat at 100 before the lift, so the finished state registers */
+      onComplete: function () { gsap.delayedCall(0.35, hidePreloader); }
     });
-    setTimeout(hidePreloader, 2600);
+    setTimeout(hidePreloader, 4200);
   } else {
     hidePreloader();
   }
@@ -383,14 +388,40 @@
          without JS; take it back to zero now that we can drive it. */
       jr.classList.add('is-scrubbed');
       jr.style.setProperty('--fill', '0');
+
+      /* The clock above the rail is scrubbed through the same progress:
+         WEEK 00 → 01 → 02…06 across the first four stops, then the unit
+         flips to DAY and it runs 00 → 90 across the last. The markup
+         ships saying DAY 90 so the no-JS state reads finished, same as
+         the rail's --fill default; it is taken back to zero here, the
+         moment we know we can drive it. */
+      var clockU = document.getElementById('jrClockU');
+      var clockV = document.getElementById('jrClockV');
+      function setClock(progress) {
+        if (!clockU || !clockV) return;
+        var t = progress * 4, seg = Math.min(Math.floor(t), 3), f = t - seg;
+        var unit, val;
+        if (seg < 3) {
+          unit = 'Week';
+          val = seg === 2 ? 2 + f * 4 : seg + f;   /* 0→1, 1→2, 2→6 */
+        } else {
+          unit = 'Day';
+          val = f * 90;
+        }
+        if (clockU.textContent !== unit) clockU.textContent = unit;
+        clockV.textContent = String(Math.round(val)).padStart(2, '0');
+      }
+      setClock(0);
+
       ScrollTrigger.create({
         trigger: jr,
         start: 'top 74%',
-        end: 'bottom 66%',
+        end: 'bottom 55%',
         scrub: .6,
         onUpdate: function (self) {
           var reached = self.progress * stops.length;
           jr.style.setProperty('--fill', reached.toFixed(3));
+          setClock(self.progress);
           for (var i = 0; i < stops.length; i++) {
             stops[i].classList.toggle('is-lit', reached >= i);
           }
@@ -665,7 +696,7 @@
      and no way back out, so there the reel opens in its own tab. */
   var mach = document.getElementById('mach');
   if (mach) {
-    var machFrame = document.getElementById('machFrame');
+    var machFramesBox = document.getElementById('machFrames');
     var machScreenEl = document.getElementById('machScreen');
     var machReels = [].slice.call(mach.querySelectorAll('.reel'));
     var machEls = {
@@ -679,13 +710,69 @@
     var machCan   = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
     var machIndex = 0;
     var machBooted = false;
-    var machTimer = null;
+
+    /* ── six frames, warmed before anyone asks ──────────────────
+       One iframe per project, all mounted up front. Their sources are
+       set as soon as the page's own load has finished (staggered, so
+       six sites do not fight Labs for bandwidth in its first seconds),
+       which means changing reels later is a class flip — no network,
+       no latency, no flash of poster. */
+    var machFrames = [], machLoaded = [], machCold = [];
+    (function buildFrames () {
+      if (!machFramesBox) return;
+      for (var f = 0; f < machReels.length; f++) {
+        var fr = document.createElement('iframe');
+        fr.className = 'mach-frame';
+        fr.title = 'Live preview of ' + machReels[f].getAttribute('data-title');
+        fr.setAttribute('referrerpolicy', 'no-referrer');
+        fr.setAttribute('sandbox',
+          'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox');
+        machFramesBox.appendChild(fr);
+        machFrames.push(fr);
+        machLoaded.push(false);
+        machCold.push(machReels[f].getAttribute('data-embed') === 'false');
+      }
+    })();
+
+    function machWarm () {
+      machFrames.forEach(function (fr, i) {
+        if (machCold[i]) return;
+        setTimeout(function () {
+          fr.addEventListener('load', function () {
+            machLoaded[i] = true;
+            machCold[i] = false;
+            if (i === machIndex) machReflect();
+          });
+          fr.src = machReels[i].getAttribute('data-src');
+          /* a frame that has said nothing after 9s is declared cold —
+             checked per frame, surfaced only if it is the one on stage */
+          setTimeout(function () {
+            if (!machLoaded[i]) { machCold[i] = true; if (i === machIndex) machReflect(); }
+          }, 9000);
+        }, 450 * i);
+      });
+    }
+    if (document.readyState === 'complete') machWarm();
+    else {
+      var warmed = false;
+      var warmOnce = function () { if (!warmed) { warmed = true; machWarm(); } };
+      window.addEventListener('load', warmOnce);
+      setTimeout(warmOnce, 4500);   /* belt and braces: load can be held up by video */
+    }
 
     function machStatus() {
       var name = machReels[machIndex].getAttribute('data-title');
       machEls.status.textContent = mach.classList.contains('is-live')
         ? 'Live · browsing ' + name
-        : (mach.classList.contains('is-ready') ? 'Loaded · ' + name : 'Standby');
+        : (mach.classList.contains('is-ready') ? 'Loaded · ' + name
+        : (mach.classList.contains('is-cold') ? 'Will not embed' : 'Warming up'));
+    }
+
+    /* reflect the current frame's readiness onto the machine chrome */
+    function machReflect() {
+      mach.classList.toggle('is-ready', !!machLoaded[machIndex] && !machCold[machIndex]);
+      mach.classList.toggle('is-cold', !!machCold[machIndex]);
+      machStatus();
     }
 
     function machPaint(reel, i) {
@@ -695,26 +782,10 @@
       machEls.line.textContent = reel.getAttribute('data-line');
       machEls.open.setAttribute('href', reel.getAttribute('data-href'));
       mach.style.setProperty('--tint', reel.getAttribute('data-tint'));
-      machStatus();
-
-      mach.classList.remove('is-ready', 'is-cold');
-      clearTimeout(machTimer);
-      /* A blocked embed still fires load, with the browser's error page
-         inside it, so there is nothing to sniff cross-origin. Declare it
-         with data-embed="false" and the reel keeps its poster. */
-      if (reel.getAttribute('data-embed') === 'false') {
-        machFrame.removeAttribute('src');
-        mach.classList.add('is-cold');
-        return;
+      for (var f = 0; f < machFrames.length; f++) {
+        machFrames[f].classList.toggle('is-front', f === i);
       }
-      machTimer = setTimeout(function () { mach.classList.add('is-cold'); }, 6000);
-      machFrame.onload = function () {
-        clearTimeout(machTimer);
-        mach.classList.remove('is-cold');
-        mach.classList.add('is-ready');
-        machStatus();
-      };
-      machFrame.src = reel.getAttribute('data-src');
+      machReflect();
     }
 
     function machSelect(i, focus) {
@@ -832,17 +903,19 @@
       e.stopPropagation(); overScreen = false; clearTimeout(dwell); machRelease();
     });
 
-    /* boot the first reel once the machine is worth loading */
+    /* ── cinematic focus: pointer over the stage pulls the room dark ── */
+    var machStage = mach.querySelector('.mach-stage');
+    if (machStage && machCan) {
+      machStage.addEventListener('pointerenter', function () { mach.classList.add('is-focus'); });
+      machStage.addEventListener('pointerleave', function () { mach.classList.remove('is-focus'); });
+    }
+
+    /* frames preload on their own; the HUD boots straight away */
+    machSelect(0, false);
     if ('IntersectionObserver' in window) {
-      var machIO = new IntersectionObserver(function (entries) {
-        if (entries[0].isIntersecting) { machIO.disconnect(); machSelect(0, false); }
-      }, { rootMargin: '500px 0px' });
-      machIO.observe(mach);
       new IntersectionObserver(function (entries) {
         if (!entries[0].isIntersecting) machRelease();
       }, { threshold: 0.15 }).observe(mach);
-    } else {
-      machSelect(0, false);
     }
   }
 
@@ -1289,4 +1362,197 @@
   } else { inView = true; sync(); }
 
   place(false);
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   THE BILLING ASSISTANT, PLAYING ITSELF
+   ══════════════════════════════════════════════════════════════
+   The transcript in #svc-ai is a live simulation: the question types
+   into the composer, the assistant thinks, runs a visible retrieval
+   over the ledger, answers with its source, and then a refund is held
+   at the policy gate until a named person approves it. Then it loops.
+
+   Three rules learned the hard way elsewhere on this page:
+   - nothing advances on transitionend or rAF alone — a paced clock
+     owns the sequence;
+   - the clock only counts while the tab is visible AND the panel is on
+     screen, so the loop never plays to an empty room and never comes
+     back from a background tab mid-thought;
+   - reduced motion, or no JS, keeps the static transcript that ships
+     in the markup. The simulation replaces it only when it can run.
+   ══════════════════════════════════════════════════════════════ */
+(function aiSim () {
+  var thread  = document.getElementById('aiThread');
+  var field   = document.getElementById('aiComposeField');
+  var chat    = thread && thread.closest('.ai-chat');
+  if (!thread || !field || !chat) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var send = chat.querySelector('.ai-compose-send');
+
+  /* ── the paced clock ─────────────────────────────────────── */
+  var inView = false, ioSpoke = false;
+  function rectInView () {
+    var b = chat.getBoundingClientRect();
+    return b.bottom > 0 && b.top < (window.innerHeight || 0);
+  }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) { ioSpoke = true; inView = en[0].isIntersecting; },
+                             { threshold: 0.3 }).observe(chat);
+    /* IO can stay silent (backgrounded tab, deferred first callback);
+       until it has spoken once, fall back to the rect on scroll */
+    setTimeout(function () { if (!ioSpoke) inView = rectInView(); }, 1800);
+    window.addEventListener('scroll', function () {
+      if (!ioSpoke) inView = rectInView();
+    }, { passive: true });
+  } else {
+    inView = true;
+  }
+
+  function wait (ms) {
+    return new Promise(function (res) {
+      var left = ms, last = (window.performance || Date).now();
+      var iv = setInterval(function () {
+        var now = (window.performance || Date).now();
+        var dt = Math.min(now - last, 1500);   /* a long throttled gap is not replayed */
+        last = now;
+        if (document.hidden || !inView) return;   /* the clock holds */
+        left -= dt;
+        if (left <= 0) { clearInterval(iv); res(); }
+      }, 90);
+    });
+  }
+
+  /* ── node builders ───────────────────────────────────────── */
+  function el (tag, cls, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html != null) n.innerHTML = html;
+    return n;
+  }
+  function settle (n) {
+    thread.appendChild(n);
+    thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
+    return n;
+  }
+  function bubbleIn (text, time) {
+    return settle(el('p', 'ai-msg ai-msg--in is-new',
+      text + '<time>' + time + '</time>'));
+  }
+  function bubbleOut (html, cite, time, gate) {
+    var cls = 'ai-msg ai-msg--out is-new' + (gate ? ' ai-msg--gate' : '');
+    var body = (gate ? '<span class="ai-gate-tag">Held for approval</span>' : '') + html +
+      (cite ? '<span class="ai-cite">' + cite + '</span>' : '') +
+      '<time>' + time + '</time>';
+    return settle(el('p', cls, body));
+  }
+  function think () {
+    return settle(el('span', 'ai-think is-new', '<i></i><i></i><i></i>'));
+  }
+  var TOOL_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">' +
+    '<circle cx="7" cy="7" r="4.2"/><path d="m10.4 10.4 3 3"/></svg>';
+  function tool (title) {
+    var n = el('div', 'ai-tool is-new is-live',
+      '<div class="ai-tool-head">' + TOOL_ICON + title + '</div>');
+    return settle(n);
+  }
+  function toolLine (t, left, right) {
+    var line = el('div', 'ai-tool-line', '<b>' + left + '</b><span class="ok">' + right + '</span>');
+    t.appendChild(line);
+    thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
+    void line.offsetWidth;
+    line.classList.add('is-in');
+    return line;
+  }
+
+  /* ── the composer types the question ─────────────────────── */
+  async function type (text) {
+    field.classList.add('is-typing');
+    var span  = el('span', 'ai-compose-text', '');
+    var caret = el('span', 'ai-caret', '');
+    field.appendChild(span); field.appendChild(caret);
+    for (var i = 0; i < text.length; i++) {
+      span.textContent = text.slice(0, i + 1);
+      await wait(26 + Math.random() * 46);
+    }
+    await wait(300);
+    if (send) { send.classList.add('is-press'); }
+    await wait(140);
+    if (send) { send.classList.remove('is-press'); }
+    span.remove(); caret.remove();
+    field.classList.remove('is-typing');
+  }
+
+  /* ── one full take ───────────────────────────────────────── */
+  async function take () {
+    /* the paced clock gates this on the panel actually being looked at,
+       so the static transcript stays up until the show really starts */
+    await wait(900);
+    thread.innerHTML = '';
+    await wait(400);
+    await type('Where is invoice 4471?');
+    bubbleIn('Where is invoice 4471?', '09:24');
+
+    await wait(500);
+    var th1 = think();
+    await wait(950);
+    th1.remove();
+
+    var t1 = tool('Searching your records');
+    await wait(520);  toolLine(t1, 'billing_ledger', '1 match &middot; INV-4471');
+    await wait(480);  toolLine(t1, 'payments_api', 'status &middot; cleared');
+    await wait(430);  toolLine(t1, 'docs/invoice_4471.pdf', 'retrieved');
+    await wait(500);
+    t1.classList.remove('is-live');
+
+    await wait(350);
+    bubbleOut('Cleared 12 March &mdash; <b>$8,240</b> by ACH, reference 9F2C.',
+              'billing_ledger &middot; payments_api', '09:24');
+
+    await wait(2100);
+    await type('Refund it.');
+    bubbleIn('Refund it.', '09:25');
+
+    await wait(500);
+    var th2 = think();
+    await wait(800);
+    th2.remove();
+
+    var t2 = tool('Checking policy');
+    await wait(520);  toolLine(t2, 'refund_limit_v3', 'limit &middot; $5,000');
+    await wait(480);  toolLine(t2, 'amount', '$8,240 &middot; over limit');
+    await wait(520);
+    t2.classList.remove('is-live');
+
+    await wait(400);
+    var gate = bubbleOut(
+      'That is over your $5,000 limit, so I have not sent it. Queued for approval with the invoice attached.',
+      'policy &middot; refund_limit_v3', '09:25', true);
+    var appr = el('span', 'ai-approve is-pending',
+      '<span class="ai-approve-face">S</span>' +
+      '<span class="ai-approve-who"><b>Sara Malik</b><span>Finance &middot; approver</span></span>' +
+      '<span class="ai-approve-state">Waiting&hellip;</span>');
+    gate.insertBefore(appr, gate.querySelector('time'));
+    thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
+
+    await wait(2500);
+    appr.classList.remove('is-pending');
+    appr.classList.add('is-ok');
+    appr.querySelector('.ai-approve-state').innerHTML =
+      '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8.5 3.2 3.2L13 5"/></svg>Approved &middot; 09:31';
+
+    await wait(900);
+    bubbleOut('Approved by Sara. Refund of <b>$8,240</b> is on its way back to the card on file &mdash; reference R-2209.',
+              'payments_api &middot; refunds', '09:31');
+
+    /* hold the finished exchange, then fade and go again */
+    await wait(5200);
+    thread.classList.add('is-clearing');
+    await wait(600);
+    thread.classList.remove('is-clearing');
+  }
+
+  (async function run () {
+    for (;;) { await take(); }
+  })();
 })();

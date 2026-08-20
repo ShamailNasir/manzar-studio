@@ -300,56 +300,54 @@ if(window.__mzCrossover){
     <div class="svc-head">
       <span class="svc-ghost" aria-hidden="true">01</span>
       <h3 class="svc-title">From idea<br>to launched</h3>
-      <p class="svc-sub" data-reveal>Every week you are not live, the market belongs to someone else. Six weeks from your side of the table &mdash; what we ask, what you decide, and exactly what you hold at the end of each stage.</p>
+      <p class="svc-sub" data-reveal>Six weeks from signed scope to live, then ninety days on call.
+        This is the whole path.</p>
     </div>
 
     <!-- ── The rail ──────────────────────────────────────────────────
-         Five stops on one line. The rail fills with the accent as the
-         section scrolls, so the path reads as motion rather than as a
-         diagram. Every stop carries what it costs in time and what you
-         walk away holding. -->
-    <ol class="jr" id="jr">
-      <li class="jr-stop" data-reveal>
-        <span class="jr-node" aria-hidden="true"></span>
-        <span class="jr-when">Week 0 &middot; free</span>
-        <h4>Validate</h4>
-        <p>We pressure-test the idea before anyone writes code. If it should not be built, we say so.</p>
-        <span class="jr-get">A one-page brief</span>
-        <span class="jr-ask"><i>Your part</i>Ninety minutes and an honest answer about who this is for.</span>
-      </li>
-      <li class="jr-stop" data-reveal>
-        <span class="jr-node" aria-hidden="true"></span>
-        <span class="jr-when">Week 1</span>
-        <h4>Scope</h4>
-        <p>Architecture, risks, and the smallest version worth putting in front of a user.</p>
-        <span class="jr-get">A number that does not drift</span>
-        <span class="jr-ask"><i>Your part</i>One decision-maker named, and the must-haves separated from the wants.</span>
-      </li>
-      <li class="jr-stop" data-reveal>
-        <span class="jr-node" aria-hidden="true"></span>
-        <span class="jr-when">Weeks 2&ndash;6</span>
-        <h4>Design &amp; build</h4>
-        <p>Design and engineering as one team. You open a working build every Friday.</p>
-        <span class="jr-get">Your product, weekly</span>
-        <span class="jr-ask"><i>Your part</i>Thirty minutes on a Friday to open the build and say what is wrong.</span>
-      </li>
-      <li class="jr-stop" data-reveal>
-        <span class="jr-node" aria-hidden="true"></span>
-        <span class="jr-when">Week 6</span>
-        <h4>Launch</h4>
-        <p>We ship it, hand over the keys, and sit through the first day with you.</p>
-        <span class="jr-get">The code, accounts and docs</span>
-        <span class="jr-ask"><i>Your part</i>A domain, and someone on your side to hold the keys.</span>
-      </li>
-      <li class="jr-stop" data-reveal>
-        <span class="jr-node" aria-hidden="true"></span>
-        <span class="jr-when">90 days</span>
-        <h4>On call</h4>
-        <p>Ninety days of support included. A retainer after that, only if you still want us.</p>
-        <span class="jr-get">A number that answers</span>
-        <span class="jr-ask"><i>Your part</i>Tell us what broke. That is the whole process.</span>
-      </li>
-    </ol>
+         Five stops on one line, and a clock. The clock is scrubbed to
+         scroll through the five stops — WEEK 00 through WEEK 06, then it
+         flips to DAY and runs to 90 — so the section's subject, time,
+         is the thing your scrolling drives. Each stop keeps exactly one
+         concrete line: what you are holding when it ends. -->
+    <div class="jr-wrap">
+      <div class="jr-clock" id="jrClock" aria-hidden="true">
+        <span class="jr-clock-u" id="jrClockU">Day</span>
+        <span class="jr-clock-v" id="jrClockV">90</span>
+      </div>
+      <ol class="jr" id="jr">
+        <li class="jr-stop" data-reveal>
+          <span class="jr-node" aria-hidden="true"></span>
+          <span class="jr-when">Week 0 &middot; free</span>
+          <h4>Validate</h4>
+          <span class="jr-get">An honest brief &mdash; or an honest no.</span>
+        </li>
+        <li class="jr-stop" data-reveal>
+          <span class="jr-node" aria-hidden="true"></span>
+          <span class="jr-when">Week 1</span>
+          <h4>Scope</h4>
+          <span class="jr-get">A fixed price that does not drift.</span>
+        </li>
+        <li class="jr-stop" data-reveal>
+          <span class="jr-node" aria-hidden="true"></span>
+          <span class="jr-when">Weeks 2&ndash;6</span>
+          <h4>Design &amp; build</h4>
+          <span class="jr-get">A working build in your hands every Friday.</span>
+        </li>
+        <li class="jr-stop" data-reveal>
+          <span class="jr-node" aria-hidden="true"></span>
+          <span class="jr-when">Week 6</span>
+          <h4>Launch</h4>
+          <span class="jr-get">The keys: code, accounts and docs.</span>
+        </li>
+        <li class="jr-stop" data-reveal>
+          <span class="jr-node" aria-hidden="true"></span>
+          <span class="jr-when">Day 1&ndash;90</span>
+          <h4>On call</h4>
+          <span class="jr-get">A number that answers when something breaks.</span>
+        </li>
+      </ol>
+    </div>
 
     <p class="jr-foot" data-reveal>
       <span>What gets built</span>
@@ -391,13 +389,13 @@ if(window.__mzCrossover){
             </div>
             <div class="lsv-body">
               <h3 class="lsv-title">AI &amp; applied ML</h3>
-              <p class="lsv-lead">AI-native products, not a chatbot bolted onto a website. Retrieval over your own data, agents that call your internal systems, and an evaluation harness that runs before anything reaches a customer.</p>
-              <ul class="lsv-rows">
-              <li><span class="lsv-rk">01</span><span>Retrieval-augmented generation over your own documents</span></li>
-              <li><span class="lsv-rk">02</span><span>Voice and phone agents that complete real tasks</span></li>
-              <li><span class="lsv-rk">03</span><span>Human approval on every irreversible step</span></li>
+              <p class="lsv-lead">Retrieval, agents and evaluation &mdash; AI products, not a bolted-on chatbot.</p>
+              <ul class="lsv-tiles">
+                <li><img src="../assets/brands/pytorch.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>PyTorch</span></li>
+                <li><img src="../assets/brands/tensorflow.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>TensorFlow</span></li>
+                <li><img src="../assets/brands/python.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Python</span></li>
               </ul>
-              <p class="lsv-stack"><span class="lsv-marks"><img src="../assets/brands/pytorch.svg" alt="" width="34" height="34" loading="lazy" decoding="async"><img src="../assets/brands/tensorflow.svg" alt="" width="34" height="34" loading="lazy" decoding="async"><img src="../assets/brands/python.svg" alt="" width="34" height="34" loading="lazy" decoding="async"></span><span class="lsv-names">PyTorch &middot; TensorFlow &middot; Python</span></p>
+              <p class="lsv-meta"><span>RAG &middot; Voice agents &middot; Eval harness</span></p>
             </div>
           </div>
         </article>
@@ -410,13 +408,15 @@ if(window.__mzCrossover){
             </div>
             <div class="lsv-body">
               <h3 class="lsv-title">Cloud &amp; infrastructure</h3>
-              <p class="lsv-lead">The platform underneath the product. Infrastructure as code, autoscaling that costs what it should, and monitoring that pages a person before your customers notice.</p>
-              <ul class="lsv-rows">
-              <li><span class="lsv-rk">01</span><span>AWS, Azure and Google Cloud &mdash; and the bill explained</span></li>
-              <li><span class="lsv-rk">02</span><span>Terraform, containers and CI/CD pipelines</span></li>
-              <li><span class="lsv-rk">03</span><span>Service levels, alerting and a real on-call rota</span></li>
+              <p class="lsv-lead">Infrastructure as code that holds when the traffic is real.</p>
+              <ul class="lsv-tiles">
+                <li><img src="../assets/brands/aws.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>AWS</span></li>
+                <li><img src="../assets/brands/azure.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Azure</span></li>
+                <li><img src="../assets/brands/gcp.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Google Cloud</span></li>
+                <li><img src="../assets/brands/kubernetes.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Kubernetes</span></li>
+                <li><img src="../assets/brands/docker.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Docker</span></li>
               </ul>
-              <p class="lsv-stack"><span class="lsv-marks"><img src="../assets/brands/aws.svg" alt="" width="34" height="34" loading="lazy" decoding="async"><img src="../assets/brands/azure.svg" alt="" width="34" height="34" loading="lazy" decoding="async"><img src="../assets/brands/kubernetes.svg" alt="" width="34" height="34" loading="lazy" decoding="async"></span><span class="lsv-names">AWS &middot; Azure &middot; Kubernetes</span></p>
+              <p class="lsv-meta"><span>IaC &middot; Autoscaling &middot; On-call</span></p>
             </div>
           </div>
         </article>
@@ -429,13 +429,15 @@ if(window.__mzCrossover){
             </div>
             <div class="lsv-body">
               <h3 class="lsv-title">Web platforms</h3>
-              <p class="lsv-lead">The system your company runs on and the interface people touch &mdash; typed end to end, from the database schema up to the design system, so year two costs less than year one.</p>
-              <ul class="lsv-rows">
-              <li><span class="lsv-rk">01</span><span>Product, admin and internal interfaces</span></li>
-              <li><span class="lsv-rk">02</span><span>APIs and integrations into what you already run</span></li>
-              <li><span class="lsv-rk">03</span><span>Design systems that survive the next rewrite</span></li>
+              <p class="lsv-lead">Typed end to end, from database schema to design system.</p>
+              <ul class="lsv-tiles">
+                <li><img src="../assets/brands/react.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>React</span></li>
+                <li><img src="../assets/brands/nextjs.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Next.js</span></li>
+                <li><img src="../assets/brands/typescript.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>TypeScript</span></li>
+                <li><img src="../assets/brands/nodejs.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Node.js</span></li>
+                <li><img src="../assets/brands/postgresql.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Postgres</span></li>
               </ul>
-              <p class="lsv-stack"><span class="lsv-marks"><img src="../assets/brands/react.svg" alt="" width="34" height="34" loading="lazy" decoding="async"><img src="../assets/brands/nextjs.svg" alt="" width="34" height="34" loading="lazy" decoding="async"><img src="../assets/brands/typescript.svg" alt="" width="34" height="34" loading="lazy" decoding="async"></span><span class="lsv-names">React &middot; Next.js &middot; TypeScript</span></p>
+              <p class="lsv-meta"><span>Product UI &middot; APIs &middot; Design systems</span></p>
             </div>
           </div>
         </article>
@@ -448,13 +450,14 @@ if(window.__mzCrossover){
             </div>
             <div class="lsv-body">
               <h3 class="lsv-title">Mobile</h3>
-              <p class="lsv-lead">One team, both stores. Native where it earns its keep and shared where it does not, with release engineering, store review and crash triage handled rather than quoted separately.</p>
-              <ul class="lsv-rows">
-              <li><span class="lsv-rk">01</span><span>iOS and Android against one domain layer</span></li>
-              <li><span class="lsv-rk">02</span><span>Offline-first storage and background sync</span></li>
-              <li><span class="lsv-rk">03</span><span>Store submission and a predictable release train</span></li>
+              <p class="lsv-lead">One senior team, shipping to both stores.</p>
+              <ul class="lsv-tiles">
+                <li><img src="../assets/brands/swift.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Swift</span></li>
+                <li><img src="../assets/brands/kotlin.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Kotlin</span></li>
+                <li><img src="../assets/brands/flutter.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Flutter</span></li>
+                <li><img src="../assets/brands/react.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>React Native</span></li>
               </ul>
-              <p class="lsv-stack"><span class="lsv-marks"><img src="../assets/brands/swift.svg" alt="" width="34" height="34" loading="lazy" decoding="async"><img src="../assets/brands/kotlin.svg" alt="" width="34" height="34" loading="lazy" decoding="async"><img src="../assets/brands/flutter.svg" alt="" width="34" height="34" loading="lazy" decoding="async"></span><span class="lsv-names">Swift &middot; Kotlin &middot; Flutter</span></p>
+              <p class="lsv-meta"><span>iOS &middot; Android &middot; Release trains</span></p>
             </div>
           </div>
         </article>
@@ -467,13 +470,13 @@ if(window.__mzCrossover){
             </div>
             <div class="lsv-body">
               <h3 class="lsv-title">IoT &amp; connected systems</h3>
-              <p class="lsv-lead">Hardware in the field, watched from a screen. Firmware, MQTT telemetry and dashboards that give an operator enough lead time to act instead of react.</p>
-              <ul class="lsv-rows">
-              <li><span class="lsv-rk">01</span><span>Device firmware, provisioning and over-the-air updates</span></li>
-              <li><span class="lsv-rk">02</span><span>MQTT telemetry pipelines and time-series storage</span></li>
-              <li><span class="lsv-rk">03</span><span>Alerting with enough lead time to be useful</span></li>
+              <p class="lsv-lead">Firmware to dashboard &mdash; hardware in the field, watched with lead time.</p>
+              <ul class="lsv-tiles">
+                <li><img src="../assets/brands/raspberrypi.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Raspberry Pi</span></li>
+                <li><img src="../assets/brands/arduino.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Arduino</span></li>
+                <li><img src="../assets/brands/grafana.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span>Grafana</span></li>
               </ul>
-              <p class="lsv-stack"><span class="lsv-marks"><img src="../assets/brands/raspberrypi.svg" alt="" width="34" height="34" loading="lazy" decoding="async"><img src="../assets/brands/arduino.svg" alt="" width="34" height="34" loading="lazy" decoding="async"><img src="../assets/brands/grafana.svg" alt="" width="34" height="34" loading="lazy" decoding="async"></span><span class="lsv-names">Raspberry Pi &middot; Arduino &middot; Grafana</span></p>
+              <p class="lsv-meta"><span>Firmware &middot; MQTT telemetry &middot; OTA updates</span></p>
             </div>
           </div>
         </article>
@@ -527,10 +530,10 @@ if(window.__mzCrossover){
             <span class="ai-chat-name">Billing assistant</span>
             <span class="ai-chat-status"><i aria-hidden="true"></i>Connected to 3 systems</span>
           </span>
-          <span class="ai-chat-env">Live</span>
+          <span class="ai-chat-env">Live demo</span>
         </figcaption>
 
-        <div class="ai-thread">
+        <div class="ai-thread" id="aiThread" aria-live="polite">
           <p class="ai-msg ai-msg--in">Where is invoice 4471?<time>09:24</time></p>
 
           <p class="ai-msg ai-msg--out">
@@ -551,7 +554,7 @@ if(window.__mzCrossover){
         </div>
 
         <div class="ai-compose" aria-hidden="true">
-          <span class="ai-compose-field">Ask about an invoice, a customer, a policy&hellip;</span>
+          <span class="ai-compose-field" id="aiComposeField"><span class="ai-compose-ph">Ask about an invoice, a customer, a policy&hellip;</span></span>
           <span class="ai-compose-send">
             <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h11M9 4l4 4-4 4"/></svg>
           </span>
@@ -705,10 +708,8 @@ if(window.__mzCrossover){
                width="2600" height="1418" decoding="async" fetchpriority="low">
           <div class="mach-screen" id="machScreen" role="tabpanel" aria-labelledby="mach-t1">
             <div class="mach-poster" aria-hidden="true"></div>
-            <iframe class="mach-frame" id="machFrame" title="Live preview of the selected project"
-                    referrerpolicy="no-referrer" loading="lazy"
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
-            <span class="mach-hint" aria-hidden="true">Hover or click to use it<i>esc to exit</i></span>
+            <div class="mach-frames" id="machFrames" aria-hidden="false"></div>
+            <span class="mach-hint" aria-hidden="true"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8.6V3.4a1.4 1.4 0 0 1 2.8 0v3.2l3.6.9a1.8 1.8 0 0 1 1.3 2.2l-.7 2.6a2 2 0 0 1-1.9 1.5H8.2a2 2 0 0 1-1.5-.7L3.6 9.9a1.3 1.3 0 0 1 1.9-1.8Z"/></svg>Hover or click to drive it<i>esc steps back</i></span>
             <span class="mach-thread" aria-hidden="true"></span>
             <span class="mach-glare" aria-hidden="true"></span>
             <p class="mach-cold" aria-hidden="true">This one will not run inside a frame.<b>Open it in a tab &#8599;</b></p>
@@ -729,7 +730,7 @@ if(window.__mzCrossover){
         <div class="mach-id">
           <h3 class="mach-title" id="machTitle">NORTHLIGHT</h3>
           <p class="mach-meta" id="machMeta">Product engineering &middot; Copenhagen &amp; Lisbon</p>
-          <p class="mach-line" id="machLine">WebGL and GSAP, with a panel that re-themes the whole site live.</p>
+          <p class="mach-line" id="machLine">Marketing site with real-time 3D that stays smooth on an ordinary laptop.</p>
         </div>
         <a class="mach-open" id="machOpen" href="https://northlight-co.vercel.app" target="_blank" rel="noopener">
           Open site<svg viewBox="0 0 14 14" width="11" height="11" aria-hidden="true"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -744,7 +745,7 @@ if(window.__mzCrossover){
                   aria-selected="true" tabindex="0"
                   id="mach-t1" aria-controls="machScreen" style="--tint:#38bdf8;--d:0"
                   data-src="https://northlight-co.vercel.app" data-href="https://northlight-co.vercel.app" data-tint="#38bdf8"
-                  data-title="NORTHLIGHT" data-meta="Product engineering &middot; Copenhagen &amp; Lisbon" data-line="WebGL and GSAP, with a panel that re-themes the whole site live.">
+                  data-title="NORTHLIGHT" data-meta="Product engineering &middot; Copenhagen &amp; Lisbon" data-line="Marketing site with real-time 3D that stays smooth on an ordinary laptop.">
             <span class="reel-art" aria-hidden="true"></span>
             <span class="reel-body">
               <span class="reel-n" aria-hidden="true">01</span>
@@ -757,7 +758,7 @@ if(window.__mzCrossover){
                   aria-selected="false" tabindex="-1"
                   id="mach-t2" aria-controls="machScreen" style="--tint:#ff4d2e;--d:1"
                   data-src="https://belleville-works.vercel.app" data-href="https://belleville-works.vercel.app" data-tint="#ff4d2e"
-                  data-title="Belleville Works" data-meta="Product engineering &middot; Paris &amp; Antwerp" data-line="Six product interfaces drawn from scratch, cut like a film reel.">
+                  data-title="Belleville Works" data-meta="Product engineering &middot; Paris &amp; Antwerp" data-line="A product design portfolio, presented as an interactive showcase.">
             <span class="reel-art" aria-hidden="true"></span>
             <span class="reel-body">
               <span class="reel-n" aria-hidden="true">02</span>
@@ -770,7 +771,7 @@ if(window.__mzCrossover){
                   aria-selected="false" tabindex="-1"
                   id="mach-t3" aria-controls="machScreen" style="--tint:#8b5cf6;--d:2"
                   data-src="https://velox-vape.vercel.app" data-href="https://velox-vape.vercel.app" data-tint="#8b5cf6"
-                  data-title="V&#926;LOX" data-meta="Commerce &middot; Devices and e-liquid" data-line="A storefront built for the dark: pods, mods and flavour.">
+                  data-title="V&#926;LOX" data-meta="Commerce &middot; Devices and e-liquid" data-line="A dark-theme commerce storefront with fast product configuration.">
             <span class="reel-art" aria-hidden="true"></span>
             <span class="reel-body">
               <span class="reel-n" aria-hidden="true">03</span>
@@ -786,7 +787,7 @@ if(window.__mzCrossover){
                   aria-selected="false" tabindex="-1"
                   id="mach-t4" aria-controls="machScreen" style="--tint:#d9b382;--d:0"
                   data-src="https://broadside-software.vercel.app" data-href="https://broadside-software.vercel.app" data-tint="#d9b382"
-                  data-title="Broadside" data-meta="Software studio &middot; Edinburgh &amp; Kyoto" data-line="A letterpress conceit held all the way down to the colophon.">
+                  data-title="Broadside" data-meta="Software studio &middot; Edinburgh &amp; Kyoto" data-line="A studio site with a print-inspired identity carried through every page.">
             <span class="reel-art" aria-hidden="true"></span>
             <span class="reel-body">
               <span class="reel-n" aria-hidden="true">04</span>
@@ -799,7 +800,7 @@ if(window.__mzCrossover){
                   aria-selected="false" tabindex="-1"
                   id="mach-t5" aria-controls="machScreen" style="--tint:#ff8a1f;--d:1"
                   data-src="https://halloran-instruments.vercel.app" data-href="https://halloran-instruments.vercel.app" data-tint="#ff8a1f"
-                  data-title="Halloran Instrument Co." data-meta="Industrial &middot; Thermal sensing" data-line="Spec tables, calibration tolerances and a live thermal readout.">
+                  data-title="Halloran Instrument Co." data-meta="Industrial &middot; Thermal sensing" data-line="An industrial product site: specification tables, datasheets and live readouts.">
             <span class="reel-art" aria-hidden="true"></span>
             <span class="reel-body">
               <span class="reel-n" aria-hidden="true">05</span>
@@ -812,7 +813,7 @@ if(window.__mzCrossover){
                   aria-selected="false" tabindex="-1"
                   id="mach-t6" aria-controls="machScreen" style="--tint:#8ea3b8;--d:2"
                   data-src="https://hollis-and-page.vercel.app" data-href="https://hollis-and-page.vercel.app" data-tint="#8ea3b8"
-                  data-title="Hollis &amp; Page" data-meta="Design-led engineering &middot; New York &amp; Rotterdam" data-line="A slow loader, a work slider, and two clocks that disagree.">
+                  data-title="Hollis &amp; Page" data-meta="Design-led engineering &middot; New York &amp; Rotterdam" data-line="A design-led studio site with a considered entrance and an interactive work browser.">
             <span class="reel-art" aria-hidden="true"></span>
             <span class="reel-body">
               <span class="reel-n" aria-hidden="true">06</span>

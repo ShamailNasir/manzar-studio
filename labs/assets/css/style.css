@@ -87,12 +87,12 @@ main::after{content:"";display:block;height:2px}
 .giant{
   font-family:var(--disp);
   font-weight:600;
-  font-size:clamp(54px,10.5vw,168px);
+  font-size:clamp(54px,6.562vw,168px);
   line-height:.92;letter-spacing:-.055em;
   margin:26px 0 0;
 }
 .giant-center{text-align:center}
-.giant-sm{font-size:clamp(40px,6.4vw,96px)}
+.giant-sm{font-size:clamp(40px,3.75vw,96px)}
 .serif{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--txt)}
 
 /* buttons — pixel-identical to the shared .mz-btn geometry (§3.4):
@@ -268,7 +268,7 @@ main::after{content:"";display:block;height:2px}
 }
 .hero-title{
   font-family:var(--disp);font-weight:700;
-  font-size:clamp(76px,19vw,300px);
+  font-size:clamp(76px,11.719vw,300px);
   line-height:.86;letter-spacing:-.06em;
   margin-bottom:4vh;
 }
@@ -334,7 +334,7 @@ main::after{content:"";display:block;height:2px}
 /* ── mission ──────────────────────────────────────────────── */
 .mission-top{
   display:grid;grid-template-columns:minmax(200px,290px) 1fr;
-  gap:clamp(30px,5vw,80px);position:relative;align-items:start;
+  gap:clamp(30px,3.125vw,80px);position:relative;align-items:start;
 }
 .mission-fig{
   border-radius:16px;overflow:hidden;position:relative;aspect-ratio:4/2.55;
@@ -351,7 +351,7 @@ main::after{content:"";display:block;height:2px}
 }
 .mission-head{
   font-family:var(--disp);font-weight:600;
-  font-size:clamp(30px,4.2vw,62px);
+  font-size:clamp(30px,2.422vw,62px);
   letter-spacing:-.035em;line-height:1.04;
   max-width:20ch;
 }
@@ -372,7 +372,7 @@ main::after{content:"";display:block;height:2px}
   font-family:var(--disp);font-weight:600;
   /* stepped down from 8.6vw when the row went from three figures to
      four — "99.9%" at the old size no longer fits a quarter-width cell */
-  font-size:clamp(54px,7vw,116px);
+  font-size:clamp(54px,4.531vw,116px);
   letter-spacing:-.05em;line-height:1;
   font-variant-numeric:tabular-nums;
 }
@@ -394,7 +394,7 @@ main::after{content:"";display:block;height:2px}
 .svc-ghost{
   position:absolute;
   font-family:var(--disp);font-weight:700;
-  font-size:clamp(180px,30vw,460px);
+  font-size:clamp(180px,17.969vw,460px);
   letter-spacing:-.06em;line-height:.8;
   color:transparent;-webkit-text-stroke:1px var(--stroke);
   top:50%;left:0;transform:translateY(-50%);
@@ -406,7 +406,7 @@ main::after{content:"";display:block;height:2px}
 .svc-title{
   position:relative;
   font-family:var(--disp);font-weight:600;
-  font-size:clamp(40px,6.6vw,98px);
+  font-size:clamp(40px,3.828vw,98px);
   letter-spacing:-.05em;line-height:.96;
   padding-top:clamp(60px,12vh,150px);
 }
@@ -418,6 +418,27 @@ main::after{content:"";display:block;height:2px}
    scrubbed ScrollTrigger), so the path advances with the reader instead
    of sitting there as a diagram. No hover state is required to read it:
    a founder skimming once gets the whole shape. */
+/* the wrap exists to hang the clock above the rail's right end */
+.jr-wrap{ position:relative; padding-top:clamp(84px,9vw,150px); }
+.jr-clock{
+  position:absolute; top:0; right:0; z-index:1;
+  display:flex; flex-direction:column; align-items:flex-end; gap:2px;
+  text-align:right; pointer-events:none;
+  font-variant-numeric:tabular-nums;
+}
+.jr-clock-u{
+  font-family:var(--mono); font-size:clamp(10px,.7vw,12px);
+  letter-spacing:.3em; text-transform:uppercase; color:var(--mut);
+  padding-right:.3em;
+}
+.jr-clock-v{
+  font-family:var(--disp); font-weight:700;
+  font-size:clamp(64px,7.5vw,148px); line-height:.82; letter-spacing:-.04em;
+  color:transparent;
+  background:linear-gradient(180deg, rgba(233,230,221,.38), rgba(233,230,221,.08));
+  -webkit-background-clip:text; background-clip:text;
+}
+
 .jr{
   /* --fill is written by main.js in stop units (0-5), not percent, so the
      per-stop maths below stays unitless — you cannot divide by a % in CSS.
@@ -440,7 +461,8 @@ main::after{content:"";display:block;height:2px}
 /* the filled portion, clipped to this stop's share of the whole rail */
 .jr-stop::after{
   content:"";position:absolute;top:5px;left:0;right:calc(-1 * clamp(18px,2.2vw,34px));
-  height:1px;background:var(--acc);transform-origin:0 50%;
+  height:1px;background:var(--fg);transform-origin:0 50%;
+  box-shadow:0 0 12px rgba(233,230,221,.35);
   transform:scaleX(clamp(0,calc(var(--fill) - var(--i)),1));
 }
 .jr-stop:last-child::after{right:0}
@@ -457,13 +479,14 @@ main::after{content:"";display:block;height:2px}
 .jr-node{
   position:absolute;top:0;left:0;z-index:2;
   width:11px;height:11px;border-radius:50%;
-  border:1px solid var(--acc);background:var(--acc);
-  transition:border-color .5s,background .5s,box-shadow .5s;
+  border:1px solid var(--fg);background:var(--fg);
+  transition:border-color .5s,background .5s,box-shadow .5s,transform .5s;
 }
 .jr.is-scrubbed .jr-node{border-color:var(--line-2);background:var(--ink);box-shadow:none}
 .jr.is-scrubbed .jr-stop.is-lit .jr-node{
-  border-color:var(--acc);background:var(--acc);
-  box-shadow:0 0 0 5px color-mix(in srgb,var(--acc) 14%,transparent);
+  border-color:var(--fg);background:var(--fg);
+  transform:scale(1.25);
+  box-shadow:0 0 0 5px rgba(233,230,221,.12), 0 0 18px rgba(233,230,221,.3);
 }
 
 .jr-when{
@@ -473,13 +496,12 @@ main::after{content:"";display:block;height:2px}
 .jr.is-scrubbed .jr-when{color:var(--mut)}
 .jr.is-scrubbed .jr-stop.is-lit .jr-when{color:var(--soft)}
 .jr-stop h4{
-  margin-top:12px;font-family:var(--disp);font-weight:600;
+  margin:12px 0 clamp(20px,2.6vh,34px);font-family:var(--disp);font-weight:600;
   font-size:clamp(21px,1.85vw,27px);letter-spacing:-.03em;line-height:1.1;
 }
-.jr-stop p{margin-top:12px;margin-bottom:20px;color:var(--soft);font-size:14.5px;line-height:1.62}
 .jr-get{
   display:block;margin-top:auto;padding-top:14px;border-top:1px solid var(--line);
-  font-size:13.5px;line-height:1.45;color:var(--fg);
+  font-size:clamp(13.5px,.82vw,15.5px);line-height:1.5;color:var(--fg);
 }
 .jr-get::before{
   content:"You leave with";display:block;margin-bottom:5px;
@@ -510,7 +532,7 @@ main::after{content:"";display:block;height:2px}
 .acc-num{color:var(--dim);font-size:13px;font-variant-numeric:tabular-nums}
 .acc-name{
   font-family:var(--disp);font-weight:600;
-  font-size:clamp(19px,2.5vw,32px);letter-spacing:-.025em;
+  font-size:clamp(19px,1.25vw,32px);letter-spacing:-.025em;
   transition:color .3s,transform .5s var(--ease-out);
 }
 .acc-row:hover .acc-name{transform:translateX(8px)}
@@ -529,7 +551,7 @@ main::after{content:"";display:block;height:2px}
 .acc-item.is-open .acc-chip::after{transform:translate(-50%,-50%) scaleY(0)}
 .acc-body{
   display:grid;grid-template-columns:minmax(240px,420px) 1fr;
-  gap:clamp(24px,4vw,60px);align-items:center;
+  gap:clamp(24px,2.344vw,60px);align-items:center;
   overflow:hidden;max-height:0;opacity:0;
   transition:max-height .8s var(--ease),opacity .6s,padding .6s;
 }
@@ -562,7 +584,7 @@ main::after{content:"";display:block;height:2px}
    main.js and reads as a process, while this reads as a calendar. Four
    static columns, each hung off a hairline with a short accent tick, so
    the week numbers carry the section without any motion at all. */
-.vel-head{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(26px,5vw,70px);align-items:end}
+.vel-head{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(26px,2.734vw,70px);align-items:end}
 .vel-sub{color:var(--mut);max-width:540px;font-size:15px;line-height:1.66}
 
 .vel-track{
@@ -588,13 +610,13 @@ main::after{content:"";display:block;height:2px}
 .vel-why{
   margin-top:clamp(56px,8vh,100px);border-top:1px solid var(--line);
   padding-top:clamp(30px,4.4vh,50px);
-  display:grid;grid-template-columns:190px minmax(0,1fr);gap:clamp(20px,4vw,50px);
+  display:grid;grid-template-columns:190px minmax(0,1fr);gap:clamp(20px,1.953vw,50px);
 }
 .vel-why-lab{
   font-family:var(--mono);font-weight:500;font-size:11px;
   letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
 }
-.vel-why-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,3.4vw,46px)}
+.vel-why-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,1.797vw,46px)}
 .vel-why-grid h4{
   font-family:var(--disp);font-weight:600;font-size:18px;
   letter-spacing:-.018em;color:var(--txt);
@@ -621,10 +643,10 @@ main::after{content:"";display:block;height:2px}
    sides, no script. The gated reply is the only one that borrows the
    accent on its border — the point of the whole picture is that one
    message stopped. */
-.ai-lead{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4.5vw,72px);align-items:center}
+.ai-lead{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,2.812vw,72px);align-items:center}
 .ai-copy h4{
   font-family:var(--disp);font-weight:600;
-  font-size:clamp(24px,2.9vw,38px);letter-spacing:-.028em;line-height:1.12;
+  font-size:clamp(24px,1.484vw,38px);letter-spacing:-.028em;line-height:1.12;
 }
 .ai-copy p{margin-top:18px;color:var(--soft);font-size:15px;line-height:1.66;max-width:56ch}
 .ai-copy .btn{margin-top:30px}
@@ -679,7 +701,7 @@ main::after{content:"";display:block;height:2px}
 .reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.8vw,24px)}
 .reg-card{
   border:1px solid var(--line);border-radius:20px;background:var(--card);
-  padding:clamp(26px,3vw,44px);
+  padding:clamp(26px,1.719vw,44px);
   transition:border-color .4s,background .4s,transform .6s var(--ease-out);
 }
 .reg-card:hover{transform:translateY(-6px);border-color:var(--line2);background:var(--card2)}
@@ -689,7 +711,7 @@ main::after{content:"";display:block;height:2px}
 }
 .reg-card h4{
   font-family:var(--disp);font-weight:600;
-  font-size:clamp(21px,2.3vw,30px);letter-spacing:-.026em;line-height:1.14;margin:16px 0 0;
+  font-size:clamp(21px,1.172vw,30px);letter-spacing:-.026em;line-height:1.14;margin:16px 0 0;
 }
 .reg-card > p{margin-top:15px;color:var(--soft);font-size:14.5px;line-height:1.64}
 .reg-tags{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0;padding:0}
@@ -784,37 +806,69 @@ main::after{content:"";display:block;height:2px}
 }
 
 /* ── the screen ──────────────────────────────────────────── */
+/* Six frames, one per project, all mounted and preloading from the
+   moment the page settles — so changing reels is a class flip, not a
+   network round trip. Only the front frame is visible or interactive;
+   the rest keep rendering underneath at zero opacity. */
+.mach-frames{position:absolute;inset:0;}
 .mach-frame{
   position:absolute;inset:0;width:100%;height:100%;border:0;
-  opacity:0;transition:opacity .7s;
+  opacity:0;visibility:hidden;transition:opacity .6s,visibility .6s;
   pointer-events:none;                  /* until the cursor rests on it */
 }
-.mach.is-ready .mach-frame{opacity:1}
-.mach.is-live .mach-frame{pointer-events:auto}
+.mach.is-ready .mach-frame.is-front{opacity:1;visibility:visible}
+.mach.is-live .mach-frame.is-front{pointer-events:auto}
 /* Discoverability: the screen is live on hover, but nothing said so.
    Sits over the glass, ignores the pointer, and clears the moment you
    take control or the frame refuses to load. */
 .mach-hint{
-  position:absolute;left:50%;bottom:clamp(10px,4%,26px);z-index:5;
+  position:absolute;left:50%;bottom:clamp(14px,6%,34px);z-index:5;
   transform:translateX(-50%);
-  display:inline-flex;align-items:center;gap:9px;
-  padding:9px 15px;border-radius:100px;
-  background:color-mix(in srgb,var(--ink) 72%,transparent);
-  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-  border:1px solid rgba(233,230,221,.16);
-  font-family:var(--body);font-size:12.5px;font-weight:500;letter-spacing:-.01em;
-  color:rgba(233,230,221,.82);white-space:nowrap;
+  display:inline-flex;align-items:center;gap:11px;
+  padding:13px 22px;border-radius:100px;
+  background:color-mix(in srgb,var(--ink) 82%,transparent);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border:1px solid rgba(233,230,221,.28);
+  box-shadow:0 10px 32px -10px rgba(0,0,0,.8), inset 0 1px 0 rgba(233,230,221,.08);
+  font-family:var(--body);font-size:clamp(13.5px,.95vw,16.5px);font-weight:500;letter-spacing:-.01em;
+  color:var(--fg);white-space:nowrap;
   pointer-events:none;
   opacity:0;transition:opacity .5s var(--e-out),transform .5s var(--e-out);
 }
+.mach-hint svg{flex:none;opacity:.85}
 .mach.is-ready .mach-hint{opacity:1}
 .mach.is-live .mach-hint,
 .mach.is-cold .mach-hint{opacity:0;transform:translateX(-50%) translateY(6px)}
 .mach-hint i{
-  font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
-  text-transform:uppercase;color:rgba(233,230,221,.5);
-  padding:2px 7px;border-radius:5px;background:rgba(233,230,221,.09);
+  font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(233,230,221,.62);
+  padding:4px 9px;border-radius:6px;background:rgba(233,230,221,.1);
+  border:1px solid rgba(233,230,221,.12);
 }
+/* ── cinematic focus ──────────────────────────────────────────
+   Resting the pointer anywhere on the machine pulls focus like a rack
+   focus on set: the stage eases forward, the wings and the slate fall
+   back, and taking the controls (is-live) deepens all of it. Opacity
+   and transform only — nothing here changes layout, so the projective
+   transform that maps the page onto the glass stays valid. */
+.mach-stage{transition:transform 1.05s var(--e-out)}
+.mach-wing,.mach-slate,.mach-hud{transition:opacity .75s var(--e-out)}
+.mach.is-focus .mach-stage{transform:scale(1.026)}
+.mach.is-live  .mach-stage{transform:scale(1.042)}
+/* the reveal system leaves inline opacity:1 on the wings once they have
+   entered, so the dim has to outrank an inline style — hence !important,
+   scoped tightly to the focus states. */
+.mach.is-focus .mach-wing,
+.mach.is-focus .mach-slate{opacity:.42 !important}
+.mach.is-live .mach-wing,
+.mach.is-live .mach-slate{opacity:.26 !important}
+.mach.is-focus .mach-hud,
+.mach.is-live  .mach-hud{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .mach-stage{transition:none}
+  .mach.is-focus .mach-stage,.mach.is-live .mach-stage{transform:none}
+}
+
 /* the whole machine reads as pressable while it is only loaded */
 .mach.is-ready .plate{cursor:pointer}
 .mach.is-live  .plate{cursor:default}
@@ -829,7 +883,7 @@ main::after{content:"";display:block;height:2px}
 }
 .mach.is-ready .mach-poster{opacity:0}
 .mach.is-cold .mach-poster{opacity:1}
-.mach.is-cold .mach-frame{opacity:0}
+.mach.is-cold .mach-frame{opacity:0;visibility:hidden}
 
 /* the reel threading through the gate */
 .mach-thread{
@@ -913,7 +967,7 @@ main::after{content:"";display:block;height:2px}
 .mach-idx i{font-style:normal;padding:0 5px;color:var(--line-2)}
 .mach-title{
   font-family:var(--disp);font-weight:600;
-  font-size:clamp(26px,3.1vw,42px);letter-spacing:-.035em;line-height:1;
+  font-size:clamp(26px,1.641vw,42px);letter-spacing:-.035em;line-height:1;
 }
 .mach-meta{
   margin-top:9px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
@@ -1026,7 +1080,7 @@ main::after{content:"";display:block;height:2px}
    statement of how the studio works, next to the arch photo. */
 .studio-grid{
   display:grid;grid-template-columns:minmax(280px,460px) 1fr;
-  gap:clamp(36px,6vw,90px);align-items:center;
+  gap:clamp(36px,3.516vw,90px);align-items:center;
 }
 .studio-fig{
   position:relative;overflow:hidden;
@@ -1041,7 +1095,7 @@ main::after{content:"";display:block;height:2px}
 .studio-statement{position:relative;margin-top:34px;max-width:520px}
 .studio-statement p{
   font-family:var(--disp);font-weight:600;
-  font-size:clamp(21px,2.6vw,32px);letter-spacing:-.025em;line-height:1.26;
+  font-size:clamp(21px,1.25vw,32px);letter-spacing:-.025em;line-height:1.26;
   color:var(--fg);
 }
 .studio-statement p+p{margin-top:18px;font-family:var(--body);font-weight:400;font-size:15.5px;letter-spacing:0;color:var(--soft);line-height:1.6}
@@ -1056,14 +1110,14 @@ main::after{content:"";display:block;height:2px}
    on .work, .faq and .studio. */
 .cmt-head{
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);
-  gap:clamp(24px,5vw,80px);align-items:end;
+  gap:clamp(24px,3.125vw,80px);align-items:end;
 }
 .cmt-sub{color:var(--mut);max-width:540px;font-size:15px;line-height:1.66}
 
 .cmt-list{list-style:none;margin:clamp(44px,6vh,70px) 0 0;padding:0;border-top:1px solid var(--line)}
 .cmt-row{
   display:grid;grid-template-columns:56px minmax(0,1fr) minmax(0,210px);
-  gap:clamp(18px,3vw,48px);align-items:start;
+  gap:clamp(18px,1.875vw,48px);align-items:start;
   padding:clamp(26px,3.2vh,38px) 0;
   border-bottom:1px solid var(--line);
   transition:border-color .5s;
@@ -1101,7 +1155,7 @@ main::after{content:"";display:block;height:2px}
 .cmt-foot-link:hover{border-bottom-color:var(--sig)}
 
 /* ── faq ──────────────────────────────────────────────────── */
-.faq{display:grid;grid-template-columns:minmax(280px,1fr) minmax(0,1.35fr);gap:clamp(40px,6vw,100px);align-items:start}
+.faq{display:grid;grid-template-columns:minmax(280px,1fr) minmax(0,1.35fr);gap:clamp(40px,3.906vw,100px);align-items:start}
 .faq-note{
   margin-top:50px;border:1px solid var(--line);border-radius:18px;
   background:var(--card);padding:28px;max-width:360px;
@@ -1140,7 +1194,7 @@ main::after{content:"";display:block;height:2px}
 /* ── contact ──────────────────────────────────────────────── */
 .contact{
   display:grid;grid-template-columns:1fr minmax(320px,560px);
-  gap:clamp(40px,6vw,90px);position:relative;overflow:hidden;
+  gap:clamp(40px,3.516vw,90px);position:relative;overflow:hidden;
 }
 .contact-map{
   position:absolute;inset:0;pointer-events:none;opacity:.8;
@@ -1153,7 +1207,7 @@ main::after{content:"";display:block;height:2px}
 .contact-lines{margin-top:40px}
 .contact-mail{
   font-family:var(--disp);font-weight:600;
-  font-size:clamp(21px,2.6vw,34px);letter-spacing:-.025em;
+  font-size:clamp(21px,1.328vw,34px);letter-spacing:-.025em;
   position:relative;display:inline-block;
 }
 .contact-mail::after{
@@ -1171,7 +1225,7 @@ main::after{content:"";display:block;height:2px}
 .contact-form{
   position:relative;background:var(--card);
   border:1px solid var(--line);border-radius:22px;
-  padding:clamp(26px,3vw,40px);
+  padding:clamp(26px,1.562vw,40px);
   display:flex;flex-direction:column;gap:18px;
 }
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -1213,7 +1267,7 @@ main::after{content:"";display:block;height:2px}
 .fnav a{
   display:flex;justify-content:space-between;align-items:center;
   font-family:var(--body);font-weight:500;text-transform:none;
-  font-size:clamp(28px,3.8vw,58px);line-height:1;letter-spacing:-.024em;
+  font-size:clamp(28px,2.266vw,58px);line-height:1;letter-spacing:-.024em;
   padding:clamp(15px,2.7vh,28px) 0;border-bottom:1px solid var(--line);
   transition:padding-left .4s cubic-bezier(.2,.8,.2,1);
   color:var(--fg);
@@ -1224,7 +1278,7 @@ main::after{content:"";display:block;height:2px}
 .fcol{display:flex;flex-direction:column;gap:clamp(26px,4vh,44px);padding-top:8px}
 .fblock{display:flex;flex-direction:column;gap:11px}
 .fblock .fb-lab{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
-.fblock a.femail{font-family:var(--body);font-weight:600;font-size:clamp(19px,1.8vw,28px);text-transform:none;letter-spacing:-.015em;position:relative;width:max-content;color:var(--fg)}
+.fblock a.femail{font-family:var(--body);font-weight:600;font-size:clamp(19px,1.094vw,28px);text-transform:none;letter-spacing:-.015em;position:relative;width:max-content;color:var(--fg)}
 .fblock a.femail::after{content:"";position:absolute;left:0;bottom:-3px;width:100%;height:1px;background:var(--acc);transform:scaleX(1);transform-origin:left;transition:transform .4s}
 .fblock a.femail:hover::after{transform:scaleX(.35)}
 .fblock p{color:var(--mut);font-size:15px;line-height:1.6}
@@ -1242,8 +1296,8 @@ main::after{content:"";display:block;height:2px}
 .band-logo{position:absolute;left:var(--pad);top:clamp(22px,4.5vh,46px);display:flex;align-items:center;gap:clamp(10px,1.4vw,18px);color:var(--bone)}
 /* Same bilingual mark as the Studio footer: منظر in Gulzar beside the Latin
    wordmark, never through it. */
-.band-logo-mark{flex:none;font-family:"Gulzar","Noto Nastaliq Urdu",serif;font-size:clamp(38px,5vw,66px);line-height:1;transform:translateY(6px);padding-inline-end:4px}
-.band-logo-word{font-family:var(--disp);font-weight:600;font-size:clamp(26px,4vw,56px);letter-spacing:-.02em}
+.band-logo-mark{flex:none;font-family:"Gulzar","Noto Nastaliq Urdu",serif;font-size:clamp(38px,2.578vw,66px);line-height:1;transform:translateY(6px);padding-inline-end:4px}
+.band-logo-word{font-family:var(--disp);font-weight:600;font-size:clamp(26px,2.188vw,56px);letter-spacing:-.02em}
 .band-logo-chip{
   font-family:var(--mono);font-weight:500;font-size:clamp(10px,1vw,13px);letter-spacing:.16em;text-transform:uppercase;
   color:rgba(233,230,221,.6);padding-left:clamp(10px,1.2vw,16px);margin-left:2px;border-left:1px solid rgba(233,230,221,.25);
@@ -1447,7 +1501,7 @@ main::after{content:"";display:block;height:2px}
   position:absolute;top:50%;left:50%;z-index:0;
   transform:translate(-50%,-52%);
   font-family:'Gulzar','Noto Nastaliq Urdu',serif;
-  font-size:clamp(220px,34vw,560px);line-height:1;color:var(--ghost);
+  font-size:clamp(220px,21.875vw,560px);line-height:1;color:var(--ghost);
   pointer-events:none;user-select:none;white-space:nowrap;
 }
 .return-inner{
@@ -1456,7 +1510,7 @@ main::after{content:"";display:block;height:2px}
 }
 .return-title{
   margin:22px 0 0;font-family:var(--disp);font-weight:600;
-  font-size:clamp(28px,4vw,52px);line-height:1.12;letter-spacing:-.02em;
+  font-size:clamp(28px,2.031vw,52px);line-height:1.12;letter-spacing:-.02em;
   max-width:18ch;color:var(--fg);
 }
 .return-lead{margin:18px 0 0;color:var(--soft);font-size:15.5px;max-width:48ch;line-height:1.6}
@@ -1474,7 +1528,7 @@ main::after{content:"";display:block;height:2px}
     var(--panel);
 }
 .return-preview-fallback span{
-  font-family:var(--disp);font-weight:600;font-size:clamp(20px,2.6vw,32px);
+  font-family:var(--disp);font-weight:600;font-size:clamp(20px,1.25vw,32px);
   letter-spacing:-.02em;color:var(--soft);
 }
 .return-preview.is-fallback .return-preview-fallback{display:flex}
