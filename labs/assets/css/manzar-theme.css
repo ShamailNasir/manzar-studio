@@ -2364,12 +2364,22 @@ html.js .svc-ghost{ opacity:1; }
   position:sticky; top:0;
   height:100vh; height:100svh;
   overflow:hidden;
-  -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 3.5%, #000 96.5%, transparent 100%);
-          mask-image:linear-gradient(90deg, transparent 0, #000 3.5%, #000 96.5%, transparent 100%);
   /* clearance for the fixed nav, and floor room for the HUD */
   padding-top:clamp(72px,9vh,124px);
   padding-bottom:clamp(56px,9vh,110px);
 }
+/* The side fade is PAINT laid over the edges, not a mask: a mask on the
+   frame erased whatever ink wandered near the edge - which is what kept
+   shearing the numerals. These overlays soften a spread in transit the
+   same way on this solid background, but cannot delete anything. They
+   sit under the HUD (z5) and above the track. */
+.wb-pin::before,
+.wb-pin::after{
+  content:""; position:absolute; top:0; bottom:0; z-index:4;
+  width:clamp(36px,3.5vw,90px); pointer-events:none;
+}
+.wb-pin::before{ left:0;  background:linear-gradient(90deg, var(--ink, #0B0A08), transparent); }
+.wb-pin::after { right:0; background:linear-gradient(270deg, var(--ink, #0B0A08), transparent); }
 .wb-track{
   display:flex; align-items:stretch; height:100%;
   will-change:transform;
@@ -2387,7 +2397,7 @@ html.js .svc-ghost{ opacity:1; }
 /* the numeral: whole, behind the copy, never under the nav */
 .wb-ghost{
   position:absolute; z-index:0;
-  left:clamp(44px,4.2vw,110px); top:clamp(6px,1.5vh,24px);
+  left:clamp(72px,5.2vw,140px); top:clamp(6px,1.5vh,24px);
   font-family:var(--disp); font-weight:700;
   font-size:clamp(135px,14.5vw,280px); letter-spacing:-.055em;
   /* The fill is a gradient painted through background-clip:text, and a

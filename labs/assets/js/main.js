@@ -1717,7 +1717,7 @@
     for (var k = 0; k < n; k++) {
       var off = k - p * (n - 1);            /* 0 when panel k is centred */
       figs[k].style.transform   = 'translateX(' + (off * 30).toFixed(1) + 'px)';
-      ghosts[k].style.transform = 'translateX(' + (off * 84).toFixed(1) + 'px)';
+      ghosts[k].style.transform = 'translateX(' + (off * 26).toFixed(1) + 'px)';
     }
   }
 
