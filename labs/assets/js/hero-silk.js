@@ -1,5 +1,5 @@
 /* ============================================================
-   LABS HERO - charcoal silk, macro lens              (engine v8)
+   LABS HERO - charcoal silk, light through darkness  (engine v10)
    ============================================================
    v7's dark-cinema relight stays. v8 adds the thing every grade
    so far could not: OPTICS. The silk now reads as macro footage
@@ -152,7 +152,8 @@
     'precision highp float; varying vec2 vUv;',
     'uniform sampler2D uT;',
     'uniform float uTime, uBlur, uBlurMin, uBokeh, uFocusW, uFeather, uRackA, uRackS;',
-    'uniform float uMatte, uWarm;',
+    'uniform float uMatte, uWarm, uRayI, uRayDen, uRayDec;',
+    'uniform vec2 uLightP;',
     'uniform float uExp, uGrain, uGrainT, uRM;',
     'uniform vec2 uRes;',
     'const int NTAP = 20;',
@@ -188,6 +189,25 @@
     '    col = acc / wsum;',
     '  }',
     /* the dark-cinema grade, after the optics */
+    /* volumetric light shafts [Kenny Mitchell, GPU Gems 3 ch.13]:
+       march from this pixel toward the light's screen position,
+       accumulating the lit crests' brightness with per-step decay -
+       the silk's own highlights become the emitters of the beams */
+    '  vec2 rd = (uLightP - uv) * uRayDen / 24.;',
+    '  vec2 ruv = uv; float dec = 1.; float ray = 0.;',
+    '  for (int i = 0; i < 24; i++) {',
+    '    ruv += rd;',
+    '    float inb = step(0., ruv.x) * step(ruv.x, 1.) * step(0., ruv.y) * step(ruv.y, 1.);',
+    '    ray += max(lum(texture2D(uT, ruv).rgb) - .28, 0.) * dec * inb;',
+    '    dec *= uRayDec;',
+    '  }',
+    /* beam structure: without it the march reads as plain glow. The
+       accumulated light is broken into alternating shafts by value
+       noise over the ANGLE around the source, drifting very slowly. */
+    '  float ang = atan(uv.y - uLightP.y, uv.x - uLightP.x);',
+    '  float bn = sin(ang * 42. + uTime * .06) * .5 + sin(ang * 91. - uTime * .04) * .35 + sin(ang * 17. + uTime * .03) * .55;',
+    '  float beams = .55 + .45 * clamp(bn, -1., 1.);',
+    '  col += vec3(.80, .89, 1.08) * ray * beams * (uRayI * .125);',
     /* three-way split tone: steel shadows, sage-grey mids, and the one
        warm event - an ivory glow that lives only in the sheen band */
     '  float lm = lum(col);',
@@ -198,12 +218,13 @@
     '  col = aces(col * uExp);',
     /* matte finish: lifted toe, no clipped white - nothing in the field
        is ever pure black or pure white; the type does the contrast */
+    '  col = max(col - .012, 0.) / .988;',
     '  col = mix(col, col * .90 + .075, uMatte);',
     '  float vg = smoothstep(1.5, .5, length(vUv - vec2(.5, .5)));',
     '  col *= mix(.88, 1., vg);',
     /* photographic grain: 1.5px clumps, strongest in the grey mids -
        crisp grain over a soft field is what keeps blur from smearing */
-    '  vec2 gc = floor(gl_FragCoord.xy / 1.5);',
+    '  vec2 gc = floor(gl_FragCoord.xy / 1.0);',
     '  float gn = fract(sin(dot(gc + fract(uGrainT) * 61., vec2(127.1, 311.7))) * 43758.5453) - .5;',
     '  col += gn * uGrain * (.35 + .65 * smoothstep(.02, .30, lm)) * (1. - uRM * .6);',
     '  gl_FragColor = vec4(col, 1.);',
@@ -295,12 +316,13 @@
   resize(); addEventListener('resize', resize);
 
   /* dials - live via window.__hero.set */
-  var DIFF = .36, SPEC = .32, SPECPOW = 90., ANISO = .42, RIM = .08,
-      GRAIN = .052, ORBIT = .09, ELEV = .58,
-      CLAR = .15, SOFT = .9, CAC = .0012, CA = .0032, STREAK = .40, HAL = .15,
-      NAMP = 2.4, DET = .14, TILE = 6.0, SHEEN = .32, SHEENR = .38, EXP = 1.0,
-      BLUR = 30., BOKEH = 4., FOCUSW = .08, FEATHER = .55, RACKA = .15, RACKS = .10,
-      BLURMIN = 13., MATTE = .60, WARM = .70;
+  var DIFF = .45, SPEC = .32, SPECPOW = 90., ANISO = .42, RIM = .08,
+      GRAIN = .022, ORBIT = .09, ELEV = .58,
+      CLAR = .30, SOFT = .9, CAC = .0012, CA = .0032, STREAK = .25, HAL = .10,
+      NAMP = 2.4, DET = .18, TILE = 6.0, SHEEN = .32, SHEENR = .38, EXP = .90,
+      BLUR = 0., BOKEH = 4., FOCUSW = .08, FEATHER = .55, RACKA = .15, RACKS = .10,
+      BLURMIN = 0., MATTE = 0., WARM = 0.,
+      RAYI = .72, RAYDEN = .46, RAYDEC = .938, LPX = .82, LPY = .10;
 
   var started = false, run = true;
   var tryPlay = function (vv) { if (vv) { var p = vv.play(); if (p && p.catch) p.catch(function () {}); } };
@@ -349,6 +371,11 @@
     if (o.blur != null) BLUR = o.blur;
     if (o.blurmin != null) BLURMIN = o.blurmin;
     if (o.matte != null) MATTE = o.matte;
+    if (o.rayi != null) RAYI = o.rayi;
+    if (o.rayden != null) RAYDEN = o.rayden;
+    if (o.raydec != null) RAYDEC = o.raydec;
+    if (o.lpx != null) LPX = o.lpx;
+    if (o.lpy != null) LPY = o.lpy;
     if (o.warm != null) WARM = o.warm;
     if (o.bokeh != null) BOKEH = o.bokeh;
     if (o.focusw != null) FOCUSW = o.focusw;
@@ -362,6 +389,7 @@
              CAC: CAC, CA: CA, STREAK: STREAK, HAL: HAL, NAMP: NAMP, DET: DET,
              TILE: TILE, SHEEN: SHEEN, SHEENR: SHEENR, EXP: EXP,
              BLUR: BLUR, BLURMIN: BLURMIN, MATTE: MATTE, WARM: WARM,
+             RAYI: RAYI, RAYDEN: RAYDEN, RAYDEC: RAYDEC, LPX: LPX, LPY: LPY,
              BOKEH: BOKEH, FOCUSW: FOCUSW, FEATHER: FEATHER,
              RACKA: RACKA, RACKS: RACKS, rate: vA.playbackRate };
   };
@@ -373,7 +401,7 @@
     if (!run && firstFrame) return;
 
     var t = (D.phase != null ? D.phase : now * .001);
-    var az = t * ORBIT;
+    var az = 1.45 + ORBIT * 2.0 * Math.sin(t * .05);
     var el = ELEV + .14 * Math.sin(t * .045 + 1.1);
     var Lx = Math.cos(az), Ly = Math.sin(az) * .7;
     var zoom = 1.05 + .03 * (0.5 + 0.5 * Math.sin(t * .032));
@@ -422,6 +450,10 @@
     gl.uniform1f(UB.uBlur, BLUR);
     gl.uniform1f(UB.uBlurMin, BLURMIN);
     gl.uniform1f(UB.uMatte, MATTE);
+    gl.uniform1f(UB.uRayI, RAYI);
+    gl.uniform1f(UB.uRayDen, RAYDEN);
+    gl.uniform1f(UB.uRayDec, RAYDEC);
+    gl.uniform2f(UB.uLightP, LPX + .03 * Math.sin(t * .043), LPY + .02 * Math.cos(t * .037));
     gl.uniform1f(UB.uWarm, WARM);
     gl.uniform1f(UB.uBokeh, BOKEH);
     gl.uniform1f(UB.uFocusW, FOCUSW);

@@ -2868,3 +2868,37 @@ cost math: 20 taps/px ≈ v6's measured-60fps league. No engine errors.
 
 **Files:** hero-silk.js only. Revert: tag hero-v8-approved, or
 Backup/2026-08-21-hero-v8/hero-silk.v8.js.
+
+## 146 — Labs hero v10: light through darkness (2026-08-21)
+
+User on v9: too much blur, low quality, crappy — go a completely different
+direction, dark cinematic, actually good.
+
+**Pattern locked across nine versions:** everything he liked (v5 "alright",
+v8 "good") was SHARP with DEEP BLACKS; everything he hated (v6, v9)
+softened or lifted the frame. v10 is built on that law.
+
+**New concept — chiaroscuro, not another grade:** near-silhouette obsidian
+silk, ONE anchored hard key (upper-right, slow ±.18rad drift instead of the
+old full orbit), crests catching hard silver light, and VOLUMETRIC LIGHT
+SHAFTS streaming through the frame — the GPU Gems 3 ch.13 screen-space
+scattering technique (Kenny Mitchell): 24-step march from each pixel toward
+the light's screen position accumulating the lit crests' brightness with
+per-step decay; the silk's own highlights are the emitters. Beam structure
+via value noise over the angle around the source (three drifting sin
+octaves) — without it the march reads as plain glow (caught in round-1
+screenshots). Border-rejected samples (top-edge smear fixed).
+
+**Grade:** deep blacks returned (crush .012 post-ACES), matte/warm zeroed,
+exposure .90, fine per-pixel grain .022 (the 1.5px clumps went), clarity
+.30 back, DOF default OFF (dials remain). Blur exists nowhere by default.
+
+**Verified:** screenshots at drift-rest + phase 8: rest state = moody
+obsidian with faint amber CA rim accent; phase 8 = defined silver shafts
+fanning from the bright crest, sharp fabric inside the light, type crisp.
+No errors. fps unmeasurable this round (tab visibilityState:hidden freezes
+rAF — also explains type-invisible intro frames in screenshots); 25-tap
+cost sits in v6's measured-60fps league.
+
+**Dials:** rayi/rayden/raydec/lpx/lpy + all prior. v8 still one command
+away: tag hero-v8-approved / Backup/2026-08-21-hero-v8/.
