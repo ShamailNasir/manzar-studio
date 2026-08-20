@@ -109,7 +109,7 @@
     var tl = gsap.timeline();
     /* light comes up on the whole hero */
     tl.fromTo('.hero-media', { opacity: 0.15 }, { opacity: 1, duration: 2.2, ease: 'power2.out' }, 0);
-    tl.fromTo('.hero-img, .hero-video', { scale: 1.28 }, { scale: 1.12, duration: 2.6, ease: 'expo.out' }, 0);
+    tl.fromTo('.hero-media', { scale: 1.14 }, { scale: 1.0, duration: 2.6, ease: 'expo.out' }, 0);
     var title = document.getElementById('heroTitle');
     if (window.SplitText && title) {
       var split = new SplitText(title, { type: 'chars' });
@@ -129,7 +129,6 @@
         })(els[i], i);
       }
     }, null, 0.55);
-    tl.fromTo('.hero-grid i, .hero-grid .plus', { opacity: 0 }, { opacity: 1, duration: 1.8, stagger: 0.07 }, 0.8);
   }
 
   /* On a crossover the intro has to play *into* the reveal, not behind it: the

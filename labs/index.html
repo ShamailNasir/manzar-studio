@@ -228,17 +228,18 @@ if(window.__mzCrossover){
   <section class="hero" id="hero">
     <div class="hero-shell" id="heroShell">
       <div class="hero-media" aria-hidden="true">
-        <div class="hero-fallback"></div>
-        <img class="hero-img" src="assets/img/hero.jpg" alt="" width="1920" height="1080" loading="eager" decoding="async" onerror="this.style.display='none'">
+        <!-- Charcoal silk, relit in WebGL: a baked normal-map video gives the
+             folds their curvature, and a soft light follows the cursor across
+             the sheen. Fallbacks: plain video, then a still. -->
+        <div class="hero-fallback" style="background-image:url('assets/img/hero-silk.jpg')"></div>
+        <canvas id="cv-hero"></canvas>
+        <video id="hvA" class="hv hv-a" muted playsinline preload="auto"></video>
+        <video id="hvB" class="hv hv-b" muted playsinline preload="auto"></video>
         <div class="hero-shade"></div>
       </div>
       <!-- Sits outside .hero-media on purpose: the media parallaxes and this must
            stay locked to the shell edge. Fades up with the inset (see --feather). -->
       <div class="hero-feather" aria-hidden="true"></div>
-      <div class="hero-grid" aria-hidden="true">
-        <i></i><i></i><i></i>
-        <b class="plus p1">+</b><b class="plus p2">+</b><b class="plus p3">+</b>
-      </div>
       <div class="hero-inner">
         <h1 class="hero-title" id="heroTitle" aria-label="Manzar">Manzar</h1>
         <div class="hero-row">
@@ -251,11 +252,13 @@ if(window.__mzCrossover){
             <p class="hero-blurb" data-reveal>We build and operate AI-native software products for companies that need serious engineering. Live in six weeks, not six quarters.</p>
             <div class="hero-ctas" data-reveal>
               <a class="btn btn-light" href="#work"><span class="btn-label">See the work</span><span class="btn-chip"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-              <div class="hero-socials">
-                <a href="https://www.instagram.com/manzar.studio/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 16 16" width="13" height="13"><rect x="1.5" y="1.5" width="13" height="13" rx="3.6" stroke="currentColor" fill="none" stroke-width="1.3"/><circle cx="8" cy="8" r="3" stroke="currentColor" fill="none" stroke-width="1.3"/><circle cx="12" cy="4" r="1" fill="currentColor"/></svg></a>
-                <a href="https://www.linkedin.com/company/manzarstudio/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M2 5.5h2.6V14H2zM3.3 1.8a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM6.4 5.5H9v1.2c.5-.9 1.5-1.5 2.8-1.5 2 0 3.2 1.3 3.2 3.7V14h-2.6V9.4c0-1.2-.5-1.9-1.5-1.9S9.3 8.2 9.3 9.4V14H6.4z" fill="currentColor"/></svg></a>
-              </div>
+              <a class="btn btn-ghost" href="#contact"><span class="btn-label">Start a project</span><span class="btn-chip"><svg viewBox="0 0 14 14" width="11" height="11"><path d="M2 7h9M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
             </div>
+          </div>
+          <div class="hero-meta" data-reveal aria-label="Studio facts">
+            <p><span>Based</span>Lahore &#8596; Paris</p>
+            <p><span>Since</span>2019</p>
+            <p><span>Live in</span>Six weeks</p>
           </div>
         </div>
       </div>
@@ -1249,10 +1252,26 @@ if(window.__mzCrossover){
   </div>
 </footer>
 
+<!-- ── the hero source ─────────────────────────────────────────────
+     The hero relights its silk in WebGL, which needs the video to be
+     same-origin. Over file:// nothing is, so opening from disk loads the
+     base64 shim; served over http(s) the real files stream instead. Same
+     pattern as the Studio page. -->
+<script>
+  (function () {
+    if (location.protocol === 'file:') {
+      document.write('<scr' + 'ipt src="assets/video/silk.b64.js"><\/scr' + 'ipt>');
+    } else {
+      window.HERO_VID   = 'assets/video/silk.mp4';
+      window.HERO_VID_N = 'assets/video/silk-normal.mp4';
+    }
+  })();
+</script>
 <script src="assets/js/vendor/gsap.min.js"></script>
 <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/js/vendor/SplitText.min.js"></script>
 <script src="assets/js/vendor/lenis.min.js"></script>
+<script src="assets/js/hero-silk.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/plate.js" defer></script>
 
