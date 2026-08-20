@@ -151,7 +151,8 @@
   var FSB = [
     'precision highp float; varying vec2 vUv;',
     'uniform sampler2D uT;',
-    'uniform float uTime, uBlur, uBokeh, uFocusW, uFeather, uRackA, uRackS;',
+    'uniform float uTime, uBlur, uBlurMin, uBokeh, uFocusW, uFeather, uRackA, uRackS;',
+    'uniform float uMatte, uWarm;',
     'uniform float uExp, uGrain, uGrainT, uRM;',
     'uniform vec2 uRes;',
     'const int NTAP = 20;',
@@ -165,7 +166,7 @@
     /* rack focus: the focus line breathes through the frame */
     '  float focusY = .5 + uRackA * sin(uTime * uRackS + .7);',
     '  float dy = abs(vUv.y - focusY);',
-    '  float coc = uBlur * pow(smoothstep(uFocusW, uFeather, dy), 1.2);',
+    '  float coc = mix(uBlurMin, uBlur, pow(smoothstep(uFocusW, uFeather, dy), 1.2));',
     '  coc *= uRes.y / 1080.;',
     '  vec3 col;',
     '  if (coc < .6) {',
@@ -187,13 +188,24 @@
     '    col = acc / wsum;',
     '  }',
     /* the dark-cinema grade, after the optics */
+    /* three-way split tone: steel shadows, sage-grey mids, and the one
+       warm event - an ivory glow that lives only in the sheen band */
     '  float lm = lum(col);',
-    '  col *= mix(vec3(.94, .98, 1.06), vec3(1.01, 1., .985), smoothstep(.10, .55, lm));',
+    '  vec3 tintS = vec3(.945, .975, 1.025);',
+    '  vec3 tintM = vec3(.985, 1., .978);',
+    '  vec3 tintH = mix(vec3(1.), vec3(1.05, 1.01, .95), uWarm);',
+    '  col *= mix(tintS, mix(tintM, tintH, smoothstep(.34, .78, lm)), smoothstep(.05, .34, lm));',
     '  col = aces(col * uExp);',
-    '  col = max(col - .010, 0.) / .990;',
+    /* matte finish: lifted toe, no clipped white - nothing in the field
+       is ever pure black or pure white; the type does the contrast */
+    '  col = mix(col, col * .90 + .075, uMatte);',
     '  float vg = smoothstep(1.5, .5, length(vUv - vec2(.5, .5)));',
-    '  col *= mix(.86, 1., vg);',
-    '  col += (fract(sin(dot(gl_FragCoord.xy + fract(uGrainT) * 61., vec2(127.1, 311.7))) * 43758.5453) - .5) * uGrain * (1. - uRM * .6);',
+    '  col *= mix(.88, 1., vg);',
+    /* photographic grain: 1.5px clumps, strongest in the grey mids -
+       crisp grain over a soft field is what keeps blur from smearing */
+    '  vec2 gc = floor(gl_FragCoord.xy / 1.5);',
+    '  float gn = fract(sin(dot(gc + fract(uGrainT) * 61., vec2(127.1, 311.7))) * 43758.5453) - .5;',
+    '  col += gn * uGrain * (.35 + .65 * smoothstep(.02, .30, lm)) * (1. - uRM * .6);',
     '  gl_FragColor = vec4(col, 1.);',
     '}',
   ].join('\n');
@@ -284,10 +296,11 @@
 
   /* dials - live via window.__hero.set */
   var DIFF = .36, SPEC = .32, SPECPOW = 90., ANISO = .42, RIM = .08,
-      GRAIN = .028, ORBIT = .09, ELEV = .58,
-      CLAR = .30, SOFT = .9, CAC = .0012, CA = .0032, STREAK = .45, HAL = .15,
-      NAMP = 2.4, DET = .20, TILE = 6.0, SHEEN = .30, SHEENR = .38, EXP = 1.0,
-      BLUR = 26., BOKEH = 4., FOCUSW = .11, FEATHER = .60, RACKA = .15, RACKS = .10;
+      GRAIN = .052, ORBIT = .09, ELEV = .58,
+      CLAR = .15, SOFT = .9, CAC = .0012, CA = .0032, STREAK = .40, HAL = .15,
+      NAMP = 2.4, DET = .14, TILE = 6.0, SHEEN = .32, SHEENR = .38, EXP = 1.0,
+      BLUR = 30., BOKEH = 4., FOCUSW = .08, FEATHER = .55, RACKA = .15, RACKS = .10,
+      BLURMIN = 13., MATTE = .60, WARM = .70;
 
   var started = false, run = true;
   var tryPlay = function (vv) { if (vv) { var p = vv.play(); if (p && p.catch) p.catch(function () {}); } };
@@ -334,6 +347,9 @@
     if (o.sheenr != null) SHEENR = o.sheenr;
     if (o.exp != null) EXP = o.exp;
     if (o.blur != null) BLUR = o.blur;
+    if (o.blurmin != null) BLURMIN = o.blurmin;
+    if (o.matte != null) MATTE = o.matte;
+    if (o.warm != null) WARM = o.warm;
     if (o.bokeh != null) BOKEH = o.bokeh;
     if (o.focusw != null) FOCUSW = o.focusw;
     if (o.feather != null) FEATHER = o.feather;
@@ -345,7 +361,8 @@
              GRAIN: GRAIN, ORBIT: ORBIT, ELEV: ELEV, CLAR: CLAR, SOFT: SOFT,
              CAC: CAC, CA: CA, STREAK: STREAK, HAL: HAL, NAMP: NAMP, DET: DET,
              TILE: TILE, SHEEN: SHEEN, SHEENR: SHEENR, EXP: EXP,
-             BLUR: BLUR, BOKEH: BOKEH, FOCUSW: FOCUSW, FEATHER: FEATHER,
+             BLUR: BLUR, BLURMIN: BLURMIN, MATTE: MATTE, WARM: WARM,
+             BOKEH: BOKEH, FOCUSW: FOCUSW, FEATHER: FEATHER,
              RACKA: RACKA, RACKS: RACKS, rate: vA.playbackRate };
   };
 
@@ -359,7 +376,7 @@
     var az = t * ORBIT;
     var el = ELEV + .14 * Math.sin(t * .045 + 1.1);
     var Lx = Math.cos(az), Ly = Math.sin(az) * .7;
-    var zoom = 1.0 + .03 * (0.5 + 0.5 * Math.sin(t * .032));
+    var zoom = 1.05 + .03 * (0.5 + 0.5 * Math.sin(t * .032));
 
     if (vA.readyState >= 2) {
       gl.activeTexture(gl.TEXTURE0);
@@ -403,6 +420,9 @@
     gl.uniform1i(UB.uT, 2);
     gl.uniform1f(UB.uTime, t);
     gl.uniform1f(UB.uBlur, BLUR);
+    gl.uniform1f(UB.uBlurMin, BLURMIN);
+    gl.uniform1f(UB.uMatte, MATTE);
+    gl.uniform1f(UB.uWarm, WARM);
     gl.uniform1f(UB.uBokeh, BOKEH);
     gl.uniform1f(UB.uFocusW, FOCUSW);
     gl.uniform1f(UB.uFeather, FEATHER);

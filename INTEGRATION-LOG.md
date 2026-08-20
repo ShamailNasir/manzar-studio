@@ -2830,3 +2830,41 @@ cream melt outside, steel/silver grade intact, no vintage cast.
 
 **Files**: hero-silk.js only. Revert: git-revert this commit → v7 dark
 cinema; 79ee4fd^ → v6; a59e892^ → v5.
+
+## 145 — Labs hero v9: the Monolog study (2026-08-21)
+
+User approved v8 ("Bro, it's good") → saved: Backup/2026-08-21-hero-v8/ +
+git tag hero-v8-approved (22fb46d). Then: make it MORE ABSTRACT and higher
+quality, benchmark bymonolog.com's hero.
+
+**Research findings (inspected live in browser):** Monolog's hero =
+THREE.js canvas animating ONE static key visual (Key Visual-2.avif,
+1967×1311) over the same image at 0.6 opacity. The art itself is the whole
+trick: a massively defocused abstract photograph — dark soft masses, matte
+sage-grey field, a single warm ivory horizon glow — with strong crisp
+photographic grain baked over the softness. Matte tonal range (no true
+black in the field, no clipped white); ALL sharpness lives in the grain
+and the typography.
+
+**v9 = that recipe applied to our moving silk (engine v8 + deltas):**
+- blur floor (uBlurMin 13px): the WHOLE frame is soft — silk reads as
+  abstract billowing masses, not fabric; rack-focus band now just "less
+  soft" (focus variation without literal sharpness)
+- matte finish (uMatte .60): post-ACES lift — blacks ~#131313, highlights
+  roll to ~.92, type does the contrast
+- three-way split tone: steel shadows / sage-grey mids / ONE warm ivory
+  event on the sheen band (uWarm .70) — Monolog's warm-glow-in-cool-field
+  polarity, localized so it never reads sepia
+- photographic grain: amplitude .052, 1.5px clumps, luma-weighted (lives
+  in the grey mids like theirs) — crisp grain over cream
+- deeper crop (zoom base 1.05), clarity .15, weave detail .14 (sharpening
+  fights abstraction)
+
+**Verified:** screenshots at phases 16/40 + live: fully abstract soft
+masses, warm-kissed sheen river in cool matte field, visible grain, type
+razor-crisp against it. fps measurement blocked this round (tab reported
+visibilityState:hidden — rAF frozen by Chrome; heartbeat kept rendering),
+cost math: 20 taps/px ≈ v6's measured-60fps league. No engine errors.
+
+**Files:** hero-silk.js only. Revert: tag hero-v8-approved, or
+Backup/2026-08-21-hero-v8/hero-silk.v8.js.
