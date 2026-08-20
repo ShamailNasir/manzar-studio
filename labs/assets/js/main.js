@@ -1695,7 +1695,7 @@
        page moves on, so arriving at 05 does not immediately dump you
        out of the section. */
     travel = Math.round((n - 1) * vh * 0.92);
-    var tail = Math.round(vh * 1.7);
+    var tail = Math.round(vh * 0.55);
     wb.style.height = (vh + travel + tail) + 'px';
     span   = track.scrollWidth - window.innerWidth;
     readScroll();
