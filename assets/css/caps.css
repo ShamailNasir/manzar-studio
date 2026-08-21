@@ -94,30 +94,17 @@
 .cp-hero-meta dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(233,230,221,.5)}
 .cp-hero-meta dd{margin:3px 0 0;font-size:14.5px;font-weight:500;color:rgba(233,230,221,.92)}
 
-/* ── 2. CHAPTER RAIL ─────────────────────────────────────── */
-.cp-toc{
-  position:sticky;top:88px;z-index:40;
-  background:color-mix(in srgb,var(--ink) 86%,transparent);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(233,230,221,.08);
-}
-.cp-toc-in{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none}
-.cp-toc-in::-webkit-scrollbar{display:none}
-.cp-toc a{
-  flex:none;padding:15px 14px;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--mut);text-decoration:none;position:relative;
-  transition:color .3s var(--e-out);
-}
-.cp-toc a::after{
-  content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;
+/* ── 2. NAVBAR SCROLL-SPY ────────────────────────────────
+   the centre links are page sections; the active one carries
+   an accent underline, same voice the old rail had */
+.nav-links a{position:relative}
+.nav-links a::after{
+  content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;
   background:var(--acc);transform:scaleX(0);transform-origin:left;
   transition:transform .35s var(--e-out);
 }
-.cp-toc a:hover{color:var(--soft)}
-.cp-toc a.is-here{color:var(--fg)}
-.cp-toc a.is-here::after{transform:scaleX(1)}
-.cp-toc-index{margin-left:auto;flex:none;font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;color:rgba(233,230,221,.55);padding:15px 0}
+.nav-links a.is-here{color:var(--fg)}
+.nav-links a.is-here::after{transform:scaleX(1)}
 
 /* ── 3. OFFERS ───────────────────────────────────────────── */
 /* two featured editorial rows, then the card grid */
@@ -137,16 +124,30 @@
 .cp-feat p{margin-top:12px;font-size:15.5px;line-height:1.6;color:var(--soft);max-width:50ch}
 .cp-feat-more{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,230,221,.6)}
 
-.cp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:clamp(26px,4vh,44px)}
+.cp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:clamp(28px,4vh,48px)}
 .cp-cell{
-  border-radius:16px;padding:clamp(22px,2.4vw,30px);
+  position:relative;overflow:hidden;
+  border-radius:18px;padding:clamp(26px,2.8vw,36px);
   background:rgba(233,230,221,.03);border:1px solid rgba(233,230,221,.10);
   transition:background-color .35s var(--e-out),border-color .35s var(--e-out),transform .35s var(--e-out);
 }
-.cp-cell:hover{background:rgba(233,230,221,.045);border-color:rgba(233,230,221,.18);transform:translateY(-3px)}
-.cp-cell-num{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--acc)}
-.cp-cell h3{margin-top:12px;font-size:clamp(16.5px,1.4vw,19px);font-weight:600;letter-spacing:-.01em;color:var(--fg)}
-.cp-cell p{margin-top:8px;font-size:14.5px;line-height:1.58;color:var(--soft)}
+.cp-cell::before{
+  content:"";position:absolute;left:0;top:0;height:2px;width:0;
+  background:linear-gradient(90deg,var(--acc),rgba(255,75,31,.2));
+  transition:width .55s var(--e-out);
+}
+.cp-cell::after{
+  content:"→";position:absolute;top:22px;right:26px;
+  font-size:19px;color:var(--acc);
+  opacity:0;transform:translateX(-8px);
+  transition:opacity .35s var(--e-out),transform .35s var(--e-out);
+}
+.cp-cell:hover{background:rgba(233,230,221,.05);border-color:rgba(233,230,221,.20);transform:translateY(-4px)}
+.cp-cell:hover::before{width:100%}
+.cp-cell:hover::after{opacity:1;transform:none}
+.cp-cell-num{font-family:var(--mono);font-size:11px;letter-spacing:.13em;color:var(--acc)}
+.cp-cell h3{margin-top:14px;font-size:clamp(18px,1.65vw,22px);font-weight:600;letter-spacing:-.015em;color:var(--fg);max-width:22ch}
+.cp-cell p{margin-top:10px;font-size:15px;line-height:1.6;color:var(--soft);max-width:54ch}
 .cp-grid>.cp-cell:last-child:nth-child(odd){grid-column:1/-1}
 
 /* ── 4. SET PIECES ───────────────────────────────────────── */
@@ -206,17 +207,28 @@
 .cp-pipe text{font-family:var(--mono);font-size:10px;letter-spacing:.12em;fill:rgba(233,230,221,.62)}
 .cp-pipe .pdot{fill:var(--acc)}
 
-/* ── 5. SHIP ─────────────────────────────────────────────── */
-.cp-ship{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.cp-step{
-  position:relative;border-radius:16px;padding:clamp(24px,2.6vw,32px);
-  background:rgba(233,230,221,.03);border:1px solid rgba(233,230,221,.10);
-  transition:background-color .35s var(--e-out),border-color .35s var(--e-out);
+/* ── 5. SHIP: three coins on one line ────────────────────── */
+.cp-ship{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.cp-ship::before{
+  content:"";position:absolute;top:44px;left:8%;right:8%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(233,230,221,.16) 12%,rgba(233,230,221,.16) 88%,transparent);
 }
-.cp-step:hover{background:rgba(233,230,221,.045);border-color:rgba(233,230,221,.18)}
-.cp-step-num{position:absolute;top:20px;right:22px;font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;color:rgba(233,230,221,.55)}
-.cp-step h3{font-size:clamp(17px,1.5vw,20px);font-weight:600;letter-spacing:-.01em;color:var(--fg)}
-.cp-step p{margin-top:10px;font-size:14.5px;line-height:1.58;color:var(--soft)}
+.cp-step{
+  position:relative;border-radius:18px;padding:clamp(26px,2.8vw,36px);
+  background:var(--ink);border:1px solid rgba(233,230,221,.10);
+  transition:background-color .35s var(--e-out),border-color .35s var(--e-out),transform .35s var(--e-out);
+}
+.cp-step:hover{background:rgba(233,230,221,.035);border-color:rgba(233,230,221,.20);transform:translateY(-4px)}
+.cp-step-num{
+  display:inline-grid;place-items:center;width:36px;height:36px;margin-bottom:16px;
+  border:1px solid rgba(255,75,31,.55);border-radius:50%;
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--acc);
+  background:var(--ink);position:relative;z-index:1;
+  transition:background-color .35s var(--e-out),color .35s var(--e-out);
+}
+.cp-step:hover .cp-step-num{background:var(--acc);color:var(--ink)}
+.cp-step h3{font-size:clamp(18px,1.65vw,22px);font-weight:600;letter-spacing:-.015em;color:var(--fg)}
+.cp-step p{margin-top:10px;font-size:15px;line-height:1.6;color:var(--soft)}
 
 /* ── 6. STACK ────────────────────────────────────────────── */
 .cp-stack p{font-size:clamp(15.5px,1.3vw,18px);line-height:1.65;color:var(--soft);max-width:62ch}
@@ -324,7 +336,6 @@
 
 /* ── 10. RESPONSIVE ──────────────────────────────────────── */
 @media (max-width:960px){
-  .cp-toc{top:64px}
   .cp-hero{min-height:max(560px,86svh)}
   .cp-hero-in{grid-template-columns:1fr;align-items:end}
   .cp-hero-meta{flex-direction:row;flex-wrap:wrap;gap:18px 28px;border-left:0;border-top:1px solid rgba(233,230,221,.18);padding:18px 0 0}

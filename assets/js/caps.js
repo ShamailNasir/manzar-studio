@@ -73,7 +73,7 @@
   }
 
   /* ---------- chapter rail scroll-spy ---------- */
-  var tocLinks = $$('.cp-toc a');
+  var tocLinks = $$('.nav-links a[href^="#"]');
   if (tocLinks.length && 'IntersectionObserver' in window) {
     var map = {};
     tocLinks.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });

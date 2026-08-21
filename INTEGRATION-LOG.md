@@ -3107,3 +3107,39 @@ footer target: index.html has #studio #work #services #reel #process
 
 **Verified:** pricing walked full-page (hero/tiers/FAQ/footer); iot footer
 band screenshot-matched against labs' own; no console errors.
+
+## 153 — Page-specific navbars, richer sections, Studio removed from subpages, logo favicons (2026-08-21)
+
+User: the sticky chapter rail under the nav behaves broken; replace the
+Labs centre links with each page's OWN links in the real navbar; sections
+too basic; remove Manzar Studio links/section from subpages; tab icons
+should be actual logos.
+
+**Navbar:** chapter rail deleted entirely. The main navbar's centre links
+are now page-specific on every subpage (caps: The work/Up close/Process/
+Stack/Proof/Pricing; pricing: The models/What moves it/FAQ/Start), with
+the scroll-spy retargeted to them (accent underline via .is-here). One
+navbar, no second bar, nothing riding over the footer.
+
+**Visual upgrade:** offer cells now carry an accent top-sweep + hover
+arrow, larger type and padding; process steps became numbered coins on a
+shared connecting line (coin fills accent on hover); grid rhythm opened.
+
+**Studio removed from subpages:** the film/photography doorway section
+deleted from all four capability pages AND pricing (Labs keeps its own);
+the menu's entire Studio column and the Company "Studio" row removed on
+subpages, remaining rows renumbered 01-07.
+
+**Favicons — actual logo:** mark extracted from brand art (bbox-cropped,
+rescaled to fill 80% of canvas) and rebuilt at 32/180/192/512: Studio =
+bone mark on ink, Labs = accent-orange mark on ink (distinct at a glance);
+root favicon.ico regenerated (16+32). Numeric verification: mark coverage
+and colors confirmed per size.
+
+**Builders updated** (build_caps.py / build_pricing.py) so titles,
+extensionless canonicals, labs icons, nav links, menu trim and doorway
+removal are all IN the generators — regeneration can no longer lose
+patches. All flags grep-verified across the five pages (door=0, rail=0,
+studio-group=0, own-nav=1). NOTE: the browser tab was closed mid-QA and
+the extension cannot open file:// URLs itself — final visual pass pending
+a reopened page.
