@@ -3075,3 +3075,35 @@ throughout; no-JS renders fully.
 **Audit:** all 7 pages walked; titles/favicons verified live; full link
 inventory on ai.html resolves; zero console errors sitewide. Dead retrofit
 files (cap-extra.css, cap-motion.js) deleted from working + deploy.
+
+## 152 — Footer-band parity, pricing rebuilt, anchors verified (2026-08-21)
+
+User: sub-page footers missing the Studio/Labs footer texture; pricing,
+studio and contact "pages" not reworked; photo sections must match the
+main sites.
+
+**Footer texture — root cause found and fixed.** The main pages' band is
+NOT the chunky 9px Bayer dither the old cap pages used — it's glWaveBand,
+a WebGL dune shader in labs/main.js (fbm-noise shoreline, rotated halftone
+dots, grain, paper texture) with a fine-dither fallback. Ported VERBATIM
+into caps.js targeting #cv-band-cap — all four capability pages + pricing
+now render the identical dissolve by construction. Verified side-by-side.
+
+**Pricing rebuilt from scratch** on the Labs stack (same extracted
+nav/footer/menu/doorway, root-depth path adaptation): silk photographic
+hero ("Quoted fixed, before we start." + Sprint/Build/Retainer meta rail),
+chapter rail, three tier cards (Build flagged "Most engagements", accent
+border; Who-it-suits / What-you-get / What-it-doesn't-include blocks mined
+from the old page), what-moves-the-number chips, 5-item FAQ as styled
+details/summary, start band, studio doorway, Labs footer. Old page backed
+up as pricing.old.html.
+
+**Studio / Contact:** these are sections, not pages — audited every menu/
+footer target: index.html has #studio #work #services #reel #process
+#contact; labs has #mission #speed #services #work #faq #contact. All land.
+
+**Media parity:** feature plates gained the main-site hover breath
+(scale 1.045 on row hover); photographic heroes + scrims already matched.
+
+**Verified:** pricing walked full-page (hero/tiers/FAQ/footer); iot footer
+band screenshot-matched against labs' own; no console errors.

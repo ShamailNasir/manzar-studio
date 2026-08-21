@@ -124,7 +124,8 @@
 .cp-feat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,3.4vw,56px);align-items:center;padding:clamp(26px,4vh,44px) 0;border-top:1px solid rgba(233,230,221,.10)}
 .cp-feat:first-of-type{border-top:0}
 .cp-feat-plate{position:relative;border-radius:16px;overflow:hidden;height:clamp(240px,32vh,360px);background:var(--panel,#1A1714)}
-.cp-feat-plate img{position:absolute;inset:0;width:100%;height:110%;object-fit:cover;filter:saturate(.8) contrast(1.05) brightness(.85);will-change:transform}
+.cp-feat-plate img{position:absolute;inset:0;width:100%;height:110%;object-fit:cover;filter:saturate(.8) contrast(1.05) brightness(.85);will-change:transform;transition:scale .7s var(--e-out)}
+.cp-feat:hover .cp-feat-plate img{scale:1.045}
 .cp-feat-plate::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,8,.18),rgba(11,10,8,.45))}
 .cp-feat-plate .tag{
   position:absolute;z-index:2;left:14px;bottom:12px;
@@ -289,6 +290,38 @@
    pages use #cv-band-cap, so the sizing is restated here */
 #cv-band-cap{position:absolute;inset:0;width:100%;height:100%;display:block}
 
+/* ── 9b. PRICING TIERS (pricing.html) ────────────────────── */
+.cp-tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:clamp(26px,4vh,44px)}
+.cp-tier{
+  position:relative;border-radius:18px;padding:clamp(24px,2.6vw,34px);
+  background:rgba(233,230,221,.03);border:1px solid rgba(233,230,221,.10);
+  display:flex;flex-direction:column;gap:18px;
+  transition:background-color .35s var(--e-out),border-color .35s var(--e-out),transform .35s var(--e-out);
+}
+.cp-tier:hover{background:rgba(233,230,221,.045);border-color:rgba(233,230,221,.18);transform:translateY(-3px)}
+.cp-tier.is-hot{border-color:rgba(255,75,31,.5)}
+.cp-tier.is-hot:hover{border-color:rgba(255,75,31,.75)}
+.cp-tier-flag{
+  position:absolute;top:-11px;left:22px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);background:var(--acc);padding:5px 10px;border-radius:var(--r-pill);
+}
+.cp-tier-name{font-size:clamp(24px,2.4vw,32px);font-weight:600;letter-spacing:-.02em;color:var(--fg)}
+.cp-tier-kick{margin-top:4px;font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(233,230,221,.55)}
+.cp-tier-block b{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--acc);font-weight:500;margin-bottom:7px}
+.cp-tier-block p{font-size:14.5px;line-height:1.58;color:var(--soft)}
+.cp-faq details{border-top:1px solid rgba(233,230,221,.10);padding:4px 0}
+.cp-faq details:last-child{border-bottom:1px solid rgba(233,230,221,.10)}
+.cp-faq summary{
+  list-style:none;display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:18px 2px;font-size:clamp(16px,1.4vw,19px);font-weight:500;color:var(--fg);
+  transition:color .3s var(--e-out);
+}
+.cp-faq summary::-webkit-details-marker{display:none}
+.cp-faq summary::after{content:"+";font-weight:400;color:var(--mut);font-size:1.2em;transition:rotate .3s var(--e-out)}
+.cp-faq details[open] summary::after{rotate:45deg;color:var(--acc)}
+.cp-faq details p{padding:0 2px 18px;font-size:15px;line-height:1.6;color:var(--soft);max-width:64ch}
+
 /* ── 10. RESPONSIVE ──────────────────────────────────────── */
 @media (max-width:960px){
   .cp-toc{top:64px}
@@ -302,5 +335,6 @@
   .cp-ship{grid-template-columns:1fr}
   .cp-price{flex-direction:column;align-items:flex-start}
   .cp-next-in{flex-direction:column;align-items:flex-start;gap:14px}
+  .cp-tiers{grid-template-columns:1fr}
   .cp-ghost{font-size:clamp(120px,30vw,220px)}
 }

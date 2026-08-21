@@ -205,28 +205,32 @@
     }
   }
 
-  /* ---------- footer dither band ---------- */
-  function dither (sel) {
-    var cv = $(sel);
+  /* ---------- footer band: the SAME dune shader as the main pages ----------
+     Lifted verbatim from labs/assets/js/main.js (glWaveBand + its fine
+     dither fallback), so the dissolve texture is identical by construction. */
+  function ditherBand(sel, opts) {
+    opts = opts || {};
+    var cell = opts.cell || 9;
+    var color = opts.color || '#E9E6DD';
+    var speed = opts.speed || .00042;
+    var still = !!opts.still;
+    var cv = document.querySelector(sel);
     if (!cv) return;
     var ctx = cv.getContext('2d');
-    var cell = 9, color = '#E9E6DD', speed = 0.00042;
-    var B = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
-    var W, H, cols, rows2;
-    function resize () {
+    var B = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
+    var W, H, cols, rows;
+    function resize() {
       W = cv.width = Math.max(2, cv.offsetWidth);
       H = cv.height = Math.max(2, cv.offsetHeight);
-      cols = Math.ceil(W / cell); rows2 = Math.ceil(H / cell);
+      cols = Math.ceil(W / cell); rows = Math.ceil(H / cell);
     }
     resize();
-    requestAnimationFrame(resize);                    /* after first layout */
     window.addEventListener('resize', resize);
-    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(cv);
-    function paint (t) {
+    function paint(t) {
       ctx.clearRect(0, 0, W, H); ctx.fillStyle = color;
       var tt = t * speed;
-      for (var y = 0; y < rows2; y++) {
-        var v = y / rows2;
+      for (var y = 0; y < rows; y++) {
+        var v = y / rows;
         for (var x = 0; x < cols; x++) {
           var u = x / cols;
           var r1 = .38 + .16 * Math.sin(u * 2.2 + tt) + .07 * Math.sin(u * 5.3 - tt * .6);
@@ -238,18 +242,107 @@
         }
       }
     }
-    if (RM) { paint(1200); return; }
+    if (RM || still) { paint(1200); return; }
     var run = true;
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (en) { run = en[0].isIntersecting; }).observe(cv);
     }
     var last = 0;
-    (function frame (t) {
-      if (run && t - last > 50) { last = t; paint(t); }
-      window.requestAnimationFrame(frame);
-    })(0);
+    (function frame(t) { if (run && t - last > 50) { last = t; paint(t); } requestAnimationFrame(frame); })(0);
   }
-  dither('#cv-band-cap');
+
+  var GLU = {
+    make: function (cv, alpha) {
+      var gl = null;
+      try {
+        gl = cv.getContext('webgl', { alpha: alpha, antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: true });
+      } catch (e) {}
+      return gl;
+    },
+    prog: function (gl, fsSrc) {
+      var VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+      function sh(t, s) {
+        var o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o);
+        if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) { console.error('shader:', gl.getShaderInfoLog(o)); return null; }
+        return o;
+      }
+      var v = sh(gl.VERTEX_SHADER, VS), f = sh(gl.FRAGMENT_SHADER, fsSrc);
+      if (!v || !f) return null;
+      var p = gl.createProgram();
+      gl.attachShader(p, v); gl.attachShader(p, f); gl.linkProgram(p); gl.useProgram(p);
+      var b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      var a = gl.getAttribLocation(p, 'p');
+      gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
+      return p;
+    },
+    NOISE: [
+      'float h21(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+      'float nse(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1.,0.)),f.x),mix(h21(i+vec2(0.,1.)),h21(i+vec2(1.,1.)),f.x),f.y);}',
+      'float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*nse(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}'
+    ].join('\n')
+  };
+
+  function glWaveBand(sel, o) {
+    var cv = document.querySelector(sel);
+    if (!cv) return;
+    var gl = GLU.make(cv, true);
+    if (!gl) { ditherBand(sel, { cell: 2, color: o.mode ? 'rgba(233,230,221,.3)' : '#E9E6DD', still: true }); return; }
+    var FS = ['precision highp float;',
+      'uniform vec2 R;uniform float T;uniform float M;uniform float MODE;uniform float AL;uniform float BL;uniform float BR;uniform float AMP;uniform float PX;',
+      GLU.NOISE,
+      'void main(){',
+      ' vec2 uv=gl_FragCoord.xy/R;',
+      ' float t=T*.16;',
+      ' vec2 p=vec2(uv.x*2.1,uv.y*1.3);',
+      ' float q=fbm(p*1.5+vec2(t*.7,t*.3));',
+      ' float w=fbm(p+vec2(q*1.4+t,q*.7-t*.45));',
+      ' float base=mix(BL,BR,smoothstep(0.,1.,uv.x))+(M-.5)*.07+.02*sin(T*.6+uv.x*5.);',
+      ' float crest=base+(w-.5)*AMP;',
+      ' float d=uv.y-crest;',
+      ' float mass=1.-smoothstep(-.014,.014,d);',
+      ' vec2 gp=mat2(.966,-.259,.259,.966)*gl_FragCoord.xy/PX;',
+      ' vec2 cel=fract(gp)-.5;',
+      ' float tw=.9+.22*sin(T*2.6+h21(floor(gp))*6.283);',
+      ' float dr=clamp(.5-d*4.,0.,.5)*(1.-smoothstep(.02,.24,abs(d)))*tw;',
+      ' float ht=(1.-smoothstep(max(dr-.13,0.),dr+.001,length(cel)))*step(.02,dr);',
+      ' float C=clamp(max(mass,ht),0.,1.);',
+      ' float gn=(h21(gl_FragCoord.xy+fract(T*1.7)*61.)-.5)*.06;',
+      ' float tex=.03*(fbm(gp*.6+t)-.5);',
+      ' vec3 ink=vec3(.043,.039,.031);vec3 bone=vec3(.914,.902,.867);',
+      ' if(MODE<.5){gl_FragColor=vec4(mix(ink,bone,C)+gn+tex*C,1.);}',
+      ' else{gl_FragColor=vec4(bone+gn,C*AL);}',
+      '}'].join('\n');
+    var pr = GLU.prog(gl, FS);
+    if (!pr) return;
+    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    function U(n) { return gl.getUniformLocation(pr, n); }
+    gl.uniform1f(U('MODE'), o.mode); gl.uniform1f(U('AL'), o.alpha);
+    gl.uniform1f(U('BL'), o.baseL); gl.uniform1f(U('BR'), o.baseR); gl.uniform1f(U('AMP'), o.amp);
+    var uR = U('R'), uT = U('T'), uM = U('M');
+    function resize() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      cv.width = Math.max(2, cv.offsetWidth * dpr | 0);
+      cv.height = Math.max(2, cv.offsetHeight * dpr | 0);
+      gl.viewport(0, 0, cv.width, cv.height); gl.uniform1f(U('PX'), 6.2 * dpr);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    function draw(ms) {
+      gl.uniform2f(uR, cv.width, cv.height); gl.uniform1f(uT, ms); gl.uniform1f(uM, mx);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    }
+    var run = true, mx = .5, mt = .5;
+    if (RM) { draw(12); return; }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { run = en[0].isIntersecting; }).observe(cv);
+    }
+    var hoverHost = cv.closest('section,footer') || cv.parentElement;
+    hoverHost.addEventListener('mousemove', function (e) { mt = e.clientX / window.innerWidth; });
+    (function fr(ms) { if (run) { mx += (mt - mx) * .05; draw(ms * .001); } requestAnimationFrame(fr); })(0);
+  }
+
+  glWaveBand('#cv-band-cap', { mode: 0, alpha: 1, baseL: .34, baseR: .60, amp: .36 });
 
   /* ---------- year ---------- */
   var yr = document.getElementById('year');
