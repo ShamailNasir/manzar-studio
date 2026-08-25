@@ -3278,3 +3278,30 @@ Video/atlas/edit unchanged from entry 159 (approved placement). Engine
 file only. v8 remains fully revertible (tag + backup incl. video).
 Browser QA pending: his open tabs sit outside the extension's group —
 asked him to drag the Labs tab into the Claude tab group or refresh+react.
+
+## 161 — Hero v15: enhance the footage, don't transform it (2026-08-25)
+
+User on v14: the B&W/contrast grade awful — the clips' OWN theme was
+already right; just enhance it (CA + polished shaders on top).
+
+**Video rebuilt with ZERO color grading** — same approved cut/retime/
+loop-bake, only invisible cleanup (light hqdn3d + gradfun). Original
+tones, exposure and character preserved exactly. Normals rebaked, atlas
+1600×1350 crf19 (24.1MB / 30MB b64), poster refreshed.
+
+**Engine set to a light polish layer — LIVE-TUNED in his browser tab**
+(first time this session the tab was reachable; iterated with __hero.set
++ screenshots at three moments plus a loop-wrap crossing):
+- EXP 1.35 through ACES ≈ tone-neutral with a soft highlight shoulder
+  (offsets the ACES midtone dip; the footage reads as itself)
+- CA: cac .0009 + ca .0028 — visible spectral edges (his ask), trimmed
+  live from .0038 which read messy on white carriages
+- whisper relight: DIFF .08 / SPEC .12 (pow 50) / rim+sheen 0 — life
+  without changing tone; halation .15, streaks .25, grain .022 fine
+- crush eased to .006; density-contrast line removed; DOF off; mono
+  no-op line retained
+**Verified live:** platform, rush and man-watching moments screenshot-
+checked; loop wrap 20.4→0.6 crossed clean; no engine errors. fps reading
+blocked by tab occlusion again (visibilityState hidden) — cost is below
+previously-measured-60fps configs (DOF off).
+Reverts: v8 (tag/backup), or any logged dial set.
