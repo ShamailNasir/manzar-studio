@@ -3214,3 +3214,35 @@ labs/assets/css/manzar-theme.css (.nav-links) and index.html inline.
 ## 158 — Nav typography reverted to original (2026-08-21)
 Entry 157 undone in full: weight 500, opacity .88, letter-spacing -.022em
 restored verbatim on both navs. Nav is byte-equivalent to its pre-157 state.
+
+## 159 — Labs hero v13: the underground reel (2026-08-25)
+
+Current v8 preserved FIRST: Backup/2026-08-21-hero-v8/ now also holds
+silk.mp4 / silk.b64.js / hero-silk.jpg (engine was already there; git tag
+hero-v8-approved). Revert = copy those four files back.
+
+**v13 — four AI train clips cut into one 21.1s cinematic loop:**
+- frame-reviewed all four (contact sheet); narrative order: platform
+  establishing (tunnel) → close rush (center, fisheye corners cropped 16%)
+  → man in headphones watching the blur → low pass resolving to an EMPTY
+  station — which loops perfectly back into the arrival.
+- uniform grade before cutting: full desat, hqdn3d denoise, gradfun
+  deband, per-clip exposure matched by measurement (means 62.9-89.7 →
+  65.7-67.7 across all four), contrast 1.07 / gamma .98.
+- edit: 0.5s crossfades; retime ×1.1765 + minterpolate blend to 60fps
+  (v5 recipe); self-xfade loop bake 1.3s (seam diff = one frame of
+  motion — native loop, no runtime fades).
+- normals REBAKED for the new footage: v5 technique (luma-height,
+  dual-σ 2/7 gaussian gradients, K=14, temporal EMA .42 run twice so the
+  smoothing state wraps at the loop), streamed over all 1268 frames.
+- atlas 1600×1350 (color 1600×900 + normal strip 1600×450, same-thirds
+  mapping, same 16:9 aspect → zero engine geometry changes), crf19,
+  23.9MB mp4 / 30MB b64 shim. Poster = the man-watching frame.
+- ENGINE UNTOUCHED except two dials: the approved v8 macro-lens pipeline
+  (relight + amplified normals + DOF band + rack focus + ACES dark
+  cinema) runs the new footage as-is; DET .20→.10 and SHEEN .30→.22
+  because trains are metal, not silk.
+
+**Verified at every stage by frame extraction:** contact sheet, grade
+uniformity strip, loop-seam diff, atlas color+normal sanity. Browser QA
+pending user refresh (extension cannot open file:// tabs itself).

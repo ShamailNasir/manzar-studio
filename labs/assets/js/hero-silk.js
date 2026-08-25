@@ -1,5 +1,8 @@
 /* ============================================================
-   LABS HERO - charcoal silk, macro lens              (engine v8)
+   LABS HERO - underground trains, macro lens        (engine v13)
+   Footage: 4-clip London Underground reel (21.1s loop, 1600x1350
+   atlas @60fps, self-xfade loop-baked, normals rebaked). Engine is
+   the approved v8 pipeline; only DET/SHEEN eased for metal.
    ============================================================
    v7's dark-cinema relight stays. v8 adds the thing every grade
    so far could not: OPTICS. The silk now reads as macro footage
@@ -286,7 +289,7 @@
   var DIFF = .36, SPEC = .32, SPECPOW = 90., ANISO = .42, RIM = .08,
       GRAIN = .028, ORBIT = .09, ELEV = .58,
       CLAR = .30, SOFT = .9, CAC = .0012, CA = .0032, STREAK = .45, HAL = .15,
-      NAMP = 2.4, DET = .20, TILE = 6.0, SHEEN = .30, SHEENR = .38, EXP = 1.0,
+      NAMP = 2.4, DET = .10, TILE = 6.0, SHEEN = .22, SHEENR = .38, EXP = 1.0,
       BLUR = 26., BOKEH = 4., FOCUSW = .11, FEATHER = .60, RACKA = .15, RACKS = .10;
 
   var started = false, run = true;
