@@ -379,7 +379,7 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 /* the pin distance was set in vh while the pinned child was sized in
    svh. Two different units describing the same viewport is exactly the
    kind of mismatch that makes a page re-measure itself mid-scroll. */
-.hero{ height:165svh; }
+.hero{ height:100svh; }
 .hero-shell{ height:100svh; }
 
 .hero-inner{ padding:0 var(--pad) clamp(40px,3.4vw,72px); }

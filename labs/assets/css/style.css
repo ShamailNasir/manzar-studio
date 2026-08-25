@@ -222,7 +222,7 @@ main::after{content:"";display:block;height:2px}
 .menu-mail:hover{color:var(--sig)}
 
 /* ── hero ─────────────────────────────────────────────────── */
-.hero{height:165vh;position:relative}
+.hero{height:100svh;position:relative}
 .hero-shell{
   position:sticky;top:0;height:100svh;overflow:hidden;
   /* centre, not 50% 100%: shrinking from the bottom edge put the whole 10vh of

@@ -3324,3 +3324,17 @@ transform none at scroll, full-bleed intact.
 SaaS Platforms, MVP Sprints, Mobile, Design Systems, Manzar Labs)
 interleaved into the diagonal cross-marquee light band alongside the
 existing capability terms; locations band untouched. Verified live.
+
+
+## 164 — One-scroll hero + v16 'bold print' grade (2026-08-25)
+SCROLL BUG: .hero was 165svh (runway for the removed shrink scrub) —
+3-4 wheel turns of pinned dead scroll. Now 100svh in both labs
+stylesheets; the leftover #heroTitle parallax (whose trigger range
+collapses at 100svh) removed. Verified live: hero height == viewport.
+HERO v16: v15 enhanced toward the SOURCE STILLS he provided (rich true
+blacks, glowing train windows, crisp print feel) — pass B gains mild
+density contrast .14 + crush .012; dials live-tuned in his tab against
+both reference moments: EXP 1.28, HAL .22, STREAK .35, DIFF .12,
+SPEC .18, GRAIN .026; CA unchanged (.0028/.0009). Both frames screenshot-
+matched to the references. No B&W conversion, no wash — original footage
+character kept, printed bolder.

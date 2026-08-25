@@ -193,7 +193,8 @@
     '  float lm = lum(col);',
     '  col *= 1.0; /* pure monochrome: no split tint on the train reel */',
     '  col = aces(col * uExp);',
-    '  col = max(col - .006, 0.) / .994;',
+    '  col = mix(col, col * col * (3. - 2. * col), .14);',
+    '  col = max(col - .012, 0.) / .988;',
     '  float vg = smoothstep(1.5, .5, length(vUv - vec2(.5, .5)));',
     '  col *= mix(.86, 1., vg);',
     '  col += (fract(sin(dot(gl_FragCoord.xy + fract(uGrainT) * 61., vec2(127.1, 311.7))) * 43758.5453) - .5) * uGrain * (1. - uRM * .6);',
@@ -293,10 +294,13 @@
      the footage's own theme: original tones preserved (EXP 1.35 offsets
      the ACES midtone dip), CA visible but tasteful, whisper of light
      sweep, halation + streaks + fine grain. No DOF, no B&W grade. */
-  var DIFF = .08, SPEC = .12, SPECPOW = 50., ANISO = .50, RIM = 0.,
-      GRAIN = .022, ORBIT = .22, ELEV = .55,
-      CLAR = .25, SOFT = .8, CAC = .0009, CA = .0028, STREAK = .25, HAL = .15,
-      NAMP = 2.2, DET = .05, TILE = 6.0, SHEEN = 0., SHEENR = .38, EXP = 1.35,
+  /* v16 "bold print" — live-tuned against the source stills: richer
+     blacks (mild density contrast .14 + crush .012 in pass B), luminous
+     windows (hal .22, streak .35), a touch more sculpt, EXP 1.28. */
+  var DIFF = .12, SPEC = .18, SPECPOW = 50., ANISO = .50, RIM = 0.,
+      GRAIN = .026, ORBIT = .22, ELEV = .55,
+      CLAR = .25, SOFT = .8, CAC = .0009, CA = .0028, STREAK = .35, HAL = .22,
+      NAMP = 2.2, DET = .05, TILE = 6.0, SHEEN = 0., SHEENR = .38, EXP = 1.28,
       BLUR = 0., BOKEH = 4., FOCUSW = .11, FEATHER = .60, RACKA = 0., RACKS = .10;
 
   var started = false, run = true;

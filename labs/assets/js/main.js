@@ -208,10 +208,7 @@
     /* the hero stays full-bleed on scroll — the old shell inset
        (scale .965 + radius + feather) is removed by request; the
        frame never shrinks out of the viewport. */
-    gsap.to('#heroTitle', {
-      yPercent: -42, opacity: 0.2, ease: 'none',
-      scrollTrigger: { trigger: '#hero', start: 'top top', end: '55% bottom', scrub: 0.65 }
-    });
+    /* title parallax removed with the tall-hero runway (hero is 100svh now) */
     /* hero media parallax removed: the video frame stays pinned solid on
        all four edges while scrolling — no downward slide, no exposed ink. */
 
