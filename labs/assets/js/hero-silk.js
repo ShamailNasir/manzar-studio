@@ -161,7 +161,7 @@
     'uniform sampler2D uT;',
     'uniform float uTime, uBlur, uBokeh, uFocusW, uFeather, uRackA, uRackS;',
     'uniform float uExp, uGrain, uGrainT, uRM;',
-    'uniform float uEdgeB, uEdgeS, uGlow, uDesat, uVig;',
+    'uniform float uEdgeB, uEdgeS, uGlow, uDesat, uVig, uBaseB;',
     'uniform vec2 uRes;',
     'const int NTAP = 20;',
     'float lum(vec3 c){ return dot(c, vec3(.299,.587,.114)); }',
@@ -180,6 +180,10 @@
     '  vec2 q = vUv - .5; q.x *= uRes.x / uRes.y;',
     '  float rr = length(q);',
     '  coc = max(coc, uEdgeB * smoothstep(uEdgeS, 1.15, rr));',
+    /* v17.1: base "HD blur" - a small always-on circle of confusion,
+       resolved by the same Vogel gather, softens the digital edge of
+       the whole frame without ever reading as out-of-focus */
+    '  coc = max(coc, uBaseB);',
     '  coc *= uRes.y / 1080.;',
     '  vec3 col;',
     '  if (coc < .6) {',
@@ -334,7 +338,8 @@
       CLAR = .30, SOFT = .8, CAC = .0011, CA = .0036, STREAK = .50, HAL = .30,
       NAMP = 2.2, DET = .05, TILE = 6.0, SHEEN = 0., SHEENR = .38, EXP = 1.24,
       BLUR = 0., BOKEH = 4., FOCUSW = .11, FEATHER = .60, RACKA = 0., RACKS = .10,
-      DISTORT = .006, EDGEB = 9., EDGES = .50, GLOW = .42, DESAT = .60, VIG = .74;
+      DISTORT = .006, EDGEB = 9., EDGES = .50, GLOW = .42, DESAT = .60, VIG = .74,
+      BASEB = 1.7;
 
   var started = false, run = true;
   var tryPlay = function (vv) { if (vv) { var p = vv.play(); if (p && p.catch) p.catch(function () {}); } };
@@ -392,6 +397,7 @@
     if (o.glow != null) GLOW = o.glow;
     if (o.desat != null) DESAT = o.desat;
     if (o.vig != null) VIG = o.vig;
+    if (o.baseb != null) BASEB = o.baseb;
     if (o.rate != null) { RATE = o.rate; vA.defaultPlaybackRate = RATE; vA.playbackRate = RATE; }
     if (o.phase != null) window.__hero.phase = o.phase;
     return { DIFF: DIFF, SPEC: SPEC, SPECPOW: SPECPOW, ANISO: ANISO, RIM: RIM,
@@ -400,7 +406,7 @@
              TILE: TILE, SHEEN: SHEEN, SHEENR: SHEENR, EXP: EXP,
              BLUR: BLUR, BOKEH: BOKEH, FOCUSW: FOCUSW, FEATHER: FEATHER,
              RACKA: RACKA, RACKS: RACKS, DISTORT: DISTORT, EDGEB: EDGEB,
-             EDGES: EDGES, GLOW: GLOW, DESAT: DESAT, VIG: VIG,
+             EDGES: EDGES, GLOW: GLOW, DESAT: DESAT, VIG: VIG, BASEB: BASEB,
              rate: vA.playbackRate };
   };
 
@@ -470,6 +476,7 @@
     gl.uniform1f(UB.uGlow, GLOW);
     gl.uniform1f(UB.uDesat, DESAT);
     gl.uniform1f(UB.uVig, VIG);
+    gl.uniform1f(UB.uBaseB, BASEB);
     gl.uniform1f(UB.uGrain, GRAIN);
     gl.uniform1f(UB.uGrainT, now * .001);
     gl.uniform1f(UB.uRM, RM ? 1 : 0);
