@@ -3305,3 +3305,10 @@ checked; loop wrap 20.4→0.6 crossed clean; no engine errors. fps reading
 blocked by tab occlusion again (visibilityState hidden) — cost is below
 previously-measured-60fps configs (DOF off).
 Reverts: v8 (tag/backup), or any logged dial set.
+
+
+## 162 — Labs hero: scroll shrink removed, ticker label fixed (2026-08-25)
+Removed the #heroShell scroll tween (scale .965 + border-radius + feather
+inset) — the hero stays full-bleed while scrolling; title/media parallax
+kept. Ticker highlight 'Manzar Studio' → 'Manzar Labs'. Verified live:
+shell transform none at scroll, ticker text confirmed.

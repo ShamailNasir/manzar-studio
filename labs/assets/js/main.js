@@ -205,14 +205,9 @@
   /* ══════════════════ scroll animations ══════════════════ */
   if (hasGSAP && !reduceMotion) {
 
-    /* hero shell insets + content parallax out */
-    gsap.to('#heroShell', {
-      scale: 0.965, borderRadius: '20px',
-      /* edge feather comes up with the inset, so full bleed stays crisp */
-      '--feather': 1,
-      ease: 'none',
-      scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom bottom', scrub: 0.65 }
-    });
+    /* the hero stays full-bleed on scroll — the old shell inset
+       (scale .965 + radius + feather) is removed by request; the
+       frame never shrinks out of the viewport. */
     gsap.to('#heroTitle', {
       yPercent: -42, opacity: 0.2, ease: 'none',
       scrollTrigger: { trigger: '#hero', start: 'top top', end: '55% bottom', scrub: 0.65 }
