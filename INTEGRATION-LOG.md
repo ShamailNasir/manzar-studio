@@ -3209,3 +3209,8 @@ no browser is currently available to verify.
 
 Revert: weight 600→500, opacity 1→.88, spacing -.018→-.022 in
 labs/assets/css/manzar-theme.css (.nav-links) and index.html inline.
+
+
+## 158 — Nav typography reverted to original (2026-08-21)
+Entry 157 undone in full: weight 500, opacity .88, letter-spacing -.022em
+restored verbatim on both navs. Nav is byte-equivalent to its pre-157 state.

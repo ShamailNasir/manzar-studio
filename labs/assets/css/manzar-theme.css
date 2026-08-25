@@ -1892,12 +1892,10 @@ html.js .stat[data-reveal]:nth-child(4){ transition-delay:.27s; }
 .brand img{height:clamp(26px,2.1vw,33px);width:auto;display:block}
 .nav-links{
   justify-self:center;display:flex;gap:clamp(22px,1.562vw,40px);
-  /* visibility, kept authentic: no shadow, no surface — the letters just
-     carry more weight and full ink through the difference blend */
-  font-family:var(--body);font-weight:600;
-  font-size:clamp(17px,1.32vw,21px);letter-spacing:-.018em;
+  font-family:var(--body);font-weight:500;
+  font-size:clamp(17px,1.32vw,21px);letter-spacing:-.022em;
 }
-.nav-links a{position:relative;padding:5px 0;color:#fff;opacity:1;transition:opacity .35s}
+.nav-links a{position:relative;padding:5px 0;color:#fff;opacity:.88;transition:opacity .35s}
 .nav-links a:hover{opacity:1}
 .nav-links a::after{
   content:"";position:absolute;left:0;bottom:0;height:1.5px;width:100%;background:#fff;
