@@ -1,8 +1,9 @@
 /* ============================================================
-   LABS HERO - underground trains, macro lens        (engine v13)
-   Footage: 4-clip London Underground reel (21.1s loop, 1600x1350
-   atlas @60fps, self-xfade loop-baked, normals rebaked). Engine is
-   the approved v8 pipeline; only DET/SHEEN eased for metal.
+   LABS HERO - underground trains, long exposure     (engine v17)
+   Footage: 4-clip London Underground reel (17.05s loop, 1600x1350
+   atlas @60fps, self-xfade loop-baked, normals rebaked; clips 1+3
+   at 1.45x). Engine is the approved v8 pipeline + v17 optics:
+   normal-map refraction, edge defocus, wide halation, silver print.
    ============================================================
    v7's dark-cinema relight stays. v8 adds the thing every grade
    so far could not: OPTICS. The silk now reads as macro footage
@@ -72,7 +73,7 @@
     'uniform sampler2D uA, uW;',
     'uniform float uDiff, uSpec, uSpecPow, uAniso, uRim;',
     'uniform float uClar, uSoft, uZoom, uCAc, uCA, uStreak, uHal;',
-    'uniform float uNAmp, uDet, uSheen, uSheenR;',
+    'uniform float uNAmp, uDet, uSheen, uSheenR, uDistort;',
     'uniform vec2 uRes, uTile;',
     'uniform vec3 uL;',
     'const vec2 VRES = vec2(1920., 1080.);',
@@ -91,7 +92,11 @@
     '  vec2 st = vUv - .5;',
     '  if (ca > va) st.y *= va / ca; else st.x *= ca / va;',
     '  st /= uZoom;',
-    '  vec2 uv = st + .5;',
+    /* v17: the baked normals REFRACT the image itself - a subtle
+       glass-shimmer displacement, so the relief is felt as motion */
+    '  vec2 uv0 = st + .5;',
+    '  vec3 nbe = texture2D(uA, nuv(uv0)).rgb * 2. - 1.;',
+    '  vec2 uv = uv0 + nbe.xy * uDistort;',
     '  vec2 pc = vUv - .5; pc.x *= ca;',
     '  float r2 = dot(pc, pc);',
     '  vec2 cad = normalize(pc + 1e-6) * (uCAc + uCA * r2);',
@@ -108,7 +113,7 @@
     '           + vid(uv + vec2(0., tx.y)) + vid(uv - vec2(0., tx.y));',
     '  col = clamp(col + (col - nb4 * .25) * uClar, 0., 1.);',
     '  float l0 = lum(col);',
-    '  vec3 nb = texture2D(uA, nuv(uv)).rgb * 2. - 1.;',
+    '  vec3 nb = nbe;',
     '  nb.xy *= uNAmp; nb = normalize(nb);',
     '  vec2 wuv = mat2(.866, -.5, .5, .866) * (uv * uTile);',
     '  vec3 nd = texture2D(uW, wuv).rgb * 2. - 1.;',
@@ -156,6 +161,7 @@
     'uniform sampler2D uT;',
     'uniform float uTime, uBlur, uBokeh, uFocusW, uFeather, uRackA, uRackS;',
     'uniform float uExp, uGrain, uGrainT, uRM;',
+    'uniform float uEdgeB, uEdgeS, uGlow, uDesat, uVig;',
     'uniform vec2 uRes;',
     'const int NTAP = 20;',
     'float lum(vec3 c){ return dot(c, vec3(.299,.587,.114)); }',
@@ -169,6 +175,11 @@
     '  float focusY = .5 + uRackA * sin(uTime * uRackS + .7);',
     '  float dy = abs(vUv.y - focusY);',
     '  float coc = uBlur * pow(smoothstep(uFocusW, uFeather, dy), 1.2);',
+    /* v17: cinema-prime edge falloff - dead sharp centre, the frame
+       corners melt into defocus like a wide-open vintage lens */
+    '  vec2 q = vUv - .5; q.x *= uRes.x / uRes.y;',
+    '  float rr = length(q);',
+    '  coc = max(coc, uEdgeB * smoothstep(uEdgeS, 1.15, rr));',
     '  coc *= uRes.y / 1080.;',
     '  vec3 col;',
     '  if (coc < .6) {',
@@ -189,15 +200,30 @@
     '    }',
     '    col = acc / wsum;',
     '  }',
-    /* the dark-cinema grade, after the optics */
+    /* v17: wide thresholded halation - only what is already bright
+       (train windows, tunnel lamps) blooms across the frame */
+    '  vec2 gpx = 1. / uRes;',
+    '  vec3 glo = vec3(0.);',
+    '  for (int i = 0; i < 8; i++) {',
+    '    float ga = float(i) * .7854;',
+    '    float gr = mix(22., 44., mod(float(i), 2.));',
+    '    vec3 gs = texture2D(uT, uv + vec2(cos(ga), sin(ga)) * gr * gpx).rgb;',
+    '    glo += max(gs - .45, 0.);',
+    '  }',
+    '  col += glo * (uGlow / 8.) * vec3(1., 1., 1.02);',
+    /* the silver-print grade, after the optics */
     '  float lm = lum(col);',
-    '  col *= 1.0; /* pure monochrome: no split tint on the train reel */',
+    '  col = mix(col, vec3(lm), uDesat);',
     '  col = aces(col * uExp);',
     '  col = mix(col, col * col * (3. - 2. * col), .14);',
     '  col = max(col - .012, 0.) / .988;',
-    '  float vg = smoothstep(1.5, .5, length(vUv - vec2(.5, .5)));',
-    '  col *= mix(.86, 1., vg);',
-    '  col += (fract(sin(dot(gl_FragCoord.xy + fract(uGrainT) * 61., vec2(127.1, 311.7))) * 43758.5453) - .5) * uGrain * (1. - uRM * .6);',
+    '  float vg = smoothstep(1.38, .42, length(vUv - vec2(.5, .5)));',
+    '  col *= mix(uVig, 1., vg);',
+    /* coarse, luma-weighted photochemical grain - lives in the mids,
+       stays out of the deep blacks and the blown windows */
+    '  float lg = lum(col);',
+    '  float gA = mix(.45, 1., smoothstep(0., .22, lg)) * mix(1., .55, smoothstep(.72, 1., lg));',
+    '  col += (fract(sin(dot(floor(gl_FragCoord.xy / 1.5) + fract(uGrainT) * 61., vec2(127.1, 311.7))) * 43758.5453) - .5) * uGrain * gA * (1. - uRM * .6);',
     '  gl_FragColor = vec4(col, 1.);',
     '}',
   ].join('\n');
@@ -297,11 +323,18 @@
   /* v16 "bold print" — live-tuned against the source stills: richer
      blacks (mild density contrast .14 + crush .012 in pass B), luminous
      windows (hal .22, streak .35), a touch more sculpt, EXP 1.28. */
-  var DIFF = .12, SPEC = .18, SPECPOW = 50., ANISO = .50, RIM = 0.,
-      GRAIN = .026, ORBIT = .22, ELEV = .55,
-      CLAR = .25, SOFT = .8, CAC = .0009, CA = .0028, STREAK = .35, HAL = .22,
-      NAMP = 2.2, DET = .05, TILE = 6.0, SHEEN = 0., SHEENR = .38, EXP = 1.28,
-      BLUR = 0., BOKEH = 4., FOCUSW = .11, FEATHER = .60, RACKA = 0., RACKS = .10;
+  /* v17 "long exposure" — the cinematic rebuild. Faster reel (clips 1+3
+     at 1.45x). Four new optical layers: normal-map REFRACTION (uDistort,
+     the relief warps the image), cinema-prime EDGE DEFOCUS (uEdgeB/uEdgeS,
+     centre stays razor sharp), wide thresholded HALATION (uGlow, only the
+     bright windows bloom), and a silver-print grade (uDesat toward luma,
+     deeper vignette uVig, coarse luma-weighted grain). */
+  var DIFF = .14, SPEC = .22, SPECPOW = 50., ANISO = .50, RIM = 0.,
+      GRAIN = .032, ORBIT = .22, ELEV = .55,
+      CLAR = .30, SOFT = .8, CAC = .0011, CA = .0036, STREAK = .50, HAL = .30,
+      NAMP = 2.2, DET = .05, TILE = 6.0, SHEEN = 0., SHEENR = .38, EXP = 1.24,
+      BLUR = 0., BOKEH = 4., FOCUSW = .11, FEATHER = .60, RACKA = 0., RACKS = .10,
+      DISTORT = .006, EDGEB = 9., EDGES = .50, GLOW = .42, DESAT = .60, VIG = .74;
 
   var started = false, run = true;
   var tryPlay = function (vv) { if (vv) { var p = vv.play(); if (p && p.catch) p.catch(function () {}); } };
@@ -353,6 +386,12 @@
     if (o.feather != null) FEATHER = o.feather;
     if (o.racka != null) RACKA = o.racka;
     if (o.racks != null) RACKS = o.racks;
+    if (o.distort != null) DISTORT = o.distort;
+    if (o.edgeb != null) EDGEB = o.edgeb;
+    if (o.edges != null) EDGES = o.edges;
+    if (o.glow != null) GLOW = o.glow;
+    if (o.desat != null) DESAT = o.desat;
+    if (o.vig != null) VIG = o.vig;
     if (o.rate != null) { RATE = o.rate; vA.defaultPlaybackRate = RATE; vA.playbackRate = RATE; }
     if (o.phase != null) window.__hero.phase = o.phase;
     return { DIFF: DIFF, SPEC: SPEC, SPECPOW: SPECPOW, ANISO: ANISO, RIM: RIM,
@@ -360,7 +399,9 @@
              CAC: CAC, CA: CA, STREAK: STREAK, HAL: HAL, NAMP: NAMP, DET: DET,
              TILE: TILE, SHEEN: SHEEN, SHEENR: SHEENR, EXP: EXP,
              BLUR: BLUR, BOKEH: BOKEH, FOCUSW: FOCUSW, FEATHER: FEATHER,
-             RACKA: RACKA, RACKS: RACKS, rate: vA.playbackRate };
+             RACKA: RACKA, RACKS: RACKS, DISTORT: DISTORT, EDGEB: EDGEB,
+             EDGES: EDGES, GLOW: GLOW, DESAT: DESAT, VIG: VIG,
+             rate: vA.playbackRate };
   };
 
   function render (now) {
@@ -404,6 +445,7 @@
     gl.uniform1f(UA.uDet, DET);
     gl.uniform1f(UA.uSheen, SHEEN);
     gl.uniform1f(UA.uSheenR, SHEENR);
+    gl.uniform1f(UA.uDistort, DISTORT);
     gl.uniform2f(UA.uRes, cv.width, cv.height);
     gl.uniform2f(UA.uTile, TILE * (cv.width / Math.max(cv.height, 1)), TILE);
     gl.uniform3f(UA.uL, Lx, Ly, el);
@@ -423,6 +465,11 @@
     gl.uniform1f(UB.uRackA, RACKA);
     gl.uniform1f(UB.uRackS, RACKS);
     gl.uniform1f(UB.uExp, EXP);
+    gl.uniform1f(UB.uEdgeB, EDGEB);
+    gl.uniform1f(UB.uEdgeS, EDGES);
+    gl.uniform1f(UB.uGlow, GLOW);
+    gl.uniform1f(UB.uDesat, DESAT);
+    gl.uniform1f(UB.uVig, VIG);
     gl.uniform1f(UB.uGrain, GRAIN);
     gl.uniform1f(UB.uGrainT, now * .001);
     gl.uniform1f(UB.uRM, RM ? 1 : 0);
