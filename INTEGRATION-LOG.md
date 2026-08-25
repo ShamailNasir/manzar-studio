@@ -3193,3 +3193,19 @@ all subpages) and Studio's inline styles; the menu.css text-protection
 block and the menu.js cream-band inversion driver from entry 155 are
 deleted. Verified: difference-blend present in both files, zero traces
 of the added shadow/inversion code.
+
+## 157 — Nav text visibility, kept authentic (2026-08-21)
+
+User: same authentic difference-blend style, NO shadows — just somewhat
+more visible text. Trial run; he'll ask for a revert if it doesn't land.
+
+Typography-only change on both navs (labs theme + studio inline):
+weight 500→600, resting opacity .88→1 (hover state unchanged since it was
+already 1), letter-spacing eased -.022em→-.018em to keep the heavier cut
+from closing up. No shadows, no surface, no filters — the blend behavior
+is untouched. Deliberately skipped backdrop-filter contrast tricks: they
+create a stacking isolation that can silently break mix-blend-mode, and
+no browser is currently available to verify.
+
+Revert: weight 600→500, opacity 1→.88, spacing -.018→-.022 in
+labs/assets/css/manzar-theme.css (.nav-links) and index.html inline.
