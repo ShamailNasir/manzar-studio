@@ -3312,3 +3312,15 @@ Removed the #heroShell scroll tween (scale .965 + border-radius + feather
 inset) — the hero stays full-bleed while scrolling; title/media parallax
 kept. Ticker highlight 'Manzar Studio' → 'Manzar Labs'. Verified live:
 shell transform none at scroll, ticker text confirmed.
+
+
+## 163 — Labs hero pinned solid; ticker removed, keywords merged into cross bands (2026-08-25)
+1) Removed the .hero-media yPercent parallax (with the intro settling scale
+at 1.0 there was no headroom — scrolling slid the video down and exposed
+ink along the top edge). Hero now pinned on all four edges; verified live:
+transform none at scroll, full-bleed intact.
+2) Hero ticker strip below the hero deleted.
+3) Its keywords (AI Products, Enterprise & ERP, IoT & Connected Systems,
+SaaS Platforms, MVP Sprints, Mobile, Design Systems, Manzar Labs)
+interleaved into the diagonal cross-marquee light band alongside the
+existing capability terms; locations band untouched. Verified live.

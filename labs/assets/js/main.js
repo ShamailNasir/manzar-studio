@@ -212,12 +212,8 @@
       yPercent: -42, opacity: 0.2, ease: 'none',
       scrollTrigger: { trigger: '#hero', start: 'top top', end: '55% bottom', scrub: 0.65 }
     });
-    /* keep this under the image's scale(1.12) headroom (6% top and bottom) or the
-       parallax slides past the photo and exposes flat --ink along the top edge */
-    gsap.to('.hero-media', {
-      yPercent: 5, ease: 'none',
-      scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom bottom', scrub: 0.65 }
-    });
+    /* hero media parallax removed: the video frame stays pinned solid on
+       all four edges while scrolling — no downward slide, no exposed ink. */
 
     /* ── generic reveals ──────────────────────────────────────────
        These used to be gsap.fromTo({y:56, opacity:0}) tweens driven by
