@@ -3164,3 +3164,21 @@ used to invert). No layout/height changes; z-indexes untouched.
 Not browser-verified this round: the Windows Chrome session's tab group is
 gone and only the (off-limits) MacBook browser is connected — needs a hard
 refresh on his side. Single-property-class change, low risk.
+
+## 155 — Nav bar revert: no bar, self-protecting text (2026-08-21)
+
+User: didn't ask for a hard bar — revert it; just make the TEXT unaffected
+by the hero background.
+
+Reverted the ink-glass bar (entry 154) on both navs (labs theme + studio
+inline). New approach, no visible surface:
+- nav fully transparent again; text in constant bone with a soft double
+  text-shadow (1px crisp + 22px ambient) on links, menu button and CTA;
+  wordmark gets a matching drop-shadow. Crisp over any photo, no bar.
+- the one case the old difference-blend existed for — the nav floating
+  over the cream footer band — is handled by a tiny scroll driver in
+  menu.js: when the band's cream region reaches the nav, html.mz-nav-inv
+  flips text/wordmark/underlines to ink (styles in menu.css). Both files
+  load on every page, so the behaviour is sitewide by construction.
+No layout, size or z-index changes. Browser QA pending on his side (tab
+group closed; MacBook off-limits).
