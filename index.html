@@ -230,12 +230,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* ---------- nav ---------- */
 .nav{
-  position:fixed;inset:0 0 auto 0;z-index:90;color:#E9E6DD;
+  position:fixed;inset:0 0 auto 0;z-index:90;mix-blend-mode:difference;color:#fff;
   display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
   padding:16px var(--pad);
-  /* No bar, no blend trick: the nav is fully transparent and the TEXT
-     protects itself (soft shadows via menu.css). Over the cream footer
-     band, menu.js flips it to ink (html.mz-nav-inv). */
 }
 .nav-left{justify-self:start;display:flex;align-items:center;gap:clamp(14px,1.6vw,26px)}
 .brand{display:flex;align-items:center}

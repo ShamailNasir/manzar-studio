@@ -364,26 +364,3 @@ html.mzx-lock header.nav{
   transition:opacity .28s var(--x-ease, cubic-bezier(.22,1,.36,1));
 }
 .nav, .mz-nav{ transition:opacity .32s cubic-bezier(.22,1,.36,1); }
-
-
-/* ══ NAV TEXT PROTECTION (no bar) ═══════════════════════════════
-   The fixed nav is fully transparent; the text carries its own
-   contrast: constant bone ink + a soft double shadow that keeps it
-   crisp over photography without any visible surface. When the nav
-   floats over the cream footer band, menu.js sets html.mz-nav-inv
-   and everything flips to ink. */
-.nav{color:#E9E6DD}
-.nav .nav-links,
-.nav .menu-btn,
-.nav .nav-cta{text-shadow:0 1px 2px rgba(0,0,0,.55),0 6px 22px rgba(0,0,0,.35)}
-.nav .brand img{filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
-.nav .nav-links a{opacity:.94}
-.nav .nav-links a:hover{opacity:1}
-
-html.mz-nav-inv .nav{color:#0B0A08}
-html.mz-nav-inv .nav .nav-links,
-html.mz-nav-inv .nav .menu-btn,
-html.mz-nav-inv .nav .nav-cta{text-shadow:none}
-html.mz-nav-inv .nav .brand img{filter:invert(1)}
-html.mz-nav-inv .nav .nav-links a::after{background:#0B0A08}
-html.mz-nav-inv .nav .menu-btn-icon i{background:#0B0A08}

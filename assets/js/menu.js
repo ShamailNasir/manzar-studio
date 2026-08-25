@@ -197,26 +197,3 @@
     setInterval(tick, 20000);
   }
 })();
-
-
-/* ── nav ↔ cream band: flip the transparent nav to ink while it
-   floats over the lower (cream) part of the footer band ── */
-(function () {
-  var nav = document.querySelector('.nav');
-  var band = document.querySelector('.foot-band');
-  if (!nav || !band) return;
-  var on = false, tick = false;
-  function chk() {
-    tick = false;
-    var r = band.getBoundingClientRect();
-    var need = (r.top + r.height * 0.45) < 70 && r.bottom > 0;
-    if (need !== on) {
-      on = need;
-      document.documentElement.classList.toggle('mz-nav-inv', on);
-    }
-  }
-  function onScroll() { if (!tick) { tick = true; requestAnimationFrame(chk); } }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  chk();
-})();

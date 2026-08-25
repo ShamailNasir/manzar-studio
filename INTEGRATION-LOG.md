@@ -3182,3 +3182,14 @@ inline). New approach, no visible surface:
   load on every page, so the behaviour is sitewide by construction.
 No layout, size or z-index changes. Browser QA pending on his side (tab
 group closed; MacBook off-limits).
+
+## 156 — Nav fully reverted to original (2026-08-21)
+
+User: put it back exactly how it was before the nav change requests.
+
+Restored byte-equivalent original state (pre-entry-154): .nav in
+mix-blend-mode:difference with #fff text on both the labs theme (Labs +
+all subpages) and Studio's inline styles; the menu.css text-protection
+block and the menu.js cream-band inversion driver from entry 155 are
+deleted. Verified: difference-blend present in both files, zero traces
+of the added shadow/inversion code.
