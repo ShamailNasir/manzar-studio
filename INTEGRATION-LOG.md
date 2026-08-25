@@ -3246,3 +3246,35 @@ hero-v8-approved). Revert = copy those four files back.
 **Verified at every stage by frame extraction:** contact sheet, grade
 uniformity strip, loop-seam diff, atlas color+normal sanity. Browser QA
 pending user refresh (extension cannot open file:// tabs itself).
+
+## 160 — Hero v14: silver-noir treatment for the train reel (2026-08-25)
+
+User on v13's render: transparent-looking, no visible normal map, low
+quality — but CLIP PLACEMENT APPROVED. Rework the treatment only.
+
+**Diagnosis from his screenshots:** the v8 silk pipeline mis-fit the
+brighter train footage — lifted grey wash (exposure tuned for near-black
+silk), the 26px DOF band turning motion-blurred frames to milk, CA
+rainbow-ghosting on white carriages (his "transparent-looking"), and an
+orbit sheen too subtle to register ("don't even see any normal map").
+
+**Research + frame-prototyped fix (no guessing):** replicated the shader
+math in Python over real frames — 3×3 grade matrix (exposure/contrast/
+crush/halation variants) + a 3-azimuth relight prototype sampling the
+actual baked normals. Chosen: B&W film-emulation treatment per research
+(dense blacks never clipped, soft silver shoulder, halation felt-not-seen,
+tasteful grain):
+- EXP .80, post-ACES density contrast .26, crush .022, split-tone tints
+  REMOVED (pure monochrome discipline)
+- DOF OFF (BLUR 0, rack 0) — the footage carries its own motion blur
+- CA to a whisper (CAC .0005, CA .0014)
+- relight made VISIBLE: NAMP 3.0, DIFF .46, broad spec (SPEC .55 POW 34),
+  ORBIT .42 (a light sweep crossing every ~15s — prototype shows the
+  relief rolling across the carriages), RIM .12, weave detail .08
+- halation .42 (neutral glow on train windows/lights), streaks .65,
+  grain .032
+
+Video/atlas/edit unchanged from entry 159 (approved placement). Engine
+file only. v8 remains fully revertible (tag + backup incl. video).
+Browser QA pending: his open tabs sit outside the extension's group —
+asked him to drag the Labs tab into the Claude tab group or refresh+react.

@@ -191,9 +191,10 @@
     '  }',
     /* the dark-cinema grade, after the optics */
     '  float lm = lum(col);',
-    '  col *= mix(vec3(.94, .98, 1.06), vec3(1.01, 1., .985), smoothstep(.10, .55, lm));',
+    '  col *= 1.0; /* pure monochrome: no split tint on the train reel */',
     '  col = aces(col * uExp);',
-    '  col = max(col - .010, 0.) / .990;',
+    '  col = mix(col, col * col * (3. - 2. * col), .26);',
+    '  col = max(col - .022, 0.) / .978;',
     '  float vg = smoothstep(1.5, .5, length(vUv - vec2(.5, .5)));',
     '  col *= mix(.86, 1., vg);',
     '  col += (fract(sin(dot(gl_FragCoord.xy + fract(uGrainT) * 61., vec2(127.1, 311.7))) * 43758.5453) - .5) * uGrain * (1. - uRM * .6);',
@@ -286,11 +287,14 @@
   resize(); addEventListener('resize', resize);
 
   /* dials - live via window.__hero.set */
-  var DIFF = .36, SPEC = .32, SPECPOW = 90., ANISO = .42, RIM = .08,
-      GRAIN = .028, ORBIT = .09, ELEV = .58,
-      CLAR = .30, SOFT = .9, CAC = .0012, CA = .0032, STREAK = .45, HAL = .15,
-      NAMP = 2.4, DET = .10, TILE = 6.0, SHEEN = .22, SHEENR = .38, EXP = 1.0,
-      BLUR = 26., BOKEH = 4., FOCUSW = .11, FEATHER = .60, RACKA = .15, RACKS = .10;
+  /* v14 train-reel treatment (frame-prototyped): silver-noir B&W —
+     dense blacks, soft silver shoulder, halation felt-not-seen, a light
+     sweep you can actually SEE, no DOF wash, CA at a whisper. */
+  var DIFF = .46, SPEC = .55, SPECPOW = 34., ANISO = .60, RIM = .12,
+      GRAIN = .032, ORBIT = .42, ELEV = .55,
+      CLAR = .30, SOFT = .9, CAC = .0005, CA = .0014, STREAK = .65, HAL = .42,
+      NAMP = 3.0, DET = .08, TILE = 6.0, SHEEN = .16, SHEENR = .38, EXP = .80,
+      BLUR = 0., BOKEH = 4., FOCUSW = .11, FEATHER = .60, RACKA = 0., RACKS = .10;
 
   var started = false, run = true;
   var tryPlay = function (vv) { if (vv) { var p = vv.play(); if (p && p.catch) p.catch(function () {}); } };
