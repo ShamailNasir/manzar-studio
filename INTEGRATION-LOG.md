@@ -3143,3 +3143,24 @@ patches. All flags grep-verified across the five pages (door=0, rail=0,
 studio-group=0, own-nav=1). NOTE: the browser tab was closed mid-QA and
 the extension cannot open file:// URLs itself — final visual pass pending
 a reopened page.
+
+## 154 — Nav bar: difference-blend removed, constant glass backdrop (2026-08-21)
+
+User: the header looks bad over the hero background (an "overlay effect") —
+make the nav unaffected by whatever is behind it.
+
+Root cause: `.nav` rendered in `mix-blend-mode:difference` with white text
+(both Studio's inline nav and the shared labs-theme nav). Difference math
+turns to mud over mid-tone/blurry photography — exactly the wash in his
+screenshot.
+
+Fix (both places — labs/assets/css/manzar-theme.css .nav for Labs + all
+subpages, and index.html inline .nav for Studio): blend removed; the bar
+now carries its own glass — constant ink scrim (color-mix 72% ink) +
+16px backdrop blur + hairline bottom border, bone text. Clean and constant
+over any hero, any photo, and over the cream footer band (where difference
+used to invert). No layout/height changes; z-indexes untouched.
+
+Not browser-verified this round: the Windows Chrome session's tab group is
+gone and only the (off-limits) MacBook browser is connected — needs a hard
+refresh on his side. Single-property-class change, low risk.

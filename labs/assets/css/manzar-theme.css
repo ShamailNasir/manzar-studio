@@ -1883,9 +1883,16 @@ html.js .stat[data-reveal]:nth-child(4){ transition-delay:.27s; }
 
 /* ── header ─────────────────────────────────────────────────── */
 .nav{
-  position:fixed;inset:0 0 auto 0;z-index:190;mix-blend-mode:difference;color:#fff;
+  position:fixed;inset:0 0 auto 0;z-index:190;color:#E9E6DD;
   display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
   padding:16px var(--pad);
+  /* The bar used to sit in mix-blend-mode:difference, which turned to mud
+     over mid-tone photography. It now carries its own glass: constant ink
+     scrim + blur, clean over anything behind it. */
+  background:color-mix(in srgb,#0B0A08 72%,transparent);
+  -webkit-backdrop-filter:blur(16px) saturate(1.05);
+  backdrop-filter:blur(16px) saturate(1.05);
+  border-bottom:1px solid rgba(233,230,221,.06);
 }
 .nav-left{justify-self:start;display:flex;align-items:center;gap:clamp(14px,1.6vw,26px)}
 .brand{display:flex;align-items:center}
