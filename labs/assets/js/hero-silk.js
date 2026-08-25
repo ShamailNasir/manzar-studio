@@ -335,11 +335,14 @@
      deeper vignette uVig, coarse luma-weighted grain). */
   var DIFF = .14, SPEC = .22, SPECPOW = 50., ANISO = .50, RIM = 0.,
       GRAIN = .032, ORBIT = .22, ELEV = .55,
-      CLAR = .30, SOFT = .8, CAC = .0011, CA = .0036, STREAK = .50, HAL = .30,
+      CLAR = .30, SOFT = .8, CAC = .0006, CA = .0022, STREAK = .50, HAL = .30,
       NAMP = 2.2, DET = .05, TILE = 6.0, SHEEN = 0., SHEENR = .38, EXP = 1.24,
       BLUR = 0., BOKEH = 4., FOCUSW = .11, FEATHER = .60, RACKA = 0., RACKS = .10,
-      DISTORT = .006, EDGEB = 9., EDGES = .50, GLOW = .42, DESAT = .60, VIG = .74,
-      BASEB = 1.7;
+      /* v18: BASEB retired (flat blur read as mush at native res — motion
+         blur now lives in the footage itself, baked as a real shutter);
+         DISTORT eased so the refraction never reads as codec wobble. */
+      DISTORT = .0025, EDGEB = 9., EDGES = .50, GLOW = .42, DESAT = .60, VIG = .74,
+      BASEB = 0.;
 
   var started = false, run = true;
   var tryPlay = function (vv) { if (vv) { var p = vv.play(); if (p && p.catch) p.catch(function () {}); } };
