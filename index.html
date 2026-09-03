@@ -818,6 +818,19 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
 </style>
 <link rel="stylesheet" href="assets/css/crossover.css">
 <link rel="stylesheet" href="assets/css/menu.css">
+<style>
+/* Manzar sound pill (shared identity with Labs; engine: assets/js/mz-sound.js) */
+.hero-sound{position:absolute;right:clamp(20px,3vw,44px);bottom:30px;z-index:6;display:inline-flex;align-items:center;gap:10px;padding:11px 18px;border-radius:999px;background:rgba(11,10,8,.45);border:1px solid rgba(233,230,221,.22);color:#E9E6DD;font-weight:500;font-size:12px;line-height:1;letter-spacing:.03em;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:border-color .3s ease,background .3s ease}
+.hero-sound:hover{border-color:rgba(233,230,221,.5);background:rgba(11,10,8,.6)}
+.hero-sound .hs-bars{display:inline-flex;align-items:flex-end;gap:2px;height:11px}
+.hero-sound .hs-bars i{width:2px;height:3px;background:currentColor;border-radius:1px}
+.hero-sound.is-on .hs-bars i{animation:hsBar .8s ease-in-out infinite alternate}
+.hero-sound.is-on .hs-bars i:nth-child(2){animation-delay:.18s}
+.hero-sound.is-on .hs-bars i:nth-child(3){animation-delay:.36s}
+.hero-sound.is-on .hs-bars i:nth-child(4){animation-delay:.54s}
+@keyframes hsBar{from{height:3px}to{height:11px}}
+@media (prefers-reduced-motion: reduce){.hero-sound.is-on .hs-bars i{animation:none;height:8px}}
+</style>
 </head>
 <body data-theme="ink">
 <a class="skip" href="#work">Skip to content</a>
@@ -877,6 +890,10 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
       <p class="sub">Film, design and software from an independent studio<br>in Lahore and Paris, since 2019.</p>
     </div>
     <div class="hero-mark" id="heroMark" aria-hidden="true"><img id="heroMarkImg" src="assets/manzar-wordmark.png" alt="" width="2556" height="980" decoding="async"></div>
+    <button class="hero-sound" data-mz-sound type="button" aria-pressed="false" aria-label="Turn sound on">
+      <span class="hs-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="hs-txt">Sound</span>
+    </button>
+    <audio data-mz-ambience data-mz-volume=".4" loop preload="none" src="assets/audio/ambience-studio.m4a"></audio>
   </section>
 
   <!-- ============ MANIFESTO ============ -->
@@ -2399,6 +2416,7 @@ if (!window.gsap || RM) {
 <!-- Manzar Studio · manzar.studio · rebuilt August 2026 -->
 <script src="assets/js/crossover.js"></script>
 <script src="assets/js/menu.js" defer></script>
+<script src="assets/js/mz-sound.js" defer></script>
 <!-- ══════════════ MENU ══════════════
      Component: /assets/css/menu.css + /assets/js/menu.js. Self-contained,
      so the same markup runs on Studio, Labs and every subpage.
