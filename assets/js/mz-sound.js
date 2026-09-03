@@ -80,7 +80,7 @@
     clearInterval(raf);
     var from = amb.volume, t0 = performance.now();
     raf = setInterval(function () {
-      var k = Math.min((performance.now() - t0) / 700, 1);
+      var k = Math.min((performance.now() - t0) / 1200, 1);
       amb.volume = from + (to - from) * k;
       if (k >= 1) { clearInterval(raf); if (then) then(); }
     }, 40);
@@ -122,18 +122,22 @@
     });
   }
 
-  /* remembered "on" arms itself; first gesture anywhere starts it */
+  /* SOUND IS ON BY DEFAULT — only an explicit mute ('0') is respected.
+     Browsers may block play() before the first gesture, so setOn(true)
+     tries at once (succeeds where the origin already has engagement)
+     and a one-time gesture listener catches the blocked case. */
+  var kick = function () {
+    if (on && amb && amb.paused && !document.hidden) { playAmb(); fadeAmb(AMB_VOL); }
+    removeEventListener('pointerdown', kick, true);
+    removeEventListener('keydown', kick, true);
+    removeEventListener('touchstart', kick, true);
+  };
+  addEventListener('pointerdown', kick, true);
+  addEventListener('keydown', kick, true);
+  addEventListener('touchstart', kick, true);
   var saved = null;
   try { saved = localStorage.getItem(KEY); } catch (e) {}
-  if (saved === '1') {
-    var arm = function () {
-      removeEventListener('pointerdown', arm, true);
-      removeEventListener('keydown', arm, true);
-      setOn(true, false);
-    };
-    addEventListener('pointerdown', arm, true);
-    addEventListener('keydown', arm, true);
-  }
+  if (saved !== '0') setOn(true, false);
 
   /* ---- interaction sounds, delegated ---- */
   var SEL = 'a, button, summary, [role="button"], .mzx-row';

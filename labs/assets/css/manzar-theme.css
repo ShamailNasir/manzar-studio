@@ -2672,3 +2672,25 @@ html.js .svc-ghost{ opacity:1; }
 .hero-sound.is-on .hs-bars i:nth-child(4){ animation-delay:.54s }
 @keyframes hsBar{ from{ height:3px } to{ height:11px } }
 @media (prefers-reduced-motion: reduce){ .hero-sound.is-on .hs-bars i{ animation:none; height:8px } }
+
+/* v21: the sound control, reduced to its essence — four hairline bars,
+   fixed bottom-centre, difference-blended so it reads on any ground.
+   Dancing while the score plays; flat when muted. (The old hero pill
+   .hero-sound is retired.) */
+.mz-sndtgl{
+  position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:1200;
+  display:flex; align-items:flex-end; justify-content:center; gap:3px;
+  width:48px; height:36px; padding:10px 14px;
+  background:none; border:0; cursor:pointer;
+  mix-blend-mode:difference; opacity:.55;
+  transition:opacity .3s ease;
+}
+.mz-sndtgl:hover, .mz-sndtgl:focus-visible{ opacity:1; }
+.mz-sndtgl:focus-visible{ outline:1px solid #fff; outline-offset:4px; border-radius:6px; }
+.mz-sndtgl i{ width:2px; height:3px; background:#fff; border-radius:1px; transition:height .35s ease; }
+.mz-sndtgl.is-on i{ animation:mzBar .9s ease-in-out infinite alternate; }
+.mz-sndtgl.is-on i:nth-child(2){ animation-delay:.2s }
+.mz-sndtgl.is-on i:nth-child(3){ animation-delay:.4s }
+.mz-sndtgl.is-on i:nth-child(4){ animation-delay:.6s }
+@keyframes mzBar{ from{ height:3px } to{ height:13px } }
+@media (prefers-reduced-motion: reduce){ .mz-sndtgl.is-on i{ animation:none; height:9px } }
