@@ -2715,3 +2715,21 @@ html.js .svc-ghost{ opacity:1; }
   letter-spacing:-.022em;
   color:var(--bone, #E9E6DD);
 }
+
+/* v22.2: hero recomposed — the old single-column ladder (tagline, chips,
+   blurb, CTA all stacked left at five different scales) is split into an
+   editorial pair: the lockup + CTA carry the left, the blurb + proof
+   chips sit bottom-right where the frame was empty. */
+.hero-sub{ margin-bottom:26px; }
+.hero-col-left .hero-ctas{ margin-top:0; }
+.hero-col-right{
+  max-width:340px;
+  display:flex; flex-direction:column; align-items:flex-start; gap:16px;
+  padding-bottom:6px;
+}
+.hero-col-right .hero-blurb{ margin:0; }
+.hero-col-right .hero-clients{ margin:0; }
+@media (max-width: 860px){
+  .hero-row{ flex-direction:column; align-items:flex-start; gap:28px; }
+  .hero-col-right{ max-width:520px; }
+}
