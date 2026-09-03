@@ -75,14 +75,15 @@
   /* ---- ambience fades ---- */
   function fadeAmb (to, then) {
     if (!amb) { if (then) then(); return; }
-    cancelAnimationFrame(raf);
+    /* interval, not rAF: rAF freezes in background tabs and the fade
+       would strand the volume at 0 */
+    clearInterval(raf);
     var from = amb.volume, t0 = performance.now();
-    (function step (now) {
-      var k = Math.min((now - t0) / 700, 1);
+    raf = setInterval(function () {
+      var k = Math.min((performance.now() - t0) / 700, 1);
       amb.volume = from + (to - from) * k;
-      if (k < 1) raf = requestAnimationFrame(step);
-      else if (then) then();
-    })(t0);
+      if (k >= 1) { clearInterval(raf); if (then) then(); }
+    }, 40);
   }
   function playAmb () {
     if (!amb) return;
@@ -105,7 +106,10 @@
     if (v) {
       ensureCtx();
       if (ctx && ctx.state === 'suspended') ctx.resume();
-      if (amb) { amb.volume = 0; playAmb(); fadeAmb(AMB_VOL); }
+      if (amb) {
+        if (document.hidden) { amb.volume = AMB_VOL; } /* start when visible */
+        else { amb.volume = 0; playAmb(); fadeAmb(AMB_VOL); }
+      }
       if (chime) sOn();
     } else {
       fadeAmb(0, function () { if (amb) amb.pause(); });
