@@ -2703,3 +2703,15 @@ html.js .svc-ghost{ opacity:1; }
   transition:opacity .35s ease;
 }
 .mz-toast.is-in{ opacity:.85; }
+
+/* v22.1: the tagline joins the wordmark as a lockup — one confident
+   line at display scale, tucked under the mark, full bone. It was a
+   19-24px whisper orphaned beneath an 870px logo. */
+.hero-title--logo{ margin-bottom:2vh; }
+.hero-sub{
+  font-weight:500;
+  font-size:clamp(24px, 2.4vw, 40px);
+  line-height:1.12;
+  letter-spacing:-.022em;
+  color:var(--bone, #E9E6DD);
+}
