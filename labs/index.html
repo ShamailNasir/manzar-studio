@@ -240,7 +240,7 @@ if(window.__mzCrossover){
            stay locked to the shell edge. Fades up with the inset (see --feather). -->
       <div class="hero-feather" aria-hidden="true"></div>
       <div class="hero-inner">
-        <h1 class="hero-title" id="heroTitle" aria-label="Manzar">Manzar</h1>
+        <h1 class="hero-title hero-title--logo" id="heroTitle" aria-label="Manzar"><img src="../assets/manzar-wordmark.png" alt="Manzar" width="2556" height="980" decoding="async"></h1>
         <div class="hero-row">
           <div class="hero-col-left">
             <h2 class="hero-sub" data-reveal>Software, built<br>at startup speed</h2>
@@ -256,6 +256,10 @@ if(window.__mzCrossover){
         </div>
       </div>
     </div>
+    <button class="hero-sound" id="heroSound" type="button" aria-pressed="false" aria-label="Play station ambience">
+      <span class="hs-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="hs-txt">Sound</span>
+    </button>
+    <audio id="heroAmbience" loop preload="none" src="assets/audio/ambience.m4a"></audio>
   </section>
 
   <!-- ══════════════ TICKER ══════════════ -->

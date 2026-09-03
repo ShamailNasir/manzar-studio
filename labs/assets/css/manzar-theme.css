@@ -2640,3 +2640,35 @@ html.js .svc-ghost{ opacity:1; }
     rgba(8,7,6,.62), rgba(8,7,6,.30) 52%, rgba(8,7,6,0));
   z-index:5; pointer-events:none;
 }
+
+/* v20: the hero speaks with the real bilingual wordmark instead of set
+   type — same mark as the nav and the preloader, scaled to the width
+   the old 268px "Manzar" occupied. */
+.hero-title--logo img{
+  display:block;
+  width:clamp(280px, 34vw, 870px);
+  height:auto;
+}
+
+/* v20: station ambience toggle — real audio from the hero footage,
+   off by default (autoplay etiquette), quiet glass pill in the
+   hero's bottom-right. Bars dance only while sound is on. */
+.hero-sound{
+  position:absolute; right:var(--pad, 40px); bottom:30px; z-index:6;
+  display:inline-flex; align-items:center; gap:10px;
+  padding:11px 18px; border-radius:999px;
+  background:rgba(11,10,8,.45); border:1px solid rgba(233,230,221,.22);
+  color:#E9E6DD; font-weight:500; font-size:12px; line-height:1;
+  letter-spacing:.03em; cursor:pointer;
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  transition:border-color .3s ease, background .3s ease;
+}
+.hero-sound:hover{ border-color:rgba(233,230,221,.5); background:rgba(11,10,8,.6); }
+.hero-sound .hs-bars{ display:inline-flex; align-items:flex-end; gap:2px; height:11px; }
+.hero-sound .hs-bars i{ width:2px; height:3px; background:currentColor; border-radius:1px; }
+.hero-sound.is-on .hs-bars i{ animation:hsBar .8s ease-in-out infinite alternate; }
+.hero-sound.is-on .hs-bars i:nth-child(2){ animation-delay:.18s }
+.hero-sound.is-on .hs-bars i:nth-child(3){ animation-delay:.36s }
+.hero-sound.is-on .hs-bars i:nth-child(4){ animation-delay:.54s }
+@keyframes hsBar{ from{ height:3px } to{ height:11px } }
+@media (prefers-reduced-motion: reduce){ .hero-sound.is-on .hs-bars i{ animation:none; height:8px } }

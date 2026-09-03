@@ -111,7 +111,14 @@
     tl.fromTo('.hero-media', { opacity: 0.15 }, { opacity: 1, duration: 2.2, ease: 'power2.out' }, 0);
     tl.fromTo('.hero-media', { scale: 1.14 }, { scale: 1.0, duration: 2.6, ease: 'expo.out' }, 0);
     var title = document.getElementById('heroTitle');
-    if (window.SplitText && title) {
+    var titleLogo = title && title.querySelector('img');
+    if (titleLogo) {
+      /* v20: the title is the wordmark image now — SplitText has no text
+         to split, so the logo gets the same rise-from-the-baseline entry
+         the chars used to make. */
+      gsap.set(title, { overflow: 'hidden' });
+      tl.from(titleLogo, { yPercent: 112, rotate: 2, duration: 1.6, ease: 'expo.out' }, 0.1);
+    } else if (window.SplitText && title) {
       var split = new SplitText(title, { type: 'chars' });
       for (var c = 0; c < split.chars.length; c++) split.chars[c].classList.add('st-char');
       gsap.set(title, { overflow: 'hidden' });
@@ -1791,4 +1798,46 @@
   measure();
   current = target;
   paint(current);
+})();
+
+/* ── v20: station ambience ─────────────────────────────────────
+   Real audio lifted from the hero footage, loop-baked seamless
+   (same tail-into-head crossfade as the video). Off by default:
+   sound starts only from the user's click, fades in/out over
+   600ms, and pauses itself when the hero leaves the viewport or
+   the tab is hidden. */
+(function heroAmbience () {
+  var btn = document.getElementById('heroSound');
+  var au = document.getElementById('heroAmbience');
+  var hero = document.getElementById('hero');
+  if (!btn || !au || !hero) return;
+  var on = false, raf = 0, TARGET = 0.35;
+  function fadeTo (v, then) {
+    cancelAnimationFrame(raf);
+    var from = au.volume, t0 = performance.now();
+    (function step (now) {
+      var k = Math.min((now - t0) / 600, 1);
+      au.volume = from + (v - from) * k;
+      if (k < 1) raf = requestAnimationFrame(step);
+      else if (then) then();
+    })(t0);
+  }
+  function tryPlay () { var p = au.play(); if (p && p.catch) p.catch(function () {}); }
+  btn.addEventListener('click', function () {
+    on = !on;
+    btn.classList.toggle('is-on', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.setAttribute('aria-label', (on ? 'Mute' : 'Play') + ' station ambience');
+    if (on) { au.volume = 0; tryPlay(); fadeTo(TARGET); }
+    else fadeTo(0, function () { au.pause(); });
+  });
+  new IntersectionObserver(function (en) {
+    if (!on) return;
+    if (en[0].isIntersecting) { tryPlay(); fadeTo(TARGET); }
+    else fadeTo(0, function () { au.pause(); });
+  }).observe(hero);
+  document.addEventListener('visibilitychange', function () {
+    if (!on) return;
+    if (document.hidden) au.pause(); else tryPlay();
+  });
 })();
