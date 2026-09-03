@@ -349,12 +349,25 @@
 
   var started = false, run = true;
   var tryPlay = function (vv) { if (vv) { var p = vv.play(); if (p && p.catch) p.catch(function () {}); } };
-  var kick = function () { if (started) return; started = true; tryPlay(vA); };
-  vA.addEventListener('loadeddata', kick, { once: true });
-  vA.addEventListener('canplaythrough', kick, { once: true });
+  /* v21.1: the reel starts ONLY once BOTH are true — media is decodable
+     AND the loading screen has completely finished its lift. Then it
+     starts from frame zero, so no clip time is eaten behind the
+     preloader. A 6s failsafe covers a page without the preloader event. */
+  var preDone = !document.getElementById('preloader');
+  var mediaReady = false;
+  var kick = function () {
+    if (started || !preDone || !mediaReady) return;
+    started = true;
+    try { vA.currentTime = 0; } catch (e) {}
+    vA.playbackRate = RATE;
+    tryPlay(vA);
+  };
+  vA.addEventListener('loadeddata', function () { mediaReady = true; kick(); }, { once: true });
+  vA.addEventListener('canplaythrough', function () { mediaReady = true; kick(); });
+  document.addEventListener('mz:preloader-done', function () { preDone = true; kick(); });
   vA.addEventListener('error', function () { (window.__hero = window.__hero || {}).err = 'media ' + (vA.error && vA.error.code); });
   try { vA.load(); } catch (e) {}
-  setTimeout(kick, 2600);
+  setTimeout(function () { preDone = true; mediaReady = true; kick(); }, 6000);
   ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) {
     addEventListener(ev, function () { if (vA.paused && run && started) tryPlay(vA); }, { once: true, passive: true }); });
 

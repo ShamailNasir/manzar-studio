@@ -36,7 +36,7 @@
     if (!AC) return false;
     ctx = new AC();
     uiGain = ctx.createGain();
-    uiGain.gain.value = 0.6;
+    uiGain.gain.value = 1.0;   /* v21.1: raised so UI reads beside the score */
     uiGain.connect(ctx.destination);
     return true;
   }
@@ -61,15 +61,15 @@
     var n = performance.now();
     if (n - lastHover < 90) return;   /* marquee rows can fire in bursts */
     lastHover = n;
-    voice(1350, 900, 0.045, 0.035);
+    voice(1350, 900, 0.045, 0.09);
   }
   function sClick () {
-    voice(210, 120, 0.09, 0.07);
-    voice(2200, null, 0.025, 0.022, 'triangle');
+    voice(210, 120, 0.09, 0.17);
+    voice(2200, null, 0.025, 0.055, 'triangle');
   }
   function sOn () {
-    voice(440, null, 0.35, 0.05);
-    setTimeout(function () { voice(659.3, null, 0.4, 0.045); }, 90);
+    voice(440, null, 0.35, 0.11);
+    setTimeout(function () { voice(659.3, null, 0.4, 0.1); }, 90);
   }
 
   /* ---- ambience fades ---- */

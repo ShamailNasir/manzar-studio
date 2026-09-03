@@ -165,12 +165,19 @@
       gsap.to('.preloader-core', { opacity: 0, y: -14, duration: 0.45, ease: 'power2.in' });
       gsap.to(pre, {
         yPercent: -100, duration: 0.95, ease: 'expo.inOut', delay: 0.28,
-        onComplete: function () { pre.style.display = 'none'; ScrollTrigger.refresh(); }
+        onComplete: function () {
+          pre.style.display = 'none'; ScrollTrigger.refresh();
+          /* v21.1: the hero reel waits for this — the clips must start
+             from frame zero AFTER the loading screen has fully left,
+             never get eaten behind it. hero-silk.js listens. */
+          document.dispatchEvent(new CustomEvent('mz:preloader-done'));
+        }
       });
       gsap.delayedCall(0.55, heroIntro);
     } else {
       if (hasGSAP) gsap.killTweensOf([pre, '.preloader-core']);
       pre.style.display = 'none';
+      document.dispatchEvent(new CustomEvent('mz:preloader-done'));
       heroIntroOnReveal();
     }
   }
