@@ -2694,3 +2694,12 @@ html.js .svc-ghost{ opacity:1; }
 .mz-sndtgl.is-on i:nth-child(4){ animation-delay:.6s }
 @keyframes mzBar{ from{ height:3px } to{ height:13px } }
 @media (prefers-reduced-motion: reduce){ .mz-sndtgl.is-on i{ animation:none; height:9px } }
+
+/* v22: audition toast — names the score option when switching (keys 1-3 / M) */
+.mz-toast{
+  position:fixed; left:50%; transform:translateX(-50%); bottom:60px; z-index:1200;
+  font-weight:500; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:#fff; mix-blend-mode:difference; opacity:0; pointer-events:none;
+  transition:opacity .35s ease;
+}
+.mz-toast.is-in{ opacity:.85; }

@@ -30,6 +30,17 @@
   var raf = 0;
   var AMB_VOL = amb ? parseFloat(amb.getAttribute('data-mz-volume') || '0.45') : 0;
 
+  /* ---- audition tracks (v22): each page may carry several score
+     options; keys 1..n pick one, M cycles, the choice is remembered
+     per brand so it follows you across pages. ---- */
+  var BRAND = amb ? (amb.getAttribute('data-mz-brand') || 'site') : 'site';
+  var TKEY = 'mz:track:' + BRAND;
+  var tracks = [];
+  try { tracks = JSON.parse(amb && amb.getAttribute('data-mz-tracks') || '[]'); } catch (e) {}
+  var ti = 0;
+  try { ti = Math.max(0, Math.min(tracks.length - 1, parseInt(localStorage.getItem(TKEY) || '0', 10) || 0)); } catch (e) {}
+  if (amb && tracks.length) amb.setAttribute('src', tracks[ti].src);
+
   function ensureCtx () {
     if (ctx) return true;
     var AC = window.AudioContext || window.webkitAudioContext;
@@ -151,6 +162,46 @@
     var el = e.target && e.target.closest ? e.target.closest(SEL) : null;
     if (el) sClick();
   }, { passive: true });
+
+  /* ---- audition switcher: 1..n select, M cycles ---- */
+  var toast = null, toastT = 0;
+  function showToast (txt) {
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'mz-toast';
+      toast.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toast);
+    }
+    toast.textContent = txt;
+    toast.classList.add('is-in');
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { toast.classList.remove('is-in'); }, 1900);
+  }
+  function switchTo (i) {
+    if (!amb || !tracks.length) return;
+    i = ((i % tracks.length) + tracks.length) % tracks.length;
+    showToast((i + 1) + ' / ' + tracks.length + ' — ' + tracks[i].name);
+    if (i === ti) return;
+    ti = i;
+    try { localStorage.setItem(TKEY, String(ti)); } catch (e) {}
+    var go = function () {
+      amb.setAttribute('src', tracks[ti].src);
+      amb.load();
+      if (on && !document.hidden) { amb.volume = 0; playAmb(); fadeAmb(AMB_VOL); }
+      else amb.volume = AMB_VOL;
+    };
+    if (on && !amb.paused) fadeAmb(0, go); else go();
+  }
+  if (tracks.length > 1) {
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      if (e.key === 'm' || e.key === 'M') { switchTo(ti + 1); return; }
+      var d = parseInt(e.key, 10);
+      if (d >= 1 && d <= tracks.length) switchTo(d - 1);
+    });
+  }
 
   /* courtesy: silence with the tab, return with it */
   document.addEventListener('visibilitychange', function () {

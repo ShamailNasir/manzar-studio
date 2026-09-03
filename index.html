@@ -831,6 +831,8 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
 .mz-sndtgl.is-on i:nth-child(4){animation-delay:.6s}
 @keyframes mzBar{from{height:3px}to{height:13px}}
 @media (prefers-reduced-motion: reduce){.mz-sndtgl.is-on i{animation:none;height:9px}}
+.mz-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:60px;z-index:1200;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#fff;mix-blend-mode:difference;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.mz-toast.is-in{opacity:.85}
 </style>
 </head>
 <body data-theme="ink">
@@ -891,7 +893,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
       <p class="sub">Film, design and software from an independent studio<br>in Lahore and Paris, since 2019.</p>
     </div>
     <div class="hero-mark" id="heroMark" aria-hidden="true"><img id="heroMarkImg" src="assets/manzar-wordmark.png" alt="" width="2556" height="980" decoding="async"></div>
-    <audio data-mz-ambience data-mz-volume=".8" loop preload="auto" src="assets/audio/score-studio.m4a"></audio>
+    <audio data-mz-ambience data-mz-brand="studio" data-mz-volume=".8" data-mz-tracks='[{"src": "assets/audio/score-studio-1.m4a", "name": "Golden Hour"}, {"src": "assets/audio/score-studio-2.m4a", "name": "Shimmer"}, {"src": "assets/audio/score-studio-3.m4a", "name": "Warm Glow"}]' loop preload="auto" src="assets/audio/score-studio-1.m4a"></audio>
   </section>
 
   <!-- ============ MANIFESTO ============ -->
