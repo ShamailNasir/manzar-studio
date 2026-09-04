@@ -2733,3 +2733,14 @@ html.js .svc-ghost{ opacity:1; }
   .hero-row{ flex-direction:column; align-items:flex-start; gap:28px; }
   .hero-col-right{ max-width:520px; }
 }
+
+/* v24.1: the right hero block hugs its margin properly — ragged-left
+   text floating at a right edge read as broken. Right-aligned, and the
+   blurb lifted out of the muted grey (it sat on busy footage). */
+.hero-col-right{ align-items:flex-end; text-align:right; }
+.hero-col-right .hero-blurb{ color:rgba(233,230,221,.82); }
+.hero-col-right .hero-clients{ flex-direction:row-reverse; }
+@media (max-width: 860px){
+  .hero-col-right{ align-items:flex-start; text-align:left; }
+  .hero-col-right .hero-clients{ flex-direction:row; }
+}

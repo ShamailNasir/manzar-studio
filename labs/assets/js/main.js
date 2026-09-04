@@ -307,11 +307,19 @@
       var target = parseFloat(el.getAttribute('data-count'));
       var suffix = el.getAttribute('data-suffix') || '';
       var obj = { v: 0 };
-      gsap.to(obj, {
+      var cfg = {
         v: target, duration: 2.1, ease: 'expo.out',
-        scrollTrigger: { trigger: el, start: 'top 90%', once: true },
         onUpdate: function () { el.textContent = String(Math.round(obj.v)) + suffix; }
-      });
+      };
+      /* hero counters sit in the bottom band of the first viewport — a
+         'top 90%' trigger is already below its own start line at load and
+         showed a frozen 0. In the hero, count immediately (after the
+         intro settles); elsewhere keep the scroll reveal. */
+      if (el.closest('.hero')) { cfg.delay = 1.6; gsap.to(obj, cfg); }
+      else {
+        cfg.scrollTrigger = { trigger: el, start: 'top 90%', once: true };
+        gsap.to(obj, cfg);
+      }
     });
 
     /* service ghosts drift + titles rise over them — including the walk's
