@@ -72,12 +72,12 @@ if(window.__mzCrossover){
 <!-- The pointer. Deliberately the first stylesheet in the document, so
      it is resolved before the page first paints and the browser never
      gets a chance to show its own arrow. -->
-<link rel="stylesheet" href="../assets/css/cursor.css">
-<link rel="stylesheet" href="../assets/css/manzar-system.css">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/cursor.css?v=12">
+<link rel="stylesheet" href="../assets/css/manzar-system.css?v=12">
+<link rel="stylesheet" href="assets/css/style.css?v=12">
   <!-- Manzar theme layer: re-skins Labs onto the Studio type system. Remove to restore original. -->
-  <link rel="stylesheet" href="assets/css/manzar-theme.css">
-<script src="../assets/js/manzar-system.js" defer></script>
+  <link rel="stylesheet" href="assets/css/manzar-theme.css?v=12">
+<script src="../assets/js/manzar-system.js?v=12" defer></script>
 <style>
 .skip{position:fixed;left:-999px;top:8px;z-index:2000;background:var(--acc);color:var(--ink);padding:8px 14px;font-family:var(--mono);font-size:12px}
 .skip:focus{left:8px}
@@ -178,8 +178,8 @@ if(window.__mzCrossover){
   ]
 }
 </script>
-<link rel="stylesheet" href="../assets/css/crossover.css">
-<link rel="stylesheet" href="../assets/css/menu.css">
+<link rel="stylesheet" href="../assets/css/crossover.css?v=12">
+<link rel="stylesheet" href="../assets/css/menu.css?v=12">
 </head>
 <body>
 <a class="skip" href="#top">Skip to content</a>
@@ -258,7 +258,9 @@ if(window.__mzCrossover){
         </div>
       </div>
     </div>
-    <audio data-mz-ambience data-mz-brand="labs" data-mz-volume=".28" data-mz-tracks='[{"src": "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Meydan/For_Creators/Meydan_-_01_-_Rise.mp3", "name": "Rise — Meydän"}, {"src": "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Meydn/The_Beauty_of_Maths/Meydn_-_The_Beauty_of_Maths.mp3", "name": "The Beauty of Maths — Meydän"}, {"src": "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Meydn/Interplanetary_Forest/Meydn_-_01_-_Interplanetary_Forest.mp3", "name": "Interplanetary Forest — Meydän"}]' loop preload="auto" src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Meydan/For_Creators/Meydan_-_01_-_Rise.mp3"></audio>
+    <audio data-mz-ambience data-mz-brand="labs" data-mz-volume=".31"
+       data-mz-tracks='[{"src": "assets/audio/adrift-among-infinite-stars.mp3", "name": "Adrift Among Infinite Stars \u2014 Scott Buckley"}, {"src": "assets/audio/the-long-dark.mp3", "name": "The Long Dark \u2014 Scott Buckley"}, {"src": "assets/audio/cirrus.mp3", "name": "Cirrus \u2014 Scott Buckley"}, {"src": "assets/audio/hymn-to-the-dawn.mp3", "name": "Hymn to the Dawn \u2014 Scott Buckley"}, {"src": "assets/audio/decoherence.mp3", "name": "Decoherence \u2014 Scott Buckley"}]'
+       loop preload="metadata" src="assets/audio/adrift-among-infinite-stars.mp3"></audio>
   </section>
 
   <!-- ══════════════ TICKER ══════════════ -->
@@ -1219,6 +1221,10 @@ if(window.__mzCrossover){
           <p>Lahore, Pakistan · Paris, France<br>Working worldwide.</p>
         </div>
         <div class="fblock">
+          <span class="fb-lab">Score</span>
+          <p>Music by <a href="https://www.scottbuckley.com.au" target="_blank" rel="noopener" style="color:var(--fg);text-decoration:underline;text-underline-offset:3px">Scott Buckley</a>, licensed CC&nbsp;BY&nbsp;4.0.<br>Press 1&ndash;5 to change the score.</p>
+        </div>
+        <div class="fblock">
           <span class="fb-lab">Elsewhere</span>
           <div class="fsoc">
             <a href="https://www.instagram.com/manzar.studio/" target="_blank" rel="noopener">Instagram ↗</a>
@@ -1263,15 +1269,15 @@ if(window.__mzCrossover){
 <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/js/vendor/SplitText.min.js"></script>
 <script src="assets/js/vendor/lenis.min.js"></script>
-<script src="assets/js/weave-normal.js"></script>
-<script src="assets/js/hero-silk.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/mz-sound.js" defer></script>
-<script src="assets/js/plate.js" defer></script>
+<script src="assets/js/weave-normal.js?v=12"></script>
+<script src="assets/js/hero-silk.js?v=12"></script>
+<script src="assets/js/main.js?v=12"></script>
+<script src="assets/js/mz-sound.js?v=12" defer></script>
+<script src="assets/js/plate.js?v=12" defer></script>
 
 
-<script src="../assets/js/crossover.js"></script>
-<script src="../assets/js/menu.js" defer></script>
+<script src="../assets/js/crossover.js?v=12"></script>
+<script src="../assets/js/menu.js?v=12" defer></script>
 <!-- ══════════════ MENU ══════════════
      Component: /assets/css/menu.css + /assets/js/menu.js. Self-contained,
      so the same markup runs on Studio, Labs and every subpage.
@@ -1370,15 +1376,9 @@ if(window.__mzCrossover){
           <span class="mzx-t">Pricing</span>
           <span class="mzx-d">Sprint, build or retainer: three ways in.</span>
         </a>
-        <a class="mzx-row" href="../index.html#studio" style="--i:10"
-           data-media="../assets/menu/studio.svg" data-kicker="Who we are">
-          <span class="mzx-n">11</span>
-          <span class="mzx-t">Studio</span>
-          <span class="mzx-d">Who we are and how we work.</span>
-        </a>
-        <a class="mzx-row" href="#contact" style="--i:11"
+        <a class="mzx-row" href="#contact" style="--i:10"
            data-media="../assets/menu/contact.svg" data-kicker="Start a conversation">
-          <span class="mzx-n">12</span>
+          <span class="mzx-n">11</span>
           <span class="mzx-t">Contact</span>
           <span class="mzx-d">hello@manzar.studio. Say what you need.</span>
         </a>

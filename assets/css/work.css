@@ -1,0 +1,871 @@
+/* ══════════════════════════════════════════════════════════════════════
+   MANZAR STUDIO — WORK
+   ══════════════════════════════════════════════════════════════════════
+   The "Selected work" section on the homepage, the /work archive page,
+   and the player that both of them open. One stylesheet, because a card
+   has to look identical in either place: the homepage section flips the
+   page to bone, the archive page stays on ink, and the card is designed
+   to sit correctly on both — its interior is always ink, because the
+   interior is a video, and letterboxing anywhere else looks like a bug.
+
+   Everything here uses the tokens the rest of the studio site already
+   defines (--acc, --line, --mut, --mono, --body, --pad, .shell, .eb).
+   Nothing new is invented; a theme flip carries this section with it.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ---------------------------------------------------------------
+   1. THE CARD
+   A frame holding the footage, with the piece's own title printed on
+   it: index and runtime along the head, a rule, the title and the
+   credit along the foot.
+
+   The type was lifted off the picture for one round and put straight
+   back, because a portfolio card is a poster and a poster carries its
+   own title. What was genuinely wrong was never the position — it was
+   the slate underneath it. That slate was graded almost to solid, so
+   the bottom third of every card went black and twenty-three of them
+   stacked up read as mud.
+
+   So it is rebuilt rather than removed. Nine eased stops instead of a
+   hard four-stop band, peaking nine points lower, under type set a
+   size smaller and tighter. It still holds against the two frames
+   this archive has that are nearly white — a concert flyer and a
+   fashion plate — and the film is the thing you see.
+   --------------------------------------------------------------- */
+.wk-card{
+  display:block;width:100%;position:relative;
+  /* rises into place when it is scrolled to; see reveal() in work.js.
+     --wk-d staggers the cards of one row against each other. */
+  opacity:0;transform:translateY(30px);
+  transition:opacity .85s cubic-bezier(.16,1,.3,1) var(--wk-d,0ms),
+             transform .95s cubic-bezier(.16,1,.3,1) var(--wk-d,0ms);
+  padding:0;margin:0;border:0;background:none;
+  font:inherit;color:inherit;text-align:left;
+  -webkit-tap-highlight-color:transparent;
+}
+.wk-card.is-in{opacity:1;transform:none}
+
+.wk-frame{
+  position:relative;display:block;overflow:hidden;
+  aspect-ratio:var(--wk-ar,16/9);
+  border-radius:14px;background:#0E0D0B;
+  /* Depth, at rest — not only on hover. Three layers doing three jobs:
+     a hairline bezel drawn inside the radius (a border would sit outside
+     the clip and fight the scaling poster), a tight contact shadow that
+     seats the card on the ground, and a wide soft one that lifts it off.
+     The tokens keep it honest through the flip to bone. */
+  box-shadow:
+    inset 0 1px 0 var(--wk-catch),
+    inset 0 0 0 1px var(--wk-bezel),
+    0 1px 2px var(--wk-sh-near),
+    0 14px 34px -18px var(--wk-sh-far);
+  transition:transform .75s cubic-bezier(.16,1,.3,1),
+             box-shadow .75s cubic-bezier(.16,1,.3,1);
+  will-change:transform;
+  /* the frame clips a scaling poster; without this Safari lets the
+     scaled image bleed past the radius for a frame or two */
+  -webkit-mask-image:-webkit-radial-gradient(#fff,#000);
+}
+:root,
+body[data-theme="ink"]{
+  --wk-bezel:rgba(233,230,221,.13);
+  --wk-sh-near:rgba(0,0,0,.5);
+  --wk-sh-far:rgba(0,0,0,.85);
+  --wk-bezel-hi:rgba(233,230,221,.3);
+  --wk-sh-far-hi:rgba(0,0,0,.95);
+  --wk-catch:rgba(255,255,255,.09);
+  --wk-catch-hi:rgba(255,255,255,.16);
+}
+body[data-theme="bone"]{
+  --wk-bezel:rgba(11,10,8,.1);
+  --wk-sh-near:rgba(11,10,8,.07);
+  --wk-sh-far:rgba(11,10,8,.34);
+  --wk-bezel-hi:rgba(11,10,8,.2);
+  --wk-sh-far-hi:rgba(11,10,8,.42);
+  --wk-catch:rgba(255,255,255,.14);
+  --wk-catch-hi:rgba(255,255,255,.2);
+}
+.wk-poster,.wk-prev{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+.wk-poster{transition:transform 1.3s cubic-bezier(.16,1,.3,1);will-change:transform}
+.wk-prev{
+  opacity:0;pointer-events:none;
+  transition:opacity .6s ease,transform 1.3s cubic-bezier(.16,1,.3,1);
+}
+.wk-card.is-live .wk-prev{opacity:1}
+/* Once the clip is running the poster is behind it, so the hover push-in
+   has to happen on the video or the hover stops meaning anything. */
+.wk-card.is-live .wk-poster{transform:none}
+
+/* ── the slate ────────────────────────────────────────────────────
+   Two gradients: a foot for the title block, a lighter head for the
+   rail, and nothing at all across the middle of the frame.
+
+   The stop list is long, and the curve holds its strength a little
+   further up than looks necessary, because the cards on the archive
+   page got smaller: the same 51px of type now sits at 12% of a pair
+   card's height rather than 8%, which is a long way up a gradient. The
+   numbers were set by measuring, not by eye — see the log.
+
+   The stop list is long on purpose. A gradient with four stops over
+   this distance has a visible shoulder — a band where the picture
+   stops and the ink starts — and that band is what made the old cards
+   look like they had a black bar taped across them. Nine stops on an
+   ease curve puts the same ink on the type with no edge anywhere. */
+.wk-scrim{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:
+    linear-gradient(to top,
+      rgba(11,10,8,.91) 0%,
+      rgba(11,10,8,.88) 5%,
+      rgba(11,10,8,.83) 10%,
+      rgba(11,10,8,.74) 15%,
+      rgba(11,10,8,.60) 20%,
+      rgba(11,10,8,.44) 25%,
+      rgba(11,10,8,.28) 30%,
+      rgba(11,10,8,.15) 35%,
+      rgba(11,10,8,.06) 40%,
+      rgba(11,10,8,0)   46%),
+    linear-gradient(to bottom,
+      rgba(11,10,8,.50) 0%,
+      rgba(11,10,8,.26) 7%,
+      rgba(11,10,8,.10) 14%,
+      rgba(11,10,8,.03) 19%,
+      rgba(11,10,8,0)   24%);
+  transition:opacity .6s;
+}
+/* A percentage of a 9:16 frame is nearly twice the pixels it is on a
+   16:9 one, so the reel's slate reaches a shorter way up to put the
+   same amount of ink behind the same amount of type. */
+.wk-card--reel .wk-scrim{
+  background:
+    linear-gradient(to top,
+      rgba(11,10,8,.91) 0%,
+      rgba(11,10,8,.87) 4%,
+      rgba(11,10,8,.78) 8%,
+      rgba(11,10,8,.64) 12%,
+      rgba(11,10,8,.47) 16%,
+      rgba(11,10,8,.32) 20%,
+      rgba(11,10,8,.18) 25%,
+      rgba(11,10,8,.08) 30%,
+      rgba(11,10,8,0)   36%),
+    linear-gradient(to bottom,
+      rgba(11,10,8,.46) 0%,
+      rgba(11,10,8,.22) 5%,
+      rgba(11,10,8,.08) 11%,
+      rgba(11,10,8,0)   18%);
+}
+
+/* Below a laptop a landscape card gets short while its title stays the
+   same size, so the type climbs from a sixth of the frame to a third —
+   and the desktop curve has fallen to a fifth of its strength by the
+   time it reaches the top of it. Same shape, stretched to match.
+
+   The breakpoint and the numbers are not guesses. Every poster in the
+   archive was composited under this gradient at the pixels the title
+   actually occupies and the contrast ratio measured: with the desktop
+   curve still running at 820px, the two brightest frames came out at
+   2.58:1 and 2.47:1, which is unreadable. Stretched, the worst in the
+   whole set clears 4.4:1. */
+@media (max-width:1100px){
+  .wk-card:not(.wk-card--reel) .wk-scrim{
+    background:
+      linear-gradient(to top,
+        rgba(11,10,8,.93) 0%,
+        rgba(11,10,8,.89) 8%,
+        rgba(11,10,8,.82) 16%,
+        rgba(11,10,8,.71) 24%,
+        rgba(11,10,8,.57) 32%,
+        rgba(11,10,8,.42) 40%,
+        rgba(11,10,8,.28) 48%,
+        rgba(11,10,8,.16) 56%,
+        rgba(11,10,8,.07) 64%,
+        rgba(11,10,8,.02) 72%,
+        rgba(11,10,8,0)   80%),
+      linear-gradient(to bottom,
+        rgba(11,10,8,.50) 0%,
+        rgba(11,10,8,.26) 9%,
+        rgba(11,10,8,.10) 18%,
+        rgba(11,10,8,0)   28%);
+  }
+}
+
+/* ── the head rail — index left, runtime right ── */
+.wk-rail{
+  position:absolute;top:0;left:0;right:0;z-index:2;pointer-events:none;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:clamp(12px,1vw,19px) clamp(14px,1.2vw,24px);
+}
+.wk-num,.wk-run{
+  font-family:var(--mono);font-weight:600;
+  font-size:clamp(9.5px,.62vw,11.5px);letter-spacing:.2em;text-transform:uppercase;
+  line-height:1;font-variant-numeric:tabular-nums;
+  color:rgba(255,255,255,.62);transition:color .45s;
+  text-shadow:0 1px 10px rgba(11,10,8,.85);
+}
+.wk-run{display:inline-flex;align-items:center;gap:7px}
+.wk-run::before{
+  content:"";width:4px;height:4px;border-radius:50%;
+  background:var(--acc);opacity:0;transform:scale(.4);
+  transition:opacity .45s,transform .45s cubic-bezier(.34,1.4,.64,1);
+}
+
+/* the play mark. A bone ring, an accent triangle: the two things this
+   site is already made of, rather than a borrowed glass button. */
+.wk-play{
+  position:absolute;left:50%;top:50%;z-index:2;pointer-events:none;
+  width:clamp(48px,3.4vw,66px);height:clamp(48px,3.4vw,66px);
+  display:grid;place-items:center;border-radius:50%;
+  border:1px solid rgba(233,230,221,.5);
+  background:rgba(11,10,8,.28);
+  /* a soft ground under the ring, so it reads over a white frame as
+     well as a graded one without becoming a button */
+  box-shadow:0 0 34px 18px rgba(11,10,8,.2);
+  opacity:0;transform:translate(-50%,-50%) scale(.86);
+  transition:opacity .45s ease,transform .55s cubic-bezier(.34,1.4,.64,1);
+}
+.wk-play svg{width:30%;height:auto;fill:var(--acc);transform:translateX(9%)}
+
+/* ── the foot: rule, title, credit ── */
+.wk-meta{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;pointer-events:none;
+  display:flex;flex-direction:column;align-items:flex-start;
+  padding:clamp(15px,1.35vw,28px) clamp(15px,1.35vw,28px) clamp(14px,1.25vw,25px);
+  transition:transform .75s cubic-bezier(.16,1,.3,1);
+}
+.wk-rule{
+  display:block;height:1.5px;width:22px;background:var(--acc);
+  margin-bottom:clamp(8px,.7vw,13px);
+  transition:width .65s cubic-bezier(.16,1,.3,1);
+}
+.wk-title{
+  display:block;font-family:var(--body);font-weight:600;color:#fff;
+  font-size:clamp(18px,1.28vw,28px);line-height:1.06;letter-spacing:-.026em;
+  text-wrap:balance;
+  /* the difference between legible and not on the two frames that are
+     nearly white behind it */
+  text-shadow:0 1px 18px rgba(11,10,8,.72);
+}
+.wk-credit{
+  display:block;margin-top:clamp(5px,.45vw,9px);
+  font-family:var(--mono);font-weight:600;
+  font-size:clamp(9.5px,.62vw,11.5px);letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.68);line-height:1.4;
+  text-shadow:0 1px 14px rgba(11,10,8,.8);
+}
+
+/* --- per shape ---
+   A type scale to go with the drawn size: a reel is a third of the
+   width of a full-bleed band, so one size for both would be wrong
+   twice. The aspect itself is set per card from the master (see
+   buildCard) — there is no shape ratio here to argue with it. */
+.wk-card--reel .wk-title{font-size:clamp(16px,.98vw,21px)}
+.wk-card--reel .wk-credit{font-size:clamp(9px,.56vw,10.5px);letter-spacing:.15em}
+.wk-card--reel .wk-meta{padding-bottom:clamp(13px,1.1vw,21px)}
+.wk-card--feature .wk-title{font-size:clamp(22px,1.75vw,40px)}
+.wk-card--feature .wk-meta{padding-bottom:clamp(17px,1.6vw,34px)}
+
+/* --- hover / focus. Pointer devices only: on a phone every card would
+       otherwise sit permanently in its hover state. --- */
+@media (hover:hover) and (pointer:fine){
+  .wk-card:hover .wk-frame{
+    transform:translateY(-6px);
+    box-shadow:
+      inset 0 1px 0 var(--wk-catch-hi),
+      inset 0 0 0 1px var(--wk-bezel-hi),
+      0 2px 4px var(--wk-sh-near),
+      0 34px 66px -26px var(--wk-sh-far-hi);
+  }
+  .wk-card:hover .wk-poster,
+  .wk-card:hover .wk-prev{transform:scale(1.045)}
+  .wk-card:hover .wk-meta{transform:translateY(-4px)}
+  .wk-card:hover .wk-rule{width:58px}
+  .wk-card:hover .wk-play{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .wk-card:hover .wk-run{color:rgba(255,255,255,.88)}
+  .wk-card:hover .wk-run::before{opacity:1;transform:scale(1)}
+  .wk-card:hover .wk-num{color:rgba(255,255,255,.75)}
+}
+/* Keyboard focus gets the same read, outside the hover query: a keyboard
+   user on a touchscreen device is still a keyboard user. */
+.wk-card:focus-visible{outline:none}
+.wk-card:focus-visible .wk-rule{width:58px}
+.wk-card:focus-visible .wk-play{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.wk-card:focus-visible .wk-run{color:rgba(255,255,255,.88)}
+.wk-card:focus-visible .wk-frame{outline:1.5px dashed var(--acc);outline-offset:5px}
+
+/* touch: no hover state to reach, so the play mark is simply always
+   there, at rest, and the card is one big tap target. */
+@media (hover:none){
+  .wk-play{opacity:.9;transform:translate(-50%,-50%) scale(.92)}
+}
+
+/* ---------------------------------------------------------------
+   2. THE HOMEPAGE SECTION
+   --------------------------------------------------------------- */
+.work{padding:clamp(100px,14vh,170px) 0 clamp(74px,10vh,124px)}
+.work-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:clamp(16px,2vw,40px);flex-wrap:wrap;
+  margin-bottom:clamp(28px,4.6vh,54px);
+}
+.work-head-r{display:flex;align-items:baseline;gap:clamp(14px,1.6vw,30px)}
+.work-head-r::before{
+  content:"";align-self:center;width:clamp(18px,2.4vw,46px);height:1px;
+  background:var(--line);order:-1;
+}
+.work-head .count{
+  font-family:var(--mono);font-weight:600;font-size:clamp(12.5px,.95vw,15px);
+  letter-spacing:.15em;text-transform:uppercase;color:var(--mut);
+  font-variant-numeric:tabular-nums;
+}
+.wk-headlink{
+  display:inline-flex;align-items:center;gap:9px;position:relative;
+  font-family:var(--mono);font-weight:600;font-size:clamp(11.5px,.9vw,14px);
+  letter-spacing:.15em;text-transform:uppercase;color:var(--fg);
+  padding-bottom:5px;
+}
+.wk-headlink::after{
+  content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+  background:var(--fg);transform-origin:left;transition:transform .45s cubic-bezier(.16,1,.3,1);
+}
+.wk-headlink:hover::after{transform:scaleX(.35)}
+.wk-headlink i{font-style:normal;color:var(--acc);transition:transform .4s cubic-bezier(.34,1.4,.64,1)}
+.wk-headlink:hover i{transform:translate(3px,-3px)}
+
+/* ── THE FEATURED MOSAIC ──────────────────────────────────────────
+   Three bands, each one flush top and bottom, and not one frame
+   cropped anywhere in it.
+
+     band A   two stacked landscape pieces, the vertical one beside
+              them running the full height of both
+     band B   two landscape pieces, equal halves
+     band C   one landscape piece, the closing statement
+
+   Band A is the interesting one. A 9:16 piece next to two stacked 16:9
+   pieces only lines up at one particular column split, and guessing at
+   it and making up the difference with object-fit is how a piece framed
+   vertical loses a ninth of itself. The split is not a guess:
+
+     left height  = 2·(L ÷ 16/9) + gap = 1.125L + G
+     right height = R ÷ 9/16           = 1.7778R
+     and          L + R = W − G
+
+   Solve for R and it falls out as R = 0.38756W − 0.04306G, which is
+   what the calc() below says. Every frame is then drawn at its own
+   aspect and the two columns still end on the same line, at any width.
+
+   (For one round a card was a frame plus a caption printed under it,
+   and this had a third term for the caption's height. The type is back
+   on the picture, so a card is its frame again and the term is gone.)
+
+   --wk-g has to stay the same value as the gap for that to hold. */
+.wk-feat{
+  --wk-g:clamp(12px,1.05vw,22px);
+  display:flex;flex-direction:column;gap:var(--wk-g);
+}
+.wk-band{display:grid;gap:var(--wk-g)}
+.wk-band--a{grid-template-columns:minmax(0,1fr) calc(38.756% - var(--wk-g) * 0.04306)}
+.wk-band--b{grid-template-columns:repeat(2,minmax(0,1fr))}
+.wk-band--c{grid-template-columns:minmax(0,1fr)}
+.wk-stack{display:flex;flex-direction:column;gap:var(--wk-g);min-width:0}
+
+/* the vertical piece fills the band because the band was measured to
+   fit it, not because it was told to stretch */
+.wk-band--a > .wk-card{min-width:0}
+
+/* The mirrored band has to be named here too. `.wk-band--a.is-flip` is
+   (0,2,0) and plain `.wk-band--a` is (0,1,0), so without this the flip
+   rule outranks the collapse and wins even inside the media query — the
+   mirrored bands stayed two columns all the way down to a phone, where
+   that is a 135px reel beside two 203px landscapes. */
+@media (max-width:1100px){
+  .wk-band--a,
+  .wk-band--a.is-flip{grid-template-columns:minmax(0,1fr)}
+  .wk-band--a > .wk-card{max-width:min(100%,470px);margin-inline:auto}
+  /* width:100% is load-bearing. `margin-inline:auto` switches a grid
+     item out of stretch alignment, so an auto-width one is sized to
+     its content — and the cards inside are width:100% of a parent
+     that now has no definite width, which resolves to zero. The
+     cards get away with it because they carry width:100% already. */
+  .wk-band--a > .wk-stack{width:100%;max-width:min(100%,470px);margin-inline:auto}
+}
+@media (max-width:720px){
+  .wk-band--b{grid-template-columns:minmax(0,1fr)}
+}
+
+/* ── the slot held for the next piece ──────────────────────────────
+   Not a card: a frame with nothing in it yet, in the dashed language the
+   reserved row on this page used to speak. It disappears on its own the
+   moment a sixth entry in work-data.js carries `feature: 6`. */
+.wk-slot{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(9px,.9vw,15px);text-align:center;
+  /* A held slot, not an empty card: a band a quarter the height the real
+     piece will take, so it reads as a line in the schedule rather than
+     as a hole in the grid. The card that replaces it is a full 16:9. */
+  aspect-ratio:4.4/1;min-height:clamp(190px,15vw,280px);
+  border-radius:18px;
+  border:1px dashed color-mix(in srgb, var(--fg) 26%, transparent);
+  background:color-mix(in srgb, var(--fg) 3%, transparent);
+  padding:clamp(20px,3vw,44px);
+  transition:border-color .7s,background-color .7s;
+}
+@supports not (background: color-mix(in srgb, red 3%, transparent)){
+  .wk-slot{border-color:var(--soft);background:transparent}
+}
+.wk-slot-eb{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-weight:600;font-size:clamp(10px,.72vw,12px);
+  letter-spacing:.2em;text-transform:uppercase;color:var(--mut);
+}
+.wk-slot-eb::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--acc)}
+.wk-slot-t{
+  font-family:var(--body);font-weight:600;
+  font-size:clamp(22px,1.9vw,42px);line-height:1.05;letter-spacing:-.028em;color:var(--fg);
+  display:inline-flex;align-items:baseline;gap:5px;
+}
+.wk-slot-caret{
+  display:inline-block;width:.085em;height:.84em;background:var(--acc);
+  transform:translateY(.05em);animation:wkCaret 1.1s steps(1) infinite;
+}
+@keyframes wkCaret{50%{opacity:0}}
+.wk-slot-s{color:var(--mut);font-size:clamp(14.5px,1.05vw,17px);line-height:1.55;max-width:46ch}
+@media (max-width:1180px){
+  .wk-slot{aspect-ratio:auto;min-height:0;padding:clamp(30px,7vw,54px) clamp(20px,5vw,40px)}
+}
+
+/* ── the CTA ───────────────────────────────────────────────────────
+   The site's flat 2px .btn reads as an unstyled rectangle beside the
+   nav's rounded pill-with-a-chip, which is the button everyone actually
+   looks at. This is that pill, scaled up for a standalone call and
+   painted from the theme tokens rather than the nav's hardcoded white,
+   so it survives a flip to bone. */
+.wk-cta{
+  /* max-content, because a flex or grid parent with the default stretch
+     alignment will otherwise pull an inline-flex button the full width
+     of its column — which is what happened to it in the FAQ rail. */
+  display:inline-flex;width:max-content;max-width:100%;
+  align-items:center;gap:clamp(12px,1vw,18px);
+  font-family:var(--body);font-weight:500;
+  font-size:clamp(15px,1.15vw,17.5px);letter-spacing:-.015em;white-space:nowrap;
+  background:var(--fg);color:var(--bg);
+  padding:11px 11px 11px clamp(22px,1.8vw,32px);border-radius:13px;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),
+             background-color .7s,color .7s,box-shadow .45s;
+  will-change:transform;
+}
+.wk-cta .arr{
+  display:grid;place-items:center;flex:0 0 auto;
+  width:clamp(38px,2.9vw,46px);height:clamp(38px,2.9vw,46px);
+  border-radius:10px;background:var(--bg);color:var(--fg);
+  font-size:15px;line-height:1;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),background-color .7s,color .7s;
+}
+.wk-cta:hover{transform:translateY(-3px);box-shadow:0 18px 34px -18px rgba(11,10,8,.45)}
+.wk-cta:hover .arr{transform:translate(2px,-2px)}
+.wk-cta:active{transform:translateY(-1px)}
+
+/* the strip that hands you the rest of the archive */
+.wk-strip{
+  position:relative;margin-top:clamp(38px,5.4vh,72px);
+  padding-top:clamp(28px,4vh,46px);
+  display:flex;justify-content:space-between;align-items:flex-end;
+  gap:clamp(22px,3vw,64px);flex-wrap:wrap;
+}
+.wk-strip::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:1px;
+  background-image:linear-gradient(90deg,var(--line) 0 4px,transparent 4px 9px);
+  background-size:9px 1px;background-repeat:repeat-x;
+}
+.wk-strip-l{display:flex;flex-direction:column;gap:clamp(12px,1.6vh,18px);max-width:52ch}
+.wk-strip-line{
+  font-family:var(--body);font-weight:600;
+  font-size:clamp(22px,1.72vw,38px);line-height:1.1;letter-spacing:-.026em;
+}
+.wk-strip-sub{color:var(--mut);font-size:clamp(15px,1.1vw,17.5px);line-height:1.55;max-width:44ch}
+.wk-strip .btn{flex:0 0 auto}
+
+/* ---------------------------------------------------------------
+   3. THE ARCHIVE PAGE
+   --------------------------------------------------------------- */
+.wkp{padding:calc(clamp(84px,12vh,140px) + 62px) 0 clamp(70px,10vh,120px)}
+
+/* the way back to the world this page belongs to */
+.wk-back-link{
+  display:inline-flex;align-items:center;gap:11px;
+  font-family:var(--mono);font-weight:600;
+  font-size:clamp(11px,.84vw,13px);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--mut);width:max-content;
+  transition:color .35s;
+}
+.wk-back-link:hover{color:var(--fg)}
+.wk-back-arrow{
+  display:grid;place-items:center;flex:0 0 auto;
+  width:30px;height:30px;border-radius:100px;
+  border:1px solid var(--line);color:var(--fg);font-size:13px;line-height:1;
+  transition:transform .4s cubic-bezier(.34,1.4,.64,1),border-color .35s,background-color .35s;
+}
+.wk-back-link:hover .wk-back-arrow{
+  transform:translateX(-4px);border-color:var(--soft);background:rgba(233,230,221,.06);
+}
+body[data-theme="bone"] .wk-back-link:hover .wk-back-arrow{background:rgba(11,10,8,.05)}
+.wkp > .shell > .wk-back-link{margin-bottom:clamp(20px,3vh,34px)}
+.wkp-head{
+  display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:clamp(26px,3.4vw,80px);align-items:end;
+  padding-bottom:clamp(30px,4.6vh,58px);
+  border-bottom:1px solid var(--line);
+}
+.wkp-eb{display:flex;align-items:center;gap:14px;margin-bottom:clamp(16px,2.4vh,28px)}
+.wkp-eb .dot{width:6px;height:6px;border-radius:50%;background:var(--acc);flex:0 0 auto}
+.wkp-title{
+  font-family:var(--body);font-weight:600;
+  font-size:clamp(46px,6.4vw,132px);line-height:.9;letter-spacing:-.04em;
+}
+.wkp-lead{color:var(--mut);font-size:clamp(16px,1.2vw,19.5px);line-height:1.6;max-width:46ch}
+.wkp-lead b{color:var(--fg);font-weight:600}
+@media (max-width:900px){
+  .wkp-head{grid-template-columns:1fr;gap:26px;align-items:start}
+}
+
+/* strand filters */
+.wk-filters{
+  display:flex;flex-wrap:wrap;gap:clamp(7px,.7vw,12px);
+  padding:clamp(24px,3.4vh,42px) 0 clamp(34px,5vh,64px);
+}
+.wk-filter{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-weight:600;
+  font-size:clamp(11px,.82vw,13px);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--mut);background:none;
+  padding:11px 20px;border:1px solid var(--line);border-radius:100px;
+  transition:color .35s,border-color .35s,background-color .35s,transform .35s cubic-bezier(.34,1.4,.64,1);
+}
+.wk-filter em{
+  font-style:normal;font-size:.78em;letter-spacing:.06em;opacity:.55;
+  font-variant-numeric:tabular-nums;
+}
+.wk-filter:hover{color:var(--fg);border-color:var(--soft);transform:translateY(-2px)}
+.wk-filter.is-on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.wk-filter.is-on em{opacity:.6}
+/* On a phone five chips wrap to four rows and read as a form. One
+   edge-to-edge scrolling line reads as a strand index instead. */
+@media (max-width:660px){
+  .wk-filters{
+    flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;
+    scrollbar-width:none;-ms-overflow-style:none;
+    margin-inline:calc(var(--pad) * -1);
+    padding-inline:var(--pad);
+  }
+  .wk-filters::-webkit-scrollbar{display:none}
+  .wk-filter{flex:0 0 auto;padding:10px 16px}
+  .wk-filter:hover{transform:none}
+}
+
+/* ── THE ARCHIVE ──────────────────────────────────────────────────
+   Three measures, generous air, moderate cards.
+
+   The last pass made every band the full width of the page on a 22px
+   gutter. That is a fine grid and a congested one: a 1032px card with
+   22px beside it has no room around it at all — the gap has to grow
+   WITH the card or the page reads as one solid mass, and it did.
+
+   So this goes back to the scale that was working, a little larger, and
+   gives the space back three ways at once:
+
+     · the cards are smaller       reels 553 -> 369, pairs 849 -> 767
+     · the gutter more than doubles           22px -> 48px
+     · and the bands sit at three different measures, centred, so most
+       of them have visible margin at the page edges rather than running
+       into it:
+
+         c   a wide piece          100%   the anchor; it sets the measure
+         b   two landscapes         92%
+         r   three verticals        70%
+
+   Centred, not flushed alternately — rows stepping left and right past
+   a fixed margin is what read as a wobble before. Here the page has one
+   axis and three widths on it, which is a measure changing, not a grid
+   slipping.
+
+   The reel-beside-a-stack band stays on the homepage where it belongs:
+   it welds three cards into one block, which is exactly the density
+   this page is trying to lose. */
+.wk-rows{
+  --wk-g:clamp(18px,1.9vw,48px);            /* between cards in a band */
+  display:flex;flex-direction:column;
+  gap:clamp(46px,3.7vw,92px);               /* between bands           */
+  width:100%;
+}
+.wk-rows > .wk-band{margin-inline:auto}
+.wk-rows > .wk-band--c{width:100%}
+.wk-rows > .wk-band--b{width:92%;grid-template-columns:repeat(2,minmax(0,1fr))}
+.wk-rows > .wk-band--r{width:70%;grid-template-columns:repeat(3,minmax(0,1fr))}
+
+/* A strand filter can leave a band short. The columns stay, so the
+   leftovers keep the size their neighbours had and sit at the left edge
+   — rather than a single reel blowing up to the full measure and
+   running two thousand pixels down the page. */
+
+/* --- the type, at this smaller scale ---
+   These sizes are scoped to .wk-rows on purpose. The same card class on
+   the homepage is drawn at nearly twice the width inside the mosaic,
+   and shrinking its type to suit a 369px archive reel would leave the
+   featured section looking underset. */
+.wk-rows .wk-card--reel .wk-meta{
+  padding:clamp(12px,1vw,21px) clamp(12px,1vw,21px) clamp(11px,.9vw,18px);
+}
+.wk-rows .wk-card--reel .wk-rule{width:18px;margin-bottom:clamp(6px,.55vw,10px)}
+.wk-rows .wk-card--reel .wk-title{font-size:clamp(15px,.86vw,19px)}
+.wk-rows .wk-card--reel .wk-credit{
+  font-size:clamp(8.5px,.52vw,10px);letter-spacing:.14em;
+  margin-top:clamp(4px,.34vw,7px);
+}
+.wk-rows .wk-card--reel .wk-rail{padding:clamp(11px,.85vw,17px) clamp(12px,1vw,20px)}
+.wk-rows .wk-card--reel .wk-num,
+.wk-rows .wk-card--reel .wk-run{font-size:clamp(8.5px,.52vw,10px);letter-spacing:.17em}
+
+/* Steps back to one measure as the screen narrows: below a laptop there
+   is no slack left to inset into, and holding the percentages would
+   only make the cards small. */
+@media (max-width:1400px){
+  .wk-rows > .wk-band--b{width:96%}
+  .wk-rows > .wk-band--r{width:86%}
+}
+/* A third of a 1089px shell is 330px however it is sliced, so the reel
+   band gives its inset up before the cards get smaller than the scale
+   this page is built around. */
+@media (max-width:1250px){
+  .wk-rows > .wk-band--b{width:100%}
+  .wk-rows > .wk-band--r{width:94%}
+}
+@media (max-width:1100px){
+  .wk-rows > .wk-band--r{width:100%}
+}
+
+/* Below a laptop three reels across stop reading as films. They become
+   a shelf you push instead: full-bleed, snapping, with the next one
+   peeking. A run of three never orphans a card that way, which is what
+   dropping to two-across would do to every run on this page.
+
+   grid-auto-columns takes a BARE percentage, not minmax(0,58%): that
+   minimum of zero lets grid shrink the three tracks to fit the
+   container instead of overflowing it, which is three thumbnails on a
+   phone rather than a shelf. A bare percentage is a fixed track. */
+@media (max-width:900px){
+  .wk-rows > .wk-band--r{
+    width:auto;margin-inline:calc(var(--pad) * -1);
+    grid-template-columns:none;
+    grid-auto-flow:column;grid-auto-columns:58%;
+    overflow-x:auto;overscroll-behavior-x:contain;
+    scroll-snap-type:x mandatory;
+    scroll-padding-inline:var(--pad);
+    padding-inline:var(--pad);
+    scrollbar-width:none;-ms-overflow-style:none;
+  }
+  .wk-rows > .wk-band--r::-webkit-scrollbar{display:none}
+  .wk-rows > .wk-band--r > .wk-card{scroll-snap-align:start}
+}
+@media (max-width:780px){
+  .wk-rows > .wk-band--b{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  .wk-rows > .wk-band--r{grid-auto-columns:76%}
+}
+
+/* nothing matched a strand */
+.wk-empty{
+  padding:clamp(50px,9vh,110px) 0;text-align:center;color:var(--mut);
+  font-size:clamp(16px,1.2vw,19px);
+}
+
+/* the way back, at the foot of the archive */
+.wk-back{
+  margin-top:clamp(50px,7vh,96px);padding-top:clamp(26px,3.6vh,44px);
+  position:relative;display:flex;justify-content:space-between;align-items:center;
+  gap:20px;flex-wrap:wrap;
+}
+.wk-back::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:1px;
+  background-image:linear-gradient(90deg,var(--line) 0 4px,transparent 4px 9px);
+  background-size:9px 1px;background-repeat:repeat-x;
+}
+.wk-back-l{display:flex;flex-direction:column;gap:clamp(12px,1.8vh,20px);align-items:flex-start}
+.wk-back-note{
+  font-family:var(--body);font-weight:600;
+  font-size:clamp(19px,1.45vw,30px);line-height:1.15;letter-spacing:-.025em;
+  color:var(--fg);text-transform:none;max-width:26ch;
+}
+
+/* ---------------------------------------------------------------
+   4. THE PLAYER
+   Opened by any card, on either page. Full quality, sound on, its own
+   transport, and prev/next so the archive can be watched straight
+   through without going back to the grid.
+   --------------------------------------------------------------- */
+.wk-lb{position:fixed;inset:0;z-index:4200;display:none}
+.wk-lb.is-open{display:block}
+/* No backdrop-filter here. It was blurring the whole page underneath a
+   fill that is 96% opaque — a full-screen blur pass, every frame, with a
+   video decoding behind it, for something nobody can see through. */
+.wk-lb-veil{
+  position:absolute;inset:0;background:rgba(8,7,6,.965);
+  opacity:0;transition:opacity .45s ease;
+}
+.wk-lb.is-in .wk-lb-veil{opacity:1}
+.wk-lb-shell{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:clamp(14px,2.2vh,26px) var(--pad) clamp(16px,2.6vh,30px);
+  color:#E9E6DD;opacity:0;transform:translateY(14px);
+  transition:opacity .5s ease .06s,transform .6s cubic-bezier(.16,1,.3,1) .06s;
+}
+.wk-lb.is-in .wk-lb-shell{opacity:1;transform:none}
+
+.wk-lb-head{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;
+  flex:0 0 auto;padding-bottom:clamp(10px,1.6vh,20px);
+}
+.wk-lb-eb{
+  font-family:var(--mono);font-weight:600;font-size:clamp(10px,.72vw,12px);
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(233,230,221,.5);
+  font-variant-numeric:tabular-nums;
+}
+.wk-lb-eb b{color:#E9E6DD;font-weight:600}
+.wk-lb-close{
+  display:inline-flex;align-items:center;gap:12px;
+  height:44px;padding:0 6px 0 18px;border-radius:100px;
+  border:1px solid rgba(233,230,221,.22);color:#E9E6DD;
+  font-family:var(--body);font-weight:500;font-size:14px;letter-spacing:-.01em;
+  transition:border-color .35s,background-color .35s;
+}
+.wk-lb-close:hover{border-color:rgba(233,230,221,.55);background:rgba(233,230,221,.06)}
+.wk-lb-close span{
+  display:grid;place-items:center;width:32px;height:32px;border-radius:100px;
+  background:rgba(233,230,221,.1);
+}
+.wk-lb-close svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.6;fill:none}
+
+.wk-lb-stage{
+  flex:1 1 auto;min-height:0;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.wk-lb-box{
+  position:relative;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;line-height:0;
+}
+.wk-lb-video{
+  display:block;max-width:100%;max-height:100%;width:auto;height:auto;
+  object-fit:contain;background:#000;border-radius:10px;
+  box-shadow:0 40px 120px -50px rgba(0,0,0,.95);
+  cursor:pointer;
+}
+.wk-lb-box:fullscreen,.wk-lb-box:-webkit-full-screen{background:#000}
+.wk-lb-box:fullscreen .wk-lb-video{border-radius:0;box-shadow:none;max-height:100vh}
+.wk-lb-spin{
+  position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;
+  border:1.5px solid rgba(233,230,221,.22);border-top-color:var(--acc);border-radius:50%;
+  animation:wkSpin .9s linear infinite;opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.wk-lb.is-buffering .wk-lb-spin{opacity:1}
+@keyframes wkSpin{to{transform:rotate(360deg)}}
+
+/* transport */
+.wk-lb-foot{flex:0 0 auto;padding-top:clamp(12px,1.8vh,22px)}
+.wk-scrub{
+  position:relative;height:16px;display:flex;align-items:center;cursor:pointer;
+  margin-bottom:clamp(10px,1.4vh,16px);touch-action:none;
+}
+.wk-scrub-track{
+  position:relative;width:100%;height:3px;border-radius:3px;
+  background:rgba(233,230,221,.24);overflow:hidden;
+}
+.wk-scrub-buf{position:absolute;inset:0 auto 0 0;width:0;background:rgba(233,230,221,.42)}
+.wk-scrub-fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--acc)}
+.wk-scrub-knob{
+  position:absolute;top:50%;left:0;width:11px;height:11px;border-radius:50%;
+  background:var(--acc);transform:translate(-50%,-50%) scale(0);
+  transition:transform .28s cubic-bezier(.34,1.4,.64,1);pointer-events:none;
+}
+.wk-scrub:hover .wk-scrub-knob,.wk-scrub.is-drag .wk-scrub-knob{transform:translate(-50%,-50%) scale(1)}
+.wk-scrub:hover .wk-scrub-track,.wk-scrub:focus-visible .wk-scrub-track{height:5px}
+.wk-scrub-track{transition:height .28s cubic-bezier(.16,1,.3,1)}
+
+.wk-lb-bar{display:flex;align-items:center;gap:clamp(14px,1.6vw,30px);flex-wrap:wrap}
+.wk-lb-ctrl{display:flex;align-items:center;gap:clamp(6px,.6vw,12px);flex:0 0 auto}
+.wk-btn{
+  display:grid;place-items:center;width:40px;height:40px;border-radius:50%;
+  color:#E9E6DD;opacity:.72;transition:opacity .3s,background-color .3s,transform .3s;
+}
+.wk-btn:hover{opacity:1;background:rgba(233,230,221,.09)}
+.wk-btn:active{transform:scale(.94)}
+.wk-btn svg{width:17px;height:17px;fill:currentColor}
+.wk-btn--play{
+  width:52px;height:52px;background:#E9E6DD;color:#0B0A08;opacity:1;
+}
+.wk-btn--play:hover{background:#fff;transform:scale(1.05)}
+.wk-btn--play svg{width:19px;height:19px}
+.wk-time{
+  font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.13em;
+  color:rgba(233,230,221,.55);font-variant-numeric:tabular-nums;white-space:nowrap;
+  margin-left:4px;
+}
+.wk-time b{color:#E9E6DD;font-weight:600}
+.wk-lb-id{flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:4px;padding-inline:clamp(4px,1vw,20px)}
+.wk-lb-title{
+  font-family:var(--body);font-weight:600;font-size:clamp(17px,1.35vw,27px);
+  line-height:1.1;letter-spacing:-.025em;color:#fff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.wk-lb-credit{
+  font-family:var(--mono);font-weight:600;font-size:clamp(9.5px,.66vw,11.5px);
+  letter-spacing:.18em;text-transform:uppercase;color:rgba(233,230,221,.5);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.wk-lb-nav{display:flex;align-items:center;gap:8px;flex:0 0 auto;margin-left:auto}
+.wk-nav-btn{
+  display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 16px;
+  border:1px solid rgba(233,230,221,.2);border-radius:100px;color:#E9E6DD;
+  font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  opacity:.75;transition:opacity .3s,border-color .3s,background-color .3s;
+}
+.wk-nav-btn:hover{opacity:1;border-color:rgba(233,230,221,.5);background:rgba(233,230,221,.06)}
+.wk-nav-btn[disabled]{opacity:.25;pointer-events:none}
+.wk-scrub:focus-visible,.wk-lb button:focus-visible{outline:1.5px dashed var(--acc);outline-offset:3px}
+.wk-hint{
+  margin-top:clamp(12px,1.8vh,20px);
+  font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(233,230,221,.26);
+}
+.wk-hint kbd{
+  font:inherit;border:1px solid rgba(233,230,221,.24);border-radius:3px;
+  padding:1px 5px;margin:0 2px;color:rgba(233,230,221,.55);
+}
+
+@media (max-width:900px){
+  .wk-lb-nav .wk-nav-btn span{display:none}
+  .wk-nav-btn{padding:0 14px}
+  .wk-hint{display:none}
+  .wk-lb-id{order:3;flex-basis:100%;padding-inline:0}
+  .wk-lb-bar{gap:12px}
+}
+@media (max-width:560px){
+  .wk-lb-close span{display:none}
+  .wk-lb-close{padding:0 18px}
+  .wk-btn--play{width:46px;height:46px}
+}
+
+html.wk-locked,html.wk-locked body{overflow:hidden}
+
+@media (prefers-reduced-motion:reduce){
+  .wk-card{opacity:1;transform:none}
+  .wk-poster,.wk-frame,.wk-rule,.wk-play,.wk-prev{transition-duration:.001s!important}
+  .wk-lb-spin{animation:none}
+}
+/* JavaScript off: the section still has to say something rather than
+   leave a hole where a grid should be. */
+.wk-noscript{
+  padding:clamp(40px,7vh,90px) 0;border-top:1px solid var(--line);
+  color:var(--mut);font-size:clamp(15px,1.15vw,18px);max-width:52ch;line-height:1.6;
+}

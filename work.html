@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- First-paint guard, same as the homepage: the very first frame the
+     browser paints is ink, and an arrival from the Labs world stays
+     covered from frame one rather than from whenever crossover.js runs. -->
+<style>html{background:#0B0A08}html.mz-xover-boot{overflow:hidden}html.mz-xover-boot::before{content:"";position:fixed;inset:0;z-index:4001;background:#0B0A08;pointer-events:none}</style>
+<script>(function(){var d=document.documentElement;try{if(sessionStorage.getItem('mz:crossover')){d.className+=' mz-xover-boot';}}catch(e){}})();</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work — Every Film, Reel &amp; Commercial | Manzar Studio</title>
+<meta name="description" content="The full Manzar Studio archive: twenty-three productions across music video, commercial, documentary, 3D animation and vertical social work. Lahore and Paris, since 2019.">
+<meta name="keywords" content="video production portfolio Lahore, music video production Pakistan, commercial film production, documentary production, 3D animation Pakistan, video editing showreel">
+<link rel="canonical" href="https://manzar.studio/work">
+<meta property="og:site_name" content="Manzar Studio">
+<meta property="og:title" content="Work · Manzar Studio">
+<meta property="og:description" content="Twenty-three productions across music video, commercial, documentary, 3D and vertical work. Playable in place.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://manzar.studio/work">
+<meta property="og:image" content="https://manzar.studio/assets/studio-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Work · Manzar Studio">
+<meta name="twitter:description" content="Twenty-three productions across music video, commercial, documentary, 3D and vertical work.">
+<meta name="twitter:image" content="https://manzar.studio/assets/studio-preview.jpg">
+<meta name="theme-color" content="#0B0A08">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230B0A08'/%3E%3Ccircle cx='32' cy='32' r='13' fill='none' stroke='%23E9E6DD' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23FF4B1F'/%3E%3C/svg%3E">
+<link rel="manifest" href="site.webmanifest">
+<script>if("scrollRestoration" in history)history.scrollRestoration="manual";</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<!-- posters and streams both come from here; one early handshake saves it
+     on the first card that scrolls into view -->
+<link rel="preconnect" href="https://video.gumlet.io" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+<!-- The pointer first, so the browser never gets a frame to show its own. -->
+<link rel="stylesheet" href="assets/css/cursor.css?v=12">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;f[]=tanker@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/studio-base.css?v=12">
+<link rel="stylesheet" href="assets/css/crossover.css?v=12">
+<link rel="stylesheet" href="assets/css/menu.css?v=12">
+<link rel="stylesheet" href="assets/css/work.css?v=12">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "name": "Work — Manzar Studio",
+      "description": "The full Manzar Studio production archive: music video, commercial, documentary, 3D animation and vertical social work.",
+      "url": "https://manzar.studio/work",
+      "isPartOf": { "@type": "WebSite", "name": "Manzar Studio", "url": "https://manzar.studio/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Manzar Studio",
+        "url": "https://manzar.studio/",
+        "sameAs": [
+          "https://www.instagram.com/manzar.studio/",
+          "https://www.linkedin.com/company/manzarstudio/"
+        ]
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Manzar Studio", "item": "https://manzar.studio/" },
+        { "@type": "ListItem", "position": 2, "name": "Work", "item": "https://manzar.studio/work" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body data-theme="ink">
+<a class="skip" href="#archive">Skip to the work</a>
+
+<!-- grain -->
+<canvas id="cv-grain" aria-hidden="true"></canvas>
+
+<!-- nav — the homepage's, with its in-page links pointed back home -->
+<header class="nav" id="nav">
+  <div class="nav-left">
+    <a class="brand" href="index.html" aria-label="Manzar, home"><img src="assets/manzar-wordmark.png" alt="Manzar"></a>
+    <div class="mz-switch" role="group" aria-label="Manzar worlds">
+      <a class="mz-sw-opt is-on" href="index.html" data-world="studio">Studio</a>
+      <a class="mz-sw-opt" href="labs/index.html" data-world="labs">Labs</a>
+    </div>
+  </div>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="work.html" aria-current="page">Work</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#process">Process</a>
+    <a href="index.html#faq">FAQ</a>
+  </nav>
+  <div class="nav-right">
+    <a class="nav-cta magnetic" href="mailto:hello@manzar.studio?subject=Our%20story%2C%20your%20screens">Tell us your story <span class="arr">&#8599;</span></a>
+    <button class="menu-btn" type="button" id="menuBtn" data-mzx-open aria-controls="mzxMenu" aria-label="Open menu" aria-expanded="false"><span class="menu-btn-label">Menu</span><span class="menu-btn-icon" aria-hidden="true"><i></i><i></i></span></button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ THE ARCHIVE ============
+       Every card, every runtime and the order they are in come from
+       /assets/js/work-data.js; /assets/js/work.js composes them into rows
+       by shape — a wide piece takes a row of its own, 16:9 pieces pair up,
+       runs of reels go three across — and runs the player they open.
+       The two containers below are filled at DOMContentLoaded. -->
+  <section class="wkp" id="archive">
+    <div class="shell">
+
+      <a class="wk-back-link" href="index.html">
+        <span class="wk-back-arrow" aria-hidden="true">&#8592;</span>
+        <span>Manzar Studio</span>
+      </a>
+
+      <header class="wkp-head">
+        <div>
+          <p class="eb wkp-eb"><span class="dot" aria-hidden="true"></span>All work</p>
+          <h1 class="wkp-title">Work</h1>
+        </div>
+        <div>
+          <p class="wkp-lead">
+            Music videos, commercials, documentary and 3D, made for clients
+            in Pakistan and abroad since <b>2019</b>. Filter by discipline,
+            or click any card to watch it in full.
+            <span id="wkShown" style="display:block;margin-top:.7em;color:var(--soft)">23 projects</span>
+          </p>
+        </div>
+      </header>
+
+      <div class="wk-filters" id="wkFilters" role="group" aria-label="Filter the archive by strand"></div>
+
+      <div class="wk-rows" id="wkRows"></div>
+
+      <noscript>
+        <p class="wk-noscript">
+          This archive streams its previews with JavaScript, which is
+          switched off in this browser. Write to
+          <a href="mailto:hello@manzar.studio" style="text-decoration:underline">hello@manzar.studio</a>
+          and we will send the cuts you want to see directly.
+        </p>
+      </noscript>
+
+      <div class="wk-back">
+        <div class="wk-back-l">
+          <span class="wk-back-note">Seen something close to what you need?</span>
+          <a class="wk-back-link" href="index.html">
+            <span class="wk-back-arrow" aria-hidden="true">&#8592;</span>
+            <span>Back to Manzar Studio</span>
+          </a>
+        </div>
+        <a class="wk-cta magnetic" href="mailto:hello@manzar.studio?subject=About%20a%20piece%20in%20your%20work">Tell us your story <span class="arr" aria-hidden="true">&#8599;</span></a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="foot">
+    <div class="shell">
+      <div class="foot-grid">
+        <nav class="fnav" aria-label="Footer">
+          <a href="index.html">Home <span class="fa">→</span></a>
+          <a href="work.html" aria-current="page">All work <span class="fa">→</span></a>
+          <a href="index.html#services">Services <span class="fa">→</span></a>
+          <a href="index.html#process">Process <span class="fa">→</span></a>
+          <a href="index.html#faq">FAQ <span class="fa">→</span></a>
+          <a href="mailto:hello@manzar.studio">Contact <span class="fa">→</span></a>
+        </nav>
+        <div class="fcol">
+          <div class="fblock">
+            <span class="fb-lab">Write</span>
+            <a class="femail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
+          </div>
+          <div class="fblock">
+            <span class="fb-lab">Studios</span>
+            <p>Lahore, Pakistan · Paris, France<br>Working worldwide.</p>
+          </div>
+          <div class="fblock">
+            <span class="fb-lab">Score</span>
+            <p>Music by <a href="https://www.scottbuckley.com.au" target="_blank" rel="noopener" style="color:var(--fg);text-decoration:underline;text-underline-offset:3px">Scott Buckley</a>, licensed CC&nbsp;BY&nbsp;4.0.<br>Press 1&ndash;5 to change the score.</p>
+          </div>
+          <div class="fblock">
+            <span class="fb-lab">Elsewhere</span>
+            <div class="fsoc">
+              <a href="https://www.instagram.com/manzar.studio/" target="_blank" rel="noopener">Instagram ↗</a>
+              <a href="https://www.linkedin.com/company/manzarstudio/" target="_blank" rel="noopener">LinkedIn ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="foot-meta">
+        <span class="fm-clock">Lahore <span id="fClkLhe">--:--:--</span> · Paris <span id="fClkPar">--:--:--</span></span>
+        <button class="totop" id="toTop">Back to top ↑</button>
+        <span>© 2026 Manzar Studio</span>
+      </div>
+    </div>
+    <div class="foot-band">
+      <canvas id="cv-band" aria-hidden="true"></canvas>
+      <div class="band-in">
+        <span class="band-logo"><img src="assets/manzar-wordmark.png" alt="Manzar"></span>
+        <span class="band-tag">Every screen, a scene.<br>Manzar Studio · Lahore / Paris</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ══════════════ MENU ══════════════
+     The same component every Manzar page runs: /assets/css/menu.css +
+     /assets/js/menu.js. Its section rows point back at the homepage,
+     because those sections do not exist here. -->
+<!-- ══════════════ MENU ══════════════
+     Component: /assets/css/menu.css + /assets/js/menu.js. Self-contained,
+     so the same markup runs on Studio, Labs and every subpage.
+     Twelve rows, three groups, in the order Ali specified. --i drives the
+     open stagger from CSS, so no script has to touch the rows. -->
+<div class="mzx" id="mzxMenu" role="dialog" aria-modal="true"
+     aria-label="Main menu" aria-hidden="true" hidden>
+
+  <div class="mzx-head">
+    <div class="mzx-head-left">
+      <img class="mzx-mark" src="assets/manzar-wordmark.png" alt="Manzar"
+           width="2556" height="980" decoding="async">
+      <span class="mzx-head-rule" aria-hidden="true"></span>
+      <span class="mzx-eyebrow">Studio</span>
+    </div>
+    <button class="mzx-close" type="button" data-mzx-close aria-label="Close menu">
+      <span class="mzx-close-label">Close</span>
+      <span class="mzx-close-x" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 6 18 18M18 6 6 18"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+
+  <div class="mzx-body">
+    <nav class="mzx-nav" aria-label="Main">
+
+      <div class="mzx-group">
+        <p class="mzx-group-label">Studio</p>
+        <a class="mzx-row" href="work.html" style="--i:0"
+           data-media="assets/menu/work.svg" data-kicker="Selected work">
+          <span class="mzx-n">01</span>
+          <span class="mzx-t">Work</span>
+          <span class="mzx-d">The whole archive: film, music, commercial, creative.</span>
+        </a>
+        <a class="mzx-row" href="index.html#services" style="--i:1"
+           data-media="assets/menu/services.svg" data-kicker="What we do">
+          <span class="mzx-n">02</span>
+          <span class="mzx-t">Services</span>
+          <span class="mzx-d">Brand, product and the systems behind them.</span>
+        </a>
+        <a class="mzx-row" href="index.html#reel" style="--i:2"
+           data-media="assets/menu/reel.svg" data-kicker="In motion">
+          <span class="mzx-n">03</span>
+          <span class="mzx-t">Showreel</span>
+          <span class="mzx-d">The work in motion, thirty seconds at a time.</span>
+        </a>
+        <a class="mzx-row" href="index.html#process" style="--i:3"
+           data-media="assets/menu/process.svg" data-kicker="How we ship">
+          <span class="mzx-n">04</span>
+          <span class="mzx-t">Process</span>
+          <span class="mzx-d">Discover, build, ship. The discipline behind it.</span>
+        </a>
+        <a class="mzx-row" href="index.html#faq" style="--i:4"
+           data-media="assets/menu/faq.svg" data-kicker="Before you ask">
+          <span class="mzx-n">05</span>
+          <span class="mzx-t">FAQ</span>
+          <span class="mzx-d">Timelines, pricing and scope, answered plainly.</span>
+        </a>
+      </div>
+
+      <div class="mzx-group">
+        <p class="mzx-group-label">Labs</p>
+        <a class="mzx-row" href="capabilities/cloud.html" style="--i:5"
+           data-media="assets/menu/cloud.svg" data-kicker="Built to hold">
+          <span class="mzx-n">06</span>
+          <span class="mzx-t">Cloud &amp; Infrastructure</span>
+          <span class="mzx-d">Systems that hold under real load.</span>
+        </a>
+        <a class="mzx-row" href="capabilities/mobile.html" style="--i:6"
+           data-media="assets/menu/mobile.svg" data-kicker="In the store">
+          <span class="mzx-n">07</span>
+          <span class="mzx-t">Mobile Development</span>
+          <span class="mzx-d">iOS, Android, React Native. Shipped, not prototyped.</span>
+        </a>
+        <a class="mzx-row" href="capabilities/ai.html" style="--i:7"
+           data-media="assets/menu/ai.svg" data-kicker="Past the demo">
+          <span class="mzx-n">08</span>
+          <span class="mzx-t">AI Development</span>
+          <span class="mzx-d">Applied models, not demo-ware.</span>
+        </a>
+        <a class="mzx-row" href="capabilities/iot.html" style="--i:8"
+           data-media="assets/menu/iot.svg" data-kicker="Wired up">
+          <span class="mzx-n">09</span>
+          <span class="mzx-t">IoT &amp; Connected Systems</span>
+          <span class="mzx-d">Hardware and firmware, wired to software.</span>
+        </a>
+      </div>
+
+      <div class="mzx-group">
+        <p class="mzx-group-label">Company</p>
+        <a class="mzx-row" href="pricing.html" style="--i:9"
+           data-media="assets/menu/pricing.svg" data-kicker="Engagement models">
+          <span class="mzx-n">10</span>
+          <span class="mzx-t">Pricing</span>
+          <span class="mzx-d">Sprint, build or retainer: three ways in.</span>
+        </a>
+        <a class="mzx-row" href="index.html#contact" style="--i:10"
+           data-media="assets/menu/contact.svg" data-kicker="Start a conversation">
+          <span class="mzx-n">11</span>
+          <span class="mzx-t">Contact</span>
+          <span class="mzx-d">hello@manzar.studio. Say what you need.</span>
+        </a>
+      </div>
+
+    </nav>
+
+    <aside class="mzx-media" data-mzx-media
+           data-default-media="assets/menu/world.svg"
+           data-default-kicker="Two halves, one studio"
+           data-default-caption="Manzar Studio. Film, design and software.">
+      <div class="mzx-frame" data-mzx-frame>
+        <img class="is-on" src="assets/menu/world.svg" alt="" width="800" height="500" decoding="async">
+        <img alt="" aria-hidden="true" width="800" height="500" decoding="async">
+      </div>
+      <p class="mzx-kicker" data-mzx-kicker>Two halves, one studio</p>
+      <p class="mzx-caption" data-mzx-caption>Manzar Studio. Film, design and software.</p>
+    </aside>
+  </div>
+
+  <div class="mzx-foot">
+    <div class="mzx-switch" role="group" aria-label="Manzar worlds">
+      <span class="mzx-switch-rail" aria-hidden="true"></span>
+      <a href="index.html" class="is-on" data-world="studio">Studio</a>
+      <a href="labs/index.html" data-world="labs">Labs</a>
+    </div>
+    <a class="mzx-mail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
+    <div class="mzx-clocks">
+      <div class="mzx-clock">
+        <span class="mzx-clock-city">Lahore</span>
+        <time class="mzx-clock-time" data-mzx-clock="Asia/Karachi">--:--</time>
+      </div>
+      <div class="mzx-clock">
+        <span class="mzx-clock-city">Paris</span>
+        <time class="mzx-clock-time" data-mzx-clock="Europe/Paris">--:--</time>
+      </div>
+    </div>
+    <a class="mzx-cta" href="index.html#contact">Start a project <i aria-hidden="true">&#8599;</i></a>
+  </div>
+</div>
+<audio data-mz-ambience data-mz-brand="studio" data-mz-volume=".31"
+       data-mz-tracks='[{"src": "assets/audio/moonlight.mp3", "name": "Moonlight \u2014 Scott Buckley"}, {"src": "assets/audio/midvinter.mp3", "name": "Midvinter \u2014 Scott Buckley"}, {"src": "assets/audio/castles-in-the-sky.mp3", "name": "Castles in the Sky \u2014 Scott Buckley"}, {"src": "assets/audio/reawakening.mp3", "name": "Reawakening \u2014 Scott Buckley"}, {"src": "assets/audio/at-the-end-of-all-things.mp3", "name": "At the End of All Things \u2014 Scott Buckley"}]'
+       loop preload="metadata" src="assets/audio/moonlight.mp3"></audio>
+<button class="mz-sndtgl" data-mz-sound type="button" aria-pressed="true" aria-label="Turn sound off"><i></i><i></i><i></i><i></i></button>
+
+<script src="assets/js/crossover.js?v=12"></script>
+<script src="assets/js/menu.js?v=12" defer></script>
+<script src="assets/js/mz-sound.js?v=12" defer></script>
+<!-- grain, clocks, magnetic pull and the footer band. The homepage does
+     all four itself inside its motion system; this is the same behaviour
+     without the hero that system exists for. -->
+<script src="assets/js/studio-chrome.js?v=12" defer></script>
+<script src="assets/js/work-data.js?v=12" defer></script>
+<script src="assets/js/work.js?v=12" defer></script>
+</body>
+</html>

@@ -28,10 +28,14 @@
 <script>if("scrollRestoration" in history)history.scrollRestoration="manual";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- the work grid's posters and streams both come from here; one early
+     handshake takes a round trip off the first card that plays -->
+<link rel="preconnect" href="https://video.gumlet.io" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <!-- The pointer. Deliberately the first stylesheet in the document, so
      it is resolved before the page first paints and the browser never
      gets a chance to show its own arrow. -->
-<link rel="stylesheet" href="assets/css/cursor.css">
+<link rel="stylesheet" href="assets/css/cursor.css?v=12">
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;f[]=tanker@400&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
@@ -235,7 +239,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   padding:16px var(--pad);
 }
 .nav-left{justify-self:start;display:flex;align-items:center;gap:clamp(14px,1.6vw,26px)}
-.brand{display:flex;align-items:center}
+/* The wordmark must never be the thing the flex algorithm sacrifices.
+   Its only child is an <img> under the reset's max-width:100%, which
+   gives .brand a min-content width of zero — so on a narrow screen the
+   switch beside it won the space and the logo vanished entirely. */
+.brand{display:flex;align-items:center;flex:0 0 auto}
 .brand img{height:clamp(26px,2.1vw,33px);width:auto;display:block}
 .nav-links{justify-self:center;display:flex;gap:clamp(22px,1.562vw,40px);font-family:var(--body);font-weight:500;font-size:clamp(18px,1.42vw,22px);letter-spacing:-.022em}
 .nav-links a{position:relative;padding:5px 0;opacity:.88;transition:opacity .35s}
@@ -276,34 +284,123 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
    "Start a project" pill and the menu's own Close button. Label first,
    then a square chip holding the stacked rules. The chip inverts on
    hover and the short rule runs out to full width. */
+/* ── the menu trigger ──────────────────────────────────────────
+   It sits directly beside "Tell us your story" and was built to none
+   of its measurements: 46px tall against 56, a full 100px pill against
+   a 9px squircle, a round icon chip against a square one, 16px type
+   against 18. Two buttons an inch apart, agreeing on nothing. On top of
+   that the two rules inside were 15px and 9px, flush right, then nudged
+   left by a margin — which is why the chip read as a pair of stray
+   dashes rather than a menu.
+
+   It is now the same control, outlined instead of filled: same height,
+   same corner radius, same chip geometry, same type. The rules are
+   equal, centred, and on hover the chip fills and they invert. */
+/* ---------- the menu trigger ----------
+   Back to the pill. The rounded-rectangle version with the solid white
+   chip read as a second CTA sitting next to the real one, and the two
+   rules parting vertically read as the control coming to pieces.
+
+   This is the button as it was, at the CTA's height so the pair finally
+   lines up: an outlined pill, a soft translucent disc, two rules hung
+   off the right edge. On hover the short rule runs out to meet the long
+   one — arriving a beat later, which is the whole character of it — and
+   the disc lifts a shade. Nothing moves that does not mean something.
+
+   Whole pixels throughout: a 42px disc holding 2 + 6 + 2 puts the stack
+   at y=16, and the rules end at x=30 and start at 12 and 19. Nothing
+   straddles a pixel, so neither rule renders lighter than the other —
+   which is what the "bottom line's weight" was. */
+/* ---------- the menu trigger — v6, "the plate" ----------
+   Rectangular, because the silhouette was never what was wrong with it.
+   What was wrong is that the outline was one flat hairline and the chip
+   was one flat white box, so the control read as DRAWN rather than made.
+   Three changes carry it:
+
+   1  The edge is layered, not stroked. A 1px inset ring plus a brighter
+      catch along the top — the same move the work cards use for their
+      bezel. It reads as a plate with a lit edge instead of a rectangle
+      somebody put a border on.
+
+   2  The corners are concentric. The chip is inset 8px and rounded 8px,
+      so the shell is rounded 16px, and the two curves stay parallel the
+      whole way round. When they are not — a 7px chip in a 9px shell —
+      the inner corner visibly pinches against the outer one, which is
+      what makes a nested rectangle look cheap without anyone being able
+      to name why.
+
+   3  The rules trade places. At rest the long one is on top; on hover
+      they swap, the lower arriving a beat after the upper. Both ends of
+      that are a legible menu mark, so it reads as a mechanism turning
+      over rather than an icon coming apart — which was the complaint
+      about the version that pulled them vertically.
+
+   Whole pixels throughout: 2 + 6 + 2 in a 40px chip puts the stack at
+   y=15, and the rules run to x=29 from 11 and 18. Nothing straddles a
+   pixel, so neither rule can render lighter than its partner. */
 .menu-btn{
-  display:inline-flex;align-items:center;gap:12px;
-  height:46px;padding:0 6px 0 18px;
-  border:1px solid rgba(255,255,255,.22);border-radius:100px;
-  background:none;cursor:pointer;color:#fff;
+  display:inline-flex;align-items:center;gap:16px;
+  height:56px;padding:0 8px 0 24px;
+  border:0;border-radius:16px;
+  background:rgba(255,255,255,.04);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.2),
+    inset 0 1px 0 rgba(255,255,255,.13);
+  cursor:pointer;color:#fff;
   font-family:var(--body);font-weight:500;
-  font-size:clamp(14px,1.05vw,16px);letter-spacing:-.015em;
-  transition:border-color .35s var(--e-out,cubic-bezier(.22,1,.36,1)),background-color .35s;
+  font-size:clamp(16px,1.2vw,18px);letter-spacing:-.015em;
+  transition:background-color .45s cubic-bezier(.22,1,.36,1),
+             box-shadow .45s cubic-bezier(.22,1,.36,1),
+             transform .3s cubic-bezier(.34,1.56,.64,1);
 }
-.menu-btn:hover{border-color:rgba(255,255,255,.5)}
+.menu-btn:hover{
+  background:rgba(255,255,255,.085);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.42),
+    inset 0 1px 0 rgba(255,255,255,.26);
+}
+.menu-btn:active{transform:translateY(1px)}
+.menu-btn:focus-visible{outline:1.5px dashed #fff;outline-offset:3px}
 .menu-btn-label{line-height:1}
+/* Bone, not #fff. The chip is a piece of the site's own paper sitting
+   in the nav; pure white beside the CTA's pure white body welds the two
+   controls into one bright object at a glance. */
 .menu-btn-icon{
-  display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px;
-  width:32px;height:32px;border-radius:100px;
-  background:rgba(255,255,255,.10);
-  transition:background-color .35s;
+  display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:6px;
+  width:40px;height:40px;padding-right:11px;border-radius:8px;
+  background:#E9E6DD;
+  transition:background-color .45s cubic-bezier(.22,1,.36,1);
 }
-.menu-btn:hover .menu-btn-icon{background:rgba(255,255,255,.2)}
+.menu-btn:hover .menu-btn-icon{background:#fff}
 .menu-btn-icon i{
-  display:block;height:1.5px;background:currentColor;border-radius:2px;
-  transition:width .35s cubic-bezier(.22,1,.36,1);
+  display:block;height:2px;border-radius:1px;background:#0B0A08;
+  transition:width .5s cubic-bezier(.22,1,.36,1);
 }
-.menu-btn-icon i:nth-child(1){width:15px}
-.menu-btn-icon i:nth-child(2){width:9px}
-.menu-btn:hover .menu-btn-icon i:nth-child(2){width:15px}
-.menu-btn-icon i:first-child{margin-right:8px}
-.menu-btn-icon i:last-child{margin-right:8px}
+.menu-btn-icon i:nth-child(1){width:18px}
+.menu-btn-icon i:nth-child(2){width:11px}
+/* the delay sits on the hover rule only, so the pair goes out staggered
+   and comes home together — a lag on the way back just reads as lag */
+.menu-btn:hover .menu-btn-icon i:nth-child(1){width:11px}
+.menu-btn:hover .menu-btn-icon i:nth-child(2){width:18px;transition-delay:.07s}
 @media (max-width:1100px){.nav-links{display:none}.nav .nav-cta{display:none}}
+/* On a phone the three-column grid has nothing to give: wordmark,
+   world switch and menu button together are wider than the screen, and
+   something has to lose. It is the switch — the menu sheet carries the
+   same Studio/Labs control one tap away, and the nav's job here is to
+   say where you are and how to get out. */
+@media (max-width:560px){
+  .nav{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;padding:12px var(--pad);
+  }
+  .nav .mz-switch{display:none}
+  .menu-btn{height:48px;padding:0 7px 0 19px;gap:12px;font-size:15.5px;border-radius:14px}
+  .menu-btn-icon{width:34px;height:34px;padding-right:9px;border-radius:7px}
+  .menu-btn-icon i:nth-child(1){width:16px}
+  .menu-btn-icon i:nth-child(2){width:10px}
+  .menu-btn:hover .menu-btn-icon i:nth-child(1){width:10px}
+  .menu-btn:hover .menu-btn-icon i:nth-child(2){width:16px}
+}
 
 /* mobile overlay menu */
 .menu{position:fixed;inset:0;z-index:110;background:var(--ink);color:var(--bone);display:none;flex-direction:column;justify-content:space-between;gap:clamp(28px,5vh,60px);padding:clamp(24px,3.5vh,44px) var(--pad) var(--pad);overflow-y:auto}
@@ -439,69 +536,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .conv-cap{position:absolute;left:50%;transform:translateX(-50%);bottom:clamp(28px,4.5vh,54px);font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);text-align:center}
 
-/* ---------- work ---------- */
-.work{padding:clamp(100px,14vh,170px) 0 clamp(40px,7vh,90px)}
-.work-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:clamp(30px,5vh,56px)}
-.work-head .count{font-family:var(--mono);font-weight:600;font-size:clamp(12.5px,.95vw,15px);letter-spacing:.15em;text-transform:uppercase;color:var(--mut)}
-.wrow{
-  display:grid;grid-template-columns:minmax(0,7.2fr) minmax(0,4.8fr);gap:clamp(26px,2.812vw,72px);
-  padding:clamp(52px,8.5vh,104px) 0;align-items:center;position:relative;
-}
-.wrow::before{
-  content:"";position:absolute;left:0;right:0;top:0;height:1px;
-  background-image:linear-gradient(90deg,var(--line) 0 4px,transparent 4px 9px);
-  background-size:9px 1px;background-repeat:repeat-x;
-}
-.wrow:first-of-type::before{display:none}
-.wmedia{
-  position:relative;aspect-ratio:16/10.3;overflow:hidden;border-radius:18px;display:block;
-  background:var(--frame);border:1px solid var(--frame-line);
-  transition:background-color .7s,border-color .7s,transform .6s cubic-bezier(.2,.8,.2,1);
-}
-.wrow:hover .wmedia{transform:translateY(-4px)}
-.wart-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-/* drawn-frame primitives (ported from website-main, re-bound to OUR tokens so the
-   art inverts correctly with our bone/ink theme flips) */
-.wart-svg .fl{fill:none;stroke:var(--soft);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.wart-svg .fl-dim{fill:none;stroke:var(--mut);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.wart-svg .fa{fill:none;stroke:var(--acc);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center}
-.wart-svg .fa-dot{fill:var(--acc);stroke:none;transform-box:fill-box;transform-origin:center}
-.wart-svg .ft{font-family:var(--mono);font-size:11px;letter-spacing:.16em;fill:var(--mut)}
-.wart-svg .ft-num{font-family:var(--disp);font-weight:600;fill:var(--fg);letter-spacing:-.01em}
-.wart-svg .mz-caret{fill:var(--acc);stroke:none;animation:mz-caret-blink 1.1s steps(1) infinite}
-@keyframes mz-caret-blink{50%{opacity:0}}
-.wart-svg .fa,.wart-svg .fa-dot{transition:transform .45s cubic-bezier(.16,1,.3,1)}
-.wrow:nth-of-type(1):hover .wart-svg .fa,.wrow:nth-of-type(1):hover .wart-svg .fa-dot{transform:translateX(14px)}
-.wrow:nth-of-type(2):hover .wart-svg .fa,.wrow:nth-of-type(2):hover .wart-svg .fa-dot{transform:translateY(8px)}
-.wrow:nth-of-type(3):hover .wart-svg .fa,.wrow:nth-of-type(3):hover .wart-svg .fa-dot{transform:translate(5px,-4px)}
-.wmark{
-  position:absolute;left:16px;bottom:14px;z-index:2;
-  font-family:var(--body);font-weight:600;font-size:clamp(17px,1.5vw,24px);letter-spacing:-.015em;color:var(--fg);
-}
-.wphoto{
-  position:absolute;inset:0;background-size:cover;background-position:center;
-  transition:transform 1s cubic-bezier(.2,.8,.2,1);will-change:transform;
-}
-.wrow:hover .wphoto{transform:scale(1.035)}
-.wtag{position:absolute;top:14px;left:16px;z-index:2;font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.9);background:rgba(11,10,8,.38);padding:6px 10px;border-radius:2px;backdrop-filter:blur(3px)}
-.wmeta{display:flex;flex-direction:column;gap:18px;padding-top:4px}
-.windex{font-family:var(--mono);font-weight:600;font-size:clamp(12.5px,.95vw,14.5px);letter-spacing:.15em;color:var(--mut);text-transform:uppercase}
-.windex b{color:var(--fg);font-weight:600}
-.wname{font-family:var(--body);font-weight:600;font-size:clamp(26px,1.641vw,42px);line-height:1.02;letter-spacing:-.02em;text-transform:none}
-.wdesc{color:var(--mut);font-size:clamp(15.5px,1.2vw,18.5px);max-width:40ch;line-height:1.55}
-.metric{display:flex;flex-direction:column;gap:12px;margin-top:14px;align-items:flex-start}
-.metric b{
-  font-family:var(--body);font-weight:600;font-size:clamp(20px,1.094vw,28px);line-height:1;
-  letter-spacing:-.01em;color:var(--fg);background:rgba(11,10,8,.07);padding:10px 16px;border-radius:3px;
-}
-body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
-.metric span{font-size:15.5px;font-weight:500;color:var(--fg);max-width:26ch;line-height:1.4}
-.wlink{display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-weight:500;font-size:14.5px;margin-top:8px;position:relative;width:max-content}
-.wlink::after{content:"";position:absolute;left:0;bottom:-4px;width:100%;height:1px;background:var(--fg);transform:scaleX(1);transform-origin:left;transition:transform .4s}
-.wlink:hover::after{transform:scaleX(.4)}
-.wrow-next .wmedia{background:transparent;border:1px dashed var(--line)}
-.wmedia.ph{display:flex;align-items:center;justify-content:center;border:1px dashed var(--line)}
-.wrow-next .next-mark{font-family:var(--body);font-weight:600;font-size:clamp(18px,1.6vw,26px);letter-spacing:-.01em;color:var(--mut)}
+/* ---------- work ----------
+   The section moved to /assets/css/work.css, which the archive page
+   shares, so a card cannot drift between the two. What used to be here
+   were the drawn-frame rows; they are kept in
+   Backup/2026-09-05-work-overhaul/ if that art is ever wanted again. */
 
 /* ---------- labs doorway ---------- */
 .labs{padding:clamp(100px,14vh,170px) 0;border-top:1px solid var(--line)}
@@ -632,67 +671,6 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
 .fq.open:hover{background:transparent;color:inherit}
 .fq.open .fq-a p{color:var(--mut);opacity:1}
 
-/* ---------- studio / why manzar ---------- */
-.stu{padding:clamp(110px,15vh,180px) 0}
-.stu-head{margin-bottom:clamp(36px,6vh,70px);display:flex;justify-content:space-between;align-items:baseline}
-.stu-top{display:grid;grid-template-columns:minmax(0,5.4fr) minmax(0,6.6fr);gap:clamp(30px,4.5vw,90px);align-items:start}
-.stu-lead{
-  font-family:var(--body);font-weight:600;
-  font-size:clamp(26px,1.875vw,48px);line-height:1.1;letter-spacing:-.022em;max-width:18ch;text-transform:none;
-}
-.stu-lead .w{display:inline-block;opacity:.13;will-change:opacity}
-.stu-sub{margin-top:26px;color:var(--mut);font-size:clamp(15.5px,1.2vw,18px);line-height:1.65;max-width:44ch}
-.stu-sub b{color:var(--fg);font-weight:500}
-.vrow{display:grid;grid-template-columns:minmax(0,4.4fr) minmax(0,7.6fr);gap:clamp(16px,2vw,36px);padding:clamp(22px,3.4vh,32px) 0;border-top:1px solid var(--line);align-items:start}
-.vrow:last-child{border-bottom:1px solid var(--line)}
-.vrow h4{font-family:var(--body);font-weight:600;font-size:clamp(18px,1.5vw,24px);letter-spacing:-.015em;line-height:1.2;display:flex;gap:14px;align-items:baseline}
-.vrow h4 i{font-style:normal;font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.12em;color:var(--acc)}
-.vrow p{color:var(--mut);font-size:clamp(14.5px,1.1vw,16.5px);line-height:1.6;max-width:52ch}
-.stu-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,4vw,80px);margin-top:clamp(60px,10vh,110px);align-items:start}
-.team{display:flex;flex-direction:column}
-.team-cap{margin-bottom:14px}
-.cs-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
-.cs-of{font-family:var(--mono);font-weight:500;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
-.cs-spec{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:clamp(22px,3vh,32px)}
-.cs-spec > div{background:var(--bg);padding:clamp(16px,1.8vw,24px);display:flex;flex-direction:column;gap:7px;transition:background-color .7s}
-.cs-spec dt{font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
-.cs-spec dd{font-family:var(--body);font-weight:500;font-size:clamp(14.5px,1.1vw,16.5px);letter-spacing:-.01em;line-height:1.35}
-.cs-free{color:var(--acc)}
-.cs-note{margin-top:18px;color:var(--mut);font-size:clamp(13.5px,1vw,15px);line-height:1.6;max-width:60ch}
-@media (max-width:680px){.cs-spec{grid-template-columns:1fr}}
-/* guard: no single element should cost the page a sideways scrollbar */
-@media (max-width:680px){html,body{overflow-x:hidden}}
-
-.trow{
-  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,5fr) minmax(0,4fr) minmax(0,2.6fr);gap:14px;align-items:center;
-  padding:clamp(18px,3vh,28px) 10px;border-top:1px solid var(--line);transition:background .35s,color .35s,padding .35s;
-}
-.trow:last-child{border-bottom:1px solid var(--line)}
-.trow:hover{background:var(--fg);color:var(--bg);padding-left:22px}
-.trow .tnum{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--soft)}
-.trow:hover .tnum{color:inherit;opacity:.6}
-.trow .tname{font-family:var(--disp);font-weight:600;font-size:clamp(20px,1.328vw,34px);line-height:1;letter-spacing:-.015em;text-transform:none}
-.trow .trole{font-size:14px;color:var(--mut)}
-.trow:hover .trole{color:inherit;opacity:.75}
-.trow .tcity{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-align:right;color:var(--soft)}
-.trow:hover .tcity{color:inherit;opacity:.6}
-.clocks{display:flex;flex-direction:column;gap:14px}
-.clock{border:1px solid var(--line);padding:clamp(18px,2vw,28px);display:flex;justify-content:space-between;align-items:center;gap:10px}
-.clock .c-city{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);display:flex;align-items:center;gap:9px}
-.clock .c-city::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--mut);animation:pulse 2.4s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-.clock .c-time{font-family:var(--disp);font-weight:700;font-size:clamp(22px,1.328vw,34px);font-variant-numeric:tabular-nums;letter-spacing:0}
-.clock .c-gmt{font-family:var(--mono);font-size:10px;color:var(--mut)}
-.stu-pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.6vw,24px);margin-top:clamp(14px,1.6vw,24px)}
-.spair{position:relative;overflow:hidden;border:1px solid var(--line)}
-.spair img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1);display:block}
-.spair:hover img{transform:scale(1.045)}
-.spair figcaption{
-  position:absolute;left:12px;bottom:12px;z-index:2;
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--bone);background:rgba(11,10,8,.55);padding:6px 9px;
-}
-
 /* ---------- cta ---------- */
 .cta{position:relative;overflow:hidden;min-height:142svh;display:flex;align-items:center;padding:clamp(110px,14vh,180px) 0}
 .cta-media{position:absolute;inset:0;background-size:cover;background-position:center 0%;opacity:.95;will-change:background-position;transform:translateZ(0)}
@@ -762,10 +740,6 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
   .srow.open .s-sub{max-height:200px;padding-top:12px}
   .brands-grid{grid-template-columns:1fr;gap:26px}
   .brands-note{max-width:52ch;margin-top:0}
-  .wrow{grid-template-columns:1fr;gap:22px}
-  .wmeta{padding-top:0}
-  .stu-top{grid-template-columns:1fr;gap:40px}
-  .stu-grid{grid-template-columns:1fr}
   .prow{grid-template-columns:1fr;gap:18px}
   .pmedia{margin-right:0}
   .faq-grid{grid-template-columns:1fr;gap:34px}
@@ -801,10 +775,6 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
   .srow .s-use{position:static;left:auto;bottom:auto;display:block;
                white-space:normal;margin:6px 0 0;transform:none;opacity:.85}
   .srow.active h3{transform:none}
-  .trow{grid-template-columns:minmax(0,1fr) minmax(0,6fr);grid-template-rows:auto auto;row-gap:2px}
-  .trow .trole{grid-column:2;font-size:13px}
-  .trow .tcity{grid-column:2;text-align:left}
-  .vrow{grid-template-columns:1fr;row-gap:8px}
   .cta-line:nth-child(2){padding-left:8vw}
   .cta-line:nth-child(3){padding-left:16vw}
   .proc-mark{white-space:normal;line-height:.9}
@@ -816,8 +786,9 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
   *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
 }
 </style>
-<link rel="stylesheet" href="assets/css/crossover.css">
-<link rel="stylesheet" href="assets/css/menu.css">
+<link rel="stylesheet" href="assets/css/crossover.css?v=12">
+<link rel="stylesheet" href="assets/css/menu.css?v=12">
+<link rel="stylesheet" href="assets/css/work.css?v=12">
 <style>
 /* Manzar sound toggle — four hairline bars, fixed bottom-centre,
    difference-blended. Engine: assets/js/mz-sound.js */
@@ -833,6 +804,14 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
 @media (prefers-reduced-motion: reduce){.mz-sndtgl.is-on i{animation:none;height:9px}}
 .mz-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:60px;z-index:1200;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#fff;mix-blend-mode:difference;opacity:0;pointer-events:none;transition:opacity .35s ease}
 .mz-toast.is-in{opacity:.85}
+
+/* A page rendered inside the other world's preview plate is scenery.
+   mz-sound.js marks it and plays nothing (see the guard at the top of
+   that file); this takes the fixed sound chrome out of the picture too,
+   so a stray toggle does not float in the middle of the plate. */
+html.is-framed .mz-sndtgl,
+html.is-framed .mz-toast{display:none!important}
+
 </style>
 </head>
 <body data-theme="ink">
@@ -865,7 +844,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
     <a href="#work" data-anchor>Work</a>
     <a href="#services" data-anchor>Services</a>
     <a href="#process" data-anchor>Process</a>
-    <a href="#studio" data-anchor>Studio</a>
+    <a href="#faq" data-anchor>FAQ</a>
   </nav>
   <div class="nav-right">
     <a class="nav-cta magnetic" href="mailto:hello@manzar.studio?subject=Our%20story%2C%20your%20screens">Tell us your story <span class="arr">↗</span></a>
@@ -893,7 +872,9 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
       <p class="sub">Film, design and software from an independent studio<br>in Lahore and Paris, since 2019.</p>
     </div>
     <div class="hero-mark" id="heroMark" aria-hidden="true"><img id="heroMarkImg" src="assets/manzar-wordmark.png" alt="" width="2556" height="980" decoding="async"></div>
-    <audio data-mz-ambience data-mz-brand="studio" data-mz-volume=".28" data-mz-tracks='[{"src": "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Meydn/Interplanetary_Forest/Meydn_-_02_-_Pure_Water.mp3", "name": "Pure Water — Meydän"}, {"src": "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Meydn/Fae/Meydn_-_Fae.mp3", "name": "Fae — Meydän"}, {"src": "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Meydan/For_Creators/Meydan_-_04_-_Underwater.mp3", "name": "Underwater — Meydän"}]' loop preload="auto" src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Meydn/Interplanetary_Forest/Meydn_-_02_-_Pure_Water.mp3"></audio>
+    <audio data-mz-ambience data-mz-brand="studio" data-mz-volume=".31"
+       data-mz-tracks='[{"src": "assets/audio/moonlight.mp3", "name": "Moonlight \u2014 Scott Buckley"}, {"src": "assets/audio/midvinter.mp3", "name": "Midvinter \u2014 Scott Buckley"}, {"src": "assets/audio/castles-in-the-sky.mp3", "name": "Castles in the Sky \u2014 Scott Buckley"}, {"src": "assets/audio/reawakening.mp3", "name": "Reawakening \u2014 Scott Buckley"}, {"src": "assets/audio/at-the-end-of-all-things.mp3", "name": "At the End of All Things \u2014 Scott Buckley"}]'
+       loop preload="metadata" src="assets/audio/moonlight.mp3"></audio>
   </section>
 
   <!-- ============ MANIFESTO ============ -->
@@ -967,155 +948,44 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
     </div>
   </section>
 
-  <!-- ============ WORK ============ -->
-  <!-- Covers are temporary frames from the Manzar archive; each project gets
-       real screenshots + hover slideshow when the works are fed in. -->
+  <!-- ============ WORK ============
+       The cards, the runtimes and the order are all in
+       /assets/js/work-data.js — one list, read here for the five featured
+       pieces and again on /work.html for the whole archive. The markup is
+       built by /assets/js/work.js so the two can never fall out of step.
+       Posters are Gumlet-side webp at the exact width of the slot; the
+       silent preview that fades in on hover is the 540p HLS rendition,
+       never the 15–35 MB master. -->
   <section class="work" id="work">
     <div class="shell">
       <div class="work-head">
         <span class="eb">Selected work</span>
-        <span class="count">04 · Productions</span>
+        <div class="work-head-r">
+          <span class="count" id="wkCount">05 / 23</span>
+          <a class="wk-headlink" href="work.html">All work <i aria-hidden="true">&#8599;</i></a>
+        </div>
       </div>
 
-      <!-- W/01 — NESPAK (ported from website-main) -->
-      <article class="wrow" data-cursor="Visit ↗">
-        <a class="wmedia" href="#reel" >
-          <span class="wtag">W/01 · Film & Post</span>
-          <svg class="wart-svg" viewBox="0 0 1400 900" role="img" aria-label="Film frame with rule-of-thirds guides above a bilingual subtitle timeline">
-            <rect class="fl" x="140" y="70" width="1120" height="560"/>
-            <line class="fl-dim" x1="513.3" y1="70" x2="513.3" y2="630"/>
-            <line class="fl-dim" x1="886.7" y1="70" x2="886.7" y2="630"/>
-            <line class="fl-dim" x1="140" y1="256.7" x2="1260" y2="256.7"/>
-            <line class="fl-dim" x1="140" y1="443.3" x2="1260" y2="443.3"/>
-            <g class="fl">
-              <circle cx="140" cy="70" r="12"/><line x1="120" y1="70" x2="160" y2="70"/><line x1="140" y1="50" x2="140" y2="90"/>
-              <circle cx="1260" cy="70" r="12"/><line x1="1240" y1="70" x2="1280" y2="70"/><line x1="1260" y1="50" x2="1260" y2="90"/>
-              <circle cx="140" cy="630" r="12"/><line x1="120" y1="630" x2="160" y2="630"/><line x1="140" y1="610" x2="140" y2="650"/>
-              <circle cx="1260" cy="630" r="12"/><line x1="1240" y1="630" x2="1280" y2="630"/><line x1="1260" y1="610" x2="1260" y2="650"/>
-            </g>
-            <line class="fl" x1="140" y1="700" x2="1260" y2="700"/>
-            <g class="fl-dim">
-              <line x1="220" y1="688" x2="220" y2="700"/><line x1="300" y1="678" x2="300" y2="700"/>
-              <line x1="380" y1="688" x2="380" y2="700"/><line x1="460" y1="678" x2="460" y2="700"/>
-              <line x1="540" y1="688" x2="540" y2="700"/><line x1="620" y1="678" x2="620" y2="700"/>
-              <line x1="700" y1="688" x2="700" y2="700"/><line x1="860" y1="678" x2="860" y2="700"/>
-              <line x1="940" y1="688" x2="940" y2="700"/><line x1="1020" y1="678" x2="1020" y2="700"/>
-              <line x1="1100" y1="688" x2="1100" y2="700"/><line x1="1180" y1="678" x2="1180" y2="700"/>
-            </g>
-            <line class="fa" x1="780" y1="666" x2="780" y2="700"/>
-            <path class="fa-dot" d="M780 654 l11 13 h-22 z"/>
-            <rect class="fl" x="140" y="750" width="340" height="10"/>
-            <rect class="fl-dim" x="1040" y="774" width="220" height="10"/>
-            <text class="ft" x="1260" y="40" text-anchor="end">EN / UR</text>
-          </svg>
-          <span class="wmark">NESPAK</span>
-        </a>
-        <div class="wmeta">
-          <span class="windex">W ← <b>01/04</b></span>
-          <h3 class="wname">NESPAK</h3>
-          <p class="wdesc">Engineering at national scale, cut for people who’ve never read a drawing. Site to screen: shot on location, graded in Lahore, delivered in two languages.</p>
-          <div class="metric"><b>2019—</b><span>six years of commissioned production</span></div>
-          <a class="wlink" href="#reel" >See the reel <span aria-hidden="true">↗</span></a>
-        </div>
-      </article>
+      <div class="wk-feat" id="wkFeat"></div>
 
-      <!-- W/02 — Smart HR (ported from website-main) -->
-      <article class="wrow" data-cursor="Visit ↗">
-        <a class="wmedia" href="https://infenet.net" target="_blank" rel="noopener">
-          <span class="wtag">W/02 · HRMS Platform</span>
-          <svg class="wart-svg" viewBox="0 0 1400 900" role="img" aria-label="Payroll ledger diagram: rows of employees, one column of totals, one row just cleared">
-            <line class="fl" x1="1050" y1="60" x2="1050" y2="820"/>
-            <line class="fl-dim" x1="140" y1="110" x2="300" y2="110"/><rect class="fl" x="930" y="103" width="120" height="10"/>
-            <line class="fl-dim" x1="140" y1="180" x2="380" y2="180"/><rect class="fl" x="860" y="173" width="190" height="10"/>
-            <line class="fl-dim" x1="140" y1="250" x2="260" y2="250"/><rect class="fl" x="960" y="243" width="90" height="10"/>
-            <line class="fl-dim" x1="140" y1="320" x2="340" y2="320"/><rect class="fa" x="890" y="313" width="160" height="10"/>
-            <path class="fa" d="M1062 314 l9 10 l18 -20"/>
-            <line class="fl-dim" x1="140" y1="390" x2="300" y2="390"/><rect class="fl" x="900" y="383" width="150" height="10"/>
-            <line class="fl-dim" x1="140" y1="460" x2="360" y2="460"/><rect class="fl" x="840" y="453" width="210" height="10"/>
-            <line class="fl-dim" x1="140" y1="530" x2="280" y2="530"/><rect class="fl" x="950" y="523" width="100" height="10"/>
-            <line class="fl-dim" x1="140" y1="600" x2="320" y2="600"/><rect class="fl-dim" x="970" y="593" width="80" height="10"/>
-            <line class="fl-dim" x1="140" y1="670" x2="260" y2="670"/><rect class="fl-dim" x="990" y="663" width="60" height="10"/>
-            <line class="fl-dim" x1="140" y1="740" x2="300" y2="740"/><rect class="fl" x="920" y="733" width="130" height="10"/>
-            <text class="ft-num" x="1050" y="850" text-anchor="end" font-size="38">40,318</text>
-            <text class="ft" x="1050" y="882" text-anchor="end">CLEARED THIS CYCLE</text>
-          </svg>
-          <span class="wmark">Smart HR</span>
-        </a>
-        <div class="wmeta">
-          <span class="windex">W ← <b>02/04</b></span>
-          <h3 class="wname">Smart HR</h3>
-          <p class="wdesc">An HRMS payroll teams don’t dread opening. Attendance to payslip in one pass, built for Infenet and the companies that outgrew their spreadsheets years ago.</p>
-          <div class="metric"><b>40K+</b><span>payslips processed every month</span></div>
-          <a class="wlink" href="https://infenet.net" target="_blank" rel="noopener">infenet.net <span aria-hidden="true">↗</span></a>
-        </div>
-      </article>
+      <noscript>
+        <p class="wk-noscript">
+          The work grid streams its previews with JavaScript. The full
+          archive is at <a href="work.html" style="text-decoration:underline">manzar.studio/work</a>,
+          or write to <a href="mailto:hello@manzar.studio" style="text-decoration:underline">hello@manzar.studio</a>
+          and we will send cuts directly.
+        </p>
+      </noscript>
 
-      <!-- W/03 — Amantech (ported from website-main) -->
-      <article class="wrow" data-cursor="Visit ↗">
-        <a class="wmedia" href="https://www.aman-tech.sa" target="_blank" rel="noopener">
-          <span class="wtag">W/03 · Enterprise Security</span>
-          <svg class="wart-svg" viewBox="0 0 1400 900" role="img" aria-label="Geo-fence diagram: a device crossing the boundary, camera policy engaging">
-            <circle class="fl" cx="950" cy="450" r="185"/>
-            <circle class="fl-dim" cx="950" cy="450" r="260" stroke-dasharray="5 11"/>
-            <line class="fl-dim" x1="1210.0" y1="450.0" x2="1230.0" y2="450.0"/>
-            <line class="fl-dim" x1="1175.2" y1="580.0" x2="1192.5" y2="590.0"/>
-            <line class="fl-dim" x1="1080.0" y1="675.2" x2="1090.0" y2="692.5"/>
-            <line class="fl-dim" x1="950.0" y1="710.0" x2="950.0" y2="730.0"/>
-            <line class="fl-dim" x1="820.0" y1="675.2" x2="810.0" y2="692.5"/>
-            <line class="fl-dim" x1="724.8" y1="580.0" x2="707.5" y2="590.0"/>
-            <line class="fl-dim" x1="690.0" y1="450.0" x2="670.0" y2="450.0"/>
-            <line class="fl-dim" x1="724.8" y1="320.0" x2="707.5" y2="310.0"/>
-            <line class="fl-dim" x1="820.0" y1="224.8" x2="810.0" y2="207.5"/>
-            <line class="fl-dim" x1="950.0" y1="190.0" x2="950.0" y2="170.0"/>
-            <line class="fl-dim" x1="1080.0" y1="224.8" x2="1090.0" y2="207.5"/>
-            <line class="fl-dim" x1="1175.2" y1="320.0" x2="1192.5" y2="310.0"/>
-            <path class="fa" d="M690,450 A260,260 0 0 1 750.8,282.9"/>
-            <circle class="fa-dot" cx="705.7" cy="361.1" r="7"/>
-            <g class="fl" transform="translate(630.5,333.7) rotate(20)">
-              <rect x="-11" y="-18" width="22" height="36" rx="4"/><circle cx="0" cy="0" r="7"/>
-            </g>
-            <path class="fl-dim" d="M630.5,333.7 Q760,372 884.2,426.1" stroke-dasharray="2 8"/>
-            <g class="fl" transform="translate(884.2,426.1) rotate(20)">
-              <rect x="-11" y="-18" width="22" height="36" rx="4"/><circle cx="0" cy="0" r="7"/>
-              <line x1="-11" y1="-18" x2="11" y2="18"/>
-            </g>
-            <text class="ft" x="1260" y="820" text-anchor="end">BOUNDARY CROSSED</text>
-          </svg>
-          <span class="wmark">Amantech</span>
-        </a>
-        <div class="wmeta">
-          <span class="windex">W ← <b>03/04</b></span>
-          <h3 class="wname">Amantech</h3>
-          <p class="wdesc">Device management for rooms where phones aren’t allowed. Camera policy enforced in real time by geo-fence, access-card scan and role, then lifted the moment someone walks out. BYOD stops being a liability and starts being instrumented.</p>
-          <div class="metric"><b>Riyadh</b><span>enterprise mobility &amp; data security</span></div>
-          <a class="wlink" href="https://www.aman-tech.sa" target="_blank" rel="noopener">aman-tech.sa <span aria-hidden="true">↗</span></a>
+      <!-- the way into the rest of it -->
+      <div class="wk-strip">
+        <div class="wk-strip-l">
+          <span class="eb" style="opacity:.7">More work</span>
+          <p class="wk-strip-line">See everything we&rsquo;ve made.</p>
+          <p class="wk-strip-sub">Twenty-three projects across music video, commercial, documentary and 3D. Filter by discipline and watch any of them in full.</p>
         </div>
-      </article>
-
-      <!-- W/04 — reserved -->
-      <article class="wrow wrow-next" data-cursor="Write ↗">
-        <a class="wmedia" href="mailto:hello@manzar.studio?subject=Reserved%20slot%20W%2F04">
-          <span class="wtag">W/04 · Reserved</span>
-          <svg class="wart-svg" viewBox="0 0 1400 900" role="img" aria-label="An empty, reserved frame with a blinking caret">
-            <g class="fl-dim">
-              <circle cx="100" cy="80" r="12"/><line x1="80" y1="80" x2="120" y2="80"/><line x1="100" y1="60" x2="100" y2="100"/>
-              <circle cx="1300" cy="80" r="12"/><line x1="1280" y1="80" x2="1320" y2="80"/><line x1="1300" y1="60" x2="1300" y2="100"/>
-              <circle cx="100" cy="820" r="12"/><line x1="80" y1="820" x2="120" y2="820"/><line x1="100" y1="800" x2="100" y2="840"/>
-              <circle cx="1300" cy="820" r="12"/><line x1="1280" y1="820" x2="1320" y2="820"/><line x1="1300" y1="800" x2="1300" y2="840"/>
-              <line x1="700" y1="80" x2="700" y2="820"/>
-              <line x1="100" y1="450" x2="1300" y2="450"/>
-            </g>
-            <rect class="mz-caret" x="690" y="404" width="18" height="92"/>
-          </svg>
-          <span class="wmark">This one’s yours</span>
-        </a>
-        <div class="wmeta">
-          <span class="windex">W ← <b>04/04</b></span>
-          <h3 class="wname">This one’s yours</h3>
-          <p class="wdesc">Some of our work is still under NDA. The next production on this page could be the thing you’ve been meaning to build.</p>
-          <a class="wlink" href="mailto:hello@manzar.studio?subject=Reserved%20slot%20W%2F04">hello@manzar.studio <span aria-hidden="true">↗</span></a>
-        </div>
-      </article>
+        <a class="wk-cta magnetic" href="work.html">See all work <span class="arr" aria-hidden="true">&#8599;</span></a>
+      </div>
 
     </div>
   </section>
@@ -1178,7 +1048,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
       </div>
       <div class="svc-list" id="svcList">
         <div class="srow active" data-idx="0">
-          <h3>Music Videos<span class="s-use">Artist films · performance · lyric edits</span></h3>
+          <h3>Music Videos<span class="s-use">Artist films · performance · lyric videos</span></h3>
         </div>
         <div class="srow" data-idx="1">
           <h3>Commercials &amp; Brand Films<span class="s-use">TVCs · launch films · campaign cutdowns</span></h3>
@@ -1225,7 +1095,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
       <div class="reel-play" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M7 4.5v15l13-7.5z"/></svg>
       </div>
-      <span class="reel-soon">The showreel is in the edit. Ask us for work samples meanwhile.</span>
+      <span class="reel-soon">The showreel is in post. Ask us for work samples meanwhile.</span>
     </div>
     <span class="reel-cap">Grade · Cut · Motion</span>
   </section>
@@ -1246,7 +1116,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
         <div class="pcol">
           <span class="pstep"><b>Step · 01</b></span>
           <h3>We find the story</h3>
-          <p class="p-body">We dig into your brand and ask until the brief confesses: what you’re really selling, who needs to feel it, and the one metric that matters. Agreed before anyone opens an editor.</p>
+          <p class="p-body">We dig into your brand and ask until the brief confesses: what you’re really selling, who needs to feel it, and the one metric that matters. Agreed before anyone opens a timeline.</p>
         </div>
         <div class="pmedia" data-step="Step 01">
           <div class="pm-in" style="background-image:url('assets/proc-01.jpg')"></div>
@@ -1286,16 +1156,12 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
         <div class="faq-rail">
           <img src="assets/uzair.jpg" alt="Uzair Ahmed, founder of Manzar">
           <p class="fr-line">Got more questions? <b>Talk to Uzair.</b></p>
-          <a class="btn magnetic" href="mailto:hello@manzar.studio?subject=A%20question%20before%20we%20start">Write to Uzair <span class="arr">↗</span></a>
+          <a class="wk-cta magnetic" href="mailto:hello@manzar.studio?subject=A%20question%20before%20we%20start">Write to Uzair <span class="arr" aria-hidden="true">↗</span></a>
         </div>
         <div class="faq-list" id="faqList">
           <div class="fq">
             <div class="fq-q">Who will actually be working on our project?<span class="fq-dot"></span></div>
             <div class="fq-a"><p>Uzair leads every project from strategy to final delivery, with our senior engineers on the build and our own crew on camera and post. The people you meet on the first call are the people doing the work. No account managers, no handoffs.</p></div>
-          </div>
-          <div class="fq">
-            <div class="fq-q">Can you really handle video, design and software?<span class="fq-dot"></span></div>
-            <div class="fq-a"><p>Yes. We grew up in a production house and learned software by shipping it. The person grading your film sits next to the person building your site, so nothing gets lost between three different vendors. One room, one standard.</p></div>
           </div>
           <div class="fq">
             <div class="fq-q">We need software, not a film. What can you actually build?<span class="fq-dot"></span></div>
@@ -1307,7 +1173,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
           </div>
           <div class="fq">
             <div class="fq-q">How long does a project take?<span class="fq-dot"></span></div>
-            <div class="fq-a"><p>A campaign edit can turn around in days. A full website usually runs three to six weeks. A software MVP through Manzar Labs is typically six weeks from signed scope to a product real users can log into, with a build you can open every Friday from week two. We set dates on day one and keep them.</p></div>
+            <div class="fq-a"><p>A campaign film can turn around in days. A full website usually runs three to six weeks. A software MVP through Manzar Labs is typically six weeks from signed scope to a product real users can log into, with a build you can open every Friday from week two. We set dates on day one and keep them.</p></div>
           </div>
           <div class="fq">
             <div class="fq-q">What do you need from us to start?<span class="fq-dot"></span></div>
@@ -1315,88 +1181,7 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
           </div>
           <div class="fq">
             <div class="fq-q">What does it cost?<span class="fq-dot"></span></div>
-            <div class="fq-a"><p>Every project is quoted fixed, so you know the number before we start. A music video edit and a SaaS platform are different animals, so we price the work, not the hours. Retainers are there for teams that want us around.</p></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ STUDIO / WHY MANZAR ============ -->
-  <section class="stu" id="studio">
-    <div class="shell">
-      <div class="stu-head">
-        <span class="eb">The studio</span>
-        <span class="mono" style="color:var(--soft)">Lahore · Paris</span>
-      </div>
-      <div class="stu-top">
-        <div>
-          <p class="stu-lead" id="stuLead">
-            One senior team for film, design and software. Hire a studio, not three vendors.
-          </p>
-          <p class="stu-sub">
-            <b>Manzar Studio</b> for creative production, <b>Manzar Labs</b> for software, <b>Manzar Films</b> for cinema from 2027. Three rooms, one door, so your film, your brand and your product stop being made by people who never speak.
-          </p>
-        </div>
-        <div class="values">
-          <div class="vrow">
-            <h4><i>01</i>Everything under one roof</h4>
-            <p>The person grading your film sits next to the person building your site. Every piece looks like one brand because it is one team.</p>
-          </div>
-          <div class="vrow">
-            <h4><i>02</i>Senior hands only</h4>
-            <p>Founder-led throughout. The people on the first call are the people doing the work.</p>
-          </div>
-          <div class="vrow">
-            <h4><i>03</i>Weekly cuts, not decks</h4>
-            <p>Every Friday, something you can watch or click. You judge progress with your own eyes.</p>
-          </div>
-          <div class="vrow">
-            <h4><i>04</i>Yours to keep</h4>
-            <p>Your repo, your accounts, your keys, documented like we might leave tomorrow, built so you never want us to.</p>
-          </div>
-        </div>
-      </div>
-      <div class="stu-grid">
-        <div class="team">
-          <div class="cs-head">
-            <span class="eb team-cap">Call sheet · Engagement 01</span>
-            <span class="cs-of">Sheet 1 of 1</span>
-          </div>
-          <div class="trow">
-            <span class="tnum">C/01</span><span class="tname">Direction</span>
-            <span class="trole">Strategy, story, delivery</span><span class="tcity">Lahore / Paris</span>
-          </div>
-          <div class="trow">
-            <span class="tnum">C/02</span><span class="tname">Engineering</span>
-            <span class="trole">Cloud, product, AI</span><span class="tcity">Lahore</span>
-          </div>
-          <div class="trow">
-            <span class="tnum">C/03</span><span class="tname">Production</span>
-            <span class="trole">Camera, grade, post</span><span class="tcity">Lahore / Paris</span>
-          </div>
-          <dl class="cs-spec">
-            <div><dt>Call time</dt><dd>48 hours from brief</dd></div>
-            <div><dt>Location</dt><dd>Remote · your timezone</dd></div>
-            <div><dt>Delivery</dt><dd>Written report + 45-min walkthrough</dd></div>
-            <div><dt>Rate</dt><dd><span class="cs-free">No charge</span></dd></div>
-          </dl>
-          <p class="cs-note">Not included: implementation and retainers, quoted only after you’ve seen the report. Founder-led throughout, so the people on the first call are the people doing the work.</p>
-          <div class="stu-pair">
-            <figure class="spair"><img src="assets/studio-lhe.jpg" alt="Truck art on the road in Pakistan" loading="lazy"><figcaption>Lahore · where we cut</figcaption></figure>
-            <figure class="spair"><img src="assets/studio-par.jpg" alt="Arcades of Place des Vosges, Paris" loading="lazy"><figcaption>Paris · where we’re headed</figcaption></figure>
-          </div>
-        </div>
-        <div class="clocks">
-          <div class="clock">
-            <span class="c-city">Lahore</span>
-            <span class="c-time" id="clkLhe">--:--:--</span>
-            <span class="c-gmt">GMT+5</span>
-          </div>
-          <div class="clock">
-            <span class="c-city">Paris</span>
-            <span class="c-time" id="clkPar">--:--:--</span>
-            <span class="c-gmt" id="gmtPar">GMT+2</span>
+            <div class="fq-a"><p>Every project is quoted fixed, so you know the number before we start. A music video and a SaaS platform are different animals, so we price the work, not the hours. Retainers are there for teams that want us around.</p></div>
           </div>
         </div>
       </div>
@@ -1429,9 +1214,9 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
       <div class="foot-grid">
         <nav class="fnav" aria-label="Footer">
           <a href="#work" data-anchor>Work <span class="fa">→</span></a>
+          <a href="work.html">All work <span class="fa">→</span></a>
           <a href="#services" data-anchor>Services <span class="fa">→</span></a>
           <a href="#process" data-anchor>Process <span class="fa">→</span></a>
-          <a href="#studio" data-anchor>Studio <span class="fa">→</span></a>
           <a href="#faq" data-anchor>FAQ <span class="fa">→</span></a>
           <a href="mailto:hello@manzar.studio">Contact <span class="fa">→</span></a>
         </nav>
@@ -1443,6 +1228,10 @@ body[data-theme="ink"] .metric b{background:rgba(233,230,221,.09)}
           <div class="fblock">
             <span class="fb-lab">Studios</span>
             <p>Lahore, Pakistan · Paris, France<br>Working worldwide.</p>
+          </div>
+          <div class="fblock">
+            <span class="fb-lab">Score</span>
+            <p>Music by <a href="https://www.scottbuckley.com.au" target="_blank" rel="noopener" style="color:var(--fg);text-decoration:underline;text-underline-offset:3px">Scott Buckley</a>, licensed CC&nbsp;BY&nbsp;4.0.<br>Press 1&ndash;5 to change the score.</p>
           </div>
           <div class="fblock">
             <span class="fb-lab">Elsewhere</span>
@@ -1646,7 +1435,13 @@ $("#toTop").addEventListener("click", () => {
 (function grain() {
   const cv = $("#cv-grain"), ctx = cv.getContext("2d");
   let w, h; const scale = 4;
-  const resize = () => { w = cv.width = Math.ceil(innerWidth / scale); h = cv.height = Math.ceil(innerHeight / scale); };
+  /* Math.max(1, …): a page restored from bfcache, or laid out while the
+     window is still zero-sized, hands back innerWidth 0 — and
+     createImageData(0, 0) throws, which killed the rest of this IIFE. */
+  const resize = () => {
+    w = cv.width = Math.max(1, Math.ceil(innerWidth / scale));
+    h = cv.height = Math.max(1, Math.ceil(innerHeight / scale));
+  };
   resize(); addEventListener("resize", resize);
   cv.style.width = "100vw"; cv.style.height = "100vh";
   if (RM) { const d = ctx.createImageData(w, h); for (let i = 0; i < d.data.length; i += 4) { const v = Math.random() * 255 | 0; d.data[i] = d.data[i+1] = d.data[i+2] = v; d.data[i+3] = 34; } ctx.putImageData(d, 0, 0); return; }
@@ -2260,24 +2055,24 @@ if (!window.gsap || RM) {
     ["#work",     "bone", "ink"],
     ["#labs",     "ink",  "bone"],
     ["#services", "ink",  "ink" ],
-    ["#studio",   "bone", "ink"],
-    ["#contact",  "ink",  "bone"],
+    /* "bone" here was the Studio section's key — it used to sit between
+       the FAQ and the CTA, so scrolling back up out of the CTA landed on
+       it. That section is gone, and the value never changed, which is
+       why scrolling up from the CTA turned the whole page light. */
+    ["#contact",  "ink",  "ink" ],
   ];
   flips.forEach(([sel, on, back]) => ScrollTrigger.create({
     trigger: sel, start: "top 62%",
     onEnter: () => setTheme(on), onLeaveBack: () => setTheme(back),
   }));
 
-  /* ----- work rows ----- */
-  $$(".wrow").forEach(row => {
-    const media = $(".wmedia", row);
-    gsap.timeline({ scrollTrigger: { trigger: row, start: "top 74%", once: true } })
-      .fromTo(media, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 1.15, ease: "power4.inOut" }, 0)
-      .from($$(".wmeta > *", row), { autoAlpha: 0, y: 26, duration: .7, stagger: .08, ease: "power3.out" }, .35);
-    const art = $(".wart", row);
-    if (art) gsap.fromTo(art, { yPercent: -7 }, { yPercent: 7, ease: "none",
-      scrollTrigger: { trigger: row, start: "top bottom", end: "bottom top", scrub: .8 } });
-  });
+  /* ----- work -----
+     The cards are built and revealed by assets/js/work.js, which uses an
+     IntersectionObserver rather than ScrollTrigger so the same file also
+     runs the archive page, where there is no GSAP. Nothing to do here
+     except let ScrollTrigger re-measure once the grid has been laid out —
+     five cards appearing after first paint move everything below them.
+     The refreshes at the foot of this file already cover that. */
 
   /* ----- services scroll-active + card entrance ----- */
   if (innerWidth > 1024) {
@@ -2341,23 +2136,6 @@ if (!window.gsap || RM) {
   gsap.from(".faq-rail > *", { autoAlpha: 0, y: 24, duration: .8, stagger: .1, ease: "power3.out",
     scrollTrigger: { trigger: ".faq-grid", start: "top 74%", once: true } });
 
-  /* ----- studio / why manzar ----- */
-  const stuWords = splitWords($("#stuLead"));
-  gsap.to(stuWords, { opacity: 1, stagger: .05, ease: "none",
-    scrollTrigger: { trigger: "#stuLead", start: "top 80%", end: "bottom 55%", scrub: .6 } });
-  gsap.from(".stu-sub", { autoAlpha: 0, y: 20, duration: .9, ease: "power3.out",
-    scrollTrigger: { trigger: ".stu-sub", start: "top 84%", once: true } });
-  $$(".vrow").forEach(rw => gsap.from(rw.children, {
-    autoAlpha: 0, y: 24, duration: .75, stagger: .1, ease: "power3.out",
-    scrollTrigger: { trigger: rw, start: "top 84%", once: true },
-  }));
-  gsap.from(".trow", { autoAlpha: 0, y: 24, duration: .7, stagger: .09, ease: "power3.out",
-    scrollTrigger: { trigger: ".team", start: "top 74%", once: true } });
-  gsap.from(".clock", { autoAlpha: 0, y: 30, duration: .8, stagger: .12, ease: "power3.out",
-    scrollTrigger: { trigger: ".clocks", start: "top 76%", once: true } });
-  gsap.from(".spair", { autoAlpha: 0, y: 30, duration: .9, stagger: .12, ease: "power3.out",
-    scrollTrigger: { trigger: ".stu-pair", start: "top 82%", once: true } });
-
   /* ----- CTA ----- */
   const ctaLines = $$(".cta-line");
   gsap.timeline({ scrollTrigger: { trigger: ".cta", start: "top 82%", end: "top 28%", scrub: .7 } })
@@ -2414,9 +2192,13 @@ if (!window.gsap || RM) {
 })();
 </script>
 <!-- Manzar Studio · manzar.studio · rebuilt August 2026 -->
-<script src="assets/js/crossover.js"></script>
-<script src="assets/js/menu.js" defer></script>
-<script src="assets/js/mz-sound.js" defer></script>
+<script src="assets/js/crossover.js?v=12"></script>
+<script src="assets/js/menu.js?v=12" defer></script>
+<script src="assets/js/mz-sound.js?v=12" defer></script>
+<!-- The work archive. Data first, then the UI that reads it; both are
+     deferred, so neither blocks the hero. -->
+<script src="assets/js/work-data.js?v=12" defer></script>
+<script src="assets/js/work.js?v=12" defer></script>
 <!-- ══════════════ MENU ══════════════
      Component: /assets/css/menu.css + /assets/js/menu.js. Self-contained,
      so the same markup runs on Studio, Labs and every subpage.
@@ -2515,15 +2297,9 @@ if (!window.gsap || RM) {
           <span class="mzx-t">Pricing</span>
           <span class="mzx-d">Sprint, build or retainer: three ways in.</span>
         </a>
-        <a class="mzx-row" href="#studio" style="--i:10"
-           data-media="assets/menu/studio.svg" data-kicker="Who we are">
-          <span class="mzx-n">11</span>
-          <span class="mzx-t">Studio</span>
-          <span class="mzx-d">Who we are and how we work.</span>
-        </a>
-        <a class="mzx-row" href="#contact" style="--i:11"
+        <a class="mzx-row" href="#contact" style="--i:10"
            data-media="assets/menu/contact.svg" data-kicker="Start a conversation">
-          <span class="mzx-n">12</span>
+          <span class="mzx-n">11</span>
           <span class="mzx-t">Contact</span>
           <span class="mzx-d">hello@manzar.studio. Say what you need.</span>
         </a>

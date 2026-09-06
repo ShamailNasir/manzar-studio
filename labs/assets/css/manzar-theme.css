@@ -2321,33 +2321,92 @@ html.js .svc-ghost{ opacity:1; }
    "Start a project" pill and the menu's own Close button. Label first,
    then a square chip holding the stacked rules. The chip inverts on
    hover and the short rule runs out to full width. */
+/* ---------- the menu trigger ----------
+   Back to the pill. The rounded-rectangle version with the solid white
+   chip read as a second CTA sitting next to the real one, and the two
+   rules parting vertically read as the control coming to pieces.
+
+   This is the button as it was, at the CTA's height so the pair finally
+   lines up: an outlined pill, a soft translucent disc, two rules hung
+   off the right edge. On hover the short rule runs out to meet the long
+   one — arriving a beat later, which is the whole character of it — and
+   the disc lifts a shade. Nothing moves that does not mean something.
+
+   Whole pixels throughout: a 42px disc holding 2 + 6 + 2 puts the stack
+   at y=16, and the rules end at x=30 and start at 12 and 19. Nothing
+   straddles a pixel, so neither rule renders lighter than the other —
+   which is what the "bottom line's weight" was. */
+/* ---------- the menu trigger — v6, "the plate" ----------
+   Rectangular, because the silhouette was never what was wrong with it.
+   What was wrong is that the outline was one flat hairline and the chip
+   was one flat white box, so the control read as DRAWN rather than made.
+   Three changes carry it:
+
+   1  The edge is layered, not stroked. A 1px inset ring plus a brighter
+      catch along the top — the same move the work cards use for their
+      bezel. It reads as a plate with a lit edge instead of a rectangle
+      somebody put a border on.
+
+   2  The corners are concentric. The chip is inset 8px and rounded 8px,
+      so the shell is rounded 16px, and the two curves stay parallel the
+      whole way round. When they are not — a 7px chip in a 9px shell —
+      the inner corner visibly pinches against the outer one, which is
+      what makes a nested rectangle look cheap without anyone being able
+      to name why.
+
+   3  The rules trade places. At rest the long one is on top; on hover
+      they swap, the lower arriving a beat after the upper. Both ends of
+      that are a legible menu mark, so it reads as a mechanism turning
+      over rather than an icon coming apart — which was the complaint
+      about the version that pulled them vertically.
+
+   Whole pixels throughout: 2 + 6 + 2 in a 40px chip puts the stack at
+   y=15, and the rules run to x=29 from 11 and 18. Nothing straddles a
+   pixel, so neither rule can render lighter than its partner. */
 .menu-btn{
-  display:inline-flex;align-items:center;gap:12px;
-  height:46px;padding:0 6px 0 18px;
-  border:1px solid rgba(255,255,255,.22);border-radius:100px;
-  background:none;cursor:pointer;color:#fff;
+  display:inline-flex;align-items:center;gap:16px;
+  height:56px;padding:0 8px 0 24px;
+  border:0;border-radius:16px;
+  background:rgba(255,255,255,.04);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.2),
+    inset 0 1px 0 rgba(255,255,255,.13);
+  cursor:pointer;color:#fff;
   font-family:var(--body);font-weight:500;
-  font-size:clamp(14px,1.05vw,16px);letter-spacing:-.015em;
-  transition:border-color .35s var(--e-out,cubic-bezier(.22,1,.36,1)),background-color .35s;
+  font-size:clamp(16px,1.2vw,18px);letter-spacing:-.015em;
+  transition:background-color .45s cubic-bezier(.22,1,.36,1),
+             box-shadow .45s cubic-bezier(.22,1,.36,1),
+             transform .3s cubic-bezier(.34,1.56,.64,1);
 }
-.menu-btn:hover{border-color:rgba(255,255,255,.5)}
+.menu-btn:hover{
+  background:rgba(255,255,255,.085);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.42),
+    inset 0 1px 0 rgba(255,255,255,.26);
+}
+.menu-btn:active{transform:translateY(1px)}
+.menu-btn:focus-visible{outline:1.5px dashed #fff;outline-offset:3px}
 .menu-btn-label{line-height:1}
+/* Bone, not #fff. The chip is a piece of the site's own paper sitting
+   in the nav; pure white beside the CTA's pure white body welds the two
+   controls into one bright object at a glance. */
 .menu-btn-icon{
-  display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px;
-  width:32px;height:32px;border-radius:100px;
-  background:rgba(255,255,255,.10);
-  transition:background-color .35s;
+  display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:6px;
+  width:40px;height:40px;padding-right:11px;border-radius:8px;
+  background:#E9E6DD;
+  transition:background-color .45s cubic-bezier(.22,1,.36,1);
 }
-.menu-btn:hover .menu-btn-icon{background:rgba(255,255,255,.2)}
+.menu-btn:hover .menu-btn-icon{background:#fff}
 .menu-btn-icon i{
-  display:block;height:1.5px;background:currentColor;border-radius:2px;
-  transition:width .35s cubic-bezier(.22,1,.36,1);
+  display:block;height:2px;border-radius:1px;background:#0B0A08;
+  transition:width .5s cubic-bezier(.22,1,.36,1);
 }
-.menu-btn-icon i:nth-child(1){width:15px}
-.menu-btn-icon i:nth-child(2){width:9px}
-.menu-btn:hover .menu-btn-icon i:nth-child(2){width:15px}
-.menu-btn-icon i:first-child{margin-right:8px}
-.menu-btn-icon i:last-child{margin-right:8px}
+.menu-btn-icon i:nth-child(1){width:18px}
+.menu-btn-icon i:nth-child(2){width:11px}
+/* the delay sits on the hover rule only, so the pair goes out staggered
+   and comes home together — a lag on the way back just reads as lag */
+.menu-btn:hover .menu-btn-icon i:nth-child(1){width:11px}
+.menu-btn:hover .menu-btn-icon i:nth-child(2){width:18px;transition-delay:.07s}
 
 
 /* ============================================================
@@ -2703,6 +2762,14 @@ html.js .svc-ghost{ opacity:1; }
   transition:opacity .35s ease;
 }
 .mz-toast.is-in{ opacity:.85; }
+
+/* A page rendered inside the other world's preview plate is scenery.
+   mz-sound.js marks it and plays nothing (see the guard at the top of
+   that file); this takes the fixed sound chrome out of the picture too,
+   so a stray toggle does not float in the middle of the plate. */
+html.is-framed .mz-sndtgl,
+html.is-framed .mz-toast{display:none!important}
+
 
 /* v22.1: the tagline joins the wordmark as a lockup — one confident
    line at display scale, tucked under the mark, full bone. It was a
