@@ -43,6 +43,22 @@
     return;
   }
 
+  /* ---- the one exemption that needs no click ----------------------
+     Chrome lets an INSTALLED site autoplay audible sound outright: no
+     gesture, no engagement score, from the first second of every visit.
+     To be installable a site needs a manifest and a service worker with
+     a fetch handler, so the site now ships both (see sw.js, which
+     deliberately caches nothing). Once the visitor hits Install in
+     Chrome's address bar the score simply plays, for good.
+
+     https only: file:// has no service workers, and there is nothing to
+     gain by registering one against a local preview server. */
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function () {});
+    });
+  }
+
   var btns = Array.prototype.slice.call(document.querySelectorAll('[data-mz-sound]'));
   var amb = document.querySelector('audio[data-mz-ambience]');
   if (!btns.length && !amb) return;

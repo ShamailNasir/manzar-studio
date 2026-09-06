@@ -297,7 +297,7 @@
      ------------------------------------------------------------------ */
   var POSTER_W = { reel: 620, medium: 1180, feature: 1760 };
 
-  function buildCard(item, ordinal, extraClass) {
+  function buildCard(item, ordinal, extraClass, eager) {
     var w = POSTER_W[item.shape] || 1180;
     var credit = MZ.credit(item);
     var label = 'Play ' + item.title + (credit ? ', ' + credit.toLowerCase() : '') +
@@ -308,11 +308,19 @@
     /* The frame is drawn at the master's own aspect. Nothing on this page
        is squeezed into a ratio it was not shot for. */
     card.style.setProperty('--wk-ar', MZ.ar(item));
+    /* the frame is never bare black: it starts on the film's own colour */
+    if (item.bg) card.style.setProperty('--wk-bg', item.bg);
 
     var frame = el('span', 'wk-frame');
 
+    /* The cards that are on screen when the page opens are fetched at
+       once and at high priority. Left lazy, the browser queues them
+       behind everything else and the first thing a visitor sees is a
+       row of dark rectangles filling in one by one. */
     var img = el('img', 'wk-poster', {
-      alt: '', loading: 'lazy', decoding: 'async',
+      alt: '', decoding: 'async',
+      loading: eager ? 'eager' : 'lazy',
+      fetchpriority: eager ? 'high' : 'auto',
       src: MZ.poster(item, w),
       srcset: MZ.poster(item, w) + ' 1x, ' + MZ.poster(item, Math.round(w * 1.7)) + ' 2x'
     });
@@ -993,7 +1001,7 @@
     var built = [], n = 0;
 
     function card(item, i) {
-      var c = buildCard(item, i + 1);
+      var c = buildCard(item, i + 1, null, n < 3);
       wireCard(c, getList);
       reveal(c, n++);
       built.push(c);
@@ -1161,7 +1169,7 @@
       var getList = function () { return ordered; };
 
       function card(item) {
-        var c = buildCard(item, ordinal[item.id]);
+        var c = buildCard(item, ordinal[item.id], null, n < 4);
         wireCard(c, getList);
         reveal(c, n++);
         built.push(c);

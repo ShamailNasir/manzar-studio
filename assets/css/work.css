@@ -48,7 +48,7 @@
 .wk-frame{
   position:relative;display:block;overflow:hidden;
   aspect-ratio:var(--wk-ar,16/9);
-  border-radius:14px;background:#0E0D0B;
+  border-radius:14px;background:var(--wk-bg,#0E0D0B);
   /* Depth, at rest — not only on hover. Three layers doing three jobs:
      a hairline bezel drawn inside the radius (a border would sit outside
      the clip and fight the scaling poster), a tight contact shadow that

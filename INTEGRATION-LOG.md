@@ -3791,3 +3791,64 @@ One use is deliberately left: *"We started in 2019 with one editor and a camera.
 **Verified before commit.** Moonlight loads on `index` and `work`; FAQ at six; zero horizontal overflow on all eight pages; no console errors anywhere; every asset 200 at `?v=12`; 23 cards and 12 bands on the archive; zero text tracks (the caption fix from #189 holding); the deploy tree crawls clean — 8 pages, 83 references, nothing missing.
 
 **Known, not fixed:** the ten score files are 320 kbps and total 139 MB, which is most of the deploy. Re-encoding to 128 kbps would take it near 55 MB and make the first play noticeably quicker, but there is no encoder on this machine — `ffmpeg` is not installed. Worth doing before the site gets real traffic.
+
+---
+
+## #191
+### Labs was unstyled on the live site, and why
+*Cache token `?v=14`.*
+
+## The break
+
+`manzar.studio/labs` rendered as raw HTML — no stylesheet, blue underlined links, the wordmark at full size. The homepage looked wrong too, because its Labs preview plate is a live iframe of that same page.
+
+**Cause: `cleanUrls` plus a subdirectory index.** Vercel served `labs/index.html` at the URL `/labs` — no trailing slash. A browser resolves relative paths against the URL's *directory*, and the directory of `/labs` is `/`. So every relative path in that file pointed one level too high:
+
+| asked for | should have been |
+|---|---|
+| `/assets/css/manzar-theme.css` | `/labs/assets/css/manzar-theme.css` |
+| `/assets/js/main.js` | `/labs/assets/js/main.js` |
+| `/assets/audio/adrift-among-infinite-stars.mp3` | `/labs/assets/audio/…` |
+
+The shared files (`cursor.css`, `menu.css`, `crossover.css`) exist at the root as well, so those returned 200 and masked how total the failure was — the page had *some* CSS, just not its own.
+
+It never showed locally because `file://` and the preview server both serve the file at `…/labs/index.html`, where the directory is `/labs/` and every path is correct. **The bug only exists under cleanUrls.**
+
+## The fix, and why not the other ones
+
+`labs/index.html` is now `labs.html` at the site root. The URL is unchanged — cleanUrls serves `labs.html` at `/labs` exactly as before — but the page's directory is now `/` in every environment, so plain relative paths resolve identically on `file://`, on the preview server, and on Vercel. No configuration is involved, which is the point.
+
+Every alternative was a config gamble with its own failure mode:
+
+- **`trailingSlash: true`** fixes `/labs/` and breaks the root pages instead — `/work/` would resolve `assets/js/work.js` to `/work/assets/js/work.js`.
+- **`<base href="/labs/">`** fixes paths and breaks same-page anchors: `#faq` becomes `/labs/#faq`, a different URL, so every nav click becomes a full page load.
+- **A redirect to `/labs/index.html`** fights cleanUrls, which redirects `.html` URLs back to clean ones — a loop.
+
+## What the move turned up
+
+Rewriting the paths was mechanical; **verifying them was the work**. A crawler over every `href`, `src`, `data-src` and `url()` in all eight pages found the first pass had double-prefixed every shared asset (`../assets/x` → `assets/x` → `labs/assets/x`) because a blanket string replace ran after the correct one. Redone with a single pass over real URL positions only.
+
+Then a stronger sweep — every quoted token in *any* attribute that looks like a file path, 569 of them — found four more classes the first crawler had missed:
+
+- the five track paths inside the `data-mz-tracks` JSON attribute;
+- eleven menu icons in `data-media` attributes;
+- `window.HERO_VID` and a `document.write`n script src, both plain string literals;
+- `frame.src = '../index.html'` in `labs/assets/js/main.js`, which is document-relative, not script-relative.
+
+And one that had nothing to do with the move: **`pricing.html` has been shipping seven `../assets/menu/*.svg` references** — a root-level page reaching above the root. Broken before today, fixed now.
+
+Final state: 569 path tokens across 8 pages, **zero broken**, verified again in the browser with zero 404s on every page.
+
+## Posters no longer start black
+
+Two changes. The first three cards of the featured mosaic and the first four of the archive load `eager` with `fetchpriority="high"`; left lazy, the browser queues them behind everything else and the first thing a visitor sees is dark rectangles filling in one by one.
+
+The second is better: every item in `work-data.js` now carries a `bg` — its own poster's average colour, sampled from the real Gumlet thumbnail at 48px, pulled to at most 30% lightness and 42% saturation so the slate and the white type still read over it. The frame sits on that instead of `#0E0D0B`, so a card loads as a dim frame of *its* film rather than a black hole that suddenly fills. The Power of Focus card starts purple, KPEC olive, Language Shift green.
+
+## Sound: the one exemption that needs no click
+
+Chrome's autoplay policy has a short list of ways a site earns audible autoplay. Prior visits building up a Media Engagement score is one. **An installed site is another — exempt outright, from the first second, every visit.**
+
+The site is now installable: `site.webmanifest` was valid but **the homepage never linked it**, and there was no service worker. Both fixed. `sw.js` exists only to satisfy the installability check and deliberately caches nothing — this project has already lost a day to a browser serving a stale script, and a caching worker is that same bug with a longer memory. It registers on https only.
+
+So: **Install from Chrome's address bar, and the score plays on every visit with no click, for good.** That is a real answer, not a workaround, and it is the only one that exists. What still cannot be done is forging a gesture: a synthetic event carries `isTrusted: false` and grants nothing, by design.

@@ -578,7 +578,7 @@
         frame.addEventListener('error', function () {
           /* leave the composed hero showing — it is a complete fallback */
         });
-        frame.src = '../index.html';
+        frame.src = 'index.html';
       };
 
       if ('IntersectionObserver' in window) {

@@ -26,6 +26,7 @@
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230B0A08'/%3E%3Ccircle cx='32' cy='32' r='13' fill='none' stroke='%23E9E6DD' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23FF4B1F'/%3E%3C/svg%3E">
 <script>if("scrollRestoration" in history)history.scrollRestoration="manual";</script>
+<link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- the work grid's posters and streams both come from here; one early
@@ -35,7 +36,7 @@
 <!-- The pointer. Deliberately the first stylesheet in the document, so
      it is resolved before the page first paints and the browser never
      gets a chance to show its own arrow. -->
-<link rel="stylesheet" href="assets/css/cursor.css?v=12">
+<link rel="stylesheet" href="assets/css/cursor.css?v=14">
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;f[]=tanker@400&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
@@ -786,9 +787,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
 }
 </style>
-<link rel="stylesheet" href="assets/css/crossover.css?v=12">
-<link rel="stylesheet" href="assets/css/menu.css?v=12">
-<link rel="stylesheet" href="assets/css/work.css?v=12">
+<link rel="stylesheet" href="assets/css/crossover.css?v=14">
+<link rel="stylesheet" href="assets/css/menu.css?v=14">
+<link rel="stylesheet" href="assets/css/work.css?v=14">
 <style>
 /* Manzar sound toggle — four hairline bars, fixed bottom-centre,
    difference-blended. Engine: assets/js/mz-sound.js */
@@ -837,7 +838,7 @@ html.is-framed .mz-toast{display:none!important}
     <a class="brand" href="#top" data-anchor aria-label="Manzar, back to top"><img src="assets/manzar-wordmark.png" alt="Manzar"></a>
     <div class="mz-switch" role="group" aria-label="Manzar worlds">
       <a class="mz-sw-opt is-on" href="index.html" data-world="studio">Studio</a>
-      <a class="mz-sw-opt" href="labs/index.html" data-world="labs">Labs</a>
+      <a class="mz-sw-opt" href="labs.html" data-world="labs">Labs</a>
     </div>
   </div>
   <nav class="nav-links" aria-label="Primary">
@@ -1008,7 +1009,7 @@ html.is-framed .mz-toast{display:none!important}
             <li class="ls-row" data-i="3"><span class="ls-n">04</span><span class="ls-t">MVPs for startups, fast</span></li>
           </ul>
           <p class="labs-detail" id="labsDetail">Chat and copilots wired into your real data, with a human gate on anything irreversible.</p>
-          <a class="nav-cta labs-enter magnetic" href="labs/index.html">Enter Manzar Labs <span class="arr">↗</span></a>
+          <a class="nav-cta labs-enter magnetic" href="labs.html">Enter Manzar Labs <span class="arr">↗</span></a>
         </div>
         <!-- Labs shows Studio as a live screen inside a plate; this is the
              same move in the other direction, so crossing between the two
@@ -1165,7 +1166,7 @@ html.is-framed .mz-toast{display:none!important}
           </div>
           <div class="fq">
             <div class="fq-q">We need software, not a film. What can you actually build?<span class="fq-dot"></span></div>
-            <div class="fq-a"><p>That’s Manzar Labs, our software company: AI products and chat, enterprise and ERP systems, IoT platforms. MVPs go live in about six weeks, and regulated builds carry HIPAA, PCI and SOC 2 controls from week one. <a class="fq-link" href="labs/index.html">See Manzar Labs ↗</a></p></div>
+            <div class="fq-a"><p>That’s Manzar Labs, our software company: AI products and chat, enterprise and ERP systems, IoT platforms. MVPs go live in about six weeks, and regulated builds carry HIPAA, PCI and SOC 2 controls from week one. <a class="fq-link" href="labs.html">See Manzar Labs ↗</a></p></div>
           </div>
           <div class="fq">
             <div class="fq-q">What does working together look like?<span class="fq-dot"></span></div>
@@ -1408,7 +1409,7 @@ function menuSet(open) {
       fit();
       setTimeout(() => screenEl.classList.add("is-live"), 450);
     });
-    frame.src = "labs/index.html";
+    frame.src = "labs.html";
   };
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver(e => { if (e[0].isIntersecting) { load(); io.disconnect(); } },
@@ -2192,13 +2193,13 @@ if (!window.gsap || RM) {
 })();
 </script>
 <!-- Manzar Studio · manzar.studio · rebuilt August 2026 -->
-<script src="assets/js/crossover.js?v=12"></script>
-<script src="assets/js/menu.js?v=12" defer></script>
-<script src="assets/js/mz-sound.js?v=12" defer></script>
+<script src="assets/js/crossover.js?v=14"></script>
+<script src="assets/js/menu.js?v=14" defer></script>
+<script src="assets/js/mz-sound.js?v=14" defer></script>
 <!-- The work archive. Data first, then the UI that reads it; both are
      deferred, so neither blocks the hero. -->
-<script src="assets/js/work-data.js?v=12" defer></script>
-<script src="assets/js/work.js?v=12" defer></script>
+<script src="assets/js/work-data.js?v=14" defer></script>
+<script src="assets/js/work.js?v=14" defer></script>
 <!-- ══════════════ MENU ══════════════
      Component: /assets/css/menu.css + /assets/js/menu.js. Self-contained,
      so the same markup runs on Studio, Labs and every subpage.
@@ -2324,7 +2325,7 @@ if (!window.gsap || RM) {
     <div class="mzx-switch" role="group" aria-label="Manzar worlds">
       <span class="mzx-switch-rail" aria-hidden="true"></span>
       <a href="index.html" class="is-on" data-world="studio">Studio</a>
-      <a href="labs/index.html" data-world="labs">Labs</a>
+      <a href="labs.html" data-world="labs">Labs</a>
     </div>
     <a class="mzx-mail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
     <div class="mzx-clocks">
