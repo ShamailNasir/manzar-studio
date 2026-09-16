@@ -54,13 +54,34 @@
   var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var SRC = window.HERO_VID;
   var flatPhoto = function () { hero.classList.add('hero-flat'); };
+
+  /* Inside the Studio page's preview plate this page runs in an iframe
+     at thumbnail size. Relighting the silk there meant pulling the full
+     silk film - twelve megabytes - into a picture frame, on top of
+     whatever the host page was still loading. Framed, the poster is the
+     hero and nothing is fetched. */
+  var framed = false;
+  try { framed = window.self !== window.top; } catch (e) { framed = true; }
+  if (framed) { hero.classList.add('hero-flat', 'hero-framed'); return; }
   var flatVideo = function () { hero.classList.add('hero-vid-flat'); vA.loop = true; var p = vA.play(); if (p && p.catch) p.catch(flatPhoto); };
   if (!SRC) { flatPhoto(); return; }
 
-  vA.src = SRC; vA.loop = true;
+  /* The silk film is the heaviest thing on this page. Attaching it
+     during load put it in front of the stylesheet, the marks and the
+     photographs; the poster is already on screen, so it waits until the
+     page has finished and then fades in behind everything. */
+  vA.loop = true;
   var RATE = 0.85;
   vA.defaultPlaybackRate = RATE; vA.playbackRate = RATE;
   vA.addEventListener('loadeddata', function () { vA.playbackRate = RATE; });
+  var srcAttached = false;
+  function attachSrc() {
+    if (srcAttached) return; srcAttached = true;
+    vA.src = SRC;
+    try { vA.load(); } catch (e) {}
+  }
+  if (document.readyState === 'complete') setTimeout(attachSrc, 200);
+  else addEventListener('load', function () { setTimeout(attachSrc, 200); }, { once: true });
 
   var gl = cv.getContext('webgl', { alpha: false, depth: false, stencil: false, antialias: false });
   if (!gl) { flatVideo(); return; }

@@ -3852,3 +3852,61 @@ Chrome's autoplay policy has a short list of ways a site earns audible autoplay.
 The site is now installable: `site.webmanifest` was valid but **the homepage never linked it**, and there was no service worker. Both fixed. `sw.js` exists only to satisfy the installability check and deliberately caches nothing — this project has already lost a day to a browser serving a stale script, and a caching worker is that same bug with a longer memory. It registers on https only.
 
 So: **Install from Chrome's address bar, and the score plays on every visit with no click, for good.** That is a real answer, not a workaround, and it is the only one that exists. What still cannot be done is forging a gesture: a synthetic event carries `isTrusted: false` and grants nothing, by design.
+
+---
+
+## #192
+### Why the site loaded empty for a minute, and what it costs now
+*Cache token `?v=17`.*
+
+## What was actually happening
+
+Measured on the live site before touching anything: the homepage pulled **10,399 KB**, and **9,760 KB of that was one file** — `hero-lights.mp4`, fetched from 2.2s and still arriving at 5.7s on a fast line. The score would have added another 9,710 KB on a visit where the tab was focused. Everything small — the wordmark, the client marks, the work posters — sat in the queue behind twenty megabytes of media. On a phone that is the "empty for a minute or two" the client described, and the broken client logos in their screenshot are simply images that had not had a turn yet.
+
+Three separate causes, all pulling the same way.
+
+**1. The media was far heavier than it needed to be.**
+
+| | before | after | how |
+|---|---|---|---|
+| `hero-lights.mp4` | 9.53 MB, 8.0 Mbps | **5.48 MB** | H.264 CRF 23, same 1920×1080, same 24fps, no filtering |
+| `silk.mp4` | 23.55 MB, 11.8 Mbps | **12.93 MB** | same, 1600×1350 @60fps untouched |
+| 10 score files | 138.4 MB, 320 kbps CBR | **77.9 MB** | LAME V2 VBR (~177 kbps) |
+
+The hero is a defocused night cityscape — extracted frames at CRF 20, CRF 23, denoised, and 720p are indistinguishable because there is no fine detail in the source to lose. CRF 23 at full resolution was taken anyway: no scaling, no denoise, nothing that can be argued with. **78 MB saved.**
+
+**2. The heavy media was fetched while the page was still loading.** Both hero `<video>` elements carried `preload="auto"` and their sources were attached during parse; the `<audio>` was `preload="metadata"` and the engine called `play()` immediately. All of it now waits for the `load` event:
+
+- the hero poster paints from the first frame (it was `display:none`, held back as a no-video fallback) and the WebGL hero fades in over it once it is running;
+- both videos are `preload="none"` with their sources attached after load;
+- `beginAmbience()` returns early and re-queues itself if `document.readyState !== 'complete'`. The gesture listeners are still armed immediately, so nothing about autoplay changes — only when the bytes are asked for.
+
+**3. Seventeen photographs below the fold were fetched on parse.** A browser fetches an inline `background-image` the moment the element is styled, wherever it is on the page — 2.2 MB of panels nobody had scrolled to. They now carry `data-bg` and an IntersectionObserver attaches them a screen and a half early. Then, once the page is quiet, `requestIdleCallback` fetches whatever is still waiting, so scrolling never waits either. Without an observer, or without JS, everything attaches at once exactly as before.
+
+**Result, measured locally on the same page:**
+
+| | before | after |
+|---|---|---|
+| bytes by `DOMContentLoaded` | — | **602 KB** |
+| bytes by `load` | 3,147 KB → originally ~10 MB | **841 KB** |
+| requests by `load` | — | 29 |
+| hero video starts | 2.2s, blocking | after `load`, 5.6 MB |
+| score fetched during load | yes, 9.7 MB | **no** |
+
+## The Labs card was loading a whole second website
+
+The preview plate in the Studio's software section is a live iframe of the Labs page, and `hero-silk.js` attached its source unconditionally — so scrolling to that card pulled **silk.mp4, 12.9 MB**, to relight silk inside a thumbnail, on top of whatever the host page was still doing. The Studio page did the same in reverse inside the Labs plate.
+
+Both hero initialisers now check `window.self !== window.top` and, framed, show the poster and fetch nothing. Verified: the framed Labs document reports `hero hero-flat hero-framed`, does not request `silk.mp4`, and costs 1,233 KB instead of 14 MB.
+
+## Mobile
+
+No horizontal overflow on any page at 390px or at 320px — `scrollWidth === clientWidth` on all eight. The Labs page reports 89 elements wider than the viewport, and all of them are marquee tracks inside `overflow:hidden` parents, which is what a marquee is. The nav fits at 320. The archive keeps its 23 cards and its snapping reel shelf.
+
+The mobile complaint was the loading problem, which is strictly worse on a phone: twenty megabytes on mobile data is minutes, not seconds.
+
+## Notes
+
+- 572 path tokens across 8 pages still resolve, plus the 17 new `data-bg` sources.
+- The poster's cross-fade could not be confirmed through `getComputedStyle` — a backgrounded pane stops recalculating style, and even a freshly injected probe rule read back stale. `element.getAnimations()` shows `{prop: "opacity", state: "running"}`, which is the real confirmation.
+- `hero-lights.b64.js` (13.3 MB) and `silk.b64.js` (31.4 MB) are still in the tree. They are loaded **only** over `file://`, never on the web, and they now hold the pre-re-encode video — harmless, but the comment in `index.html` claiming they match the mp4 byte-for-byte is no longer true and has been corrected.

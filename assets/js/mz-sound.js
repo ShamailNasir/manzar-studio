@@ -248,6 +248,16 @@
      point it is loaded, decoding and in the right place in the piece. */
   function beginAmbience () {
     if (!amb || !on || document.hidden) return;
+    /* The score is five to nine megabytes. Fetching it while the page is
+       still loading put it in direct competition with every image on the
+       page, which is why nothing appeared for so long. The gesture
+       listeners are already armed by setOn, so nothing about autoplay
+       changes - only when the bytes are asked for. */
+    if (document.readyState !== 'complete') {
+      addEventListener('load', function () { setTimeout(beginAmbience, 700); },
+                       { once: true });
+      return;
+    }
     /* Kill any fade still in flight. Turning sound off starts a 1.2s
        fade whose callback pauses the element at the end of it; turning
        it straight back on used to leave that callback armed, and a

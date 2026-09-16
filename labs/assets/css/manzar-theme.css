@@ -2811,3 +2811,9 @@ html.is-framed .mz-toast{display:none!important}
   .hero-col-right{ align-items:flex-start; text-align:left; }
   .hero-col-right .hero-clients{ flex-direction:row; }
 }
+
+/* In the Studio page's preview plate this page is an iframe at thumbnail
+   size; hero-silk.js stops there and leaves the poster as the hero, so it
+   must be at full strength rather than a dimmed fallback. */
+.hero.hero-framed .hero-fallback{ opacity:1; display:block; }
+.hero.hero-framed #cv-hero, .hero.hero-framed .hv{ display:none; }
