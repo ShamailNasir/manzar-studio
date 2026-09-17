@@ -472,7 +472,14 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
    composer is doing most of the work — without it this is a picture
    of a conversation; with it, it is a picture of software.
    ============================================================ */
-.ai-lead{ grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr); }
+/* Guarded, and it has to be. style.css collapses .ai-lead to one column
+   at 900px, but this file loads after it and at equal specificity, so an
+   unguarded rule here silently reinstated two columns on every phone:
+   a 131px text column wrapping to two words a line, beside a 177px chat
+   panel whose own header then had nowhere to go and piled up on itself. */
+@media (min-width:901px){
+  .ai-lead{ grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr); }
+}
 .ai-chat{
   position:relative;
   margin:0;
@@ -498,7 +505,7 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 
 /* header ------------------------------------------------------ */
 .ai-chat-bar{
-  display:flex; align-items:center; gap:13px;
+  display:flex; align-items:center; gap:13px 13px; flex-wrap:wrap;
   padding:16px 20px;
   border-bottom:1px solid rgba(233,230,221,.10);
   background:rgba(233,230,221,.03);
@@ -512,11 +519,12 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 }
 .ai-chat-id{ display:flex; flex-direction:column; gap:3px; min-width:0; }
 .ai-chat-name{
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   font-family:var(--body); font-weight:600; font-size:14.5px;
   letter-spacing:-.015em; color:var(--fg); text-transform:none;
 }
 .ai-chat-status{
-  display:flex; align-items:center; gap:7px;
+  display:flex; align-items:center; gap:7px; white-space:nowrap;
   font-family:var(--mono); font-size:10.5px; letter-spacing:.1em;
   text-transform:uppercase; color:var(--g-3);
 }
@@ -527,7 +535,7 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
   animation:mz-pulse 2.4s ease-in-out infinite;
 }
 .ai-chat-env{
-  margin-left:auto; flex:none;
+  margin-left:auto; flex:none; white-space:nowrap;
   font-family:var(--mono); font-weight:600; font-size:10px;
   letter-spacing:.16em; text-transform:uppercase; color:var(--g-2);
   border:1px solid rgba(233,230,221,.16);
@@ -800,7 +808,9 @@ h1,h2,h3,h4{ letter-spacing:var(--tr-head); }
 .ai-thread.is-clearing{ opacity:0; }
 
 /* keep the two halves of the lead aligned */
-.ai-lead{ align-items:center; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); }
+@media (min-width:901px){
+  .ai-lead{ align-items:center; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); }
+}
 
 
 /* ── How we work ──────────────────────────────────────────────

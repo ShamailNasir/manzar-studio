@@ -3910,3 +3910,61 @@ The mobile complaint was the loading problem, which is strictly worse on a phone
 - 572 path tokens across 8 pages still resolve, plus the 17 new `data-bg` sources.
 - The poster's cross-fade could not be confirmed through `getComputedStyle` — a backgrounded pane stops recalculating style, and even a freshly injected probe rule read back stale. `element.getAnimations()` shows `{prop: "opacity", state: "running"}`, which is the real confirmation.
 - `hero-lights.b64.js` (13.3 MB) and `silk.b64.js` (31.4 MB) are still in the tree. They are loaded **only** over `file://`, never on the web, and they now hold the pre-re-encode video — harmless, but the comment in `index.html` claiming they match the mp4 byte-for-byte is no longer true and has been corrected.
+
+---
+
+## #193
+### Two layout bugs, both the same cascade trap
+*Cache token `?v=18`.*
+
+## The menu was built for three groups and every Labs page has two
+
+`.mzx-nav` was `grid-template-columns:repeat(3, minmax(0,1fr))`. The Studio menu has three groups, so it looked right there — but every Labs and capability page carries only **Labs** and **Company**. The third column sat empty and the two real ones were squeezed to **290px**, where a 28.8px title has nowhere to go:
+
+- *Cloud & Infrastructure*, *Mobile Development* and *IoT & Connected Systems* each wrapped to two lines
+- the list grew ~180px taller than it needed to be
+- on a laptop-height window the last row ran under the footer and was cut off
+
+`grid-auto-flow:column` with `grid-auto-columns:minmax(0,1fr)` makes exactly as many equal columns as there are `.mzx-group` children — two groups get two columns, three still get three, and nothing has to be kept in sync by hand. The narrow-screen rules now reset `grid-auto-flow:row` before setting their own counts, or auto-flow would keep winning.
+
+The title was also set for a three-column measure and read oversized at 1080p: `clamp(21px,1.8vw,46px)` → `clamp(20px,1.38vw,34px)`, which is 22px at 1600 rather than 29px.
+
+And `.mzx-body` was `align-items:center` with `overflow:auto` — a centred grid that overflows pushes its first rows *above* the scroll origin, where no amount of scrolling reaches them. It is `align-items:safe center` now, which falls back to start the moment the content stops fitting, plus a little vertical padding so rows never butt against the head and foot.
+
+Measured on `/capabilities/ai`, before → after:
+
+| | before | after |
+|---|---|---|
+| columns | 3 × 290px (one empty) | **2 × 460px** |
+| titles wrapping to two lines | 3 | **0** |
+| nav block height | ~570px | **426px** |
+| clipped at 1600×740 | yes | **no** |
+
+The Studio menu is unchanged: three groups, three columns, nothing clipped.
+
+## The Labs AI panel on a phone
+
+`.ai-lead` was a **two-column grid at 390px** — a 131px text column wrapping to two or three words a line, beside a 177px chat panel. Inside that panel the header had nowhere to go: *Billing assistant* and *Connected to 3 systems* were crushed into 27px while the *Live demo* pill sat on top of them.
+
+`style.css` already collapses `.ai-lead` to one column at ≤900px. The collapse never applied because **`manzar-theme.css` loads after it and re-declared `.ai-lead` unconditionally — twice**, at equal specificity. Same trap as the `.wk-band--a.is-flip` bug in #188: a later unguarded rule quietly beating a media query. Both theme rules are now inside `@media (min-width:901px)`.
+
+The chat header is hardened independently so it can never collide again whatever width it is given: the bar wraps, the name ellipsises, and the status and the pill refuse to break.
+
+| at 390px | before | after |
+|---|---|---|
+| `.ai-lead` columns | 131px \| 177px | **350px** |
+| chat panel | 177px | **350px** |
+| name / status | 27px each | 174px each |
+| name overlaps the pill | yes | **no** |
+
+Seam checked either side of the breakpoint: 900 → one column, 940 → 354 \| 479, 320 → one column with no overlap.
+
+## Looking for the rest of it
+
+Rather than fix the one panel, every grid and nowrap flex row on the Labs page was measured at 390px and the narrow ones listed — most were legitimate (buttons with a label and a chip, marquee tracks, icon-and-text pairs). Then every selector `style.css` collapses inside a media query was cross-checked against selectors `manzar-theme.css` re-declares unconditionally. Three came back: `.ai-lead`, `.mission-top`, `.vel-why-grid`.
+
+`.mission-top` measured as a single column already — something else was handling it, so it was left alone. `.vel-why-grid` exists only in `Preview - commitments.html`, a scratch file that is not deployed. `.ai-lead` was the real one.
+
+## Verified
+
+No horizontal overflow on any page at 1600, 940, 900, 390 or 320. `/work` keeps its 23 cards, the archive shelf still snaps, no console errors anywhere. Deploy confirmed current before starting: local and remote both at `883144f`, nothing uncommitted.

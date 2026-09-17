@@ -89,13 +89,31 @@ html.mzx-lock, body.mzx-lock{ overflow:hidden; }
   display:grid;
   grid-template-columns:minmax(0,1fr) clamp(300px, 26vw, 520px);
   gap:clamp(36px,4.4vw,96px);
-  align-items:center;
-  padding:0 var(--x-pad);
+  /* `safe` matters: a centred grid that overflows pushes its first rows
+     above the scroll origin, where they cannot be reached. Safe centring
+     falls back to start the moment the content stops fitting. */
+  align-items:safe center;
+  padding:clamp(8px,1.4vh,24px) var(--x-pad);
   overflow:auto;
+  overscroll-behavior:contain;
 }
 
+/* One column per group, however many groups the page has.
+
+   This was hardcoded to three. The Studio menu has three groups so it
+   looked right there — but every Labs and capability page carries only
+   two, which left an empty third column and squeezed the two real ones
+   to 290px. At that width every title wrapped to two lines, the list
+   grew about 180px taller than it needed to be, and on a laptop-height
+   window the last item ran under the footer and was cut off.
+
+   grid-auto-flow:column makes exactly as many equal columns as there
+   are children, so two groups get two wide columns and the titles sit
+   on one line. */
 .mzx-nav{
-  display:grid; grid-template-columns:repeat(3, minmax(0,1fr));
+  display:grid;
+  grid-auto-flow:column;
+  grid-auto-columns:minmax(0,1fr);
   gap:clamp(28px,3.2vw,64px);
   align-items:start;
 }
@@ -139,7 +157,7 @@ html.mzx-lock, body.mzx-lock{ overflow:hidden; }
 }
 .mzx-t{
   grid-column:2; grid-row:1;
-  font-size:clamp(21px,1.8vw,46px); font-weight:600;
+  font-size:clamp(20px,1.38vw,34px); font-weight:600;
   letter-spacing:-.028em; line-height:1.14; color:var(--x-1);
 }
 .mzx-d{
@@ -274,7 +292,7 @@ html.mzx-lock, body.mzx-lock{ overflow:hidden; }
 @media (max-width:1180px){
   .mzx-body{ grid-template-columns:minmax(0,1fr); align-items:start; padding-top:10px; }
   .mzx-media{ display:none; }
-  .mzx-nav{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+  .mzx-nav{ grid-auto-flow:row; grid-template-columns:repeat(2, minmax(0,1fr)); }
   /* three groups over two columns is a tall block; without this it
      overflowed a 1000x900 window and the body had to scroll */
   .mzx-row{ padding:clamp(9px, 1.2vh, 15px) 0; }
@@ -282,7 +300,7 @@ html.mzx-lock, body.mzx-lock{ overflow:hidden; }
   .mzx-group-label{ margin-bottom:12px; padding-bottom:11px; }
 }
 @media (max-width:680px){
-  .mzx-nav{ grid-template-columns:minmax(0,1fr); gap:24px; }
+  .mzx-nav{ grid-auto-flow:row; grid-template-columns:minmax(0,1fr); gap:24px; }
   .mzx-foot{ justify-content:flex-start; gap:16px; }
   .mzx-clocks{ display:none; }
   .mzx-close{ height:46px; padding-left:20px; }
