@@ -4149,3 +4149,25 @@ The Music Videos photograph (#197) was liked as it was, but its room read as run
 - the operator turned toward the stage, his lens on the singer.
 
 A second variant (deep charcoal walls with wood slat panels) was made and set aside; it read more lounge than venue. `s01-music.jpg` (145 KB) and the hero monitor's `slate-01.jpg` are re-cut from the edit with the same crops as before.
+
+---
+
+## #199
+### Brand, e-commerce and apps, as work rather than symbols
+*Cache token unchanged (`?v=20`): images only, same file names.*
+
+Three more service photographs read as AI, or as nothing at all:
+
+- a styled flat-lay of swatches and ink pots for Brand & Visual Identity;
+- a lone wristwatch for E-commerce Websites, which said nothing about building an online store;
+- a glowing wall of data visualisations for Apps & Digital Products.
+
+They were replaced the way round two did it: the same photorealism rules, with scenes showing the real work of each service. Two candidates were generated for each and one of each went in:
+
+- **Brand & Visual Identity** (`s05-brand.jpg`): a designer holding a printed card mock-up up to the window light, a pin board of rough marks and swatches behind her, paper samples on the table. It also feeds the hero monitor's `slate-05.jpg` and the menu's Process plate.
+- **E-commerce Websites** (`s06-ecommerce.jpg`): a designer and the owner of a ceramics brand at a café table, reviewing her new store, he on the laptop (her product grid) and she on her phone, with her mugs and a bowl on the table.
+- **Apps & Digital Products** (`s08-software.jpg`): a hand holding a phone prototype, the same screens laid out in a design tool on the laptop behind it, paper wireframes and a cup of tea.
+
+The set-aside candidates were a brand presentation to clients, a product shoot for a fashion label's store, and a usability test in front of a wall of printed screens.
+
+Six requests at once made five fail with connection errors from the image service. Two at a time, with a retry, all succeeded. The originals are in `Backup/2026-10-29-pre-service-photos-r3/`.
