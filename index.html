@@ -709,11 +709,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   background:linear-gradient(180deg,rgba(70,110,215,.9),rgba(26,48,110,.7));
 }
 .room[data-state="blue"] .room-img{filter:saturate(.85) brightness(.9)}
+/* night is moonlight, not a blackout: a cool multiply that keeps the
+   photograph readable, with a little lift where the sky would be */
 .room[data-state="night"] .room-tint{
   opacity:1;mix-blend-mode:multiply;
-  background:linear-gradient(180deg,rgba(26,36,78,.92),rgba(12,14,30,.85));
+  background:
+    radial-gradient(90% 60% at 60% 8%,rgba(196,210,245,.55),transparent 70%),
+    linear-gradient(180deg,rgba(138,156,214,.92),rgba(92,108,166,.9));
 }
-.room[data-state="night"] .room-img{filter:saturate(.7) brightness(.82)}
+.room[data-state="night"] .room-img{filter:saturate(.72) brightness(.94)}
 .room-media::after{
   content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(11,10,8,.55) 0%,rgba(11,10,8,0) 22%,rgba(11,10,8,0) 40%,rgba(11,10,8,.62) 72%,rgba(11,10,8,.92) 100%);
@@ -1338,7 +1342,7 @@ html.is-framed .mz-toast{display:none!important}
             </div>
             <div class="room-more">
               <div>
-                <p class="room-line">Truck art, wedding lights and seven years of production. The city the studio grew up in.</p>
+                <p class="room-line">Red sandstone, marble domes and seven years of production. The city the studio grew up in.</p>
                 <a class="room-cta" href="mailto:hello@manzar.studio?subject=A%20shoot%20in%20Lahore">Shoot in Lahore <span aria-hidden="true">&#8599;</span></a>
               </div>
             </div>

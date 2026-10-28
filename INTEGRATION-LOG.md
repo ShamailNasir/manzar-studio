@@ -4060,3 +4060,39 @@ The FAQ no longer links to Labs: the footer row is now its only door from the St
 ## Verified
 
 Rendered locally at 1600: the manifesto's word reveal, the reworded service rows with their travelling card, and the new FAQ answer opening, with no console errors.
+
+---
+
+## #196
+### Film, not render: three new service photographs and a real Lahore
+*Cache token unchanged (`?v=19`): images and HTML only, same file names.*
+
+## The three service photographs
+
+Music Videos, Commercials & Brand Films and Colour & Finishing had the over-lit, neon, glossy look that reads as AI at a glance: magenta and teal stage light, perfect bokeh, plastic skin. They are replaced in place (`assets/services/s01-music.jpg`, `s02-commercial.jpg`, `s04-colour.jpg`, so the services card and the menu plate both pick them up):
+
+- **Music videos:** a singer mid-phrase in a brick basement venue under one warm tungsten lamp, the band behind her, heads in the foreground, a camera operator at the edge of frame.
+- **Commercials:** a night shoot in an old Lahore courtyard: camera on a short dolly track, crew in jackets, a string of practical bulbs, a diffused light bouncing off a frame, haze.
+- **Colour:** a colourist from behind at a grading panel in a dark suite, a dusk street scene on the reference monitor, a desk lamp, a mug and an open notebook.
+
+These are still generated images, not photographs from a shoot. They were made with Codex's image generation from briefs written for documentary realism: available light only, ordinary people, Fujifilm Superia 400 on a 35 mm rangefinder. Then all three went through one film-finishing pass so they read as a single roll:
+
+- a lifted toe and a soft shoulder;
+- saturation pulled back, cool-green shadows and warm highlights;
+- halation bleeding warm around the bulbs and the lamp, plus a little bloom;
+- a hair of lateral colour fringing and lens falloff;
+- grain generated coarse and grown up so it clumps like silver, strongest in the mid-tones.
+
+Exported 840 × 1120 at JPEG q76 (135–169 KB; grain is expensive for JPEG, so they run about 40% heavier than before, and they are lazy-loaded). The hero monitor's matching frames (`assets/hero/slate-01, -02, -04`) are 16:9 crops of the same finished frames.
+
+When real stills from Manzar's own shoots exist for these three, they should replace these.
+
+## Lahore is Lahore
+
+The Lahore panel showed a truck on a highway that was not Lahore. It is now a frame from Manzar's own documentary: `Still 2025-11-25 223100_1.26.1`, the Badshahi Mosque, with the minaret, the marble domes and the red sandstone, and one man walking past for scale. Of the nineteen stills it is the one any visitor reads as Lahore at once. Its domes and minaret sit in the upper middle, clear of the panel's type, and its warm, hazy grade is already cinematic, so it was cropped and nothing else: a 1920 × 1920 square around the minaret from the 3840 × 1920 frame, scaled to 1280 × 1280 at q80, **117 KB** (the truck was 145 KB). The panel's line now matches it: "Red sandstone, marble domes and seven years of production."
+
+## Night was a blackout
+
+The night tint multiplied the photograph by a near-black navy, and since a visitor in Pakistan or Europe in the evening sees both rooms at night, both photographs went close to black. Night is moonlight now: a lighter steel-blue multiply with a lift where the sky is, and brightness 0.94 instead of 0.82. Still clearly night, and the photographs stay readable.
+
+The originals are in `Backup/2026-10-28-pre-film-images/`.
