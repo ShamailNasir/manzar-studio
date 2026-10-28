@@ -42,7 +42,7 @@
 <!-- The pointer. Deliberately the first stylesheet in the document, so
      it is resolved before the page first paints and the browser never
      gets a chance to show its own arrow. -->
-<link rel="stylesheet" href="assets/css/cursor.css?v=19">
+<link rel="stylesheet" href="assets/css/cursor.css?v=20">
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;f[]=tanker@400&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
@@ -693,11 +693,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .room-media{position:absolute;inset:-5% 0;z-index:0;will-change:transform}
 .room-img{
-  position:absolute;inset:-3%;background-size:cover;background-position:center 42%;
-  transform:translate3d(calc(var(--mx,0) * -12px),calc(var(--my,0) * -9px),0) scale(1.07);
+  position:absolute;inset:-2%;background-size:cover;background-position:center 42%;
+  transform:translate3d(calc(var(--mx,0) * -10px),calc(var(--my,0) * -7px),0) scale(1.025);
   transition:transform 1.3s cubic-bezier(.22,1,.36,1),filter 2s ease;
 }
-.room:hover .room-img{transform:translate3d(calc(var(--mx,0) * -20px),calc(var(--my,0) * -14px),0) scale(1.015)}
+.room:hover .room-img{transform:translate3d(calc(var(--mx,0) * -16px),calc(var(--my,0) * -11px),0) scale(1.03)}
 /* the light, laid over the photograph */
 .room-tint{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
 .room[data-state="golden"] .room-tint{
@@ -1064,9 +1064,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
 }
 </style>
-<link rel="stylesheet" href="assets/css/crossover.css?v=19">
-<link rel="stylesheet" href="assets/css/menu.css?v=19">
-<link rel="stylesheet" href="assets/css/work.css?v=19">
+<link rel="stylesheet" href="assets/css/crossover.css?v=20">
+<link rel="stylesheet" href="assets/css/menu.css?v=20">
+<link rel="stylesheet" href="assets/css/work.css?v=20">
 <style>
 /* Manzar sound toggle — four hairline bars, fixed bottom-centre,
    difference-blended. Engine: assets/js/mz-sound.js */
@@ -1474,7 +1474,7 @@ html.is-framed .mz-toast{display:none!important}
           <p class="p-body">We dig into your brand and ask until the brief confesses: what you’re really selling, who needs to feel it, and the one metric that matters. Agreed before anyone opens a timeline.</p>
         </div>
         <div class="pmedia" data-step="Step 01">
-          <div class="pm-in" data-bg="assets/proc-01.jpg"></div>
+          <div class="pm-in" data-bg="assets/proc-01-edit-suite.jpg"></div>
         </div>
       </div>
       <div class="prow">
@@ -1494,7 +1494,7 @@ html.is-framed .mz-toast{display:none!important}
           <p class="p-body">Release, watch, refine. We stay through the first real audience and the first real campaigns. The release is the opening scene, not the credits.</p>
         </div>
         <div class="pmedia" data-step="Step 03">
-          <div class="pm-in" data-bg="assets/proc-03.jpg"></div>
+          <div class="pm-in" data-bg="assets/proc-03-release.jpg"></div>
         </div>
       </div>
     </div>
@@ -2857,8 +2857,8 @@ if (!window.gsap || RM) {
 })();
 </script>
 <!-- Manzar Studio · manzar.studio · rebuilt August 2026 -->
-<script src="assets/js/crossover.js?v=19"></script>
-<script src="assets/js/menu.js?v=19" defer></script>
+<script src="assets/js/crossover.js?v=20"></script>
+<script src="assets/js/menu.js?v=20" defer></script>
 
 <script>
 /* ── the photographs below the fold ───────────────────────────────
@@ -2908,11 +2908,11 @@ if (!window.gsap || RM) {
   }, { once: true });
 })();
 </script>
-<script src="assets/js/mz-sound.js?v=19" defer></script>
+<script src="assets/js/mz-sound.js?v=20" defer></script>
 <!-- The work archive. Data first, then the UI that reads it; both are
      deferred, so neither blocks the hero. -->
-<script src="assets/js/work-data.js?v=19" defer></script>
-<script src="assets/js/work.js?v=19" defer></script>
+<script src="assets/js/work-data.js?v=20" defer></script>
+<script src="assets/js/work.js?v=20" defer></script>
 <!-- ══════════════ MENU ══════════════
      Component: /assets/css/menu.css + /assets/js/menu.js, in its Studio
      form (.mzx--studio). Two groups: Studio, set as a display-size index,

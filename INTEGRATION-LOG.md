@@ -4096,3 +4096,42 @@ The Lahore panel showed a truck on a highway that was not Lahore. It is now a fr
 The night tint multiplied the photograph by a near-black navy, and since a visitor in Pakistan or Europe in the evening sees both rooms at night, both photographs went close to black. Night is moonlight now: a lighter steel-blue multiply with a lift where the sky is, and brightness 0.94 instead of 0.82. Still clearly night, and the photographs stay readable.
 
 The originals are in `Backup/2026-10-28-pre-film-images/`.
+
+---
+
+## #197
+### Second round on photographs, two process frames, a menu label
+*Cache token `?v=20` (menu.css changed).*
+
+## The service photographs, briefed again
+
+The first generated set (#196) still read as AI: dramatic practical light, haze and string lights, shallow-focus portrait looks, posed and flawless people, spotless rooms. Grain laid on top did not change any of that. The second brief attacked the tells directly:
+
+- photographs a crew member took on a compact or a 35 mm SLR and had lab-scanned, sometimes with the compact's direct on-camera flash;
+- mostly deep focus;
+- only the light that would really be there;
+- ordinary Pakistani people caught mid-action, faces small or turned away;
+- lived-in, cluttered places;
+- no legible text anywhere, because garbled signage is an instant giveaway;
+- a long list of things to avoid.
+
+Six candidates, two per service, were generated; one of each went in:
+
+- **Music Videos:** a flash snapshot at a packed basement gig, peeling walls, a ceiling fan, the gimbal operator in shot.
+- **Commercials:** a daylight crew in a walled-city lane, with boom, diffusion frame, an actor in shalwar kameez, shopkeepers watching and a chai stall.
+- **Colour & Finishing:** hands on the trackballs, a Lahore sunset frame and scopes on the reference monitor, daylight through the blinds.
+
+No film pass this time: the images carry their own lab-scan grain, and the pass was part of what read as processed. They are cropped and sized only (840 × 1120, q86), and the hero monitor's 16:9 frames come from the same images. These are still generated, not Manzar's own, and real stills should replace them when they exist.
+
+## The Lahore card: wider and HD
+
+The minaret close-up (#196) was too tight for a nearly square card that also zooms its photograph about 13% for parallax. The card now uses `Still 2025-11-25 223100_1.19.1`, the wide Badshahi view: courtyard and people, the main gate, domes and minarets. It is exported as a 3:2 window on the 2:1 frame at full source height, **2880 × 1920 at q90 with 4:4:4 chroma (472 KB)**. That gives the at-rest card the gate-to-minaret middle, and the widened hovered card more of the courtyard. The card's own zoom is eased from 1.07 to 1.025 so more of the frame shows. The same file is the menu's Studios plate, which was signed off as it is.
+
+## Process
+
+- **Step 01, "We find the story":** the edit-suite photograph from the Labs mission section (`labs/assets/img/mission-desk.jpg`, black-and-white in the file itself), copied to `assets/proc-01-edit-suite.jpg` and shown whole, without the Labs page's rounded frame.
+- **Step 03, "We ship it, then stay":** the Eiffel Tower crop sat awkwardly in the frame and said nothing about releasing work. It is now `DSC00216` from Manzar's own Paris shoot: a father and son on the quay, watching a lit boat slide out at golden hour. The work goes out and we stay to watch it. 2200 × 1375 at q86 (317 KB), cut as a 1.6 window kept to the right, so the frame's crop never cuts the man off.
+
+## The menu's small labels
+
+"CREATIVE STUDIO" in the menu head and the LAHORE / PARIS clock labels were set in the base menu's `--x-mono` stack, which on Windows is Consolas. Inside `.mzx--studio` they are General Sans now (600, tracked .2 to .22em), like every other label on the Studio site. The Labs menus keep their monospace.

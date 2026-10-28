@@ -409,7 +409,19 @@ html.mzx-lock header.nav{
     radial-gradient(70% 60% at 0% 100%, rgba(255,75,31,.035), transparent 60%),
     var(--x-ink);
 }
-.mzx--studio .mzx-head .mzx-eyebrow{ letter-spacing:.2em; }
+/* The base menu sets its small labels in the system monospace, which on
+   Windows is Consolas: it read as a DOS prompt beside the wordmark. The
+   Studio site sets these labels in General Sans everywhere else (its own
+   --mono is General Sans), so the Studio menu does the same. */
+.mzx--studio{ --x-mono:"General Sans","Inter",system-ui,-apple-system,sans-serif; }
+.mzx--studio .mzx-head .mzx-eyebrow{
+  font-family:var(--x-body); font-weight:600;
+  font-size:clamp(11.5px,.74vw,13.5px); letter-spacing:.22em;
+  color:var(--x-1); opacity:.82;
+}
+.mzx--studio .mzx-clock-city{
+  font-family:var(--x-body); font-weight:600; font-size:10.5px; letter-spacing:.2em;
+}
 .mzx--studio .mzx-body{
   grid-template-columns:minmax(0,1fr) clamp(270px, 23vw, 440px);
   gap:clamp(40px, 5.4vw, 124px);
