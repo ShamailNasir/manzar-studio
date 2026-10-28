@@ -4135,3 +4135,17 @@ The minaret close-up (#196) was too tight for a nearly square card that also zoo
 ## The menu's small labels
 
 "CREATIVE STUDIO" in the menu head and the LAHORE / PARIS clock labels were set in the base menu's `--x-mono` stack, which on Windows is Consolas. Inside `.mzx--studio` they are General Sans now (600, tracked .2 to .22em), like every other label on the Studio site. The Labs menus keep their monospace.
+
+---
+
+## #198
+### The gig, cleaned up
+*Cache token unchanged (`?v=20`): image only, same file names.*
+
+The Music Videos photograph (#197) was liked as it was, but its room read as run-down: peeling whitewash, torn posters, a ceiling fan. And the camera operator was pointing his gimbal at the wall. It was edited rather than regenerated, so the singer, the crowd, the framing and the flash snapshot look all stay. Codex's image tool was given the photograph itself and told to change three things only:
+
+- walls of clean, intact exposed brick with small brass wall lights;
+- the fan gone, replaced by a matte black ceiling with track spotlights;
+- the operator turned toward the stage, his lens on the singer.
+
+A second variant (deep charcoal walls with wood slat panels) was made and set aside; it read more lounge than venue. `s01-music.jpg` (145 KB) and the hero monitor's `slate-01.jpg` are re-cut from the edit with the same crops as before.
