@@ -37,13 +37,13 @@
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
 <!-- The pointer first, so the browser never gets a frame to show its own. -->
-<link rel="stylesheet" href="assets/css/cursor.css?v=18">
+<link rel="stylesheet" href="assets/css/cursor.css?v=19">
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;f[]=tanker@400&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/studio-base.css?v=18">
-<link rel="stylesheet" href="assets/css/crossover.css?v=18">
-<link rel="stylesheet" href="assets/css/menu.css?v=18">
-<link rel="stylesheet" href="assets/css/work.css?v=18">
+<link rel="stylesheet" href="assets/css/studio-base.css?v=19">
+<link rel="stylesheet" href="assets/css/crossover.css?v=19">
+<link rel="stylesheet" href="assets/css/menu.css?v=19">
+<link rel="stylesheet" href="assets/css/work.css?v=19">
 
 <script type="application/ld+json">
 {
@@ -86,10 +86,6 @@
 <header class="nav" id="nav">
   <div class="nav-left">
     <a class="brand" href="index.html" aria-label="Manzar, home"><img src="assets/manzar-wordmark.png" alt="Manzar"></a>
-    <div class="mz-switch" role="group" aria-label="Manzar worlds">
-      <a class="mz-sw-opt is-on" href="index.html" data-world="studio">Studio</a>
-      <a class="mz-sw-opt" href="labs.html" data-world="labs">Labs</a>
-    </div>
   </div>
   <nav class="nav-links" aria-label="Primary">
     <a href="work.html" aria-current="page">Work</a>
@@ -173,6 +169,7 @@
           <a href="index.html#process">Process <span class="fa">→</span></a>
           <a href="index.html#faq">FAQ <span class="fa">→</span></a>
           <a href="mailto:hello@manzar.studio">Contact <span class="fa">→</span></a>
+          <a href="labs.html" data-world="labs">Labs <span class="fnav-note">Our software studio</span><span class="fa">→</span></a>
         </nav>
         <div class="fcol">
           <div class="fblock">
@@ -214,15 +211,16 @@
 </main>
 
 <!-- ══════════════ MENU ══════════════
-     The same component every Manzar page runs: /assets/css/menu.css +
-     /assets/js/menu.js. Its section rows point back at the homepage,
-     because those sections do not exist here. -->
-<!-- ══════════════ MENU ══════════════
-     Component: /assets/css/menu.css + /assets/js/menu.js. Self-contained,
-     so the same markup runs on Studio, Labs and every subpage.
-     Twelve rows, three groups, in the order Ali specified. --i drives the
-     open stagger from CSS, so no script has to touch the rows. -->
-<div class="mzx" id="mzxMenu" role="dialog" aria-modal="true"
+     Component: /assets/css/menu.css + /assets/js/menu.js, in its Studio
+     form (.mzx--studio). Two groups: Studio, set as a display-size index,
+     and Company around it. Labs is not a column here any more; it is a
+     link in the footer. --i drives the open stagger from CSS, so no
+     script has to touch the rows. The rows are generated from one list
+     for index.html and work.html, so the two menus cannot drift apart.
+     Its section rows point back at the homepage, because those
+     sections do not exist here.
+-->
+<div class="mzx mzx--studio" id="mzxMenu" role="dialog" aria-modal="true"
      aria-label="Main menu" aria-hidden="true" hidden>
 
   <div class="mzx-head">
@@ -230,7 +228,7 @@
       <img class="mzx-mark" src="assets/manzar-wordmark.png" alt="Manzar"
            width="2556" height="980" decoding="async">
       <span class="mzx-head-rule" aria-hidden="true"></span>
-      <span class="mzx-eyebrow">Studio</span>
+      <span class="mzx-eyebrow">Creative studio</span>
     </div>
     <button class="mzx-close" type="button" data-mzx-close aria-label="Close menu">
       <span class="mzx-close-label">Close</span>
@@ -245,104 +243,94 @@
   <div class="mzx-body">
     <nav class="mzx-nav" aria-label="Main">
 
-      <div class="mzx-group">
-        <p class="mzx-group-label">Studio</p>
-        <a class="mzx-row" href="work.html" style="--i:0"
-           data-media="assets/menu/work.svg" data-kicker="Selected work">
+      <div class="mzx-group mzx-group--lead">
+        <p class="mzx-group-label"><span>Studio</span><span class="mzx-group-count">01&thinsp;&mdash;&thinsp;04</span></p>
+        <a class="mzx-row" href="index.html#work" style="--i:0"
+           data-media="assets/services/s02-commercial.jpg" data-kicker="Selected work">
           <span class="mzx-n">01</span>
-          <span class="mzx-t">Work</span>
-          <span class="mzx-d">The whole archive: film, music, commercial, creative.</span>
+          <span class="mzx-t"><span class="mzx-roll"><span class="mzx-roll-in"><span>Work</span><span aria-hidden="true">Work</span></span></span></span>
+          <span class="mzx-d">The five pieces we would show you first.</span>
+          <i class="mzx-go" aria-hidden="true">&#8594;</i>
         </a>
-        <a class="mzx-row" href="index.html#services" style="--i:1"
-           data-media="assets/menu/services.svg" data-kicker="What we do">
+        <a class="mzx-row is-here" href="work.html" aria-current="page" style="--i:1"
+           data-media="assets/services/s01-music.jpg" data-kicker="The full archive">
           <span class="mzx-n">02</span>
-          <span class="mzx-t">Services</span>
-          <span class="mzx-d">Brand, product and the systems behind them.</span>
+          <span class="mzx-t"><span class="mzx-roll"><span class="mzx-roll-in"><span>Archive</span><span aria-hidden="true">Archive</span></span></span></span>
+          <span class="mzx-d">Every film since 2019, playable in place.</span>
+          <i class="mzx-go" aria-hidden="true">&#8594;</i>
         </a>
-        <a class="mzx-row" href="index.html#reel" style="--i:2"
-           data-media="assets/menu/reel.svg" data-kicker="In motion">
+        <a class="mzx-row" href="index.html#services" style="--i:2"
+           data-media="assets/services/s04-colour.jpg" data-kicker="What we make">
           <span class="mzx-n">03</span>
-          <span class="mzx-t">Showreel</span>
-          <span class="mzx-d">The work in motion, thirty seconds at a time.</span>
+          <span class="mzx-t"><span class="mzx-roll"><span class="mzx-roll-in"><span>Services</span><span aria-hidden="true">Services</span></span></span></span>
+          <span class="mzx-d">Film, motion, colour and identity, all in&#8209;house.</span>
+          <i class="mzx-go" aria-hidden="true">&#8594;</i>
         </a>
-        <a class="mzx-row" href="index.html#process" style="--i:3"
-           data-media="assets/menu/process.svg" data-kicker="How we ship">
+        <a class="mzx-row" href="index.html#reel" style="--i:3"
+           data-media="assets/reel-poster.jpg" data-kicker="In motion">
           <span class="mzx-n">04</span>
-          <span class="mzx-t">Process</span>
-          <span class="mzx-d">Discover, build, ship. The discipline behind it.</span>
+          <span class="mzx-t"><span class="mzx-roll"><span class="mzx-roll-in"><span>Showreel</span><span aria-hidden="true">Showreel</span></span></span></span>
+          <span class="mzx-d">The work in motion. Currently in post.</span>
+          <i class="mzx-go" aria-hidden="true">&#8594;</i>
         </a>
-        <a class="mzx-row" href="index.html#faq" style="--i:4"
-           data-media="assets/menu/faq.svg" data-kicker="Before you ask">
+      </div>
+
+      <div class="mzx-group mzx-group--side">
+        <p class="mzx-group-label"><span>Company</span><span class="mzx-group-count">05&thinsp;&mdash;&thinsp;09</span></p>
+        <a class="mzx-row" href="index.html#manifesto" style="--i:4"
+           data-media="assets/uzair.jpg" data-kicker="Who we are">
           <span class="mzx-n">05</span>
+          <span class="mzx-t">About</span>
+          <span class="mzx-d">Manzar means the scene. This is ours.</span>
+        </a>
+        <a class="mzx-row" href="index.html#studios" style="--i:5"
+           data-media="assets/studio-lhe.jpg" data-kicker="Lahore / Paris">
+          <span class="mzx-n">06</span>
+          <span class="mzx-t">Studios</span>
+          <span class="mzx-d">Two cities, one way of seeing.</span>
+        </a>
+        <a class="mzx-row" href="index.html#process" style="--i:6"
+           data-media="assets/services/s05-brand.jpg" data-kicker="How we work">
+          <span class="mzx-n">07</span>
+          <span class="mzx-t">Process</span>
+          <span class="mzx-d">Find the story, shape it in the open, ship.</span>
+        </a>
+        <a class="mzx-row" href="index.html#faq" style="--i:7"
+           data-media="assets/conv-04.jpg" data-kicker="Before you ask">
+          <span class="mzx-n">08</span>
           <span class="mzx-t">FAQ</span>
           <span class="mzx-d">Timelines, pricing and scope, answered plainly.</span>
         </a>
-      </div>
-
-      <div class="mzx-group">
-        <p class="mzx-group-label">Labs</p>
-        <a class="mzx-row" href="capabilities/cloud.html" style="--i:5"
-           data-media="assets/menu/cloud.svg" data-kicker="Built to hold">
-          <span class="mzx-n">06</span>
-          <span class="mzx-t">Cloud &amp; Infrastructure</span>
-          <span class="mzx-d">Systems that hold under real load.</span>
-        </a>
-        <a class="mzx-row" href="capabilities/mobile.html" style="--i:6"
-           data-media="assets/menu/mobile.svg" data-kicker="In the store">
-          <span class="mzx-n">07</span>
-          <span class="mzx-t">Mobile Development</span>
-          <span class="mzx-d">iOS, Android, React Native. Shipped, not prototyped.</span>
-        </a>
-        <a class="mzx-row" href="capabilities/ai.html" style="--i:7"
-           data-media="assets/menu/ai.svg" data-kicker="Past the demo">
-          <span class="mzx-n">08</span>
-          <span class="mzx-t">AI Development</span>
-          <span class="mzx-d">Applied models, not demo-ware.</span>
-        </a>
-        <a class="mzx-row" href="capabilities/iot.html" style="--i:8"
-           data-media="assets/menu/iot.svg" data-kicker="Wired up">
+        <a class="mzx-row" href="index.html#contact" style="--i:8"
+           data-media="assets/studio-par.jpg" data-kicker="Start a conversation">
           <span class="mzx-n">09</span>
-          <span class="mzx-t">IoT &amp; Connected Systems</span>
-          <span class="mzx-d">Hardware and firmware, wired to software.</span>
-        </a>
-      </div>
-
-      <div class="mzx-group">
-        <p class="mzx-group-label">Company</p>
-        <a class="mzx-row" href="pricing.html" style="--i:9"
-           data-media="assets/menu/pricing.svg" data-kicker="Engagement models">
-          <span class="mzx-n">10</span>
-          <span class="mzx-t">Pricing</span>
-          <span class="mzx-d">Sprint, build or retainer: three ways in.</span>
-        </a>
-        <a class="mzx-row" href="index.html#contact" style="--i:10"
-           data-media="assets/menu/contact.svg" data-kicker="Start a conversation">
-          <span class="mzx-n">11</span>
           <span class="mzx-t">Contact</span>
-          <span class="mzx-d">hello@manzar.studio. Say what you need.</span>
+          <span class="mzx-d">Replies within 24 hours, from either city.</span>
         </a>
       </div>
 
     </nav>
 
     <aside class="mzx-media" data-mzx-media
-           data-default-media="assets/menu/world.svg"
-           data-default-kicker="Two halves, one studio"
-           data-default-caption="Manzar Studio. Film, design and software.">
-      <div class="mzx-frame" data-mzx-frame>
-        <img class="is-on" src="assets/menu/world.svg" alt="" width="800" height="500" decoding="async">
-        <img alt="" aria-hidden="true" width="800" height="500" decoding="async">
+           data-default-media="assets/conv-03.jpg"
+           data-default-kicker="Every screen, a scene"
+           data-default-caption="Film, motion and design from an independent studio in Lahore and Paris.">
+      <div class="mzx-plate">
+        <div class="mzx-frame" data-mzx-frame>
+          <img class="is-on" src="assets/conv-03.jpg" alt="" width="840" height="1120" decoding="async" loading="lazy">
+          <img alt="" aria-hidden="true" width="840" height="1120" decoding="async">
+          <span class="mzx-frame-tag" aria-hidden="true"><i>Manzar</i><span data-mzx-index>00</span></span>
+        </div>
       </div>
-      <p class="mzx-kicker" data-mzx-kicker>Two halves, one studio</p>
-      <p class="mzx-caption" data-mzx-caption>Manzar Studio. Film, design and software.</p>
+      <p class="mzx-kicker" data-mzx-kicker>Every screen, a scene</p>
+      <p class="mzx-caption" data-mzx-caption>Film, motion and design from an independent studio in Lahore and Paris.</p>
     </aside>
   </div>
 
   <div class="mzx-foot">
-    <div class="mzx-switch" role="group" aria-label="Manzar worlds">
-      <span class="mzx-switch-rail" aria-hidden="true"></span>
-      <a href="index.html" class="is-on" data-world="studio">Studio</a>
-      <a href="labs.html" data-world="labs">Labs</a>
+    <div class="mzx-social">
+      <a href="https://www.instagram.com/manzar.studio/" target="_blank" rel="noopener">Instagram &#8599;</a>
+      <a href="https://www.linkedin.com/company/manzarstudio/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
     </div>
     <a class="mzx-mail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
     <div class="mzx-clocks">
@@ -363,14 +351,14 @@
        loop preload="none" src="assets/audio/moonlight.mp3"></audio>
 <button class="mz-sndtgl" data-mz-sound type="button" aria-pressed="true" aria-label="Turn sound off"><i></i><i></i><i></i><i></i></button>
 
-<script src="assets/js/crossover.js?v=18"></script>
-<script src="assets/js/menu.js?v=18" defer></script>
-<script src="assets/js/mz-sound.js?v=18" defer></script>
+<script src="assets/js/crossover.js?v=19"></script>
+<script src="assets/js/menu.js?v=19" defer></script>
+<script src="assets/js/mz-sound.js?v=19" defer></script>
 <!-- grain, clocks, magnetic pull and the footer band. The homepage does
      all four itself inside its motion system; this is the same behaviour
      without the hero that system exists for. -->
-<script src="assets/js/studio-chrome.js?v=18" defer></script>
-<script src="assets/js/work-data.js?v=18" defer></script>
-<script src="assets/js/work.js?v=18" defer></script>
+<script src="assets/js/studio-chrome.js?v=19" defer></script>
+<script src="assets/js/work-data.js?v=19" defer></script>
+<script src="assets/js/work.js?v=19" defer></script>
 </body>
 </html>

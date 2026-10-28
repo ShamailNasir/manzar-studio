@@ -61,6 +61,12 @@
   var defKick = media && media.getAttribute("data-default-kicker");
   var defCap  = media && media.getAttribute("data-default-caption");
 
+  /* optional: a plate that carries the hovered row's number in its
+     corner (the Studio menu's [data-mzx-index]); absent elsewhere */
+  var indexEl  = panel.querySelector("[data-mzx-index]");
+  var defIndex = indexEl ? indexEl.textContent : "";
+  function setIndex(t) { if (indexEl) indexEl.textContent = t || defIndex; }
+
   var restore;
   function bindRow(row) {
     function enter() {
@@ -68,11 +74,13 @@
       showMedia(row.getAttribute("data-media"),
                 row.getAttribute("data-kicker"),
                 (row.querySelector(".mzx-d") || {}).textContent);
+      setIndex((row.querySelector(".mzx-n") || {}).textContent);
     }
     function leave() {
       clearTimeout(restore);
       restore = setTimeout(function () {
         showMedia(defSrc, defKick, defCap);
+        setIndex(defIndex);
       }, 260);
     }
     row.addEventListener("pointerenter", enter);
@@ -83,16 +91,26 @@
   rows.forEach(bindRow);
 
   /* preload every frame once, the first time the menu opens, so a
-     hover never waits on the network */
+     hover never waits on the network. The Studio plate holds
+     photographs rather than 2 KB drawings, so this now also waits for a
+     screen that actually shows the plate: below 1180px it is display:none
+     and nine photographs would be fetched for nothing. Hovering the
+     menu button counts as intent and warms them a beat early. */
   var warmed = false;
   function warm() {
-    if (warmed) return;
+    if (warmed || !media) return;
+    if (window.getComputedStyle(media).display === "none") return;
     warmed = true;
-    rows.forEach(function (r) {
-      var s = r.getAttribute("data-media");
+    var list = rows.map(function (r) { return r.getAttribute("data-media"); });
+    list.unshift(defSrc);
+    list.forEach(function (s) {
       if (s) { var i = new Image(); i.src = s; }
     });
   }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-mzx-open]"), function (b) {
+    b.addEventListener("pointerenter", warm, { once: true });
+    b.addEventListener("focus", warm, { once: true });
+  });
 
   /* ── open / close ─────────────────────────────────────────── */
   function focusables() {
@@ -136,6 +154,7 @@
       var f = focusables();
       if (f.length) f[0].focus({ preventScroll: true });
       showMedia(defSrc, defKick, defCap);
+      setIndex(defIndex);
     } else if (lastFocus && lastFocus.focus) {
       lastFocus.focus({ preventScroll: true });
     }

@@ -28,11 +28,11 @@
 <script>if("scrollRestoration" in history)history.scrollRestoration="manual";</script>
 <link rel="manifest" href="site.webmanifest">
 <!-- the hero poster is the first pixel anyone sees, so it goes first;
-     the two pages people actually click through to are warmed after
-     load, at the browser's lowest priority -->
+     the archive, the page people actually click through to, is warmed
+     after load at the browser's lowest priority. Labs is a footer link
+     now, not a front door, so it is no longer prefetched. -->
 <link rel="preload" as="image" href="assets/hero-01.jpg" fetchpriority="high">
 <link rel="prefetch" href="work.html">
-<link rel="prefetch" href="labs.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- the work grid's posters and streams both come from here; one early
@@ -42,7 +42,7 @@
 <!-- The pointer. Deliberately the first stylesheet in the document, so
      it is resolved before the page first paints and the browser never
      gets a chance to show its own arrow. -->
-<link rel="stylesheet" href="assets/css/cursor.css?v=18">
+<link rel="stylesheet" href="assets/css/cursor.css?v=19">
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;f[]=tanker@400&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
@@ -152,74 +152,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
    got a copy simply fell back to the browser default. */
 @media (pointer:coarse){.cur{display:none}}
 
-/* ── the Labs plate ───────────────────────────────────────────
-   The mirror of .return-preview on the Labs page. Same idea: a real
-   screen behind glass rather than a screenshot, with a composed stand-in
-   underneath that shows until the frame has painted and stays as the
-   fallback if it never does.
-
-   The iframe renders at a fixed 1600x920 virtual viewport and is scaled
-   to the plate with a transform, so the page inside lays out at desktop
-   proportions no matter how narrow the plate gets. */
-.lp-screen{
-  position:relative; aspect-ratio:16/9.2; overflow:hidden;
-  display:grid; place-items:center;
-  background:#080908;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:14px;
-}
-.lp-glow{
-  position:absolute; inset:0; z-index:1; pointer-events:none;
-  background:
-    radial-gradient(70% 60% at 50% 8%, rgba(255,255,255,.07), transparent 70%),
-    radial-gradient(80% 70% at 50% 120%, rgba(255,255,255,.05), transparent 72%);
-}
-.lp-frame{
-  position:absolute; top:0; left:0; z-index:2;
-  width:var(--lp-vw,1600px); height:var(--lp-vh,920px);
-  border:0; transform-origin:0 0; transform:scale(var(--lp-scale,.62));
-  pointer-events:none; opacity:0; transition:opacity 1.1s cubic-bezier(.22,1,.36,1);
-}
-.lp-screen.is-live .lp-frame{ opacity:1; }
-.lp-screen.is-live .lp-hero,
-.lp-screen.is-live .lp-glow{ opacity:0; }
-.lp-hero, .lp-glow{ transition:opacity .7s cubic-bezier(.22,1,.36,1); }
-.lp-hero{
-  position:relative; z-index:3; width:100%; height:100%;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:2.2%; padding:6% 8% 0; text-align:center; overflow:hidden;
-}
-.lp-eyebrow{
-  font-family:var(--mono); font-size:clamp(7px,.62vw,10px); letter-spacing:.22em;
-  text-transform:uppercase; color:var(--mut);
-}
-.lp-head{
-  margin:0; font-family:var(--body); font-weight:600;
-  font-size:clamp(15px,1.62vw,30px); line-height:1.08; letter-spacing:-.03em; color:var(--fg);
-}
-.lp-sub{
-  margin:0; font-size:clamp(7.5px,.66vw,11.5px); line-height:1.55; color:var(--mut);
-}
-.lp-mark{
-  width:min(74%,560px); height:auto; margin-top:auto;
-  opacity:.9; transform:translateY(22%);
-}
-.lp-cap{
-  display:flex; align-items:center; gap:8px; margin-top:14px;
-  font-family:var(--mono); font-size:11px; letter-spacing:.11em;
-  text-transform:uppercase; color:var(--mut);
-}
-.lp-cap span{
-  width:5px; height:5px; border-radius:50%; background:var(--acc);
-  box-shadow:0 0 0 3px color-mix(in srgb, var(--acc) 22%, transparent);
-}
-.labs-stats{
-  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:clamp(12px,1.2vw,22px); margin-top:clamp(20px,2vw,32px);
-}
-@media (max-width:1024px){ .labs-stats{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
-@media (max-width:600px){ .labs-stats{ grid-template-columns:1fr; gap:10px; } }
-
 /* ---------- preloader ---------- */
 .pre{position:fixed;inset:0;z-index:120;background:var(--ink);color:var(--bone);display:none;flex-direction:column;justify-content:space-between;padding:var(--pad)}
 .pre.on{display:flex}
@@ -248,10 +180,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .nav-left{justify-self:start;display:flex;align-items:center;gap:clamp(14px,1.6vw,26px)}
 /* The wordmark must never be the thing the flex algorithm sacrifices.
    Its only child is an <img> under the reset's max-width:100%, which
-   gives .brand a min-content width of zero — so on a narrow screen the
-   switch beside it won the space and the logo vanished entirely. */
+   gives .brand a min-content width of zero, so flex:none keeps it whole.
+   The Studio/Labs switch that used to sit beside it is gone; the mark
+   holds the corner on its own now, 10% larger to carry the space. */
 .brand{display:flex;align-items:center;flex:0 0 auto}
-.brand img{height:clamp(26px,2.1vw,33px);width:auto;display:block}
+.brand img{height:clamp(28.6px,2.31vw,36.3px);width:auto;display:block}
 .nav-links{justify-self:center;display:flex;gap:clamp(22px,1.562vw,40px);font-family:var(--body);font-weight:500;font-size:clamp(18px,1.42vw,22px);letter-spacing:-.022em}
 .nav-links a{position:relative;padding:5px 0;opacity:.88;transition:opacity .35s}
 .nav-links a:hover{opacity:1}
@@ -269,17 +202,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   display:grid;place-items:center;font-size:13px;transition:transform .3s;
 }
 .nav-cta:hover .arr{transform:translate(1px,-1px)}
-/* world switch: our type and palette, not his. Sits inside the difference-blended
-   nav so it stays legible over both the dark hero and the bone sections. */
 .nav-right{justify-self:end;display:flex;align-items:center;gap:clamp(10px,1.1vw,18px)}
-.mz-switch{display:inline-flex;align-items:center;gap:3px;padding:3px;border-radius:100px;border:1px solid rgba(255,255,255,.4)}
-.mz-sw-opt{
-  font-family:var(--body);font-weight:500;font-size:clamp(14.5px,1.1vw,16.5px);letter-spacing:-.01em;
-  padding:9px 22px;border-radius:100px;color:#fff;opacity:.7;
-  transition:opacity .3s,background-color .35s cubic-bezier(.16,1,.3,1),color .35s;
-}
-.mz-sw-opt:hover{opacity:1}
-.mz-sw-opt.is-on{background:#fff;color:#000;opacity:1}
 
 /* menu trigger, always available */
 /* ── the menu trigger ─────────────────────────────────────────
@@ -390,17 +313,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .menu-btn:hover .menu-btn-icon i:nth-child(1){width:11px}
 .menu-btn:hover .menu-btn-icon i:nth-child(2){width:18px;transition-delay:.07s}
 @media (max-width:1100px){.nav-links{display:none}.nav .nav-cta{display:none}}
-/* On a phone the three-column grid has nothing to give: wordmark,
-   world switch and menu button together are wider than the screen, and
-   something has to lose. It is the switch — the menu sheet carries the
-   same Studio/Labs control one tap away, and the nav's job here is to
-   say where you are and how to get out. */
+/* On a phone the three-column grid has nothing to give: the wordmark
+   and the menu button simply take the two ends. */
 @media (max-width:560px){
   .nav{
     display:flex;justify-content:space-between;align-items:center;
     gap:12px;padding:12px var(--pad);
   }
-  .nav .mz-switch{display:none}
   .menu-btn{height:48px;padding:0 7px 0 19px;gap:12px;font-size:15.5px;border-radius:14px}
   .menu-btn-icon{width:34px;height:34px;padding-right:9px;border-radius:7px}
   .menu-btn-icon i:nth-child(1){width:16px}
@@ -454,36 +373,213 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hero.hero-flat #cv-hero{display:none}
 .hero-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,8,.6),rgba(11,10,8,.16) 32%,rgba(11,10,8,.22) 58%,rgba(11,10,8,.8)),radial-gradient(130% 90% at 50% 8%,transparent 40%,rgba(0,0,0,.42) 100%)}
 @keyframes lens-spin{to{transform:rotate(360deg)}}
-/* Monolog-classic statement: centered, upper third, over the fluid */
-.hero-mid{
-  position:absolute;left:50%;top:29%;transform:translate(-50%,-50%);z-index:3;
-  text-align:center;width:min(880px,92vw);
+/* ── the slate ─────────────────────────────────────────────────
+   The three lines that used to float in the upper third (eyebrow,
+   statement, sub) are one object now, and it belongs to the wordmark:
+   a slate hung directly above it and exactly as wide as it, so the two
+   read as a single title card. A rail across the top runs a timecode
+   from the moment the scene starts and keeps both studios' clocks.
+   Under it: a monitor cutting between the disciplines, the statement,
+   and what is now showing. The statement is lit by the same light that
+   relights the footage, so the type sits in the scene rather than on it.
+
+   Geometry. The mark is width:100% under a max-height, contain-fitted
+   to its foot, so its visible box is
+     width  = min(hero - 2*pad, maxh * 2.6082)     2556 / 980
+     height = min(maxh, (hero - 2*pad) * .38341)
+   The slate takes that width and sits that height above the mark's
+   foot, plus a gap. Container units measure the hero itself; viewport
+   units would count the scrollbar. */
+.hero{
+  container-type:inline-size;
+  --mk-pad:clamp(12px,1.4vw,30px);
+  --mk-bot:clamp(10px,2.2vh,30px);
+  --mk-maxh:54vh;
+  --hs-gap:clamp(16px,3.2vh,36px);
+  --hs-mono:clamp(10.5px,.72vw,12.5px);
 }
-.hero-mid .hs-eb{
-  font-family:var(--mono);font-weight:600;font-size:clamp(12px,.92vw,14.5px);letter-spacing:.22em;
-  text-transform:uppercase;color:rgba(233,230,221,.82);
-  display:inline-flex;align-items:center;margin-bottom:clamp(22px,3.6vh,34px);
-  text-shadow:0 1px 24px rgba(0,0,0,.55);
+.hslate{
+  position:absolute;z-index:3;left:0;right:0;margin-inline:auto;
+  width:min(100cqw - 2 * var(--mk-pad), var(--mk-maxh) * 2.6082);
+  bottom:calc(var(--mk-bot) + min(var(--mk-maxh), (100cqw - 2 * var(--mk-pad)) * .38341) + var(--hs-gap));
+  color:var(--bone);
 }
-.hero-mid h1{
+.hs-rail{
+  display:flex;align-items:center;gap:clamp(10px,1vw,18px);
+  font-family:var(--mono);font-weight:600;font-size:var(--hs-mono);letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(233,230,221,.7);
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum";
+  text-shadow:0 1px 18px rgba(0,0,0,.65);
+  transition:opacity .5s cubic-bezier(.22,1,.36,1);
+}
+.hs-rec{display:inline-flex;align-items:center;gap:8px;color:#F6F3EC}
+.hs-rec i{
+  width:7px;height:7px;border-radius:50%;background:var(--acc);flex:none;
+  box-shadow:0 0 0 3px rgba(255,75,31,.2),0 0 14px rgba(255,75,31,.75);
+  animation:hs-rec 1.3s steps(1,end) infinite;
+}
+@keyframes hs-rec{50%{opacity:.2}}
+.hs-tc{display:inline-block;min-width:11.6ch;color:#F6F3EC}
+.hs-rule{flex:1 1 auto;height:1px;min-width:24px;background:rgba(233,230,221,.32);transform-origin:0 50%}
+.hs-clock{white-space:nowrap}
+.hs-clock b{font-weight:600;color:#F6F3EC;margin-left:.7em}
+.hs-clock .s{display:none}
+
+.hs-main{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:end;
+  gap:clamp(16px,1.9vw,40px);margin-top:clamp(12px,1.8vh,22px);
+}
+
+/* the monitor: a 16:9 viewfinder cutting between five disciplines */
+.hs-mon{
+  position:relative;z-index:1;display:block;padding:0;
+  width:clamp(104px,8.4vw,172px);aspect-ratio:16/9;
+  border-radius:6px;overflow:hidden;background:#0D0C0A;
+  box-shadow:0 0 0 1px rgba(233,230,221,.24),0 18px 40px -14px rgba(0,0,0,.8);
+  transform-origin:0 100%;
+  transition:transform .75s cubic-bezier(.22,1,.36,1),box-shadow .75s cubic-bezier(.22,1,.36,1);
+}
+.hs-mon img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transform:scale(1.14);
+  transition:opacity .65s ease,transform 3.2s cubic-bezier(.22,1,.36,1);
+}
+.hs-mon img.on{opacity:1;transform:scale(1)}
+/* viewfinder ticks, a soft vignette, the discipline tag and a dwell bar */
+.hs-mon::before{
+  content:"";position:absolute;inset:5px;z-index:2;pointer-events:none;
+  --t:rgba(255,255,255,.7);--l:9px;
+  background:
+    linear-gradient(var(--t),var(--t)) 0 0/var(--l) 1px no-repeat,
+    linear-gradient(var(--t),var(--t)) 0 0/1px var(--l) no-repeat,
+    linear-gradient(var(--t),var(--t)) 100% 0/var(--l) 1px no-repeat,
+    linear-gradient(var(--t),var(--t)) 100% 0/1px var(--l) no-repeat,
+    linear-gradient(var(--t),var(--t)) 0 100%/var(--l) 1px no-repeat,
+    linear-gradient(var(--t),var(--t)) 0 100%/1px var(--l) no-repeat,
+    linear-gradient(var(--t),var(--t)) 100% 100%/var(--l) 1px no-repeat,
+    linear-gradient(var(--t),var(--t)) 100% 100%/1px var(--l) no-repeat;
+}
+.hs-mon::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(0,0,0,.45));
+}
+.hs-mon-tag{
+  position:absolute;z-index:3;left:9px;bottom:9px;
+  font-family:var(--mono);font-weight:600;font-size:6.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.9);
+  opacity:0;transition:opacity .4s ease;white-space:nowrap;
+}
+.hs-mon-bar{position:absolute;z-index:3;left:0;right:0;bottom:0;height:2px;background:rgba(255,255,255,.16)}
+.hs-mon-bar i{display:block;height:100%;background:var(--acc);transform:scaleX(0);transform-origin:0 50%}
+@media (hover:hover){
+  .hs-mon:hover,.hs-mon:focus-visible{
+    transform:scale(2.3);z-index:6;
+    box-shadow:0 0 0 1px rgba(233,230,221,.4),0 30px 70px -10px rgba(0,0,0,.85);
+  }
+  .hs-mon:hover .hs-mon-tag,.hs-mon:focus-visible .hs-mon-tag{opacity:1}
+}
+.hs-mon:focus-visible{outline:1.5px dashed var(--acc);outline-offset:3px}
+
+.hs-copy{min-width:0;transition:opacity .5s cubic-bezier(.22,1,.36,1)}
+.hs-eb{
+  display:block;margin-bottom:clamp(8px,1.1vh,13px);
+  font-family:var(--mono);font-weight:600;font-size:var(--hs-mono);letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(233,230,221,.72);
+  text-shadow:0 1px 18px rgba(0,0,0,.6);
+}
+.hs-eb span{display:inline-block;margin:0 .5em;color:var(--acc)}
+.hs-eb em{font-style:normal}
+.hs-line{
   font-family:var(--body);font-weight:600;text-transform:none;
-  font-size:clamp(24px,1.797vw,46px);line-height:1.2;letter-spacing:-.026em;color:#F6F3EC;
-  text-shadow:0 2px 34px rgba(0,0,0,.6);
+  font-size:clamp(22px,2.05vw,46px);line-height:1.1;letter-spacing:-.03em;
+  color:#F6F3EC;
+  text-shadow:0 2px 30px rgba(0,0,0,.6);
 }
-.hero-mid .sub{
-  margin-top:clamp(13px,2.2vh,20px);font-weight:400;
-  font-size:clamp(14.5px,1.15vw,18.5px);line-height:1.55;
-  color:rgba(233,230,221,.74);text-shadow:0 1px 26px rgba(0,0,0,.6);
+/* Lit type. The gradient's centre is the scene's light, written in as
+   --lx/--ly by the slate script every frame; the text is the clip. With
+   background-clip:text a text-shadow would paint over the fill, so the
+   shadow becomes a drop-shadow filter on the rendered result instead. */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .hs-line{
+    background:radial-gradient(circle 19em at var(--lx,40%) var(--ly,50%),
+      #FFFFFF 0%,#FFF7EA 15%,rgba(238,235,227,.86) 56%,rgba(238,235,227,.8) 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    text-shadow:none;filter:drop-shadow(0 2px 22px rgba(0,0,0,.55));
+  }
 }
+
+/* what is now showing: a one-line window the discipline rolls through */
+.hs-reel{
+  display:flex;flex-direction:column;align-items:flex-end;gap:clamp(7px,.9vh,11px);
+  padding:0;background:none;border:0;color:inherit;text-align:right;
+  transition:opacity .5s cubic-bezier(.22,1,.36,1);
+}
+.hs-reel-lab{
+  font-family:var(--mono);font-weight:600;font-size:var(--hs-mono);letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(233,230,221,.7);text-shadow:0 1px 18px rgba(0,0,0,.6);
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum";
+}
+.hs-reel-lab b{font-weight:600;color:#F6F3EC}
+.hs-reel-win{
+  position:relative;display:block;overflow:hidden;
+  height:1.25em;min-width:7.6em;
+  font-family:var(--body);font-weight:500;font-size:clamp(17px,1.3vw,26px);
+  letter-spacing:-.02em;line-height:1.25;color:#F6F3EC;
+  text-shadow:0 2px 24px rgba(0,0,0,.6);
+}
+.hs-reel-win span{
+  position:absolute;right:0;top:0;white-space:nowrap;
+  transform:translateY(108%);
+  transition:transform .8s cubic-bezier(.7,0,.2,1);
+}
+.hs-reel-win span.on{transform:none}
+.hs-reel-win span.out{transform:translateY(-108%)}
+.hs-reel-win span.snap{transition:none}
+.hs-reel-win::after{
+  content:"";position:absolute;right:0;bottom:0;height:1px;width:100%;
+  background:rgba(233,230,221,.32);transform:scaleX(.18);transform-origin:100% 50%;
+  transition:transform .6s cubic-bezier(.22,1,.36,1);
+}
+.hs-reel:hover .hs-reel-win::after,.hs-reel:focus-visible .hs-reel-win::after{transform:scaleX(1)}
+.hs-reel:focus-visible{outline:1.5px dashed var(--acc);outline-offset:6px}
+
+/* peeking at the monitor: everything else steps back */
+.hslate.is-peek .hs-copy,.hslate.is-peek .hs-reel{opacity:.2}
+.hslate.is-peek .hs-rail{opacity:.45}
+
 .hero-mark{
-  position:absolute;left:0;right:0;bottom:clamp(10px,2.2vh,30px);z-index:2;
-  padding:0 clamp(12px,1.4vw,30px);user-select:none;
+  position:absolute;left:0;right:0;bottom:var(--mk-bot);z-index:2;
+  padding:0 var(--mk-pad);user-select:none;
   display:flex;justify-content:center;align-items:flex-end;
   perspective:1100px;
 }
 .hero-mark img{
-  width:100%;max-height:54vh;height:auto;object-fit:contain;object-position:center bottom;
+  width:100%;max-height:var(--mk-maxh);height:auto;object-fit:contain;object-position:center bottom;
   display:block;will-change:transform,clip-path;
+}
+@media (max-width:1024px){
+  .hs-reel-win{min-width:6.6em}
+}
+@media (max-width:680px){
+  .hero{--mk-maxh:34vh;--hs-gap:clamp(14px,2.6vh,24px);--hs-mono:10px}
+  .hs-rail{gap:9px;letter-spacing:.16em}
+  .hs-clock .l{display:none}
+  .hs-clock .s{display:inline}
+  .hs-clock b{margin-left:.45em}
+  .hs-main{
+    grid-template-columns:auto minmax(0,1fr);grid-template-areas:"copy copy" "mon reel";
+    row-gap:16px;align-items:center;
+  }
+  .hs-copy{grid-area:copy}
+  .hs-mon{grid-area:mon;width:96px}
+  .hs-reel{grid-area:reel;justify-self:stretch}
+  .hs-line{font-size:clamp(23px,6.8vw,32px)}
+  .hs-reel-win{font-size:17px;min-width:0;width:100%}
+  .hs-eb-loc{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .hs-rec i{animation:none}
 }
 
 
@@ -557,30 +653,192 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
    were the drawn-frame rows; they are kept in
    Backup/2026-09-05-work-overhaul/ if that art is ever wanted again. */
 
-/* ---------- labs doorway ---------- */
-.labs{padding:clamp(100px,14vh,170px) 0;border-top:1px solid var(--line)}
-.labs-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:clamp(30px,5vh,60px)}
-.labs-grid{display:grid;grid-template-columns:minmax(0,6.6fr) minmax(0,5.4fr);gap:clamp(30px,4.5vw,90px);align-items:start}
-.labs-title{font-family:var(--body);font-weight:600;font-size:clamp(30px,2.422vw,62px);line-height:1.05;letter-spacing:-.028em}
-.labs-lead{margin-top:clamp(18px,2.6vh,26px);color:var(--mut);font-size:clamp(15.5px,1.2vw,18.5px);line-height:1.6;max-width:44ch}
-.labs-spec{list-style:none;margin-top:clamp(30px,4.5vh,48px);border-top:1px solid var(--line)}
-.ls-row{display:flex;align-items:baseline;gap:16px;padding:clamp(13px,2vh,18px) 4px;border-bottom:1px solid var(--line);cursor:pointer;transition:padding-left .4s cubic-bezier(.2,.8,.2,1)}
-.ls-row:hover,.ls-row.is-on{padding-left:14px}
-.ls-n{font-family:var(--mono);font-weight:600;font-size:11.5px;letter-spacing:.14em;color:var(--mut);transition:color .35s}
-.ls-row.is-on .ls-n{color:var(--acc)}
-.ls-t{font-family:var(--body);font-weight:500;font-size:clamp(17px,1.5vw,23px);letter-spacing:-.015em;color:var(--mut);transition:color .35s}
-.ls-row.is-on .ls-t{color:var(--fg)}
-.labs-detail{margin-top:22px;color:var(--mut);font-size:clamp(14.5px,1.1vw,16.5px);line-height:1.6;max-width:48ch;min-height:3.2em}
-.labs-enter{margin-top:clamp(28px,4.5vh,44px);background:var(--fg);color:var(--bg)}
-.labs-enter .arr{background:var(--bg);color:var(--fg)}
-.labs-preview{margin:0;display:flex;flex-direction:column}
-/* the hairline card the three stats used to sit in, moved off the figure
-   now that the figure also holds the screen and its caption */
-.labs-stats{background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;gap:1px !important}
-.labs-stat{background:var(--bg);padding:clamp(24px,1.562vw,40px);display:flex;flex-direction:column;gap:8px;transition:background-color .7s}
-.labs-stat b{font-family:var(--body);font-weight:600;font-size:clamp(34px,2.266vw,58px);line-height:1;letter-spacing:-.03em}
-.labs-stat span{color:var(--mut);font-size:clamp(14px,1.05vw,16px);line-height:1.5;max-width:26ch}
-@media (max-width:1024px){.labs-grid{grid-template-columns:1fr;gap:44px}}
+/* ---------- the studios ----------
+   Where the Labs doorway used to be: two rooms instead of "the other
+   room". Each panel is a city: its photograph, its local time to the
+   second, and the light it is in right now. The sun is worked out in
+   the browser from each studio's coordinates, and the photograph takes
+   on that light: warm at golden hour, blue after sunset, dark at night.
+   On a pointer device the panel you are in opens wider and tells you a
+   little more; on touch everything is simply shown. */
+.rooms{position:relative;padding:clamp(100px,14vh,170px) 0 clamp(90px,12vh,150px);border-top:1px solid var(--line)}
+.rooms-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:clamp(26px,4.4vh,54px)}
+.rooms-live{display:inline-flex;align-items:center;gap:10px;color:var(--soft)}
+.rooms-live i{width:7px;height:7px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 3px rgba(255,75,31,.18);animation:hs-rec 1.3s steps(1,end) infinite}
+.rooms-intro{
+  display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:clamp(24px,4vw,90px);align-items:end;margin-bottom:clamp(40px,7vh,84px);
+}
+.rooms-title{
+  font-family:var(--body);font-weight:600;text-transform:none;
+  font-size:clamp(40px,4.3vw,110px);line-height:.98;letter-spacing:-.045em;
+}
+.rooms-title .rt{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.rooms-title .rt > span{display:block}
+.rooms-title .rt + .rt{color:var(--mut)}
+.rooms-lead{
+  justify-self:end;max-width:42ch;
+  color:var(--mut);font-size:clamp(15.5px,1.2vw,19px);line-height:1.6;
+}
+.rooms-lead b{color:var(--fg);font-weight:500}
+
+.rooms-grid{position:relative;display:flex;height:clamp(560px,84vh,900px)}
+.room{
+  position:relative;flex:1 1 0;min-width:0;overflow:hidden;isolation:isolate;
+  border-radius:14px;background:var(--panel);color:#F2EFE7;
+  transition:flex-grow .95s cubic-bezier(.22,1,.36,1);
+}
+@media (hover:hover) and (min-width:901px){
+  .rooms-grid .room:hover{flex-grow:1.42}
+}
+.room-media{position:absolute;inset:-5% 0;z-index:0;will-change:transform}
+.room-img{
+  position:absolute;inset:-3%;background-size:cover;background-position:center 42%;
+  transform:translate3d(calc(var(--mx,0) * -12px),calc(var(--my,0) * -9px),0) scale(1.07);
+  transition:transform 1.3s cubic-bezier(.22,1,.36,1),filter 2s ease;
+}
+.room:hover .room-img{transform:translate3d(calc(var(--mx,0) * -20px),calc(var(--my,0) * -14px),0) scale(1.015)}
+/* the light, laid over the photograph */
+.room-tint{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
+.room[data-state="golden"] .room-tint{
+  opacity:1;mix-blend-mode:soft-light;
+  background:radial-gradient(120% 95% at 72% 6%,rgba(255,176,86,.95),rgba(255,120,40,.45) 55%,rgba(120,40,10,.2));
+}
+.room[data-state="blue"] .room-tint{
+  opacity:1;mix-blend-mode:soft-light;
+  background:linear-gradient(180deg,rgba(70,110,215,.9),rgba(26,48,110,.7));
+}
+.room[data-state="blue"] .room-img{filter:saturate(.85) brightness(.9)}
+.room[data-state="night"] .room-tint{
+  opacity:1;mix-blend-mode:multiply;
+  background:linear-gradient(180deg,rgba(26,36,78,.92),rgba(12,14,30,.85));
+}
+.room[data-state="night"] .room-img{filter:saturate(.7) brightness(.82)}
+.room-media::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(11,10,8,.55) 0%,rgba(11,10,8,0) 22%,rgba(11,10,8,0) 40%,rgba(11,10,8,.62) 72%,rgba(11,10,8,.92) 100%);
+}
+.room-ui{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:clamp(20px,2.1vw,40px)}
+.room-top{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  font-family:var(--mono);font-weight:600;font-size:clamp(10.5px,.74vw,12.5px);letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(242,239,231,.88);text-shadow:0 1px 14px rgba(0,0,0,.5);
+}
+.room-idx{display:inline-flex;align-items:center;gap:10px}
+.room-idx::before{content:"";width:18px;height:1px;background:currentColor;opacity:.7}
+.room-coord{font-variant-numeric:tabular-nums}
+
+/* the sky: an arc for the sun's day, a shallow one below for the night */
+.room-sky{margin-top:auto;display:flex;align-items:flex-end;gap:clamp(14px,1.3vw,22px);margin-bottom:clamp(16px,2.4vh,26px)}
+.room-arc{width:clamp(118px,9.2vw,180px);height:auto;flex:none;overflow:visible}
+.room-arc .arc-hz{stroke:rgba(242,239,231,.42);stroke-width:1}
+.room-arc .arc-day{fill:none;stroke:rgba(242,239,231,.4);stroke-width:1;stroke-dasharray:1.5 4}
+.room-arc .arc-night{fill:none;stroke:rgba(242,239,231,.22);stroke-width:1;stroke-dasharray:1.5 4}
+.room-arc .arc-done{fill:none;stroke:#F2EFE7;stroke-width:1.6;stroke-linecap:round;transition:stroke .8s}
+.room-arc .arc-sun{fill:#F2EFE7;transition:fill .8s}
+.room-arc .arc-glow{fill:#F2EFE7;opacity:.18;transition:fill .8s}
+.room[data-state="golden"] .arc-done{stroke:#FFB45C}
+.room[data-state="golden"] .arc-sun,.room[data-state="golden"] .arc-glow{fill:#FFB45C}
+.room[data-state="blue"] .arc-sun,.room[data-state="blue"] .arc-glow{fill:#9DB8FF}
+.room[data-state="night"] .arc-sun{fill:#0B0A08;stroke:#F2EFE7;stroke-width:1.2}
+.room[data-state="night"] .arc-glow{opacity:0}
+.room-light{display:flex;flex-direction:column;gap:6px;padding-bottom:2px;min-width:0}
+.room-state{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--body);font-weight:600;font-size:clamp(16px,1.15vw,21px);letter-spacing:-.012em;
+  text-shadow:0 1px 16px rgba(0,0,0,.5);
+}
+.room-state::before{content:"";width:8px;height:8px;border-radius:50%;background:#F2EFE7;flex:none;transition:background .8s}
+.room[data-state="golden"] .room-state::before{background:#FFB45C;box-shadow:0 0 12px rgba(255,180,92,.8)}
+.room[data-state="blue"] .room-state::before{background:#9DB8FF;box-shadow:0 0 12px rgba(157,184,255,.7)}
+.room[data-state="night"] .room-state::before{background:transparent;box-shadow:inset 0 0 0 1.2px #F2EFE7}
+.room-next{
+  font-family:var(--mono);font-weight:600;font-size:clamp(10.5px,.72vw,12px);letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(242,239,231,.74);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.room-foot{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:18px;
+  padding-top:clamp(16px,2.2vh,24px);border-top:1px solid rgba(242,239,231,.24);
+}
+.room-city{
+  font-family:var(--tank);font-weight:400;text-transform:uppercase;
+  font-size:clamp(58px,7.3vw,184px);line-height:.8;letter-spacing:.006em;
+  overflow:hidden;padding-top:.06em;margin-bottom:-.04em;
+}
+.room-city > span{display:block}
+.room-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px;text-align:right;flex:none}
+.room-time{
+  font-family:var(--body);font-weight:500;font-size:clamp(26px,2.3vw,56px);line-height:1;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum";
+}
+.room-time i{font-style:normal;font-size:.46em;letter-spacing:-.01em;color:rgba(242,239,231,.6);margin-left:3px}
+.room-zone{
+  font-family:var(--mono);font-weight:600;font-size:clamp(10.5px,.72vw,12px);letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(242,239,231,.7);
+}
+/* a little more about the room, opened by hovering it */
+.room-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .8s cubic-bezier(.22,1,.36,1)}
+.room-more > div{overflow:hidden;min-height:0}
+.room-line{
+  padding-top:clamp(14px,2vh,20px);max-width:44ch;
+  color:rgba(242,239,231,.84);font-size:clamp(14.5px,1.05vw,17px);line-height:1.55;
+  opacity:0;transform:translateY(10px);transition:opacity .6s ease .1s,transform .8s cubic-bezier(.22,1,.36,1) .1s;
+}
+.room-cta{
+  display:inline-flex;align-items:center;gap:12px;margin-top:16px;
+  padding:9px 9px 9px 20px;border-radius:100px;background:#F2EFE7;color:#0B0A08;
+  font-family:var(--body);font-weight:500;font-size:15px;letter-spacing:-.01em;
+  opacity:0;transform:translateY(10px);transition:opacity .6s ease .18s,transform .8s cubic-bezier(.22,1,.36,1) .18s;
+}
+.room-cta span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#0B0A08;color:#F2EFE7;font-size:12px;transition:transform .35s}
+.room-cta:hover span{transform:rotate(45deg)}
+.room:hover .room-more,.room:focus-within .room-more{grid-template-rows:1fr}
+.room:hover .room-line,.room:hover .room-cta,.room:focus-within .room-line,.room:focus-within .room-cta{opacity:1;transform:none}
+@media (hover:none),(max-width:900px){
+  .room-more{grid-template-rows:1fr}
+  .room-line,.room-cta{opacity:1;transform:none}
+}
+
+/* between the rooms: how far apart they are, in hours */
+.rooms-bridge{position:relative;z-index:3;flex:0 0 clamp(10px,.9vw,16px)}
+.rb-chip{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:clamp(64px,4.8vw,84px);aspect-ratio:1;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  background:var(--bg);color:var(--fg);box-shadow:0 0 0 1px var(--line),0 10px 30px rgba(0,0,0,.35);
+  transition:background-color .7s,color .7s;
+}
+.rb-chip b{font-family:var(--body);font-weight:600;font-size:clamp(18px,1.35vw,24px);letter-spacing:-.03em;line-height:1}
+.rb-chip small{font-family:var(--mono);font-weight:600;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
+.rooms-note{
+  display:flex;align-items:center;gap:12px;margin-top:clamp(18px,2.6vh,28px);
+  font-family:var(--mono);font-weight:500;font-size:clamp(11.5px,.82vw,13px);letter-spacing:.06em;color:var(--mut);
+}
+.rooms-note::before{content:"";width:22px;height:1px;background:var(--line);flex:none}
+
+@media (max-width:1024px){
+  .rooms-intro{grid-template-columns:1fr;gap:22px}
+  .rooms-lead{justify-self:start}
+}
+@media (max-width:900px){
+  .rooms-grid{flex-direction:column;height:auto}
+  .room{flex:none;height:clamp(460px,78vh,640px)}
+  .rooms-bridge{flex-basis:12px}
+}
+@media (max-width:680px){
+  /* a phone cannot hold the name and the clock side by side, so the
+     clock sits on its own line above the name */
+  .room-foot{flex-direction:column-reverse;align-items:flex-start;gap:12px}
+  .room-meta{flex-direction:row;align-items:baseline;gap:14px;text-align:left}
+  .room-city{font-size:clamp(56px,18vw,88px)}
+  .room-time{font-size:26px}
+  .room-sky{gap:12px}
+  .room-arc{width:104px}
+  .room-next{white-space:normal}
+}
+@media (prefers-reduced-motion:reduce){
+  .rooms-live i{animation:none}
+}
 
 /* ---------- services ---------- */
 .svc{padding:clamp(110px,15vh,180px) 0;position:relative}
@@ -720,6 +978,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .fnav a .fa{font-size:.55em;opacity:0;transform:translateX(-14px);transition:opacity .35s,transform .35s;color:var(--acc)}
 .fnav a:hover{padding-left:18px}
 .fnav a:hover .fa{opacity:1;transform:none}
+/* Labs lives here now: a footer row like the others, with a quiet note
+   saying what it is, rather than a section of the homepage */
+.fnav a .fnav-note{margin-left:auto;margin-right:clamp(12px,1.2vw,22px);font-family:var(--mono);font-weight:600;font-size:clamp(11px,.8vw,13px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);transition:color .35s}
+.fnav a:hover .fnav-note{color:var(--fg)}
 .fcol{display:flex;flex-direction:column;gap:clamp(26px,4vh,44px);padding-top:8px}
 .fblock{display:flex;flex-direction:column;gap:11px}
 .fblock .fb-lab{font-family:var(--mono);font-weight:600;font-size:clamp(12px,.9vw,14px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
@@ -765,9 +1027,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .nav-links{display:none}
   .nav .nav-cta{display:none}
   .menu-btn{display:inline-flex}
-  .hero-mid h1{font-size:17.5px}
-  .hero-mid .sub{font-size:15px}
-  .hero-mark img{max-height:34vh}
   .bgrid{grid-template-columns:repeat(2,1fr)}
   .bcell:nth-last-child(-n+4)::after{display:block}
   .bcell:nth-last-child(-n+2)::after{display:none}
@@ -801,9 +1060,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
 }
 </style>
-<link rel="stylesheet" href="assets/css/crossover.css?v=18">
-<link rel="stylesheet" href="assets/css/menu.css?v=18">
-<link rel="stylesheet" href="assets/css/work.css?v=18">
+<link rel="stylesheet" href="assets/css/crossover.css?v=19">
+<link rel="stylesheet" href="assets/css/menu.css?v=19">
+<link rel="stylesheet" href="assets/css/work.css?v=19">
 <style>
 /* Manzar sound toggle — four hairline bars, fixed bottom-centre,
    difference-blended. Engine: assets/js/mz-sound.js */
@@ -850,10 +1109,6 @@ html.is-framed .mz-toast{display:none!important}
 <header class="nav" id="nav">
   <div class="nav-left">
     <a class="brand" href="#top" data-anchor aria-label="Manzar, back to top"><img src="assets/manzar-wordmark.png" alt="Manzar"></a>
-    <div class="mz-switch" role="group" aria-label="Manzar worlds">
-      <a class="mz-sw-opt is-on" href="index.html" data-world="studio">Studio</a>
-      <a class="mz-sw-opt" href="labs.html" data-world="labs">Labs</a>
-    </div>
   </div>
   <nav class="nav-links" aria-label="Primary">
     <a href="#work" data-anchor>Work</a>
@@ -881,10 +1136,37 @@ html.is-framed .mz-toast{display:none!important}
     <video id="hvB" class="hv hv-b" muted playsinline preload="none" aria-hidden="true"></video>
     <div class="hero-fallback" style="background-image:url('assets/hero-01.jpg')" aria-hidden="true"></div>
     <div class="hero-veil" aria-hidden="true"></div>
-    <div class="hero-mid" id="heroMid">
-      <p class="hs-eb">Creative technology studio</p>
-      <h1>Attention is the hardest<br>thing to earn.</h1>
-      <p class="sub">Film, design and software from an independent studio<br>in Lahore and Paris, since 2019.</p>
+    <!-- The slate: one title card hung directly above the wordmark and
+         exactly as wide as it (see .hslate). Timecode and clocks on the
+         rail; the monitor and the reel cut together through five
+         disciplines and open the matching service. -->
+    <div class="hslate" id="heroMid">
+      <div class="hs-rail">
+        <span class="hs-rec" aria-hidden="true"><i></i>Rec</span>
+        <span class="hs-tc" id="hsTc" aria-hidden="true">00:00:00:00</span>
+        <span class="hs-rule" aria-hidden="true"></span>
+        <span class="hs-clock"><span class="l">Lahore</span><span class="s">LHE</span><b data-hs-clock="Asia/Karachi">--:--</b></span>
+        <span class="hs-clock"><span class="l">Paris</span><span class="s">PAR</span><b data-hs-clock="Europe/Paris">--:--</b></span>
+      </div>
+      <div class="hs-main">
+        <button class="hs-mon" type="button" id="hsMon" aria-label="Now showing: Music videos. Open it in Services.">
+          <img class="on" src="assets/hero/slate-01.jpg" alt="" width="640" height="360" decoding="async" fetchpriority="low">
+          <img data-src="assets/hero/slate-02.jpg" alt="" width="640" height="360" decoding="async">
+          <img data-src="assets/hero/slate-03.jpg" alt="" width="640" height="360" decoding="async">
+          <img data-src="assets/hero/slate-04.jpg" alt="" width="640" height="360" decoding="async">
+          <img data-src="assets/hero/slate-05.jpg" alt="" width="640" height="360" decoding="async">
+          <span class="hs-mon-tag" aria-hidden="true">S/01 &middot; Music videos</span>
+          <span class="hs-mon-bar" aria-hidden="true"><i></i></span>
+        </button>
+        <div class="hs-copy">
+          <p class="hs-eb">Independent creative studio<span aria-hidden="true">/</span><em class="hs-eb-loc">Lahore &amp; Paris, </em>since 2019</p>
+          <h1 class="hs-line" id="hsLine">Attention is the hardest thing to earn.</h1>
+        </div>
+        <button class="hs-reel" type="button" id="hsReel" aria-label="Now showing: Music videos. Open it in Services.">
+          <span class="hs-reel-lab">Now showing <b id="hsIdx">01</b>/05</span>
+          <span class="hs-reel-win" aria-hidden="true"><span class="on">Music videos</span><span>Brand films</span><span>Motion &amp; 3D</span><span>Colour</span><span>Identity</span></span>
+        </button>
+      </div>
     </div>
     <div class="hero-mark" id="heroMark" aria-hidden="true"><img id="heroMarkImg" src="assets/manzar-wordmark.png" alt="" width="2556" height="980" decoding="async"></div>
     <audio data-mz-ambience data-mz-brand="studio" data-mz-volume=".31"
@@ -1005,52 +1287,106 @@ html.is-framed .mz-toast{display:none!important}
     </div>
   </section>
 
-  <!-- ============ LABS DOORWAY (content ported from website-main) ============ -->
-  <section class="labs" id="labs">
+  <!-- ============ THE STUDIOS ============
+       Where the Labs doorway used to be (Labs is a footer link now).
+       Two rooms instead of "the other room": Lahore and Paris, each with
+       its photograph, its local time, and the light it is in right now.
+       The sun is computed in the browser from each studio's coordinates,
+       so "golden hour in Lahore" is true when it says so. -->
+  <section class="rooms" id="studios" aria-labelledby="roomsTitle">
     <div class="shell">
-      <div class="labs-head">
-        <span class="eb">Manzar Labs</span>
-        <span class="mono" style="color:var(--soft)">The other room</span>
+      <div class="rooms-head">
+        <span class="eb">The studios</span>
+        <span class="rooms-live mono"><i aria-hidden="true"></i>Live from both</span>
       </div>
-      <div class="labs-grid">
-        <div class="labs-copy">
-          <h2 class="labs-title">The software side<br>of the studio.</h2>
-          <p class="labs-lead">Same taste, different instrument. Labs is our software company: AI products, enterprise platforms and connected systems. MVPs live in six weeks.</p>
-          <ul class="labs-spec" id="labsSpec">
-            <li class="ls-row is-on" data-i="0"><span class="ls-n">01</span><span class="ls-t">AI products &amp; chat</span></li>
-            <li class="ls-row" data-i="1"><span class="ls-n">02</span><span class="ls-t">Enterprise &amp; ERP systems</span></li>
-            <li class="ls-row" data-i="2"><span class="ls-n">03</span><span class="ls-t">IoT &amp; connected systems</span></li>
-            <li class="ls-row" data-i="3"><span class="ls-n">04</span><span class="ls-t">MVPs for startups, fast</span></li>
-          </ul>
-          <p class="labs-detail" id="labsDetail">Chat and copilots wired into your real data, with a human gate on anything irreversible.</p>
-          <a class="nav-cta labs-enter magnetic" href="labs.html">Enter Manzar Labs <span class="arr">↗</span></a>
-        </div>
-        <!-- Labs shows Studio as a live screen inside a plate; this is the
-             same move in the other direction, so crossing between the two
-             worlds feels symmetrical. The frame carries the real Labs page,
-             its src set only when this section nears the viewport. The
-             composed hero underneath is the placeholder and the fallback —
-             it is never a stale screenshot, so it cannot fall out of date. -->
-        <figure class="labs-preview" aria-label="Manzar Labs, manzar.studio/labs">
-          <div class="lp-screen" aria-hidden="true">
-            <div class="lp-glow"></div>
-            <iframe class="lp-frame" title="Manzar Labs" tabindex="-1"
-                    scrolling="no" loading="lazy" referrerpolicy="no-referrer"></iframe>
-            <div class="lp-hero">
-              <span class="lp-eyebrow">Manzar Labs</span>
-              <p class="lp-head">Software, built<br>at startup speed</p>
-              <p class="lp-sub">AI products, enterprise platforms and connected<br>systems. MVPs live in six weeks.</p>
-              <img class="lp-mark" src="assets/manzar-wordmark.png" alt="" width="2556" height="980" loading="lazy" decoding="async">
+      <div class="rooms-intro">
+        <h2 class="rooms-title" id="roomsTitle"><span class="rt"><span>Two cities.</span></span><span class="rt"><span>One way of seeing.</span></span></h2>
+        <p class="rooms-lead">Manzar began in 2019 with one editor and a camera. Today it works from two rooms, <b id="roomsApart">four hours apart</b>: Lahore and Paris. Different light, the same standard. This is what each of them looks like right now.</p>
+      </div>
+
+      <div class="rooms-grid" id="roomsGrid">
+        <article class="room" data-city="Lahore" data-tz="Asia/Karachi" data-lat="31.5204" data-lon="74.3587" data-state="day">
+          <div class="room-media" aria-hidden="true">
+            <div class="room-img" data-bg="assets/studio-lhe.jpg"></div>
+            <div class="room-tint"></div>
+          </div>
+          <div class="room-ui">
+            <div class="room-top">
+              <span class="room-idx">Studio 01</span>
+              <span class="room-coord">31.52&deg; N &middot; 74.36&deg; E</span>
+            </div>
+            <div class="room-sky">
+              <svg class="room-arc" viewBox="0 0 200 112" aria-hidden="true">
+                <path class="arc-day" d="M12 92 A88 88 0 0 1 188 92"/>
+                <path class="arc-night" d="M188 92 Q100 120 12 92"/>
+                <path class="arc-done" d="M12 92 A88 88 0 0 1 188 92" stroke-dasharray="0 400"/>
+                <line class="arc-hz" x1="0" y1="92" x2="200" y2="92"/>
+                <circle class="arc-glow" cx="12" cy="92" r="12"/>
+                <circle class="arc-sun" cx="12" cy="92" r="4.5"/>
+              </svg>
+              <div class="room-light">
+                <span class="room-state">Daylight</span>
+                <span class="room-next">&nbsp;</span>
+              </div>
+            </div>
+            <div class="room-foot">
+              <h3 class="room-city"><span>Lahore</span></h3>
+              <div class="room-meta">
+                <time class="room-time"><b>--:--</b><i>:--</i></time>
+                <span class="room-zone">Pakistan</span>
+              </div>
+            </div>
+            <div class="room-more">
+              <div>
+                <p class="room-line">Truck art, wedding lights and seven years of production. The city the studio grew up in.</p>
+                <a class="room-cta" href="mailto:hello@manzar.studio?subject=A%20shoot%20in%20Lahore">Shoot in Lahore <span aria-hidden="true">&#8599;</span></a>
+              </div>
             </div>
           </div>
-          <figcaption class="lp-cap"><span></span>manzar.studio/labs</figcaption>
-          <div class="labs-stats">
-            <div class="labs-stat"><b>06</b><span>weeks, signed scope<br>to a live MVP</span></div>
-            <div class="labs-stat"><b>40+</b><span>products shipped<br>and still running</span></div>
-            <div class="labs-stat"><b>99.9%</b><span>uptime across the<br>platforms we operate</span></div>
+        </article>
+        <div class="rooms-bridge" aria-hidden="true"><span class="rb-chip"><b id="roomsGap">4h</b><small>apart</small></span></div>
+        <article class="room" data-city="Paris" data-tz="Europe/Paris" data-lat="48.8566" data-lon="2.3522" data-state="day">
+          <div class="room-media" aria-hidden="true">
+            <div class="room-img" data-bg="assets/studio-par.jpg"></div>
+            <div class="room-tint"></div>
           </div>
-        </figure>
+          <div class="room-ui">
+            <div class="room-top">
+              <span class="room-idx">Studio 02</span>
+              <span class="room-coord">48.86&deg; N &middot; 2.35&deg; E</span>
+            </div>
+            <div class="room-sky">
+              <svg class="room-arc" viewBox="0 0 200 112" aria-hidden="true">
+                <path class="arc-day" d="M12 92 A88 88 0 0 1 188 92"/>
+                <path class="arc-night" d="M188 92 Q100 120 12 92"/>
+                <path class="arc-done" d="M12 92 A88 88 0 0 1 188 92" stroke-dasharray="0 400"/>
+                <line class="arc-hz" x1="0" y1="92" x2="200" y2="92"/>
+                <circle class="arc-glow" cx="12" cy="92" r="12"/>
+                <circle class="arc-sun" cx="12" cy="92" r="4.5"/>
+              </svg>
+              <div class="room-light">
+                <span class="room-state">Daylight</span>
+                <span class="room-next">&nbsp;</span>
+              </div>
+            </div>
+            <div class="room-foot">
+              <h3 class="room-city"><span>Paris</span></h3>
+              <div class="room-meta">
+                <time class="room-time"><b>--:--</b><i>:--</i></time>
+                <span class="room-zone">France</span>
+              </div>
+            </div>
+            <div class="room-more">
+              <div>
+                <p class="room-line">Arcades, pale stone and long evening light. A second room, and a second point of view.</p>
+                <a class="room-cta" href="mailto:hello@manzar.studio?subject=A%20shoot%20in%20Paris">Shoot in Paris <span aria-hidden="true">&#8599;</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
+
+      <p class="rooms-note">Local time and the sun over each studio, worked out live in your browser from its coordinates.</p>
     </div>
   </section>
 
@@ -1234,6 +1570,7 @@ html.is-framed .mz-toast{display:none!important}
           <a href="#process" data-anchor>Process <span class="fa">→</span></a>
           <a href="#faq" data-anchor>FAQ <span class="fa">→</span></a>
           <a href="mailto:hello@manzar.studio">Contact <span class="fa">→</span></a>
+          <a href="labs.html" data-world="labs">Labs <span class="fnav-note">Our software studio</span><span class="fa">→</span></a>
         </nav>
         <div class="fcol">
           <div class="fblock">
@@ -1400,38 +1737,180 @@ function menuSet(open) {
   if (c) c.click();
 }
 
-/* ---------- the Labs plate ----------
-   Mirrors studioPreview() on the Labs page. The frame renders at a fixed
-   1600x920 virtual viewport and is scaled to whatever width the plate
-   has, so Labs lays out at desktop proportions inside it. src is set
-   only when the section nears the viewport, so a visitor who never
-   scrolls this far never pays for Labs' hero. */
-(function labsPreview() {
-  const screenEl = $(".lp-screen"), frame = $(".lp-frame"), plate = $(".labs-preview");
-  if (!screenEl || !frame || !plate) return;
-  const VW = 1600, VH = 920;
-  frame.style.setProperty("--lp-vw", VW + "px");
-  frame.style.setProperty("--lp-vh", VH + "px");
-  const fit = () => {
-    const w = plate.getBoundingClientRect().width;
-    if (w) frame.style.setProperty("--lp-scale", (w / VW).toFixed(5));
+/* ---------- the studios: local time and the light over each ----------
+   The sun's elevation comes from the standard low-precision solar
+   position equations (good to a fraction of a degree for decades),
+   fed each studio's latitude and longitude. A 52-hour window around
+   now is sampled every two minutes to find sunrise, sunset and the
+   golden and blue hour boundaries, then refined by bisection. It is a
+   few thousand trig calls a minute per city: nothing. */
+(function rooms() {
+  const grid = $("#roomsGrid"); if (!grid) return;
+  const cards = $$(".room", grid);
+  const R = Math.PI / 180, MIN = 60000;
+  const elev = (ms, lat, lon) => {
+    const n = ms / 86400000 + 2440587.5 - 2451545;
+    const L = (280.46 + .9856474 * n) % 360, g = ((357.528 + .9856003 * n) % 360) * R;
+    const lam = (L + 1.915 * Math.sin(g) + .02 * Math.sin(2 * g)) * R, eps = (23.439 - 4e-7 * n) * R;
+    const ra = Math.atan2(Math.cos(eps) * Math.sin(lam), Math.cos(lam));
+    const dec = Math.asin(Math.sin(eps) * Math.sin(lam));
+    const lst = (((18.697374558 + 24.06570982441908 * n) % 24) * 15 + lon) * R;
+    return Math.asin(Math.sin(lat * R) * Math.sin(dec) + Math.cos(lat * R) * Math.cos(dec) * Math.cos(lst - ra)) / R;
   };
-  fit();
-  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(fit, 140); });
-  let loaded = false;
-  const load = () => {
-    if (loaded) return; loaded = true;
-    frame.addEventListener("load", () => {
-      fit();
-      setTimeout(() => screenEl.classList.add("is-live"), 450);
+  /* every crossing of the given elevations in [t0, t1], with direction */
+  const crossings = (t0, t1, lat, lon, levels) => {
+    const out = levels.map(() => []);
+    let ta = t0, ea = elev(ta, lat, lon);
+    for (let tb = t0 + 2 * MIN; tb <= t1; tb += 2 * MIN) {
+      const eb = elev(tb, lat, lon);
+      levels.forEach((lv, i) => {
+        if ((ea - lv) * (eb - lv) > 0 || ea === eb) return;
+        let a = ta, b = tb;
+        for (let j = 0; j < 14; j++) { const m = (a + b) / 2; if ((elev(a, lat, lon) - lv) * (elev(m, lat, lon) - lv) <= 0) b = m; else a = m; }
+        out[i].push({ t: (a + b) / 2, up: eb > ea });
+      });
+      ta = tb; ea = eb;
+    }
+    return out;
+  };
+  const hm = (ms, tz) => new Intl.DateTimeFormat("en-GB", { timeZone: tz, hour: "2-digit", minute: "2-digit", hour12: false }).format(ms);
+  const dur = ms => {
+    const m = Math.max(0, Math.round(ms / MIN));
+    if (m < 1) return "under a minute";
+    const h = Math.floor(m / 60), r = m % 60;
+    return h ? `${h} h${r ? " " + r + " min" : ""}` : `${r} min`;
+  };
+  const zone = tz => {
+    try { return new Intl.DateTimeFormat("en", { timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(new Date()).find(p => p.type === "timeZoneName").value; }
+    catch (e) { return ""; }
+  };
+  const offsetH = tz => {
+    const z = zone(tz).match(/GMT([+-]\d+)(?::(\d+))?/);
+    return z ? +z[1] + (z[2] ? Math.sign(+z[1]) * +z[2] / 60 : 0) : 0;
+  };
+
+  const state = cards.map(c => {
+    const q = sel => $(sel, c);
+    const done = q(".arc-done");
+    return {
+      c, tz: c.dataset.tz, lat: +c.dataset.lat, lon: +c.dataset.lon, city: c.dataset.city,
+      time: q(".room-time b"), sec: q(".room-time i"), st: q(".room-state"), nx: q(".room-next"),
+      sun: q(".arc-sun"), glow: q(".arc-glow"), done, len: done.getTotalLength ? done.getTotalLength() : 276.5,
+      zoneEl: q(".room-zone"), country: q(".room-zone").textContent,
+      pos: 0, night: false, shown: 0, ev: null,
+    };
+  });
+
+  /* where the sun is: on the day arc (f = 0 sunrise .. 1 sunset) or on
+     the night arc (g = 0 sunset .. 1 sunrise), drawn as one number from
+     0 to 2 so the reveal can sweep it into place */
+  function place(o, v) {
+    o.shown = v;
+    let x, y;
+    if (v <= 1) {
+      const th = Math.PI * (1 - v);
+      x = 100 + 88 * Math.cos(th); y = 92 - 88 * Math.sin(th);
+      o.done.setAttribute("stroke-dasharray", `${(v * o.len).toFixed(1)} 400`);
+    } else {
+      const g = v - 1, u = 1 - g;            /* quadratic from (188,92) via (100,120) to (12,92) */
+      x = u * u * 188 + 2 * u * g * 100 + g * g * 12;
+      y = u * u * 92 + 2 * u * g * 120 + g * g * 92;
+      o.done.setAttribute("stroke-dasharray", `${o.len.toFixed(1)} 400`);
+    }
+    o.sun.setAttribute("cx", x.toFixed(1)); o.sun.setAttribute("cy", y.toFixed(1));
+    o.glow.setAttribute("cx", x.toFixed(1)); o.glow.setAttribute("cy", y.toFixed(1));
+  }
+
+  function sky(o) {
+    const now = Date.now();
+    const e = elev(now, o.lat, o.lon), rising = elev(now + MIN, o.lat, o.lon) > e;
+    const [hor, gold, blue, night] = crossings(now - 26 * 3600000, now + 26 * 3600000, o.lat, o.lon, [-.833, 6, -4, -6]);
+    const last = (arr, up) => arr.filter(x => x.t <= now && x.up === up).pop();
+    const next = (arr, up) => arr.find(x => x.t > now && x.up === up);
+    const rise = last(hor, true), set = next(hor, false), lset = last(hor, false), nrise = next(hor, true);
+
+    let pos = 0;
+    if (e > -.833 && rise && set) pos = (now - rise.t) / (set.t - rise.t);
+    else if (lset && nrise) pos = 1 + (now - lset.t) / (nrise.t - lset.t);
+    o.pos = Math.min(2, Math.max(0, pos));
+
+    let key, label, hint = "";
+    if (e >= 6) {
+      key = "day"; label = e > 40 ? "High sun" : "Daylight";
+      const g = next(gold, false);
+      if (g) hint = `Golden hour in ${dur(g.t - now)}`;
+    } else if (e >= -4) {
+      key = "golden"; label = "Golden hour";
+      if (rising) { const g = next(gold, true); if (g) hint = `Morning gold, ${dur(g.t - now)} left`; }
+      else if (e > -.833 && set) hint = `Sunset ${hm(set.t, o.tz)}, in ${dur(set.t - now)}`;
+      else { const b = next(blue, false); if (b) hint = `Afterglow, blue hour in ${dur(b.t - now)}`; }
+    } else if (e >= -6) {
+      key = "blue"; label = "Blue hour";
+      if (rising) { if (nrise) hint = `Sunrise ${hm(nrise.t, o.tz)}, in ${dur(nrise.t - now)}`; }
+      else { const n = next(night, false); if (n) hint = `Night in ${dur(n.t - now)}`; }
+    } else {
+      key = "night"; label = "Night";
+      if (nrise) hint = `Sunrise ${hm(nrise.t, o.tz)}, in ${dur(nrise.t - now)}`;
+    }
+    o.c.dataset.state = key;
+    o.st.textContent = label;
+    o.nx.textContent = hint || " ";
+    const z = zone(o.tz);
+    o.zoneEl.textContent = z ? `${o.country} · ${z}` : o.country;
+    if (revealed) place(o, o.pos);
+  }
+
+  /* the clock, to the second */
+  const fmt = {};
+  function clock(o) {
+    fmt[o.tz] = fmt[o.tz] || new Intl.DateTimeFormat("en-GB", { timeZone: o.tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+    const p = fmt[o.tz].format(new Date()).split(":");
+    o.time.textContent = `${p[0]}:${p[1]}`; o.sec.textContent = `:${p[2]}`;
+  }
+
+  /* how far apart the two rooms are, in hours, from their own offsets */
+  function apart() {
+    if (state.length < 2) return;
+    const h = Math.abs(offsetH(state[0].tz) - offsetH(state[1].tz));
+    const words = ["", "one", "two", "three", "four", "five", "six", "seven"];
+    const chip = $("#roomsGap"), lead = $("#roomsApart");
+    if (chip) chip.textContent = `${h}h`;
+    if (lead) lead.textContent = `${words[h] || h} hour${h === 1 ? "" : "s"} apart`;
+  }
+
+  let revealed = RM;
+  state.forEach(o => { clock(o); sky(o); place(o, RM ? o.pos : 0); });
+  apart();
+  setInterval(() => state.forEach(clock), 1000);
+  setInterval(() => { state.forEach(sky); apart(); }, 60000);
+
+  /* the reveal: the sun travels from sunrise to where it is now */
+  const sweep = () => {
+    if (revealed) return; revealed = true;
+    const t0 = performance.now(), D = 1900;
+    const ease = t => 1 - Math.pow(1 - t, 3);
+    (function step(now) {
+      const k = Math.min(1, (now - t0) / D);
+      state.forEach(o => place(o, o.pos * ease(k)));
+      if (k < 1) requestAnimationFrame(step);
+    })(t0);
+  };
+  if (!revealed) {
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(en => { if (en[0].isIntersecting) { setTimeout(sweep, 450); io.disconnect(); } }, { threshold: .35 });
+      io.observe(grid);
+    } else sweep();
+  }
+
+  /* the photograph leans away from the pointer, a little */
+  if (!TOUCH && !RM) cards.forEach(c => {
+    c.addEventListener("pointermove", e => {
+      const r = c.getBoundingClientRect();
+      c.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 2 - 1).toFixed(3));
+      c.style.setProperty("--my", ((e.clientY - r.top) / r.height * 2 - 1).toFixed(3));
     });
-    frame.src = "labs.html";
-  };
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver(e => { if (e[0].isIntersecting) { load(); io.disconnect(); } },
-                                        { rootMargin: "100% 0px" });
-    io.observe(plate);
-  } else load();
+    c.addEventListener("pointerleave", () => { c.style.setProperty("--mx", 0); c.style.setProperty("--my", 0); });
+  });
 })();
 
 /* ---------- anchors ---------- */
@@ -1703,6 +2182,7 @@ $("#toTop").addEventListener("click", () => {
     lastPump = now;
     const D = window.__hero;
     D.tick++; D.t = fA.currentTime; D.paused = fA.paused; D.ended = fA.ended;
+    D.lx = lgx; D.ly = lgy; D.lt = now;   /* the slate lights its type from this */
     D.fading = fading; D.run = run; D.started = started; D.ready = fA.readyState;
     if (!run && firstFrame) return;
 
@@ -1735,6 +2215,7 @@ $("#toTop").addEventListener("click", () => {
       lty = .52 + .18 * Math.sin(t * .09 + 1.4);
     }
     lgx += (ltx - lgx) * .075; lgy += (lty - lgy) * .075;
+    D.lx = lgx; D.ly = lgy;
 
     upload(tA, fA, 0);
     if (fading) upload(tB, fB, 1);
@@ -1768,6 +2249,136 @@ $("#toTop").addEventListener("click", () => {
   }
   (function pump(now) { requestAnimationFrame(pump); render(now); })(0);
   setInterval(() => { const n = performance.now(); if (n - lastPump > 700) render(n); }, 500);
+})();
+
+/* ---------- the slate ----------
+   Timecode, clocks, the monitor's cut between disciplines, and the
+   light on the statement. The light is the scene's own: heroCinema
+   publishes its smoothed light position on window.__hero every frame,
+   so the type and the footage are lit by one source. Without WebGL it
+   follows the pointer with the same idle drift the shader uses. */
+const slate = (function slateInit() {
+  const root = $("#heroMid"), hero = $("#hero");
+  if (!root || !hero) return null;
+  const tc = $("#hsTc"), line = $("#hsLine"), mon = $("#hsMon"), reel = $("#hsReel"), idx = $("#hsIdx");
+  const imgs = $$("img", mon), words = $$(".hs-reel-win span", reel);
+  const bar = $(".hs-mon-bar i", mon), tag = $(".hs-mon-tag", mon);
+  const NAMES = words.map(w => w.textContent);
+  const DWELL = 2800, FPS = 24;
+  let k = 0, t0 = 0, rolling = false, paused = false, visible = true, acc = 0, last = 0;
+
+  /* clocks: hours and minutes; seconds are noise above a wordmark */
+  const clocks = $$("[data-hs-clock]", root);
+  const hm = tz => new Intl.DateTimeFormat("en-GB", { timeZone: tz, hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date());
+  const tickClocks = () => clocks.forEach(c => { try { c.textContent = hm(c.dataset.hsClock); } catch (e) {} });
+  tickClocks(); setInterval(tickClocks, 15000);
+
+  /* the first frame ships with the page; the other four wait for load */
+  const loadRest = () => imgs.forEach(im => { if (im.dataset.src && !im.getAttribute("src")) im.src = im.dataset.src; });
+  if (document.readyState === "complete") loadRest(); else addEventListener("load", loadRest, { once: true });
+
+  const say = () => {
+    const t = `Now showing: ${NAMES[k]}. Open it in Services.`;
+    mon.setAttribute("aria-label", t); reel.setAttribute("aria-label", t);
+  };
+  function show(n) {
+    if (n === k) return;
+    const prev = words[k], next = words[n];
+    imgs[k].classList.remove("on"); imgs[n].classList.add("on");
+    prev.classList.remove("on"); prev.classList.add("out");
+    next.classList.remove("out", "snap"); next.classList.add("on");
+    /* once it has left through the top, drop it back below the window
+       without a transition, ready for its next turn */
+    setTimeout(() => {
+      if (prev.classList.contains("on")) return;
+      prev.classList.add("snap"); prev.classList.remove("out");
+      void prev.offsetWidth; prev.classList.remove("snap");
+    }, 860);
+    k = n;
+    const nn = String(k + 1).padStart(2, "0");
+    idx.textContent = nn;
+    tag.textContent = `S/${nn} · ${NAMES[k]}`;
+    say();
+  }
+
+  /* where the statement sits inside the hero, for the light */
+  let hw = 1, hh = 1, lx0 = 0, ly0 = 0;
+  const measure = () => {
+    const hr = hero.getBoundingClientRect(), lr = line.getBoundingClientRect();
+    hw = hr.width || 1; hh = hr.height || 1;
+    lx0 = lr.left - hr.left; ly0 = lr.top - hr.top;
+  };
+  measure(); addEventListener("resize", measure);
+  setInterval(measure, 700);
+
+  let px = .42, py = .55, tx = .42, ty = .55, lastMove = 0;
+  hero.addEventListener("mousemove", e => {
+    const r = hero.getBoundingClientRect();
+    tx = (e.clientX - r.left) / r.width; ty = 1 - (e.clientY - r.top) / r.height;
+    lastMove = performance.now();
+  });
+
+  const pad = (v, n = 2) => String(v).padStart(n, "0");
+  let lastTc = "";
+  function frame(now) {
+    requestAnimationFrame(frame);
+    const dt = last ? Math.min(100, now - last) : 0; last = now;
+    if (!visible || document.hidden) return;
+
+    if (rolling && !RM) {
+      const ms = Math.max(0, now - t0), s = Math.floor(ms / 1000);
+      const t = `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}:${pad(Math.floor((ms % 1000) / (1000 / FPS)))}`;
+      if (t !== lastTc) { tc.textContent = t; lastTc = t; }
+      if (!paused) {
+        acc += dt;
+        if (acc >= DWELL) { acc = 0; show((k + 1) % imgs.length); }
+      }
+      bar.style.transform = `scaleX(${Math.min(1, acc / DWELL).toFixed(4)})`;
+    }
+
+    /* the light: the scene's when it is running, the pointer's otherwise */
+    const H = window.__hero;
+    let gx, gy;
+    if (H && typeof H.lx === "number" && now - (H.lt || 0) < 400) { gx = H.lx; gy = H.ly; }
+    else {
+      if (now - lastMove > 3000 && !RM) {
+        const t = now * .001;
+        tx = .5 + .30 * Math.sin(t * .13); ty = .52 + .18 * Math.sin(t * .09 + 1.4);
+      }
+      px += (tx - px) * .075; py += (ty - py) * .075;
+      gx = px; gy = py;
+    }
+    line.style.setProperty("--lx", (gx * hw - lx0).toFixed(1) + "px");
+    line.style.setProperty("--ly", ((1 - gy) * hh - ly0).toFixed(1) + "px");
+  }
+  requestAnimationFrame(frame);
+
+  if ("IntersectionObserver" in window)
+    new IntersectionObserver(en => { visible = en[0].isIntersecting; }).observe(hero);
+
+  /* hovering either control holds the cut; the monitor also leans in */
+  const hold = (on, peek) => { paused = on; root.classList.toggle("is-peek", on && peek); };
+  [[mon, true], [reel, false]].forEach(([el, peek]) => {
+    el.addEventListener("pointerenter", e => { if (e.pointerType !== "touch") hold(true, peek); });
+    el.addEventListener("pointerleave", () => hold(false, peek));
+    el.addEventListener("focus", () => hold(true, peek));
+    el.addEventListener("blur", () => hold(false, peek));
+  });
+
+  /* either opens the matching service: scroll it to the eye line and the
+     services list's own scroll triggers make it the active row */
+  const open = () => {
+    const row = $$(".srow")[k] || $("#services");
+    hold(false, true);
+    if (window.lenisInstance) lenisInstance.scrollTo(row, { offset: -innerHeight * .44, duration: 1.8 });
+    else row.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+  mon.addEventListener("click", open);
+  reel.addEventListener("click", open);
+
+  return {
+    start() { if (rolling) return; rolling = true; t0 = performance.now(); acc = 0; },
+  };
 })();
 
 /* ---------- Bayer dither waves (footer band fallback) ---------- */
@@ -1964,6 +2575,7 @@ if (!window.gsap || RM) {
   // Reduced-motion / no-CDN fallback: everything stays visible & static.
   $("#pre").style.display = "none";
   document.documentElement.classList.add("rm");
+  if (slate) slate.start();
 } else {
   gsap.registerPlugin(ScrollTrigger);
 
@@ -1990,12 +2602,21 @@ if (!window.gsap || RM) {
   gsap.set(heroImg, { clipPath: "inset(100% 0% 0% 0%)", yPercent: 16 });
   gsap.set("#heroMid", { autoAlpha: 0 });
 
+  /* the mark rises, then the slate is built on top of it: the rail is
+     drawn across, the monitor wipes open, the statement is written in
+     left to right, and the timecode starts rolling */
   const heroIntro = (fast = false) => {
     const k = fast ? .62 : 1;
     gsap.timeline({ defaults: { ease: "power4.out" } })
       .to(heroImg, { clipPath: "inset(0% 0% 0% 0%)", yPercent: 0, duration: 1.35 * k }, 0)
-      .set("#heroMid", { autoAlpha: 1 }, .25 * k)
-      .fromTo("#heroMid > *", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: .85 * k, stagger: .11 * k }, .3 * k);
+      .set("#heroMid", { autoAlpha: 1 }, .2 * k)
+      .fromTo(".hs-rule", { scaleX: 0 }, { scaleX: 1, duration: 1.4 * k, ease: "power3.inOut" }, .22 * k)
+      .fromTo(".hs-rail > :not(.hs-rule)", { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .7 * k, stagger: .07 * k }, .3 * k)
+      .add(() => slate && slate.start(), .32 * k)
+      .fromTo("#hsMon", { clipPath: "inset(0% 100% 0% 0% round 6px)" }, { clipPath: "inset(0% 0% 0% 0% round 6px)", duration: 1.05 * k, ease: "power3.inOut", clearProps: "clipPath" }, .42 * k)
+      .fromTo(".hs-eb", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .8 * k }, .5 * k)
+      .fromTo("#hsLine", { clipPath: "inset(-30% 100% -40% 0%)", x: -10 }, { clipPath: "inset(-30% 0% -40% 0%)", x: 0, duration: 1.2 * k, ease: "power3.inOut", clearProps: "clipPath" }, .56 * k)
+      .fromTo("#hsReel", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .8 * k }, .8 * k);
   };
 
   if (!seen) {
@@ -2030,11 +2651,14 @@ if (!window.gsap || RM) {
     const wX  = gsap.quickTo(mi, "x", { duration: 1.2, ease: "power2.out" });
     const wRY = gsap.quickTo(mi, "rotationY", { duration: 1.2, ease: "power2.out" });
     const wRX = gsap.quickTo(mi, "rotationX", { duration: 1.2, ease: "power2.out" });
+    /* the slate rides a shallower plane than the mark, so the pair parts
+       by a few pixels as the pointer moves: depth, not decoration */
+    const sX  = gsap.quickTo("#heroMid", "x", { duration: 1.4, ease: "power2.out" });
     heroEl.addEventListener("mousemove", e => {
       const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
-      wX(nx * -12); wRY(nx * 2); wRX(ny * -1.4);
+      wX(nx * -12); wRY(nx * 2); wRX(ny * -1.4); sX(nx * -5);
     });
-    heroEl.addEventListener("mouseleave", () => { wX(0); wRY(0); wRX(0); });
+    heroEl.addEventListener("mouseleave", () => { wX(0); wRY(0); wRX(0); sX(0); });
   }
 
   /* ----- manifesto word reveal ----- */
@@ -2093,7 +2717,7 @@ if (!window.gsap || RM) {
   /* ----- theme flips ----- */
   const flips = [
     ["#work",     "bone", "ink"],
-    ["#labs",     "ink",  "bone"],
+    ["#studios",  "ink",  "bone"],
     ["#services", "ink",  "ink" ],
     /* "bone" here was the Studio section's key — it used to sit between
        the FAQ and the CTA, so scrolling back up out of the CTA landed on
@@ -2126,26 +2750,23 @@ if (!window.gsap || RM) {
   gsap.from(".srow", { autoAlpha: 0, y: 30, duration: .8, stagger: .07, ease: "power3.out",
     scrollTrigger: { trigger: "#svcList", start: "top 78%", once: true } });
 
-  /* ----- labs doorway spec list ----- */
-  const LABS_DETAIL = [
-    "Chat and copilots wired into your real data, with a human gate on anything irreversible.",
-    "ERP, HR and payroll, finance and operations: one platform, real roles, a real audit trail.",
-    "Fleets, sensors, access control and device policy, wired to dashboards people act on.",
-    "Signed scope to a product real users can log into, typically in six weeks.",
-  ];
-  const lsRows = $$(".ls-row"), lsDetail = $("#labsDetail");
-  lsRows.forEach(r => r.addEventListener("mouseenter", () => {
-    const i = +r.dataset.i;
-    lsRows.forEach(o => o.classList.toggle("is-on", o === r));
-    gsap.timeline()
-      .to(lsDetail, { autoAlpha: 0, y: 6, duration: .16, ease: "power2.in",
-        onComplete: () => lsDetail.textContent = LABS_DETAIL[i] })
-      .to(lsDetail, { autoAlpha: 1, y: 0, duration: .3, ease: "power3.out" });
-  }));
-  gsap.from(".labs-stat", { autoAlpha: 0, y: 26, duration: .8, stagger: .1, ease: "power3.out",
-    scrollTrigger: { trigger: ".labs-preview", start: "top 82%", once: true } });
-  gsap.from([".labs-title", ".labs-lead", ".labs-spec", ".labs-enter"], { autoAlpha: 0, y: 26, duration: .85, stagger: .08, ease: "power3.out",
-    scrollTrigger: { trigger: ".labs", start: "top 76%", once: true } });
+  /* ----- the studios -----
+     The title rises out of its own lines, the two rooms open from the
+     top edge one after the other, and the city names come up out of
+     the frame. The photographs drift a few percent against the scroll. */
+  gsap.from(".rooms-title .rt > span", { yPercent: 108, duration: 1.15, stagger: .12, ease: "power4.out",
+    scrollTrigger: { trigger: ".rooms-intro", start: "top 82%", once: true } });
+  gsap.from([".rooms-head", ".rooms-lead"], { autoAlpha: 0, y: 24, duration: .9, stagger: .1, ease: "power3.out",
+    scrollTrigger: { trigger: ".rooms", start: "top 76%", once: true } });
+  gsap.fromTo(".room", { clipPath: "inset(0% 0% 100% 0% round 14px)" },
+    { clipPath: "inset(0% 0% 0% 0% round 14px)", duration: 1.35, stagger: .16, ease: "power4.inOut", clearProps: "clipPath",
+      scrollTrigger: { trigger: "#roomsGrid", start: "top 84%", once: true } });
+  gsap.from(".room-city > span", { yPercent: 102, duration: 1.2, stagger: .16, delay: .45, ease: "power4.out",
+    scrollTrigger: { trigger: "#roomsGrid", start: "top 84%", once: true } });
+  gsap.from([".rb-chip", ".rooms-note"], { autoAlpha: 0, scale: .9, duration: .8, delay: .9, ease: "power3.out",
+    scrollTrigger: { trigger: "#roomsGrid", start: "top 84%", once: true } });
+  gsap.fromTo(".room-media", { yPercent: -3.5 }, { yPercent: 3.5, ease: "none",
+    scrollTrigger: { trigger: "#roomsGrid", start: "top bottom", end: "bottom top", scrub: .8 } });
 
   /* ----- showreel band ----- */
   gsap.fromTo("#reelPoster", { yPercent: -7 }, { yPercent: 7, ease: "none",
@@ -2232,8 +2853,8 @@ if (!window.gsap || RM) {
 })();
 </script>
 <!-- Manzar Studio · manzar.studio · rebuilt August 2026 -->
-<script src="assets/js/crossover.js?v=18"></script>
-<script src="assets/js/menu.js?v=18" defer></script>
+<script src="assets/js/crossover.js?v=19"></script>
+<script src="assets/js/menu.js?v=19" defer></script>
 
 <script>
 /* ── the photographs below the fold ───────────────────────────────
@@ -2283,17 +2904,20 @@ if (!window.gsap || RM) {
   }, { once: true });
 })();
 </script>
-<script src="assets/js/mz-sound.js?v=18" defer></script>
+<script src="assets/js/mz-sound.js?v=19" defer></script>
 <!-- The work archive. Data first, then the UI that reads it; both are
      deferred, so neither blocks the hero. -->
-<script src="assets/js/work-data.js?v=18" defer></script>
-<script src="assets/js/work.js?v=18" defer></script>
+<script src="assets/js/work-data.js?v=19" defer></script>
+<script src="assets/js/work.js?v=19" defer></script>
 <!-- ══════════════ MENU ══════════════
-     Component: /assets/css/menu.css + /assets/js/menu.js. Self-contained,
-     so the same markup runs on Studio, Labs and every subpage.
-     Twelve rows, three groups, in the order Ali specified. --i drives the
-     open stagger from CSS, so no script has to touch the rows. -->
-<div class="mzx" id="mzxMenu" role="dialog" aria-modal="true"
+     Component: /assets/css/menu.css + /assets/js/menu.js, in its Studio
+     form (.mzx--studio). Two groups: Studio, set as a display-size index,
+     and Company around it. Labs is not a column here any more; it is a
+     link in the footer. --i drives the open stagger from CSS, so no
+     script has to touch the rows. The rows are generated from one list
+     for index.html and work.html, so the two menus cannot drift apart.
+-->
+<div class="mzx mzx--studio" id="mzxMenu" role="dialog" aria-modal="true"
      aria-label="Main menu" aria-hidden="true" hidden>
 
   <div class="mzx-head">
@@ -2301,7 +2925,7 @@ if (!window.gsap || RM) {
       <img class="mzx-mark" src="assets/manzar-wordmark.png" alt="Manzar"
            width="2556" height="980" decoding="async">
       <span class="mzx-head-rule" aria-hidden="true"></span>
-      <span class="mzx-eyebrow">Studio</span>
+      <span class="mzx-eyebrow">Creative studio</span>
     </div>
     <button class="mzx-close" type="button" data-mzx-close aria-label="Close menu">
       <span class="mzx-close-label">Close</span>
@@ -2316,104 +2940,94 @@ if (!window.gsap || RM) {
   <div class="mzx-body">
     <nav class="mzx-nav" aria-label="Main">
 
-      <div class="mzx-group">
-        <p class="mzx-group-label">Studio</p>
+      <div class="mzx-group mzx-group--lead">
+        <p class="mzx-group-label"><span>Studio</span><span class="mzx-group-count">01&thinsp;&mdash;&thinsp;04</span></p>
         <a class="mzx-row" href="#work" style="--i:0"
-           data-media="assets/menu/work.svg" data-kicker="Selected work">
+           data-media="assets/services/s02-commercial.jpg" data-kicker="Selected work">
           <span class="mzx-n">01</span>
-          <span class="mzx-t">Work</span>
-          <span class="mzx-d">Selected engagements, shipped and live.</span>
+          <span class="mzx-t"><span class="mzx-roll"><span class="mzx-roll-in"><span>Work</span><span aria-hidden="true">Work</span></span></span></span>
+          <span class="mzx-d">The five pieces we would show you first.</span>
+          <i class="mzx-go" aria-hidden="true">&#8594;</i>
         </a>
-        <a class="mzx-row" href="#services" style="--i:1"
-           data-media="assets/menu/services.svg" data-kicker="What we do">
+        <a class="mzx-row" href="work.html" style="--i:1"
+           data-media="assets/services/s01-music.jpg" data-kicker="The full archive">
           <span class="mzx-n">02</span>
-          <span class="mzx-t">Services</span>
-          <span class="mzx-d">Brand, product and the systems behind them.</span>
+          <span class="mzx-t"><span class="mzx-roll"><span class="mzx-roll-in"><span>Archive</span><span aria-hidden="true">Archive</span></span></span></span>
+          <span class="mzx-d">Every film since 2019, playable in place.</span>
+          <i class="mzx-go" aria-hidden="true">&#8594;</i>
         </a>
-        <a class="mzx-row" href="#reel" style="--i:2"
-           data-media="assets/menu/reel.svg" data-kicker="In motion">
+        <a class="mzx-row" href="#services" style="--i:2"
+           data-media="assets/services/s04-colour.jpg" data-kicker="What we make">
           <span class="mzx-n">03</span>
-          <span class="mzx-t">Showreel</span>
-          <span class="mzx-d">The work in motion, thirty seconds at a time.</span>
+          <span class="mzx-t"><span class="mzx-roll"><span class="mzx-roll-in"><span>Services</span><span aria-hidden="true">Services</span></span></span></span>
+          <span class="mzx-d">Film, motion, colour and identity, all in&#8209;house.</span>
+          <i class="mzx-go" aria-hidden="true">&#8594;</i>
         </a>
-        <a class="mzx-row" href="#process" style="--i:3"
-           data-media="assets/menu/process.svg" data-kicker="How we ship">
+        <a class="mzx-row" href="#reel" style="--i:3"
+           data-media="assets/reel-poster.jpg" data-kicker="In motion">
           <span class="mzx-n">04</span>
-          <span class="mzx-t">Process</span>
-          <span class="mzx-d">Discover, build, ship. The discipline behind it.</span>
+          <span class="mzx-t"><span class="mzx-roll"><span class="mzx-roll-in"><span>Showreel</span><span aria-hidden="true">Showreel</span></span></span></span>
+          <span class="mzx-d">The work in motion. Currently in post.</span>
+          <i class="mzx-go" aria-hidden="true">&#8594;</i>
         </a>
-        <a class="mzx-row" href="#faq" style="--i:4"
-           data-media="assets/menu/faq.svg" data-kicker="Before you ask">
+      </div>
+
+      <div class="mzx-group mzx-group--side">
+        <p class="mzx-group-label"><span>Company</span><span class="mzx-group-count">05&thinsp;&mdash;&thinsp;09</span></p>
+        <a class="mzx-row" href="#manifesto" style="--i:4"
+           data-media="assets/uzair.jpg" data-kicker="Who we are">
           <span class="mzx-n">05</span>
+          <span class="mzx-t">About</span>
+          <span class="mzx-d">Manzar means the scene. This is ours.</span>
+        </a>
+        <a class="mzx-row" href="#studios" style="--i:5"
+           data-media="assets/studio-lhe.jpg" data-kicker="Lahore / Paris">
+          <span class="mzx-n">06</span>
+          <span class="mzx-t">Studios</span>
+          <span class="mzx-d">Two cities, one way of seeing.</span>
+        </a>
+        <a class="mzx-row" href="#process" style="--i:6"
+           data-media="assets/services/s05-brand.jpg" data-kicker="How we work">
+          <span class="mzx-n">07</span>
+          <span class="mzx-t">Process</span>
+          <span class="mzx-d">Find the story, shape it in the open, ship.</span>
+        </a>
+        <a class="mzx-row" href="#faq" style="--i:7"
+           data-media="assets/conv-04.jpg" data-kicker="Before you ask">
+          <span class="mzx-n">08</span>
           <span class="mzx-t">FAQ</span>
           <span class="mzx-d">Timelines, pricing and scope, answered plainly.</span>
         </a>
-      </div>
-
-      <div class="mzx-group">
-        <p class="mzx-group-label">Labs</p>
-        <a class="mzx-row" href="capabilities/cloud.html" style="--i:5"
-           data-media="assets/menu/cloud.svg" data-kicker="Built to hold">
-          <span class="mzx-n">06</span>
-          <span class="mzx-t">Cloud &amp; Infrastructure</span>
-          <span class="mzx-d">Systems that hold under real load.</span>
-        </a>
-        <a class="mzx-row" href="capabilities/mobile.html" style="--i:6"
-           data-media="assets/menu/mobile.svg" data-kicker="In the store">
-          <span class="mzx-n">07</span>
-          <span class="mzx-t">Mobile Development</span>
-          <span class="mzx-d">iOS, Android, React Native. Shipped, not prototyped.</span>
-        </a>
-        <a class="mzx-row" href="capabilities/ai.html" style="--i:7"
-           data-media="assets/menu/ai.svg" data-kicker="Past the demo">
-          <span class="mzx-n">08</span>
-          <span class="mzx-t">AI Development</span>
-          <span class="mzx-d">Applied models, not demo-ware.</span>
-        </a>
-        <a class="mzx-row" href="capabilities/iot.html" style="--i:8"
-           data-media="assets/menu/iot.svg" data-kicker="Wired up">
+        <a class="mzx-row" href="#contact" style="--i:8"
+           data-media="assets/studio-par.jpg" data-kicker="Start a conversation">
           <span class="mzx-n">09</span>
-          <span class="mzx-t">IoT &amp; Connected Systems</span>
-          <span class="mzx-d">Hardware and firmware, wired to software.</span>
-        </a>
-      </div>
-
-      <div class="mzx-group">
-        <p class="mzx-group-label">Company</p>
-        <a class="mzx-row" href="pricing.html" style="--i:9"
-           data-media="assets/menu/pricing.svg" data-kicker="Engagement models">
-          <span class="mzx-n">10</span>
-          <span class="mzx-t">Pricing</span>
-          <span class="mzx-d">Sprint, build or retainer: three ways in.</span>
-        </a>
-        <a class="mzx-row" href="#contact" style="--i:10"
-           data-media="assets/menu/contact.svg" data-kicker="Start a conversation">
-          <span class="mzx-n">11</span>
           <span class="mzx-t">Contact</span>
-          <span class="mzx-d">hello@manzar.studio. Say what you need.</span>
+          <span class="mzx-d">Replies within 24 hours, from either city.</span>
         </a>
       </div>
 
     </nav>
 
     <aside class="mzx-media" data-mzx-media
-           data-default-media="assets/menu/world.svg"
-           data-default-kicker="Two halves, one studio"
-           data-default-caption="Manzar Studio. Film, design and software.">
-      <div class="mzx-frame" data-mzx-frame>
-        <img class="is-on" src="assets/menu/world.svg" alt="" width="800" height="500" decoding="async">
-        <img alt="" aria-hidden="true" width="800" height="500" decoding="async">
+           data-default-media="assets/conv-03.jpg"
+           data-default-kicker="Every screen, a scene"
+           data-default-caption="Film, motion and design from an independent studio in Lahore and Paris.">
+      <div class="mzx-plate">
+        <div class="mzx-frame" data-mzx-frame>
+          <img class="is-on" src="assets/conv-03.jpg" alt="" width="840" height="1120" decoding="async" loading="lazy">
+          <img alt="" aria-hidden="true" width="840" height="1120" decoding="async">
+          <span class="mzx-frame-tag" aria-hidden="true"><i>Manzar</i><span data-mzx-index>00</span></span>
+        </div>
       </div>
-      <p class="mzx-kicker" data-mzx-kicker>Two halves, one studio</p>
-      <p class="mzx-caption" data-mzx-caption>Manzar Studio. Film, design and software.</p>
+      <p class="mzx-kicker" data-mzx-kicker>Every screen, a scene</p>
+      <p class="mzx-caption" data-mzx-caption>Film, motion and design from an independent studio in Lahore and Paris.</p>
     </aside>
   </div>
 
   <div class="mzx-foot">
-    <div class="mzx-switch" role="group" aria-label="Manzar worlds">
-      <span class="mzx-switch-rail" aria-hidden="true"></span>
-      <a href="index.html" class="is-on" data-world="studio">Studio</a>
-      <a href="labs.html" data-world="labs">Labs</a>
+    <div class="mzx-social">
+      <a href="https://www.instagram.com/manzar.studio/" target="_blank" rel="noopener">Instagram &#8599;</a>
+      <a href="https://www.linkedin.com/company/manzarstudio/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
     </div>
     <a class="mzx-mail" href="mailto:hello@manzar.studio">hello@manzar.studio</a>
     <div class="mzx-clocks">

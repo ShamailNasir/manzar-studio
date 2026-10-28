@@ -3968,3 +3968,64 @@ Rather than fix the one panel, every grid and nowrap flex row on the Labs page w
 ## Verified
 
 No horizontal overflow on any page at 1600, 940, 900, 390 or 320. `/work` keeps its 23 cards, the archive shelf still snaps, no console errors anywhere. Deploy confirmed current before starting: local and remote both at `883144f`, nothing uncommitted.
+
+---
+
+## #194
+### The creative-studio pass: one header, one menu, a slate, two cities
+*Cache token `?v=19`.*
+
+The direction changed: Manzar is presented as a creative studio, and the software side stops being a front door. Five changes, all on the Studio pages (`index.html`, `work.html`). Labs itself, `/pricing` and the four capability pages are untouched and still reachable.
+
+## The header
+
+The Studio/Labs switch is gone from the nav on both Studio pages. The wordmark holds the corner on its own, 10% larger to carry the space: `clamp(26px,2.1vw,33px)` → `clamp(28.6px,2.31vw,36.3px)`, in `index.html` and `studio-base.css`. The switch's CSS and the phone rule that hid it went with it.
+
+## The menu
+
+The Studio menu was three equal columns of the same row: Studio, Labs, Company. With Labs out it would have been two columns of five rows and two, a list that had lost a third of itself. So the two groups are no longer equals:
+
+- **Studio** is the index of the sheet: Work, Archive, Services, Showreel at display size (`clamp(38px, min(4.5vw, 8.4vh), 94px)`). Each title is two copies stacked in a one-line window; the window's track rises in when the sheet opens, and on hover the word turns over like a counter. A round arrow arrives on the right.
+- **Company** is the frame around it: About, Studios, Process, FAQ, Contact, smaller, keeping their one-line descriptions. Four large rows against five small ones come out the same height, which is what makes the sheet read as balanced.
+- While a row is hovered the rest of the sheet steps back (`:has()`), and its numeral turns accent.
+- The plate is photography now instead of line drawings: a 4:5 frame in crop marks, the row number in its corner (`[data-mzx-index]`, a small optional hook in `menu.js`), crossfading with a slow zoom settle. The caption reserves two lines so the plate does not jump.
+- The foot loses the world switch and gains Instagram and LinkedIn.
+- Pricing left the Studio menu. It is the Labs pricing page (sprints, builds, retainers for software) and the Labs menu still carries it.
+
+All of it is scoped to `.mzx--studio`, so the Labs pages keep the menu they had. The rows for both Studio pages are generated from one list, so `index.html` and `work.html` cannot drift.
+
+`warm()` now only preloads the plate's photographs where the plate is actually shown (above 1180px), and starts on hovering the Menu button. Below that it is `display:none` and nine photographs would have been fetched for nothing.
+
+**One trap, caught on a phone:** the scoped two-column `.mzx-body` outranked the base single-column rule below 1180px, so the nav was squeezed into a 38px column beside an invisible plate and the Studio titles vanished. The scoped narrow rule now says one column itself.
+
+## The hero: the slate
+
+The three lines that floated in the upper third (eyebrow, statement, sub) are one object: a slate hung directly above the wordmark and exactly as wide as it, so the two read as one title card. Its geometry is the mark's own: the mark is contain-fitted under a max-height, so its visible box is `min(hero − 2·pad, maxh × 2.6082)` wide and `min(maxh, (hero − 2·pad) × .38341)` tall, and the slate takes that width and sits that height above the mark's foot. Container units (`cqw`) measure the hero itself; viewport units would count the scrollbar.
+
+- **The rail:** REC, a timecode that starts when the scene does (24 fps, after the preloader says "Rolling"), a hairline drawn across, and the Lahore and Paris clocks.
+- **The monitor:** a 16:9 viewfinder cutting between five disciplines (music videos, brand films, motion and 3D, colour, identity), with a dwell bar. Hover and it leans forward to 2.3× while the rest of the slate steps back; click and the matching service row is scrolled to the eye line, where the list's own triggers make it active.
+- **The statement** is lit by the scene. `heroCinema` now publishes its smoothed light position on `window.__hero` every frame; the slate reads it and moves a radial highlight through the type (background-clip:text, with the shadow moved to a drop-shadow filter because a text-shadow paints over a clipped fill). Without WebGL it follows the pointer with the shader's own idle drift.
+- **Now showing** rolls through the same five words in step with the monitor.
+- The slate rides a shallower plane than the mark, so the two part by a few pixels as the pointer moves.
+
+The monitor frames are new 640×360 crops in `assets/hero/` (28–46 KB). Only the first loads with the page; the rest wait for `load`. "Creative technology studio" became "Independent creative studio".
+
+## Labs, in the footer
+
+A last row in the footer nav on both Studio pages: **Labs**, with a quiet note, "Our software studio". It carries `data-world="labs"`, so it crosses over with the same curtain the switch used. The homepage no longer prefetches `labs.html`.
+
+## The studios, where Labs was
+
+The Labs doorway (copy, spec list, the live iframe plate and its stats) is gone, with its CSS and JS. In its place, **Two cities. One way of seeing.**: Lahore and Paris as two tall photographic panels.
+
+- Each panel carries its local time to the second, its UTC offset, its coordinates, and **the light it is in right now**. The sun's elevation comes from the standard low-precision solar position equations, fed each studio's latitude and longitude; a 52-hour window around now is sampled every two minutes for sunrise, sunset and the golden and blue hour boundaries (+6°, −4°, −6°), then refined by bisection. "Golden hour in 3 h 22 min", "Sunset 17:21", "Blue hour, night in 9 min" are computed, not written.
+- An arc dial shows where the sun is on its day, or on a shallow arc below the horizon at night, and sweeps into place when the section is first seen.
+- The photograph takes on the light: warm over golden hour, blue after sunset, dark at night (`data-state` drives a blended tint).
+- On a pointer device the panel you are in opens wider, the photograph leans away from the pointer, and a line about the city appears with a "Shoot in Lahore / Paris" mailto. On touch it is all simply shown.
+- The chip between them says how many hours apart they are, from their own offsets (4h in winter, 3h in summer), and the lead paragraph says the same in words.
+
+Theme flip `#labs` → `#studios`, still ink, still bone on the way back up into Work.
+
+## Verified
+
+At 1920, 1600, 1280, 1024, 900 and 390: hero, menu, the studios section and the footer, on the homepage and `/work`. No horizontal overflow at 390. No console errors on either page. The footer Labs link crosses over to `/labs.html`. Reduced motion: slate and statement visible, sun placed without the sweep, timecode held. The live state was checked against the clock: at 17:29 in Lahore on 28 October it read golden hour (sunset was about 17:25), at 17:33 blue hour; Paris at 13:29 read daylight with golden hour in 3 h 22 min. Deploy confirmed current before starting: local and remote both at `ef7a8bd`, nothing uncommitted.

@@ -382,3 +382,241 @@ html.mzx-lock header.nav{
   transition:opacity .28s var(--x-ease, cubic-bezier(.22,1,.36,1));
 }
 .nav, .mz-nav{ transition:opacity .32s cubic-bezier(.22,1,.36,1); }
+
+/* ============================================================
+   THE STUDIO MENU  ·  .mzx--studio
+   ============================================================
+   The Studio menu was three equal columns of the same row: Studio,
+   Labs, Company. Labs has moved to the footer, and two equal columns
+   of five rows and two read as a list that had lost a third of itself.
+   So the two groups that remain are no longer set as equals.
+
+   Studio is the work, and it is the index of the sheet: four rows at
+   display size, each title rolling over on hover. Company is the frame
+   around it: five quieter rows that keep their one-line descriptions.
+   The two columns come out the same height, which is what makes the
+   sheet read as balanced rather than as a list with a gap in it.
+
+   The plate on the right is photography now, a frame from the studio
+   for every row, held in crop marks with the row number in its corner.
+
+   Scoped to .mzx--studio, so the Labs pages keep the menu they have.
+   ============================================================ */
+.mzx--studio{
+  --x-acc: #FF4B1F;
+  background:
+    radial-gradient(90% 70% at 88% 0%, rgba(233,230,221,.055), transparent 62%),
+    radial-gradient(70% 60% at 0% 100%, rgba(255,75,31,.035), transparent 60%),
+    var(--x-ink);
+}
+.mzx--studio .mzx-head .mzx-eyebrow{ letter-spacing:.2em; }
+.mzx--studio .mzx-body{
+  grid-template-columns:minmax(0,1fr) clamp(270px, 23vw, 440px);
+  gap:clamp(40px, 5.4vw, 124px);
+}
+.mzx--studio .mzx-nav{
+  grid-auto-flow:row;
+  grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);
+  gap:clamp(40px, 4.6vw, 104px);
+  align-items:start;
+}
+.mzx--studio .mzx-group{ display:flex; flex-direction:column; min-width:0; }
+.mzx--studio .mzx-group-label{
+  display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+  margin-bottom:clamp(4px,.5vw,10px);
+}
+.mzx--studio .mzx-group-count{
+  font-weight:500; letter-spacing:.14em; color:var(--x-4);
+  font-variant-numeric:tabular-nums; font-feature-settings:"tnum";
+}
+
+/* every row: a hairline of its own, drawn brighter on hover by ::after */
+.mzx--studio .mzx-row{ border-bottom:1px solid var(--x-line); }
+.mzx--studio .mzx-t{ transition:color .4s var(--x-ease), transform .55s var(--x-ease); }
+.mzx--studio .mzx-row:hover .mzx-n,
+.mzx--studio .mzx-row:focus-visible .mzx-n{ color:var(--x-acc); }
+/* the rest of the sheet steps back while one row is chosen */
+.mzx--studio .mzx-nav:has(.mzx-row:hover) .mzx-row:not(:hover) .mzx-t{ color:var(--x-4); }
+.mzx--studio .mzx-nav:has(.mzx-row:hover) .mzx-row:not(:hover) .mzx-d{ color:rgba(233,230,221,.2); }
+
+/* ── Studio: the index ────────────────────────────────────── */
+.mzx--studio .mzx-group--lead .mzx-row{
+  grid-template-columns:clamp(40px,3.3vw,68px) minmax(0,1fr) auto;
+  align-items:center;
+  padding:clamp(6px, min(.75vw,1.45vh), 18px) 0;
+  /* the title carries the entrance, so the row only fades */
+  transform:none;
+}
+.mzx--studio .mzx-group--lead .mzx-n{
+  align-self:start;
+  padding-top:clamp(10px, min(1vw,1.9vh), 22px);
+  font-size:clamp(12px,.78vw,15px); letter-spacing:.08em;
+}
+.mzx--studio .mzx-group--lead .mzx-t{
+  font-size:clamp(38px, min(4.5vw, 8.4vh), 94px);
+  font-weight:600; letter-spacing:-.048em; line-height:1;
+}
+/* The description still exists, because the plate reads it for its
+   caption and a screen reader reads it with the link. The sheet itself
+   stays a pure index. */
+.mzx--studio .mzx-group--lead .mzx-d{
+  position:absolute; width:1px; height:1px; margin:0; overflow:hidden;
+  clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap;
+}
+/* The roll: the title is two copies stacked in a one-line window. The
+   window's inner track rises into place when the sheet opens; on hover
+   both copies move up one line, so the word turns over like a counter. */
+.mzx--studio .mzx-roll{ display:block; overflow:hidden; height:1.1em; }
+.mzx--studio .mzx-roll-in{
+  display:block;
+  transform:translateY(102%);
+  transition:transform 1s var(--x-ease) calc(110ms + var(--i,0) * 60ms);
+}
+.mzx--studio.is-open .mzx-roll-in{ transform:none; }
+.mzx--studio .mzx-roll-in > span{
+  display:block; height:1.1em; line-height:1.1;
+  transition:transform .66s cubic-bezier(.76,0,.24,1);
+}
+.mzx--studio .mzx-row:hover .mzx-roll-in > span,
+.mzx--studio .mzx-row:focus-visible .mzx-roll-in > span{ transform:translateY(-100%); }
+
+.mzx--studio .mzx-go{
+  grid-column:3; grid-row:1; align-self:center;
+  display:grid; place-items:center;
+  width:clamp(40px,2.7vw,54px); height:clamp(40px,2.7vw,54px);
+  border-radius:50%; border:1px solid var(--x-line-2);
+  font-size:clamp(14px,.9vw,18px); font-style:normal; line-height:1;
+  color:var(--x-1);
+  opacity:0; transform:translateX(-14px) rotate(-45deg);
+  transition:opacity .4s var(--x-ease), transform .6s var(--x-ease),
+             background-color .35s var(--x-ease), color .35s var(--x-ease), border-color .35s var(--x-ease);
+}
+.mzx--studio .mzx-row:hover .mzx-go,
+.mzx--studio .mzx-row:focus-visible .mzx-go{
+  opacity:1; transform:none;
+  background:var(--x-bone); border-color:var(--x-bone); color:var(--x-ink);
+}
+/* the page you are on: the base menu hangs a dot after the title, which
+   inside the roll's block window would drop to a line of its own. Here
+   the numeral carries it instead. */
+.mzx--studio .mzx-row.is-here .mzx-t::after{ content:none; }
+.mzx--studio .mzx-row.is-here .mzx-n{ color:var(--x-acc); }
+.mzx--studio .mzx-row.is-here .mzx-n::after{
+  content:""; display:inline-block; vertical-align:middle;
+  width:5px; height:5px; margin-left:8px; border-radius:50%;
+  background:var(--x-acc);
+}
+
+/* ── Company: the frame around it ─────────────────────────── */
+.mzx--studio .mzx-group--side .mzx-row{
+  grid-template-columns:clamp(30px,2.3vw,46px) minmax(0,1fr);
+  padding:clamp(10px, min(.82vw,1.55vh), 19px) 0;
+}
+.mzx--studio .mzx-group--side .mzx-n{ font-size:clamp(12px,.74vw,14px); letter-spacing:.08em; }
+.mzx--studio .mzx-group--side .mzx-t{ font-size:clamp(20px, min(1.6vw, 3vh), 32px); letter-spacing:-.03em; }
+.mzx--studio .mzx-group--side .mzx-row:hover .mzx-t,
+.mzx--studio .mzx-group--side .mzx-row:focus-visible .mzx-t{ transform:translateX(6px); }
+.mzx--studio .mzx-group--side .mzx-d{
+  margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* ── the plate ────────────────────────────────────────────── */
+.mzx--studio .mzx-media{ align-self:center; }
+.mzx--studio .mzx-plate{ position:relative; padding:clamp(10px,.8vw,16px); }
+/* crop marks: eight hairlines, two to a corner, drawn as gradients */
+.mzx--studio .mzx-plate::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  --m: rgba(233,230,221,.42); --l: 15px;
+  background:
+    linear-gradient(var(--m),var(--m)) 0 0 / var(--l) 1px no-repeat,
+    linear-gradient(var(--m),var(--m)) 0 0 / 1px var(--l) no-repeat,
+    linear-gradient(var(--m),var(--m)) 100% 0 / var(--l) 1px no-repeat,
+    linear-gradient(var(--m),var(--m)) 100% 0 / 1px var(--l) no-repeat,
+    linear-gradient(var(--m),var(--m)) 0 100% / var(--l) 1px no-repeat,
+    linear-gradient(var(--m),var(--m)) 0 100% / 1px var(--l) no-repeat,
+    linear-gradient(var(--m),var(--m)) 100% 100% / var(--l) 1px no-repeat,
+    linear-gradient(var(--m),var(--m)) 100% 100% / 1px var(--l) no-repeat;
+}
+.mzx--studio .mzx-frame{
+  aspect-ratio:4 / 5; border-radius:10px; border:0;
+  background:#100F0D;
+}
+.mzx--studio .mzx-frame img{
+  object-fit:cover; object-position:50% 40%;
+  z-index:1; transform:scale(1.08);
+  transition:opacity .7s var(--x-ease) .06s, transform 1.5s var(--x-ease);
+}
+.mzx--studio .mzx-frame img.is-on{
+  z-index:2; transform:scale(1);
+  transition:opacity .55s var(--x-ease), transform 1.5s var(--x-ease);
+}
+.mzx--studio .mzx-frame::after{
+  z-index:3;
+  background:linear-gradient(180deg, rgba(11,10,8,.42), transparent 26%, transparent 64%, rgba(11,10,8,.55));
+  box-shadow:inset 0 0 0 1px rgba(233,230,221,.07);
+}
+.mzx--studio .mzx-frame-tag{
+  position:absolute; z-index:4; left:16px; right:16px; top:14px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:var(--x-body); font-weight:600; font-size:11px; letter-spacing:.18em;
+  text-transform:uppercase; color:rgba(233,230,221,.86);
+  font-variant-numeric:tabular-nums; font-feature-settings:"tnum";
+  pointer-events:none;
+}
+.mzx--studio .mzx-frame-tag i{
+  font-style:normal; display:inline-flex; align-items:center; gap:7px;
+}
+.mzx--studio .mzx-frame-tag i::before{
+  content:""; width:6px; height:6px; border-radius:50%; background:var(--x-acc);
+  box-shadow:0 0 0 3px rgba(255,75,31,.18);
+}
+.mzx--studio .mzx-kicker{
+  margin-top:clamp(16px,1.2vw,22px);
+  font-family:var(--x-body); font-weight:600; font-size:11.5px; letter-spacing:.2em;
+  color:var(--x-3);
+}
+/* two lines reserved, so a one-line caption does not let the plate
+   (which is centred) jump as the rows are hovered */
+.mzx--studio .mzx-caption{
+  margin-top:8px; font-size:clamp(15px,.92vw,18px); line-height:1.45;
+  color:var(--x-1); max-width:32ch; min-height:2.9em;
+}
+
+/* ── foot ─────────────────────────────────────────────────── */
+.mzx--studio .mzx-foot{ grid-template-columns:auto auto 1fr auto; }
+.mzx-social{ display:flex; align-items:center; gap:clamp(16px,1.5vw,28px); }
+.mzx-social a{
+  font-size:14px; font-weight:500; color:var(--x-2); text-decoration:none;
+  transition:color .3s var(--x-ease);
+}
+.mzx-social a:hover{ color:var(--x-1); }
+.mzx--studio .mzx-foot .mzx-mail{
+  padding-left:clamp(16px,1.5vw,28px);
+  border-left:1px solid var(--x-line-2);
+}
+
+@media (max-width:1180px){
+  /* the plate is hidden here (see the base rules), so the body is one
+     column; this scoped rule outranks the base one and has to say so */
+  .mzx--studio .mzx-body{ grid-template-columns:minmax(0,1fr); }
+  .mzx--studio .mzx-nav{ grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); }
+  .mzx--studio .mzx-group--lead .mzx-t{ font-size:clamp(36px, min(5.6vw, 8vh), 64px); }
+}
+@media (max-width:900px){
+  .mzx--studio .mzx-foot{ grid-template-columns:auto 1fr auto; }
+  .mzx--studio .mzx-foot .mzx-mail{ padding-left:0; border-left:0; }
+}
+@media (max-width:680px){
+  .mzx--studio .mzx-nav{ grid-template-columns:minmax(0,1fr); gap:28px; }
+  .mzx--studio .mzx-group--lead .mzx-t{ font-size:clamp(34px, 10.4vw, 48px); }
+  .mzx--studio .mzx-group--lead .mzx-n{ padding-top:9px; }
+  .mzx--studio .mzx-go{ display:none; }
+  .mzx--studio .mzx-group--side .mzx-d{ display:none; }
+  .mzx--studio .mzx-group--side .mzx-t{ font-size:21px; }
+  .mzx--studio .mzx-social{ display:none; }
+}
+@media (prefers-reduced-motion: reduce){
+  .mzx--studio .mzx-roll-in, .mzx--studio .mzx-roll-in > span,
+  .mzx--studio .mzx-frame img, .mzx--studio .mzx-go{ transition-duration:.01s !important; }
+  .mzx--studio .mzx-roll-in{ transform:none; }
+}

@@ -101,10 +101,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .nav-left{justify-self:start;display:flex;align-items:center;gap:clamp(14px,1.6vw,26px)}
 /* The wordmark must never be the thing the flex algorithm sacrifices.
    Its only child is an <img> under the reset's max-width:100%, which
-   gives .brand a min-content width of zero — so on a narrow screen the
-   switch beside it won the space and the logo vanished entirely. */
+   gives .brand a min-content width of zero, so flex:none keeps it whole.
+   The Studio/Labs switch that used to sit beside it is gone; the mark
+   holds the corner on its own now, 10% larger to carry the space. */
 .brand{display:flex;align-items:center;flex:0 0 auto}
-.brand img{height:clamp(26px,2.1vw,33px);width:auto;display:block}
+.brand img{height:clamp(28.6px,2.31vw,36.3px);width:auto;display:block}
 .nav-links{justify-self:center;display:flex;gap:clamp(22px,1.562vw,40px);font-family:var(--body);font-weight:500;font-size:clamp(18px,1.42vw,22px);letter-spacing:-.022em}
 .nav-links a{position:relative;padding:5px 0;opacity:.88;transition:opacity .35s}
 .nav-links a:hover{opacity:1}
@@ -122,17 +123,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   display:grid;place-items:center;font-size:13px;transition:transform .3s;
 }
 .nav-cta:hover .arr{transform:translate(1px,-1px)}
-/* world switch: our type and palette, not his. Sits inside the difference-blended
-   nav so it stays legible over both the dark hero and the bone sections. */
 .nav-right{justify-self:end;display:flex;align-items:center;gap:clamp(10px,1.1vw,18px)}
-.mz-switch{display:inline-flex;align-items:center;gap:3px;padding:3px;border-radius:100px;border:1px solid rgba(255,255,255,.4)}
-.mz-sw-opt{
-  font-family:var(--body);font-weight:500;font-size:clamp(14.5px,1.1vw,16.5px);letter-spacing:-.01em;
-  padding:9px 22px;border-radius:100px;color:#fff;opacity:.7;
-  transition:opacity .3s,background-color .35s cubic-bezier(.16,1,.3,1),color .35s;
-}
-.mz-sw-opt:hover{opacity:1}
-.mz-sw-opt.is-on{background:#fff;color:#000;opacity:1}
 
 /* menu trigger, always available */
 /* ── the menu trigger ─────────────────────────────────────────
@@ -243,17 +234,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .menu-btn:hover .menu-btn-icon i:nth-child(1){width:11px}
 .menu-btn:hover .menu-btn-icon i:nth-child(2){width:18px;transition-delay:.07s}
 @media (max-width:1100px){.nav-links{display:none}.nav .nav-cta{display:none}}
-/* On a phone the three-column grid has nothing to give: wordmark,
-   world switch and menu button together are wider than the screen, and
-   something has to lose. It is the switch — the menu sheet carries the
-   same Studio/Labs control one tap away, and the nav's job here is to
-   say where you are and how to get out. */
+/* On a phone the three-column grid has nothing to give: the wordmark
+   and the menu button simply take the two ends. */
 @media (max-width:560px){
   .nav{
     display:flex;justify-content:space-between;align-items:center;
     gap:12px;padding:12px var(--pad);
   }
-  .nav .mz-switch{display:none}
   .menu-btn{height:48px;padding:0 7px 0 19px;gap:12px;font-size:15.5px;border-radius:14px}
   .menu-btn-icon{width:34px;height:34px;padding-right:9px;border-radius:7px}
   .menu-btn-icon i:nth-child(1){width:16px}
@@ -277,6 +264,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .fnav a .fa{font-size:.55em;opacity:0;transform:translateX(-14px);transition:opacity .35s,transform .35s;color:var(--acc)}
 .fnav a:hover{padding-left:18px}
 .fnav a:hover .fa{opacity:1;transform:none}
+/* Labs lives here now: a footer row like the others, with a quiet note
+   saying what it is, rather than a section of the homepage */
+.fnav a .fnav-note{margin-left:auto;margin-right:clamp(12px,1.2vw,22px);font-family:var(--mono);font-weight:600;font-size:clamp(11px,.8vw,13px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);transition:color .35s}
+.fnav a:hover .fnav-note{color:var(--fg)}
 .fcol{display:flex;flex-direction:column;gap:clamp(26px,4vh,44px);padding-top:8px}
 .fblock{display:flex;flex-direction:column;gap:11px}
 .fblock .fb-lab{font-family:var(--mono);font-weight:600;font-size:clamp(12px,.9vw,14px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
