@@ -4029,3 +4029,34 @@ Theme flip `#labs` → `#studios`, still ink, still bone on the way back up into
 ## Verified
 
 At 1920, 1600, 1280, 1024, 900 and 390: hero, menu, the studios section and the footer, on the homepage and `/work`. No horizontal overflow at 390. No console errors on either page. The footer Labs link crosses over to `/labs.html`. Reduced motion: slate and statement visible, sun placed without the sweep, timecode held. The live state was checked against the clock: at 17:29 in Lahore on 28 October it read golden hour (sunset was about 17:25), at 17:33 blue hour; Paris at 13:29 read daylight with golden hour in 3 h 22 min. Deploy confirmed current before starting: local and remote both at `ef7a8bd`, nothing uncommitted.
+
+---
+
+## #195
+### The copy follows the direction
+*Cache token unchanged (`?v=19`): HTML only.*
+
+#194 changed the structure; the homepage copy still described a studio that "does two things properly: creative production and software". This pass takes the remaining software framing out of the Studio pages, using only facts that were already on the site.
+
+| where | was | now |
+|---|---|---|
+| meta description | creative technology studio … software with AI | independent creative studio: music videos, commercials and brand films, motion and 3D, colour, brand identity, websites |
+| og:description | creative technology studio … film, design and software | independent creative studio … film, motion and design |
+| manifesto | two things properly: creative production and software … films, brands, websites and platforms | an independent studio built around that one idea … films, motion, brands and the sites they live on |
+| stat 02 | sides of the studio, creative production and software | studios, Lahore and Paris, one standard between them |
+| stat 04 → 23 | e-commerce builds, brand films, music videos and software platforms | films in the archive: music video, commercial, documentary and 3D (the archive's own count) |
+| clients note | cameras, campaigns and code | films, campaigns and identities |
+| service 07 | Websites & Web Apps: portals · dashboards | Websites: brand sites · launch pages · campaign microsites |
+| service 08 | Software, SaaS & AI: platforms · integrations · AI tooling | Apps & Digital Products: product design · apps · interactive |
+| process 02, 03 | a build you can click … testable … launch, measure, harden … first real users | a page you can click … release, watch, refine … first real audience |
+| FAQ: who works on it | senior engineers on the build | our own crew on camera, in the edit and on the design |
+| FAQ: second question | "We need software, not a film" → Manzar Labs, ERP, IoT, HIPAA, SOC 2 | "Do you only make films?": film is the heart of it, and the same team designs the brand, animates it and builds the site it lands on |
+| FAQ: timings | a software MVP through Manzar Labs in six weeks | bigger productions run on a written schedule, with a cut every Friday |
+| FAQ: cost | a music video and a SaaS platform | a music video and a brand identity |
+| footer note on Labs | Our software studio | Sister studio |
+
+The FAQ no longer links to Labs: the footer row is now its only door from the Studio pages, which is what #194 set out to do. No offering was removed. The two technical service rows were renamed, not dropped, and the services count stays at eight.
+
+## Verified
+
+Rendered locally at 1600: the manifesto's word reveal, the reworded service rows with their travelling card, and the new FAQ answer opening, with no console errors.
