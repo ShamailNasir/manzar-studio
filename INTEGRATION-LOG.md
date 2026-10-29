@@ -4186,3 +4186,52 @@ Websites and Motion Graphics & 3D were held over from #199 while Codex was at it
 The set-aside candidates were a designer checking a site across a row of devices, and a motion designer animating on a graphics tablet.
 
 All eight service photographs are now candid working scenes rather than AI symbols. All are still generated, and real stills from Manzar's own shoots should replace them as they arrive. The originals are in `Backup/2026-10-29-pre-service-photos-r4/`.
+
+---
+
+## #201
+### Services: the creative studio's list, with the IT left to Labs
+*Cache token unchanged (`?v=20`): HTML and images only.*
+
+The homepage Services list sells only what the creative studio makes. E-commerce Websites, Websites and Apps & Digital Products are gone; development of any kind lives at Manzar Labs, which the footer and now the FAQ point to. The list grows from eight rows to twelve (`12 · In-house`):
+
+| | service | | photograph |
+|---|---|---|---|
+| 01 | Music Videos | artist films · performance · lyric videos | `s01-music.jpg` |
+| 02 | Commercials & Brand Films | TVCs · launch films · campaign cutdowns | `s02-commercial.jpg` |
+| 03 | **Fashion Films** | campaign films · lookbooks · runway | `s09-fashion.jpg`, new |
+| 04 | **Explainer Videos** | SaaS · product · animated explainers | `s10-explainer.jpg`, new |
+| 05 | Motion Graphics & 3D | titles · logo animation · product renders | `s03-motion.jpg` |
+| 06 | **2D & Character Animation** | characters · frame-by-frame · animated shorts | `s11-animation.jpg`, new |
+| 07 | **Editing & Post-Production** | offline edit · sound design · subtitles | `s12-editing.jpg`, new |
+| 08 | Colour & Finishing | grading · clean-up · delivery masters | `s04-colour.jpg` |
+| 09 | **Content Marketing** | reels · short-form series · always-on content | `s13-content.jpg`, new |
+| 10 | Brand & Visual Identity | logos · systems · key art | `s05-brand.jpg` |
+| 11 | **Graphic Design** | campaign art · print · social design | `s14-graphic.jpg`, new |
+| 12 | **UI/UX & Web Design** | websites · interfaces · prototypes | `s08-uiux.jpg` |
+
+- Motion Graphics & 3D lost "explainers" from its line now that explainers have a row of their own.
+- UI/UX & Web Design is design, not development. Its photograph is the former Apps image, renamed: a phone prototype, the same screens in a design tool, paper wireframes, which is that work exactly.
+- The six new photographs were generated with Codex to the same documentary briefs as the rest:
+  - a fashion film in a haveli courtyard;
+  - an animator at work on an explainer under its storyboard;
+  - a 2D animator flipping drawings on a light disc;
+  - a client review in an edit suite;
+  - a creator shooting vertical content outside a café;
+  - a designer pinning up a poster series.
+- `s06-ecommerce.jpg` and `s07-websites.jpg` are no longer referenced and were removed (they remain in git history).
+
+## Follow-ons
+
+- **The hero slate's links.** Each discipline in the monitor opened the service row at its own index, which the new order would have broken. Each now names its row (`data-svc`): Music videos → 01, Brand films → 02, Motion & 3D → 05, Colour → 08, Identity → 10. Checked in the browser.
+- **The travelling card.** It is centred on the active row but now never sits lower than the last row. With twelve rows it used to hang out of the section and over the showreel band.
+- **The menu's Services line** on both Studio pages reads "Film, animation, design and post, all in-house."
+
+## FAQ
+
+Two new answers, after "Do you only make films?":
+
+- **Do you run ads, or build apps and software?** We stay with the film, the design and the content. Media buying and ads go through partner marketing agencies. Software, apps, AI and web development are Manzar Labs, linked with the curtain crossover.
+- **Can you shoot where we are?** Yes, worldwide. We shoot ourselves from Lahore and Paris. Elsewhere, a vetted local crew shoots to our brief, shot list and look, directed remotely on a live feed, and the footage comes home for edit, colour and finish.
+
+The wording is deliberately "vetted local crew" rather than partnered film agencies around the world; it promises a process the studio can run today. "Do you only make films?" and "How long does a project take?" no longer imply that the studio builds websites.

@@ -1168,7 +1168,7 @@ html.is-framed .mz-toast{display:none!important}
         </div>
         <button class="hs-reel" type="button" id="hsReel" aria-label="Now showing: Music videos. Open it in Services.">
           <span class="hs-reel-lab">Now showing <b id="hsIdx">01</b>/05</span>
-          <span class="hs-reel-win" aria-hidden="true"><span class="on">Music videos</span><span>Brand films</span><span>Motion &amp; 3D</span><span>Colour</span><span>Identity</span></span>
+          <span class="hs-reel-win" aria-hidden="true"><span class="on" data-svc="0">Music videos</span><span data-svc="1">Brand films</span><span data-svc="4">Motion &amp; 3D</span><span data-svc="7">Colour</span><span data-svc="9">Identity</span></span>
         </button>
       </div>
     </div>
@@ -1399,8 +1399,10 @@ html.is-framed .mz-toast{display:none!important}
     <div class="shell">
       <div class="svc-head">
         <span class="eb">What we can help with</span>
-        <span class="mono" style="color:var(--soft)">08 · In-house</span>
+        <span class="mono" style="color:var(--soft)">12 · In-house</span>
       </div>
+      <!-- Creative services only. Software, apps, AI and web development
+           live at Manzar Labs (linked from the footer and the FAQ). -->
       <div class="svc-list" id="svcList">
         <div class="srow active" data-idx="0">
           <h3>Music Videos<span class="s-use">Artist films · performance · lyric videos</span></h3>
@@ -1409,34 +1411,50 @@ html.is-framed .mz-toast{display:none!important}
           <h3>Commercials &amp; Brand Films<span class="s-use">TVCs · launch films · campaign cutdowns</span></h3>
         </div>
         <div class="srow" data-idx="2">
-          <h3>Motion Graphics &amp; 3D<span class="s-use">Titles · explainers · product renders</span></h3>
+          <h3>Fashion Films<span class="s-use">Campaign films · lookbooks · runway</span></h3>
         </div>
         <div class="srow" data-idx="3">
-          <h3>Colour &amp; Finishing<span class="s-use">Grading · clean-up · delivery masters</span></h3>
+          <h3>Explainer Videos<span class="s-use">SaaS · product · animated explainers</span></h3>
         </div>
         <div class="srow" data-idx="4">
-          <h3>Brand &amp; Visual Identity<span class="s-use">Logos · systems · key art</span></h3>
+          <h3>Motion Graphics &amp; 3D<span class="s-use">Titles · logo animation · product renders</span></h3>
         </div>
         <div class="srow" data-idx="5">
-          <h3>E-commerce Websites<span class="s-use">Shopify · headless storefronts</span></h3>
+          <h3>2D &amp; Character Animation<span class="s-use">Characters · frame-by-frame · animated shorts</span></h3>
         </div>
         <div class="srow" data-idx="6">
-          <h3>Websites<span class="s-use">Brand sites · launch pages · campaign microsites</span></h3>
+          <h3>Editing &amp; Post-Production<span class="s-use">Offline edit · sound design · subtitles</span></h3>
         </div>
         <div class="srow" data-idx="7">
-          <h3>Apps &amp; Digital Products<span class="s-use">Product design · apps · interactive</span></h3>
+          <h3>Colour &amp; Finishing<span class="s-use">Grading · clean-up · delivery masters</span></h3>
+        </div>
+        <div class="srow" data-idx="8">
+          <h3>Content Marketing<span class="s-use">Reels · short-form series · always-on content</span></h3>
+        </div>
+        <div class="srow" data-idx="9">
+          <h3>Brand &amp; Visual Identity<span class="s-use">Logos · systems · key art</span></h3>
+        </div>
+        <div class="srow" data-idx="10">
+          <h3>Graphic Design<span class="s-use">Campaign art · print · social design</span></h3>
+        </div>
+        <div class="srow" data-idx="11">
+          <h3>UI/UX &amp; Web Design<span class="s-use">Websites · interfaces · prototypes</span></h3>
         </div>
         <!-- traveling visual card: follows the hovered row, images swap per service -->
         <aside class="svc-visual" id="svcVisual" aria-hidden="true">
           <div class="sv-img on" data-idx="0" data-bg="assets/services/s01-music.jpg"></div>
           <div class="sv-img" data-idx="1" data-bg="assets/services/s02-commercial.jpg"></div>
-          <div class="sv-img" data-idx="2" data-bg="assets/services/s03-motion.jpg"></div>
-          <div class="sv-img" data-idx="3" data-bg="assets/services/s04-colour.jpg"></div>
-          <div class="sv-img" data-idx="4" data-bg="assets/services/s05-brand.jpg"></div>
-          <div class="sv-img" data-idx="5" data-bg="assets/services/s06-ecommerce.jpg"></div>
-          <div class="sv-img" data-idx="6" data-bg="assets/services/s07-websites.jpg"></div>
-          <div class="sv-img" data-idx="7" data-bg="assets/services/s08-software.jpg"></div>
-                </aside>
+          <div class="sv-img" data-idx="2" data-bg="assets/services/s09-fashion.jpg"></div>
+          <div class="sv-img" data-idx="3" data-bg="assets/services/s10-explainer.jpg"></div>
+          <div class="sv-img" data-idx="4" data-bg="assets/services/s03-motion.jpg"></div>
+          <div class="sv-img" data-idx="5" data-bg="assets/services/s11-animation.jpg"></div>
+          <div class="sv-img" data-idx="6" data-bg="assets/services/s12-editing.jpg"></div>
+          <div class="sv-img" data-idx="7" data-bg="assets/services/s04-colour.jpg"></div>
+          <div class="sv-img" data-idx="8" data-bg="assets/services/s13-content.jpg"></div>
+          <div class="sv-img" data-idx="9" data-bg="assets/services/s05-brand.jpg"></div>
+          <div class="sv-img" data-idx="10" data-bg="assets/services/s14-graphic.jpg"></div>
+          <div class="sv-img" data-idx="11" data-bg="assets/services/s08-uiux.jpg"></div>
+        </aside>
       </div>
     </div>
   </section>
@@ -1520,7 +1538,15 @@ html.is-framed .mz-toast{display:none!important}
           </div>
           <div class="fq">
             <div class="fq-q">Do you only make films?<span class="fq-dot"></span></div>
-            <div class="fq-a"><p>No. Film is where we started and it is still the heart of the studio, but the same team designs the brand around it, animates it and builds the site it lands on. One studio, one standard, from the first frame to the last page.</p></div>
+            <div class="fq-a"><p>No. Film is where we started and it is still the heart of the studio, but the same team designs the brand around it, animates it, cuts it for social and designs the website it lands on. One studio, one standard, from the first frame to the last page.</p></div>
+          </div>
+          <div class="fq">
+            <div class="fq-q">Do you run ads, or build apps and software?<span class="fq-dot"></span></div>
+            <div class="fq-a"><p>We stay with what we do best: the film, the design and the content. When a campaign needs media buying and ads run, we work alongside partner marketing agencies and hand them everything they need to run it well. Software, apps, AI and web development live at our sister studio, Manzar Labs. <a class="fq-link" href="labs.html" data-world="labs">See Manzar Labs ↗</a></p></div>
+          </div>
+          <div class="fq">
+            <div class="fq-q">Can you shoot where we are?<span class="fq-dot"></span></div>
+            <div class="fq-a"><p>Yes, and we work worldwide. We shoot ourselves from Lahore and Paris, and anywhere else we bring in a vetted local crew: we write the brief, the shot list and the look, direct the day remotely on a live feed, and bring the footage home for the edit, the colour and the finish. Same standard, wherever the camera is.</p></div>
           </div>
           <div class="fq">
             <div class="fq-q">What does working together look like?<span class="fq-dot"></span></div>
@@ -1528,7 +1554,7 @@ html.is-framed .mz-toast{display:none!important}
           </div>
           <div class="fq">
             <div class="fq-q">How long does a project take?<span class="fq-dot"></span></div>
-            <div class="fq-a"><p>A campaign film can turn around in days. A full website usually runs three to six weeks. Bigger productions run on a written schedule, with a cut you can watch every Friday. We set dates on day one and keep them.</p></div>
+            <div class="fq-a"><p>A campaign film can turn around in days. An identity or a website design takes a few weeks. Bigger productions run on a written schedule, with a cut you can watch every Friday. We set dates on day one and keep them.</p></div>
           </div>
           <div class="fq">
             <div class="fq-q">What do you need from us to start?<span class="fq-dot"></span></div>
@@ -1680,8 +1706,9 @@ try {
 /* The card floats at the right of the list, glides to the hovered/active row,
    and swaps its image per service (Monolog-style). Images are labeled
    placeholders until the real creatives land — see IMAGE-BRIEF.md. */
-const SVC_TAGS = ["S/01 · Music video","S/02 · Commercial","S/03 · Motion & 3D","S/04 · Colour",
-                  "S/05 · Brand identity","S/06 · E-commerce","S/07 · Websites","S/08 · Digital products"];
+const SVC_TAGS = ["S/01 · Music video","S/02 · Commercial","S/03 · Fashion film","S/04 · Explainer",
+                  "S/05 · Motion & 3D","S/06 · Animation","S/07 · Edit & post","S/08 · Colour",
+                  "S/09 · Content","S/10 · Brand identity","S/11 · Graphic design","S/12 · UI/UX & web"];
 const svcVisual = $("#svcVisual"), svcList = $("#svcList");
 let activeSvc = 0, svcShown = false;
 
@@ -1691,7 +1718,10 @@ function placeCard(n, animate = true) {
   const row = rows[n]; if (!row) return;
   const card = svcVisual;
   const y = row.offsetTop + row.offsetHeight / 2 - card.offsetHeight / 2;
-  const yc = Math.max(-30, y); /* card may drift past the short list; section padding absorbs it */
+  /* centred on its row, but never lower than the list's last row: with
+     twelve services the card used to hang out of the section and over
+     the showreel band */
+  const yc = Math.max(-30, Math.min(y, svcList.offsetHeight - card.offsetHeight));
   if (window.gsap && !RM && animate) {
     gsap.to(card, { y: yc, duration: .55, ease: "power3.out" });
     gsap.fromTo(card, { rotate: n > activeSvc ? .8 : -.8 }, { rotate: 0, duration: .55, ease: "power3.out" });
@@ -2372,7 +2402,7 @@ const slate = (function slateInit() {
   /* either opens the matching service: scroll it to the eye line and the
      services list's own scroll triggers make it the active row */
   const open = () => {
-    const row = $$(".srow")[k] || $("#services");
+    const row = $$(".srow")[+(words[k].dataset.svc || k)] || $("#services");
     hold(false, true);
     if (window.lenisInstance) lenisInstance.scrollTo(row, { offset: -innerHeight * .44, duration: 1.8 });
     else row.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -2964,7 +2994,7 @@ if (!window.gsap || RM) {
            data-media="assets/services/s04-colour.jpg" data-kicker="What we make">
           <span class="mzx-n">03</span>
           <span class="mzx-t"><span class="mzx-roll"><span class="mzx-roll-in"><span>Services</span><span aria-hidden="true">Services</span></span></span></span>
-          <span class="mzx-d">Film, motion, colour and identity, all in&#8209;house.</span>
+          <span class="mzx-d">Film, animation, design and post, all in&#8209;house.</span>
           <i class="mzx-go" aria-hidden="true">&#8594;</i>
         </a>
         <a class="mzx-row" href="#reel" style="--i:3"
