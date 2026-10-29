@@ -4171,3 +4171,18 @@ They were replaced the way round two did it: the same photorealism rules, with s
 The set-aside candidates were a brand presentation to clients, a product shoot for a fashion label's store, and a usability test in front of a wall of printed screens.
 
 Six requests at once made five fail with connection errors from the image service. Two at a time, with a retry, all succeeded. The originals are in `Backup/2026-10-29-pre-service-photos-r3/`.
+
+---
+
+## #200
+### The last two service photographs
+*Cache token unchanged (`?v=20`): images only, same file names.*
+
+Websites and Motion Graphics & 3D were held over from #199 while Codex was at its usage limit. They are done the same way, from briefs written then and kept in the working folder:
+
+- **Websites** (`s07-websites.jpg`): launch day at the studio. A designer leans in and points at a brand site on a large monitor while her colleague scrolls; the same site sits on a tablet and a phone on the desk.
+- **Motion Graphics & 3D** (`s03-motion.jpg`): a 3D artist modelling a sneaker in grey clay, the real shoe on a turntable beside him, reference prints on the desk, daylight through the blinds. It also feeds the hero monitor's `slate-03.jpg`.
+
+The set-aside candidates were a designer checking a site across a row of devices, and a motion designer animating on a graphics tablet.
+
+All eight service photographs are now candid working scenes rather than AI symbols. All are still generated, and real stills from Manzar's own shoots should replace them as they arrive. The originals are in `Backup/2026-10-29-pre-service-photos-r4/`.
